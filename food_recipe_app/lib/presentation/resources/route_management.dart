@@ -1,16 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_recipe_app/presentation/home/home_view.dart';
+import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
+import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
+
 import 'package:food_recipe_app/presentation/login/login_view.dart';
+import 'package:food_recipe_app/presentation/main/main_view.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
+
+import '../main/home/home_page.dart';
 
 class Routes {
   static const String splashRoute = '/';
-  static const String homeRoute = '/home';
+  static const String mainRoute = '/main';
+  static const String homeRoute = '/main/home';
   static const String loginRoute = '/login';
   static const String registerRoute = '/register';
   static const String forgotPassRoute = '/forgotPass';
   static const String onBoardingRoute = '/onBoarding';
+  static const String chefProfileRoute = '/chefProfile';
+  static const String detailFoodRoute = '/detailFood';
 }
 
 class RouteGenerator {
@@ -22,7 +30,19 @@ class RouteGenerator {
         );
       case Routes.homeRoute:
         return MaterialPageRoute(
-          builder: (context) => const HomeView(),
+          builder: (context) => const HomePage(),
+        );
+      case Routes.chefProfileRoute:
+        return MaterialPageRoute(
+          builder: (context) => const ChefProfileView(),
+        );
+      case Routes.detailFoodRoute:
+        return MaterialPageRoute(
+          builder: (context) => const DetailFoodView(),
+        );
+      case Routes.mainRoute:
+        return MaterialPageRoute(
+          builder: (context) => const MainView(),
         );
       default:
         return undefinedRoute();
