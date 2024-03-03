@@ -8,7 +8,8 @@ TextStyle _getTextStyle(
       fontSize: fontSize,
       fontFamily: fontFamily,
       color: color,
-      fontWeight: fontWeight);
+      fontWeight: fontWeight,
+      overflow: TextOverflow.ellipsis);
 }
 
 // regular style
@@ -16,6 +17,12 @@ TextStyle _getTextStyle(
 TextStyle getRegularStyle(
     {double fontSize = FontSize.s12, required Color color}) {
   return _getTextStyle(fontSize, fontFamily, FontWeightManager.regular, color);
+}
+
+TextStyle getRegularStyleWithUnderline(
+    {double fontSize = FontSize.s12, required Color color}) {
+  return _getTextStyle(fontSize, fontFamily, FontWeightManager.regular, color)
+      .copyWith(decoration: TextDecoration.underline);
 }
 // light text style
 

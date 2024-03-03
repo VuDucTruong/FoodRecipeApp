@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class ChefProfileView extends StatefulWidget {
+  const ChefProfileView({super.key});
 
   @override
-  _HomeViewState createState() {
-    return _HomeViewState();
+  _ChefProfileViewState createState() {
+    return _ChefProfileViewState();
   }
 }
 
-class _HomeViewState extends State<HomeView> {
+class _ChefProfileViewState extends State<ChefProfileView> {
   @override
   void initState() {
     super.initState();
@@ -23,8 +23,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      body: Text('Home'),
-    );
+    return Container();
   }
 }
