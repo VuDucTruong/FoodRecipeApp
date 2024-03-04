@@ -14,6 +14,7 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 import '../../chef_profile/chef_profile_view.dart';
+import '../../common/widgets/widget.dart';
 import '../../resources/font_manager.dart';
 
 class HomePage extends StatefulWidget {
@@ -102,9 +103,7 @@ class _HomePageState extends State<HomePage> {
                     width: AppSize.s80,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppRadius.r20),
-                        image: const DecorationImage(
-                            image: AssetImage(PicturePath.fbPath),
-                            fit: BoxFit.cover)),
+                        color: Colors.amber),
                   ),
                   Container(
                     width: 80,
@@ -219,124 +218,79 @@ class _HomePageState extends State<HomePage> {
   Widget _getFoodItem() {
     return GestureDetector(
       onTap: () => {Navigator.pushNamed(context, Routes.detailFoodRoute)},
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Container(
-            width: AppSize.s100,
-            height: AppSize.s175,
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(AppRadius.r50),
-                    bottom: Radius.circular(AppRadius.r8)),
-                gradient: ColorManager.linearGradientPink),
-          ),
-          Positioned(
-              top: 0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CircleAvatar(
-                    radius: AppRadius.r50,
-                    backgroundImage: AssetImage(PicturePath.fbPath),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(4),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+      child: Container(
+          width: AppSize.s100,
+          height: AppSize.s175,
+          decoration: BoxDecoration(
+              borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(AppRadius.r50),
+                  bottom: Radius.circular(AppRadius.r18)),
+              gradient: ColorManager.linearGradientPink),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CircleAvatar(
+                radius: AppRadius.r50,
+                backgroundColor: Colors.amber,
+                //backgroundImage: AssetImage(PicturePath.fbPath),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.timelapse_sharp, size: AppSize.s12),
+                          const SizedBox(
+                            width: AppSize.s4,
+                          ),
+                          Text('10-20 mins',
+                              style: getRegularStyle(
+                                  color: Colors.black, fontSize: FontSize.s8))
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(Icons.people, size: AppSize.s12),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                          Text('4-5 people',
+                              style: getRegularStyle(
+                                  color: Colors.black, fontSize: FontSize.s8))
+                        ],
+                      ),
+                      Container(
+                        margin:
+                            const EdgeInsets.symmetric(vertical: AppMargin.m4),
+                        width: AppSize.s90,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            const Icon(Icons.timelapse_sharp,
-                                size: AppSize.s12),
-                            const SizedBox(
-                              width: AppSize.s4,
+                            Text(
+                              'Gergous',
+                              style: getRegularStyle(
+                                  color: Colors.black, fontSize: FontSize.s10),
                             ),
-                            Text('10-20 mins',
-                                style: getRegularStyle(
-                                    color: Colors.black, fontSize: FontSize.s8))
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Icon(Icons.people, size: AppSize.s12),
                             const SizedBox(
                               width: 4,
                             ),
-                            Text('4-5 people',
-                                style: getRegularStyle(
-                                    color: Colors.black, fontSize: FontSize.s8))
+                            const Icon(Icons.account_box_rounded,
+                                size: AppSize.s12),
                           ],
                         ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: AppMargin.m4),
-                          width: AppSize.s90,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                'Gergous',
-                                style: getRegularStyle(
-                                    color: Colors.black,
-                                    fontSize: FontSize.s10),
-                              ),
-                              const SizedBox(
-                                width: 4,
-                              ),
-                              const Icon(Icons.account_box_rounded,
-                                  size: AppSize.s12),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              )),
-          Positioned(
-            right: 0,
-            bottom: 0,
-            child: Container(
-                alignment: Alignment.bottomRight, child: _getTitleFoodName()),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _getTitleFoodName() {
-    return Stack(
-      alignment: Alignment.centerRight,
-      children: [
-        Container(
-          width: AppSize.s85,
-          color: Colors.red,
-        ),
-        Container(
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(8),
-                topLeft: Radius.circular(8),
-                bottomLeft: Radius.circular(8),
+                ),
               ),
-              color: Colors.black),
-          width: 90,
-          padding: const EdgeInsets.symmetric(
-              vertical: AppPadding.p4, horizontal: AppPadding.p16),
-          child: Text('Food name', style: getBoldStyle(color: Colors.white)),
-        ),
-        Positioned(
-          left: 0,
-          child: Container(
-            width: AppSize.s12,
-            height: AppSize.s12,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: ColorManager.vegColor),
-          ),
-        ),
-      ],
+              getTitleFoodName(MediaQuery.of(context).size.width, 25, 10,
+                  ColorManager.darkBlueColor, FontSize.s12)
+            ],
+          )),
     );
   }
 

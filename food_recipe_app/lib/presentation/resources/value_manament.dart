@@ -2,11 +2,13 @@ class AppMargin {
   static const double m4 = 4;
   static const double m8 = 8;
   static const double m12 = 12;
+  static const double m11 = 11;
 }
 
 class AppPadding {
   static const double p4 = 4;
   static const double p2 = 2;
+  static const double p3 = 3;
   static const double p8 = 8;
   static const double p12 = 12;
   static const double p16 = 16;
@@ -37,6 +39,7 @@ class AppRadius {
   static const double r50 = 50;
   static const double r25 = 25;
   static const double r8 = 8;
+  static const double r18 = 18;
 }
 
 class DurationValues {
