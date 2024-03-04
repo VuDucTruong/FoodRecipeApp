@@ -11,4 +11,6 @@ class PicturePath {
   static const String savePath = '$PICTURE_PATH/save_ic.svg';
   static const String profilePath = '$PICTURE_PATH/profile_ic.svg';
   static const String searchPath = '$PICTURE_PATH/search_ic.svg';
+  static const String instagramPath = '$PICTURE_PATH/instagram.svg';
+  static const String gmailPath = '$PICTURE_PATH/gmail.svg';
 }
