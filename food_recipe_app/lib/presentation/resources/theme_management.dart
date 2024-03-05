@@ -15,6 +15,7 @@ ThemeData getAppTheme() {
       cardTheme: CardTheme(
         color: ColorManager.secondaryColor,
       ),
+      scaffoldBackgroundColor: ColorManager.lightBG,
       filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
               backgroundColor: ColorManager.secondaryColor)),

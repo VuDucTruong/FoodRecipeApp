@@ -16,4 +16,8 @@ class PicturePath {
   static const String emptyRecipePath = '$PICTURE_PATH/empty_recipe.svg';
   static const String peoplePath = '$PICTURE_PATH/people.svg';
   static const String timerPath = '$PICTURE_PATH/timer.svg';
+  static const String aboutPath = '$PICTURE_PATH/about.svg';
+  static const String messagesPath = '$PICTURE_PATH/messages.svg';
+  static const String notificationPath = '$PICTURE_PATH/notification.svg';
+  static const String privacyPath = '$PICTURE_PATH/privacy.svg';
 }

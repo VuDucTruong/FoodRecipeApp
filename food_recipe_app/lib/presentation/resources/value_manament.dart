@@ -43,7 +43,9 @@ class AppRadius {
   static const double r8 = 8;
   static const double r18 = 18;
   static const double r10 = 10;
+  static const double r30 = 30;
 }
+
 
 class DurationValues {
   static const int d300 = 300;
