@@ -13,4 +13,7 @@ class PicturePath {
   static const String searchPath = '$PICTURE_PATH/search_ic.svg';
   static const String instagramPath = '$PICTURE_PATH/instagram.svg';
   static const String gmailPath = '$PICTURE_PATH/gmail.svg';
+  static const String emptyRecipePath = '$PICTURE_PATH/empty_recipe.svg';
+  static const String peoplePath = '$PICTURE_PATH/people.svg';
+  static const String timerPath = '$PICTURE_PATH/timer.svg';
 }

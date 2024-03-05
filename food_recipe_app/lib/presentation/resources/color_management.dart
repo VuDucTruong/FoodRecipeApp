@@ -12,6 +12,7 @@ class ColorManager {
   static Color pinkColor = const Color(0xFFFA9BB1);
   static Color vegColor = const Color(0xFF03A100);
   static Color nonVegColor = const Color(0xFFA10000);
+  static Color greyColor = Colors.grey.shade400;
   static LinearGradient linearGradientSecondary = const LinearGradient(
     colors: [
       Color(0xFFE9455D),

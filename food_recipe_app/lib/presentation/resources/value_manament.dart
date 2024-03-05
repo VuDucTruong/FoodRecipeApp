@@ -30,6 +30,8 @@ class AppSize {
   static const double s175 = 175;
   static const double s100 = 100;
   static const double s80 = 80;
+  static const double s2 = 2;
+  static const double s16 = 16;
 }
 
 class AppRadius {
@@ -40,6 +42,7 @@ class AppRadius {
   static const double r25 = 25;
   static const double r8 = 8;
   static const double r18 = 18;
+  static const double r10 = 10;
 }
 
 class DurationValues {
