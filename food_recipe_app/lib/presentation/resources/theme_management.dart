@@ -24,7 +24,7 @@ ThemeData getAppTheme() {
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: const EdgeInsets.all(AppPadding.p12),
         // hint style
-        hintStyle: getRegularStyle(color: Colors.grey),
+        hintStyle: getSemiBoldStyle(color: ColorManager.greyColor),
         // label style
         labelStyle: getMediumStyle(color: Colors.grey.shade800),
         // error style
