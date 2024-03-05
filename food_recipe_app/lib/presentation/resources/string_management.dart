@@ -80,4 +80,6 @@ class AppStrings {
   static const String about = 'About';
   static const String theme = 'Theme';
   static const String saveChanges = 'Save Changes';
+  static const String light = 'Light';
+  static const String dark = 'Dark';
 }
