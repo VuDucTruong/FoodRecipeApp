@@ -42,7 +42,7 @@ class _SettingPageState extends State<SettingPage> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
-                  'Settings',
+                  AppStrings.settings,
                   style: getBoldStyle(
                       color: ColorManager.secondaryColor,
                       fontSize: FontSize.s20),
@@ -71,16 +71,26 @@ class _SettingPageState extends State<SettingPage> {
             const SizedBox(
               height: AppSize.s20,
             ),
-            getLongSwitch(
-                AppStrings.light,
-                AppStrings.dark,
-                ColorManager.linearGradientLightTheme,
-                ColorManager.linearGradientDarkTheme,
-                isOn,
-                200,
-                30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  AppStrings.theme,
+                  style: getRegularStyle(
+                      color: Colors.black, fontSize: FontSize.s17),
+                ),
+                getLongSwitch(
+                    AppStrings.light,
+                    AppStrings.dark,
+                    ColorManager.linearGradientLightTheme,
+                    ColorManager.linearGradientDarkTheme,
+                    isOn,
+                    180,
+                    30),
+              ],
+            ),
             const SizedBox(
-              height: AppSize.s20,
+              height: AppSize.s30,
             ),
             SizedBox(
                 width: 200,
