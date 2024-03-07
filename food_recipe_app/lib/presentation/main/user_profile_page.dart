@@ -40,13 +40,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppStrings.yourProfile,
+              AppStrings.verifiedChefs,
               style: getBoldStyle(
                   color: ColorManager.secondaryColor, fontSize: FontSize.s20),
             ),
-            _getUserIntro(),
-            _getUserDescription(),
-            _getUserSocialStatus(),
+            getUserIntro(),
+            getUserDescription(),
+            getUserSocialStatus(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -80,7 +80,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 child: ListView.builder(
               itemCount: 3,
               itemBuilder: (context, index) {
-                return _getRecipeItem();
+                return getRecipeItem(context, true);
               },
             ))
           ],
@@ -88,6 +88,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
+<<<<<<< Updated upstream
 
   Widget _getUserSocialStatus() {
     return Container(
@@ -254,4 +255,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
+=======
+>>>>>>> Stashed changes
 }

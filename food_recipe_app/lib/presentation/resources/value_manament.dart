@@ -33,6 +33,11 @@ class AppSize {
   static const double s2 = 2;
   static const double s16 = 16;
   static const double s50 = 50;
+<<<<<<< Updated upstream
+=======
+  static const double s220 = 220;
+  static const double s200 = 200;
+>>>>>>> Stashed changes
 }
 
 class AppRadius {

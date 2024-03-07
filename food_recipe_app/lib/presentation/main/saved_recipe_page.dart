@@ -72,6 +72,7 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
+<<<<<<< Updated upstream
                 return Center(
                   child: Stack(
                     children: [
@@ -91,9 +92,51 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
                     ],
                   ),
                 );
+=======
+                return Center(child: getRecipeItem(context, true));
+>>>>>>> Stashed changes
               }),
         ],
       )),
     );
   }
+<<<<<<< Updated upstream
+=======
+
+  /*Widget _getFoodTitle(double width, String foodName) {
+    return Stack(
+      alignment: AlignmentDirectional.centerStart,
+      children: [
+        Container(
+          width: width,
+          height: 40,
+          decoration: BoxDecoration(
+              color: ColorManager.darkBlueColor,
+              borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(AppRadius.r20),
+                  bottomLeft: Radius.circular(AppRadius.r6),
+                  topLeft: Radius.circular(AppRadius.r6))),
+          child: Center(
+            child: Text(
+              foodName,
+              style: getBoldStyle(color: Colors.white, fontSize: FontSize.s20),
+            ),
+          ),
+        ),
+        Container(
+          width: 18,
+          height: 18,
+          transform: Matrix4.translationValues(-5, 0, 0),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: ColorManager.lightBG,
+                  width: 2,
+                  strokeAlign: BorderSide.strokeAlignOutside),
+              borderRadius: BorderRadius.circular(AppRadius.r45),
+              color: ColorManager.vegColor),
+        ),
+      ],
+    );
+  }*/
+>>>>>>> Stashed changes
 }

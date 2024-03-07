@@ -82,4 +82,5 @@ class AppStrings {
   static const String saveChanges = 'Save Changes';
   static const String light = 'Light';
   static const String dark = 'Dark';
+  static const String delete = 'Delete';
 }
