@@ -248,10 +248,46 @@ class _UserProfilePageState extends State<UserProfilePage> {
           Positioned(
               bottom: 0,
               right: 0,
-              child: getTitleFoodName(MediaQuery.of(context).size.width * 0.8,
-                  40, 20, ColorManager.darkBlueColor, FontSize.s20))
+              child: _getFoodTitle(
+                  MediaQuery.of(context).size.width * 0.8, "Food Name"))
         ],
       ),
+    );
+  }
+
+  Widget _getFoodTitle(double width, String foodName) {
+    return Stack(
+      alignment: AlignmentDirectional.centerStart,
+      children: [
+        Container(
+          width: width,
+          height: 40,
+          decoration: BoxDecoration(
+              color: ColorManager.darkBlueColor,
+              borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(AppRadius.r20),
+                  bottomLeft: Radius.circular(AppRadius.r6),
+                  topLeft: Radius.circular(AppRadius.r6))),
+          child: Center(
+            child: Text(
+              foodName,
+              style: getBoldStyle(color: Colors.white, fontSize: FontSize.s20),
+            ),
+          ),
+        ),
+        Container(
+          width: 18,
+          height: 18,
+          transform: Matrix4.translationValues(-5, 0, 0),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: ColorManager.lightBG,
+                  width: 2,
+                  strokeAlign: BorderSide.strokeAlignOutside),
+              borderRadius: BorderRadius.circular(AppRadius.r45),
+              color: ColorManager.vegColor),
+        ),
+      ],
     );
   }
 }

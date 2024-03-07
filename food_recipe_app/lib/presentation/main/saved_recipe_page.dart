@@ -85,8 +85,8 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
                       ),
                       Positioned(
                         bottom: 0,
-                        child: getTitleFoodName(width - 10, 40, 15,
-                            ColorManager.darkBlueColor, FontSize.s20),
+                        right: 0,
+                        child: _getFoodTitle(width - 20, "Food name"),
                       ),
                     ],
                   ),
@@ -94,6 +94,42 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
               }),
         ],
       )),
+    );
+  }
+
+  Widget _getFoodTitle(double width, String foodName) {
+    return Stack(
+      alignment: AlignmentDirectional.centerStart,
+      children: [
+        Container(
+          width: width,
+          height: 40,
+          decoration: BoxDecoration(
+              color: ColorManager.darkBlueColor,
+              borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(AppRadius.r20),
+                  bottomLeft: Radius.circular(AppRadius.r6),
+                  topLeft: Radius.circular(AppRadius.r6))),
+          child: Center(
+            child: Text(
+              foodName,
+              style: getBoldStyle(color: Colors.white, fontSize: FontSize.s20),
+            ),
+          ),
+        ),
+        Container(
+          width: 18,
+          height: 18,
+          transform: Matrix4.translationValues(-5, 0, 0),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: ColorManager.lightBG,
+                  width: 2,
+                  strokeAlign: BorderSide.strokeAlignOutside),
+              borderRadius: BorderRadius.circular(AppRadius.r45),
+              color: ColorManager.vegColor),
+        ),
+      ],
     );
   }
 }

@@ -261,8 +261,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              getTitleFoodName(MediaQuery.of(context).size.width, 25, 10,
-                  ColorManager.darkBlueColor, FontSize.s12)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _getFoodTitle(AppSize.s100 - 15, "Food name"),
+                ],
+              )
             ],
           )),
     );
@@ -284,6 +288,42 @@ class _HomePageState extends State<HomePage> {
               ),
             )),
           )),
+    );
+  }
+
+  Widget _getFoodTitle(double width, String foodName) {
+    return Stack(
+      alignment: AlignmentDirectional.centerStart,
+      children: [
+        Container(
+          width: width,
+          height: 25,
+          decoration: BoxDecoration(
+              color: ColorManager.darkBlueColor,
+              borderRadius: const BorderRadius.only(
+                  bottomRight: Radius.circular(AppRadius.r18),
+                  bottomLeft: Radius.circular(AppRadius.r6),
+                  topLeft: Radius.circular(AppRadius.r6))),
+          child: Center(
+            child: Text(
+              foodName,
+              style: getBoldStyle(color: Colors.white, fontSize: FontSize.s12),
+            ),
+          ),
+        ),
+        Container(
+          width: 8,
+          height: 8,
+          transform: Matrix4.translationValues(-5, 0, 0),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: ColorManager.pinkColor,
+                  width: 2,
+                  strokeAlign: BorderSide.strokeAlignOutside),
+              borderRadius: BorderRadius.circular(AppRadius.r45),
+              color: ColorManager.vegColor),
+        ),
+      ],
     );
   }
 }

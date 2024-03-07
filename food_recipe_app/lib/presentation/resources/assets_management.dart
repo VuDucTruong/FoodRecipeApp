@@ -20,4 +20,9 @@ class PicturePath {
   static const String messagesPath = '$PICTURE_PATH/messages.svg';
   static const String notificationPath = '$PICTURE_PATH/notification.svg';
   static const String privacyPath = '$PICTURE_PATH/privacy.svg';
+  static const String backArrowPath = '$PICTURE_PATH/back_arrow.svg';
+  static const String likedPath = '$PICTURE_PATH/liked.svg';
+  static const String unlikePath = '$PICTURE_PATH/unlike.svg';
+  static const String savedPath = '$PICTURE_PATH/saved.svg';
+  static const String unsavedPath = '$PICTURE_PATH/unsaved.svg';
 }
