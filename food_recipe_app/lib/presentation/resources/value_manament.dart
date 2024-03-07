@@ -16,6 +16,7 @@ class AppPadding {
 
 class AppSize {
   static const double s20 = 20;
+  static const double s15 = 15;
   static const double s8 = 8;
   static const double s1_5 = 1.5;
   static const double s4 = 4;
@@ -33,11 +34,8 @@ class AppSize {
   static const double s2 = 2;
   static const double s16 = 16;
   static const double s50 = 50;
-<<<<<<< Updated upstream
-=======
   static const double s220 = 220;
   static const double s200 = 200;
->>>>>>> Stashed changes
 }
 
 class AppRadius {
@@ -50,6 +48,7 @@ class AppRadius {
   static const double r18 = 18;
   static const double r10 = 10;
   static const double r30 = 30;
+  static const double r6 = 6;
 }
 
 class DurationValues {

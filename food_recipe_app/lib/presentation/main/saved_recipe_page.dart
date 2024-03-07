@@ -72,71 +72,12 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-<<<<<<< Updated upstream
-                return Center(
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: AppMargin.m12),
-                        width: width,
-                        height: 190,
-                        decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        child: getTitleFoodName(width - 10, 40, 15,
-                            ColorManager.darkBlueColor, FontSize.s20),
-                      ),
-                    ],
-                  ),
-                );
-=======
                 return Center(child: getRecipeItem(context, true));
->>>>>>> Stashed changes
+
               }),
         ],
       )),
     );
   }
-<<<<<<< Updated upstream
-=======
 
-  /*Widget _getFoodTitle(double width, String foodName) {
-    return Stack(
-      alignment: AlignmentDirectional.centerStart,
-      children: [
-        Container(
-          width: width,
-          height: 40,
-          decoration: BoxDecoration(
-              color: ColorManager.darkBlueColor,
-              borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(AppRadius.r20),
-                  bottomLeft: Radius.circular(AppRadius.r6),
-                  topLeft: Radius.circular(AppRadius.r6))),
-          child: Center(
-            child: Text(
-              foodName,
-              style: getBoldStyle(color: Colors.white, fontSize: FontSize.s20),
-            ),
-          ),
-        ),
-        Container(
-          width: 18,
-          height: 18,
-          transform: Matrix4.translationValues(-5, 0, 0),
-          decoration: BoxDecoration(
-              border: Border.all(
-                  color: ColorManager.lightBG,
-                  width: 2,
-                  strokeAlign: BorderSide.strokeAlignOutside),
-              borderRadius: BorderRadius.circular(AppRadius.r45),
-              color: ColorManager.vegColor),
-        ),
-      ],
-    );
-  }*/
->>>>>>> Stashed changes
 }
