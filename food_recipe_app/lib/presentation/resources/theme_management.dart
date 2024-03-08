@@ -15,6 +15,11 @@ ThemeData getAppTheme() {
       cardTheme: CardTheme(
         color: ColorManager.secondaryColor,
       ),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: ColorManager.secondaryColor,
+        selectionColor: ColorManager.secondaryColor,
+        selectionHandleColor: ColorManager.secondaryColor,
+      ),
       scaffoldBackgroundColor: ColorManager.lightBG,
       filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(

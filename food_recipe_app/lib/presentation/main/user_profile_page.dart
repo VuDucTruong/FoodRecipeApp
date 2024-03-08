@@ -8,6 +8,7 @@ import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
 import '../resources/font_manager.dart';
+import '../resources/route_management.dart';
 import '../resources/value_manament.dart';
 
 class UserProfilePage extends StatefulWidget {
@@ -57,10 +58,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       backgroundColor: ColorManager.secondaryColor),
                   child: Text(AppStrings.addRecipe,
                       style: getBoldStyle(
-                          color: Colors.white, fontSize: FontSize.s16)),
+                        color: Colors.white,
+                      )),
                 ),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Routes.editProfileRoute);
+                  },
                   style: OutlinedButton.styleFrom(
                       side: BorderSide(
                           color: ColorManager.blueColor,
@@ -68,8 +72,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           width: 1)),
                   child: Text(AppStrings.editProfile,
                       style: getBoldStyle(
-                          color: ColorManager.blueColor,
-                          fontSize: FontSize.s16)),
+                        color: ColorManager.blueColor,
+                      )),
                 ),
               ],
             ),

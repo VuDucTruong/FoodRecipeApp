@@ -83,4 +83,5 @@ class AppStrings {
   static const String light = 'Light';
   static const String dark = 'Dark';
   static const String delete = 'Delete';
+  static const String editPicture = 'Edit Picture';
 }
