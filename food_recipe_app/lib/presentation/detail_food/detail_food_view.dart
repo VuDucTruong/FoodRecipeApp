@@ -62,7 +62,8 @@ class _DetailFoodViewState extends State<DetailFoodView> {
                           color: ColorManager.secondaryColor,
                           fontSize: FontSize.s20)),
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 8),
+                      margin:
+                          const EdgeInsets.symmetric(vertical: AppMargin.m8),
                       child: Text(
                         'Ingredient 1\nIngredient 2\nIngredient 3',
                         style: getSemiBoldStyle(
@@ -73,7 +74,8 @@ class _DetailFoodViewState extends State<DetailFoodView> {
                           color: ColorManager.secondaryColor,
                           fontSize: FontSize.s20)),
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 8),
+                      margin:
+                          const EdgeInsets.symmetric(vertical: AppMargin.m8),
                       child: Text(
                         'Step 1\nStep 2\nStep 3',
                         style: getRegularStyle(

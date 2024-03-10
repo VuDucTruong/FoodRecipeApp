@@ -78,7 +78,8 @@ class _MainViewState extends State<MainView> {
                 : null,
             child: SvgPicture.asset(
               picturePath,
-              color: index == x ? ColorManager.darkBlueColor : null,
+              colorFilter: index == x ? ColorFilter.mode(
+                  ColorManager.darkBlueColor, BlendMode.srcIn) : null,
             )),
       ),
       onTap: () {

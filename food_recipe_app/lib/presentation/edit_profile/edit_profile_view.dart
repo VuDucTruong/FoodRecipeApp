@@ -122,6 +122,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                   maxLines: null,
                   minLines: 1,
                   maxLength: 500,
+                  style: getRegularStyle(color: Colors.black),
                   decoration: const InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
@@ -158,6 +159,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                   maxLines: null,
                   minLines: 1,
                   maxLength: 50,
+                  style: getRegularStyle(color: Colors.black),
                   decoration: const InputDecoration(
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
@@ -191,6 +193,7 @@ class _EditProfileViewState extends State<EditProfileView> {
           ),
           Form(
               child: TextFormField(
+                  style: getRegularStyle(color: Colors.black),
                   maxLines: null,
                   minLines: 1,
                   decoration: const InputDecoration(
@@ -222,6 +225,7 @@ class _EditProfileViewState extends State<EditProfileView> {
           Expanded(
             child: Form(
                 child: TextFormField(
+                    style: getRegularStyle(color: Colors.black),
                     maxLines: null,
                     minLines: 1,
                     decoration: const InputDecoration(

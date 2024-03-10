@@ -7,6 +7,7 @@ import 'package:food_recipe_app/presentation/edit_profile/edit_profile_view.dart
 import 'package:food_recipe_app/presentation/login/login_view.dart';
 import 'package:food_recipe_app/presentation/main/main_view.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
+import 'package:food_recipe_app/presentation/setting_preferences/setting_preferences_view.dart';
 
 import '../main/home/home_page.dart';
 
@@ -21,6 +22,7 @@ class Routes {
   static const String chefProfileRoute = '/chefProfile';
   static const String detailFoodRoute = '/detailFood';
   static const String editProfileRoute = '/editProfile';
+  static const String settingPreferencesRoute = '/settingPreferences';
 }
 
 class RouteGenerator {
@@ -49,6 +51,10 @@ class RouteGenerator {
       case Routes.editProfileRoute:
         return MaterialPageRoute(
           builder: (context) => const EditProfileView(),
+        );
+      case Routes.settingPreferencesRoute:
+        return MaterialPageRoute(
+          builder: (context) => const SettingPreferencesView(),
         );
       default:
         return undefinedRoute();
