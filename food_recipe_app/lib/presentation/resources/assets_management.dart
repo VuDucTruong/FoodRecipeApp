@@ -1,6 +1,9 @@
 const String PICTURE_PATH = 'assets/images';
 
 class PicturePath {
+  static const String onBoarding1Path = '$PICTURE_PATH/onboarding_1.png';
+  static const String onBoarding2Path = '$PICTURE_PATH/onboarding_2.png';
+  static const String onBoarding3Path = '$PICTURE_PATH/onboarding_3.png';
   static const String logoPath = '$PICTURE_PATH/logo.png';
   static const String logoSVGPath = '$PICTURE_PATH/logo.svg';
   static const String fbPath = '$PICTURE_PATH/Facebook.png';

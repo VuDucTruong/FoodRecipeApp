@@ -1,21 +1,19 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 class ColorManager {
-  static Color primaryColor = const Color(0xFFF5F3EE);
-  static Color secondaryColor = const Color(0xFFE9455D);
-  static Color accentColor = const Color(0xFF0DC0DE);
-  static Color darkBlueColor = const Color(0xFF103C4A);
-  static Color blueColor = const Color(0xFF0DC0DE);
-  static Color whiteOrangeColor = const Color(0xFFF8C89A);
-  static Color pinkColor = const Color(0xFFFA9BB1);
-  static Color vegColor = const Color(0xFF03A100);
-  static Color nonVegColor = const Color(0xFFA10000);
+  static const Color secondaryColor = Color(0xFFE9455D);
+  static const Color primaryColor = Color(0xFFF5F3EE);
+  static const Color accentColor = Color(0xFF0DC0DE);
+  static const Color darkBlueColor = Color(0xFF103C4A);
+  static const Color blueColor = Color(0xFF0DC0DE);
+  static const Color whiteOrangeColor = Color(0xFFF8C89A);
+  static const Color pinkColor = Color(0xFFFA9BB1);
+  static const Color vegColor = Color(0xFF03A100);
+  static const Color nonVegColor = Color(0xFFA10000);
   static Color greyColor = Colors.grey.shade400;
-  static Color lightBG = const Color(0xFFF5F3EE);
-  static Color darkBG = const Color(0xFF18191A);
-  static LinearGradient linearGradientSecondary = const LinearGradient(
+  static const Color lightBG = Color(0xFFF5F3EE);
+  static const Color darkBG = Color(0xFF18191A);
+  static const LinearGradient linearGradientSecondary = LinearGradient(
     colors: [
       Color(0xFFE9455D),
       Color(0xFFFA9BB1),
@@ -23,7 +21,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static LinearGradient linearGradientPink = const LinearGradient(
+  static const LinearGradient linearGradientPink = LinearGradient(
     colors: [
       Color(0xFFFA9BB1),
       Color(0xFFF8C89A),
@@ -31,7 +29,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static LinearGradient linearGradientWhiteOrange = const LinearGradient(
+  static const LinearGradient linearGradientWhiteOrange =  LinearGradient(
     colors: [
       Color(0xFFF8C89A),
       Color(0xFFF8C89A),
@@ -41,7 +39,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static LinearGradient linearGradientBlue = const LinearGradient(
+  static const LinearGradient linearGradientBlue =  LinearGradient(
     colors: [
       Color(0xFF0DC0DE),
       Color(0xFFF8C89A),
@@ -49,7 +47,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static LinearGradient linearGradientDarkBlue = const LinearGradient(
+  static const LinearGradient linearGradientDarkBlue =  LinearGradient(
     colors: [
       Color(0xFF103C4A),
       Color(0xFF0DC0DE),
@@ -57,7 +55,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static LinearGradient linearGradientLightTheme = const LinearGradient(
+  static const LinearGradient linearGradientLightTheme =  LinearGradient(
     end: Alignment.centerLeft,
     begin: Alignment.bottomRight,
     colors: [
@@ -69,7 +67,7 @@ class ColorManager {
       1.0, // equivalent to 100%
     ],
   );
-  static LinearGradient linearGradientDarkTheme = const LinearGradient(
+  static const LinearGradient linearGradientDarkTheme =  LinearGradient(
     end: Alignment.centerLeft,
     begin: Alignment.bottomRight,
     colors: [

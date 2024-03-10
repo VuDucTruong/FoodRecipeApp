@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 const String fontFamily = 'Montserrat';
+const String interFontFamily = 'Inter';
 
 class FontWeightManager {
   static const FontWeight light = FontWeight.w300;
