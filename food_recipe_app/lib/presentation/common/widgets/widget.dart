@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless_widget.dart';
 
@@ -334,5 +333,27 @@ Widget getUserFoodTitle(double width, String foodName) {
             color: ColorManager.vegColor),
       ),
     ],
+  );
+}
+
+Widget getSubmitButton(String text) {
+  return Container(
+    width: 200,
+    height: 50,
+    decoration: BoxDecoration(
+      color: ColorManager.blueColor,
+      borderRadius: BorderRadius.circular(25),
+    ),
+    child: Center(
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: ColorManager.darkBlueColor,
+          fontSize: 20,
+          height: 1.5,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
   );
 }

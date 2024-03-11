@@ -6,16 +6,16 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 ThemeData getAppTheme() {
   return ThemeData(
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           type: BottomNavigationBarType.fixed,
           backgroundColor: ColorManager.secondaryColor,
           //showSelectedLabels: false,
           showUnselectedLabels: false,
           selectedItemColor: ColorManager.darkBlueColor),
-      cardTheme: CardTheme(
+      cardTheme: const CardTheme(
         color: ColorManager.secondaryColor,
       ),
-      textSelectionTheme: TextSelectionThemeData(
+      textSelectionTheme: const TextSelectionThemeData(
         cursorColor: ColorManager.secondaryColor,
         selectionColor: ColorManager.secondaryColor,
         selectionHandleColor: ColorManager.secondaryColor,
@@ -24,8 +24,8 @@ ThemeData getAppTheme() {
       filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
               backgroundColor: ColorManager.secondaryColor)),
-      fontFamily: fontFamily,
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
+      fontFamily: interFontFamily,
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: ColorManager.secondaryColor),
       inputDecorationTheme: InputDecorationTheme(
         contentPadding: const EdgeInsets.all(AppPadding.p12),
