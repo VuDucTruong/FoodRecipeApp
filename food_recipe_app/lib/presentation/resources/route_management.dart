@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
+import 'package:food_recipe_app/presentation/create_profile/create_profile_view.dart';
 import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
 import 'package:food_recipe_app/presentation/edit_profile/edit_profile_view.dart';
 
@@ -9,6 +10,7 @@ import 'package:food_recipe_app/presentation/main/loadings/loading_page.dart';
 import 'package:food_recipe_app/presentation/main/main_view.dart';
 import 'package:food_recipe_app/presentation/main/signup/signup_view.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
+import 'package:food_recipe_app/presentation/setting_preferences/setting_preferences_view.dart';
 
 import '../main/home/home_page.dart';
 
@@ -24,6 +26,9 @@ class Routes {
   static const String detailFoodRoute = '/detailFood';
   static const String editProfileRoute = '/editProfile';
   static const String loadingRoute = '/loading';
+  static const String settingPreferencesRoute = '/settingPreferences';
+  static const String createProfileRoute = '/createProfile';
+
 }
 
 class RouteGenerator {
@@ -64,6 +69,14 @@ class RouteGenerator {
       case Routes.editProfileRoute:
         return MaterialPageRoute(
           builder: (context) => const EditProfileView(),
+        );
+      case Routes.settingPreferencesRoute:
+        return MaterialPageRoute(
+          builder: (context) => const SettingPreferencesView(),
+        );
+      case Routes.createProfileRoute:
+        return MaterialPageRoute(
+          builder: (context) => const CreateProfileView(),
         );
       default:
         return undefinedRoute();
