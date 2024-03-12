@@ -14,7 +14,7 @@ import '../../resources/style_management.dart';
 import '../../resources/value_manament.dart';
 
 Widget getLongSwitch(String onContent, String offContent, Gradient onColor,
-    Gradient offColor, bool isOn, double width, double height) {
+    Gradient offColor, bool isOn, double width, double height, bool isTheme) {
   return Stack(
     textDirection: TextDirection.ltr,
     alignment: AlignmentDirectional.centerStart,
@@ -33,12 +33,19 @@ Widget getLongSwitch(String onContent, String offContent, Gradient onColor,
         child: AnimatedOpacity(
           opacity: isOn ? 1 : 0,
           duration: Durations.medium2,
-          child: GradientText(
-            AppStrings.light,
-            gradient: ColorManager.linearGradientBlue,
-            style:
-                getSemiBoldStyle(color: Colors.black, fontSize: FontSize.s20),
-          ),
+          child: isTheme
+              ? GradientText(
+                  onContent,
+                  gradient: ColorManager.linearGradientBlue,
+                  style: getSemiBoldStyle(
+                      color: Colors.black, fontSize: FontSize.s20),
+                )
+              : Text(
+                  onContent,
+                  style: getSemiBoldStyle(
+                      color: ColorManager.darkBlueColor,
+                      fontSize: FontSize.s20),
+                ),
         ),
       ),
       Positioned(
@@ -46,12 +53,19 @@ Widget getLongSwitch(String onContent, String offContent, Gradient onColor,
         child: AnimatedOpacity(
           opacity: isOn ? 0 : 1,
           duration: Durations.medium2,
-          child: GradientText(
-            AppStrings.dark,
-            gradient: ColorManager.linearGradientBlue,
-            style:
-                getSemiBoldStyle(color: Colors.black, fontSize: FontSize.s20),
-          ),
+          child: isTheme
+              ? GradientText(
+                  offContent,
+                  gradient: ColorManager.linearGradientBlue,
+                  style: getSemiBoldStyle(
+                      color: Colors.black, fontSize: FontSize.s20),
+                )
+              : Text(
+                  offContent,
+                  style: getSemiBoldStyle(
+                      color: ColorManager.darkBlueColor,
+                      fontSize: FontSize.s20),
+                ),
         ),
       ),
       AnimatedPositioned(
@@ -332,6 +346,62 @@ Widget getUserFoodTitle(double width, String foodName) {
                 strokeAlign: BorderSide.strokeAlignOutside),
             borderRadius: BorderRadius.circular(AppRadius.r45),
             color: ColorManager.vegColor),
+      ),
+    ],
+  );
+}
+
+Widget getOnOffSwitch(bool isOn) {
+  return Stack(
+    textDirection: TextDirection.ltr,
+    alignment: AlignmentDirectional.centerStart,
+    children: [
+      Container(
+        width: AppSize.s80,
+        height: AppSize.s30,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              AppRadius.r30,
+            ),
+            color: Colors.white),
+      ),
+      Positioned(
+        left: 5,
+        child: AnimatedOpacity(
+          opacity: isOn ? 1 : 0,
+          duration: Durations.medium2,
+          child: Text(AppStrings.on,
+              style:
+                  getRegularStyle(color: Colors.black, fontSize: FontSize.s20)),
+        ),
+      ),
+      Positioned(
+        right: 5,
+        child: AnimatedOpacity(
+          opacity: isOn ? 0 : 1,
+          duration: Durations.medium2,
+          child: Text(
+            AppStrings.off,
+            style: getRegularStyle(color: Colors.black, fontSize: FontSize.s20),
+          ),
+        ),
+      ),
+      AnimatedPositioned(
+        duration: Durations.medium2,
+        curve: Curves.decelerate,
+        left: isOn ? 50 : 0,
+        child: InkWell(
+          onTap: () {},
+          child: Container(
+            height: AppSize.s30,
+            width: AppSize.s30,
+            decoration: BoxDecoration(
+                gradient: isOn
+                    ? ColorManager.linearGradientDarkBlue
+                    : ColorManager.linearGradientPink,
+                borderRadius: BorderRadius.circular(45)),
+          ),
+        ),
       ),
     ],
   );
