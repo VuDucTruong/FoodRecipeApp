@@ -26,4 +26,6 @@ class PicturePath {
   static const String savedPath = '$PICTURE_PATH/saved.svg';
   static const String unsavedPath = '$PICTURE_PATH/unsaved.svg';
   static const String deletePath = '$PICTURE_PATH/delete.svg';
+  static const String emptyAvatarPath = '$PICTURE_PATH/empty_avatar.svg';
+  static const String editPath = '$PICTURE_PATH/edit.svg';
 }
