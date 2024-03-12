@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
+import 'package:food_recipe_app/presentation/create_profile/create_profile_view.dart';
 import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
 import 'package:food_recipe_app/presentation/edit_profile/edit_profile_view.dart';
 
@@ -23,6 +24,7 @@ class Routes {
   static const String detailFoodRoute = '/detailFood';
   static const String editProfileRoute = '/editProfile';
   static const String settingPreferencesRoute = '/settingPreferences';
+  static const String createProfileRoute = '/createProfile';
 }
 
 class RouteGenerator {
@@ -55,6 +57,10 @@ class RouteGenerator {
       case Routes.settingPreferencesRoute:
         return MaterialPageRoute(
           builder: (context) => const SettingPreferencesView(),
+        );
+      case Routes.createProfileRoute:
+        return MaterialPageRoute(
+          builder: (context) => const CreateProfileView(),
         );
       default:
         return undefinedRoute();
