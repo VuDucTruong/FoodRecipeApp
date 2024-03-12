@@ -62,7 +62,7 @@ class _SettingPageState extends State<SettingPage> {
               _getIconText(AppStrings.notifications,
                   SvgPicture.asset(PicturePath.notificationPath)),
               const Spacer(),
-              _getOnOffSwitch()
+              getOnOffSwitch(isOn)
             ]),
             _getIconText(
                 AppStrings.help, SvgPicture.asset(PicturePath.messagesPath)),
@@ -86,7 +86,8 @@ class _SettingPageState extends State<SettingPage> {
                     ColorManager.linearGradientDarkTheme,
                     isOn,
                     180,
-                    30),
+                    30,
+                    true),
               ],
             ),
             const SizedBox(
@@ -124,67 +125,6 @@ class _SettingPageState extends State<SettingPage> {
           )
         ],
       ),
-    );
-  }
-
-  Widget _getOnOffSwitch() {
-    return Stack(
-      textDirection: TextDirection.ltr,
-      alignment: AlignmentDirectional.centerStart,
-      children: [
-        Container(
-          width: AppSize.s80,
-          height: AppSize.s30,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                AppRadius.r30,
-              ),
-              color: Colors.white),
-        ),
-        Positioned(
-          left: 5,
-          child: AnimatedOpacity(
-            opacity: isOn ? 1 : 0,
-            duration: Durations.medium2,
-            child: Text(AppStrings.on,
-                style: getRegularStyle(
-                    color: Colors.black, fontSize: FontSize.s20)),
-          ),
-        ),
-        Positioned(
-          right: 5,
-          child: AnimatedOpacity(
-            opacity: isOn ? 0 : 1,
-            duration: Durations.medium2,
-            child: Text(
-              AppStrings.off,
-              style:
-                  getRegularStyle(color: Colors.black, fontSize: FontSize.s20),
-            ),
-          ),
-        ),
-        AnimatedPositioned(
-          duration: Durations.medium2,
-          curve: Curves.decelerate,
-          left: isOn ? 50 : 0,
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                isOn = !isOn;
-              });
-            },
-            child: Container(
-              height: AppSize.s30,
-              width: AppSize.s30,
-              decoration: BoxDecoration(
-                  gradient: isOn
-                      ? ColorManager.linearGradientDarkBlue
-                      : ColorManager.linearGradientPink,
-                  borderRadius: BorderRadius.circular(45)),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

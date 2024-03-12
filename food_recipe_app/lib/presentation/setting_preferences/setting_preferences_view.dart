@@ -2,10 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:food_recipe_app/presentation/common/widgets/widget.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
+import '../common/custom_path.dart';
 import '../resources/font_manager.dart';
 import '../resources/value_manament.dart';
 
@@ -32,14 +35,37 @@ class _SettingPreferencesViewState extends State<SettingPreferencesView> {
     "Laos"
   ];
 
-  Map<int, bool> preferencesMap = {};
-
+  List<String> typeList = [
+    "Healthy",
+    "Fast Food",
+    "Quick",
+    "Cuisine",
+    "Breakfast",
+    "Snack",
+    "Lunch",
+    "Dinner",
+    "Dessert",
+    "Soup",
+    "Drink",
+    "Traditional"
+  ];
+  late PageController _pageController;
+  Map<int, bool> countryPreferencesMap = {};
+  Map<int, bool> typePreferencesMap = {};
+  bool isOn = true;
+  int pageIndex = 0;
   @override
   void initState() {
-    preferencesMap = {for (int i = 0; i < countryList.length; i++) i: false};
+    countryPreferencesMap = {
+      for (int i = 0; i < countryList.length; i++) i: false
+    };
+    typePreferencesMap = {for (int i = 0; i < typeList.length; i++) i: false};
+    _pageController = PageController();
+
     super.initState();
   }
 
+  late List<Widget> pages = [_getFoodCountry(), _getFoodType()];
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -48,56 +74,75 @@ class _SettingPreferencesViewState extends State<SettingPreferencesView> {
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: AppMargin.m6),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(AppPadding.p12),
-                  child: Text(
-                    AppStrings.setUpKitchen,
-                    style: getBoldStyle(
-                        color: Colors.black, fontSize: FontSize.s20),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppPadding.p12),
+                    child: Text(
+                      AppStrings.setUpKitchen,
+                      style: getBoldStyle(
+                          color: Colors.black, fontSize: FontSize.s20),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
-                  child: Text(
-                    AppStrings.selectPreferences,
-                    style: getSemiBoldStyle(
-                        color: ColorManager.secondaryColor,
-                        fontSize: FontSize.s20),
-                  )),
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 8, // Khoảng cách giữa các hàng
-                      // Khoảng cách giữa các cột
-                      crossAxisSpacing: 16,
-                      mainAxisExtent: 210),
-                  itemCount: countryList.length, // Tổng số item
-                  itemBuilder: (BuildContext context, int index) {
-                    return _getItemPreference(index);
-                  },
+                Container(
+                    margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
+                    child: Text(
+                      AppStrings.selectPreferences,
+                      style: getSemiBoldStyle(
+                          color: ColorManager.secondaryColor,
+                          fontSize: FontSize.s20),
+                    )),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.69,
+                  child: PageView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: _pageController,
+                      children: pages),
                 ),
-              ),
-              Center(
-                  child: FilledButton(
-                      onPressed: () {},
-                      child: Text(
-                        AppStrings.continueOnly,
-                        style: getMediumStyle(
-                            color: Colors.white, fontSize: FontSize.s20),
-                      ))),
-              const SizedBox(
-                height: AppSize.s20,
-              )
-            ],
+                const SizedBox(
+                  height: AppSize.s10,
+                ),
+                Center(
+                    child: FilledButton(
+                        onPressed: () {
+                          if (pageIndex >= pages.length - 1) return;
+                          _pageController.animateToPage(++pageIndex,
+                              duration: Durations.short1,
+                              curve: Curves.bounceIn);
+                        },
+                        child: Text(
+                          AppStrings.continueOnly,
+                          style: getMediumStyle(
+                              color: Colors.white, fontSize: FontSize.s20),
+                        ))),
+                const SizedBox(
+                  height: AppSize.s20,
+                )
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _getFoodCountry() {
+    return GridView.builder(
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 8, // Khoảng cách giữa các hàng
+          // Khoảng cách giữa các cột
+          crossAxisSpacing: 16,
+          mainAxisExtent: 210),
+      itemCount: countryList.length, // Tổng số item
+      itemBuilder: (BuildContext context, int index) {
+        return _getItemPreference(index);
+      },
     );
   }
 
@@ -106,19 +151,19 @@ class _SettingPreferencesViewState extends State<SettingPreferencesView> {
       splashColor: Colors.transparent,
       onTap: () {
         setState(() {
-          preferencesMap[index] = !preferencesMap[index]!;
+          countryPreferencesMap[index] = !countryPreferencesMap[index]!;
         });
       },
       child: AnimatedOpacity(
         duration: Durations.short1,
-        opacity: preferencesMap[index] ?? false ? 1 : 0.6,
+        opacity: countryPreferencesMap[index] ?? false ? 1 : 0.6,
         child: Stack(alignment: AlignmentDirectional.center, children: [
           Container(
             margin: const EdgeInsets.symmetric(horizontal: AppMargin.m3),
             width: 160,
             height: 210,
             child: ClipPath(
-              clipper: MyPath(),
+              clipper: PreferenceItemPath(),
               child: Container(
                 transform: Matrix4.translationValues(0, -5, 0),
                 color: ColorManager.whiteOrangeColor,
@@ -154,44 +199,151 @@ class _SettingPreferencesViewState extends State<SettingPreferencesView> {
       ),
     );
   }
-}
 
-class MyPath extends CustomClipper<Path> {
-  double curve;
-  double gap;
-
-  MyPath({this.curve = 30, this.gap = 10});
-
-  @override
-  Path getClip(Size size) {
-    // TODO: implement getClip
-    Path path = Path();
-
-    path.moveTo(0, curve);
-
-    path.quadraticBezierTo(0, 0, curve, 0);
-    path.lineTo(size.width - curve, 0);
-    path.quadraticBezierTo(size.width, 0, size.width, curve);
-
-    path.lineTo(size.width, size.height - curve);
-    path.quadraticBezierTo(
-        size.width, size.height, size.width - curve, size.height - curve / 2);
-    path.lineTo(size.width / 2 + gap, size.height - curve);
-    path.quadraticBezierTo(
-        size.width / 2,
-        size.height - gap * tan(pi / 6) - curve,
-        size.width / 2 - gap,
-        size.height - curve);
-    path.lineTo(curve, size.height - curve / 2);
-    path.quadraticBezierTo(0, size.height, 0, size.height - curve);
-    //path.lineTo(0, size.height);
-
-    return path;
+  Widget _getFoodType() {
+    double appWidth = MediaQuery.of(context).size.width;
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        getLongSwitch(
+            AppStrings.veg,
+            AppStrings.nonVeg,
+            ColorManager.linearGradientLightTheme,
+            ColorManager.linearGradientSecondary,
+            false,
+            appWidth * 0.65,
+            40,
+            false),
+        SizedBox(
+          height: 300,
+          child: Center(
+              child: Wrap(
+                  runSpacing: 8,
+                  spacing: 16,
+                  children: List.generate(
+                      typeList.length,
+                      (index) => _getFoodItem(
+                          appWidth / 2.5, typeList[index], index)))),
+        ),
+        Row(
+          children: [
+            Text(
+              AppStrings.hungryHeads,
+              style:
+                  getSemiBoldStyle(color: Colors.black, fontSize: FontSize.s18),
+            ),
+            const Spacer(),
+            _getHeadNumber(),
+          ],
+        ),
+        const SizedBox(
+          height: AppSize.s12,
+        ),
+        Row(
+          children: [
+            Text(
+              AppStrings.newDishNotification,
+              style:
+                  getSemiBoldStyle(color: Colors.black, fontSize: FontSize.s18),
+            ),
+            const Spacer(),
+            getOnOffSwitch(isOn)
+          ],
+        ),
+      ],
+    );
   }
 
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    // TODO: implement shouldReclip
-    return false;
+  Widget _getHeadNumber() {
+    return Stack(
+      children: [
+        Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.r15),
+                color: Colors.grey.shade300),
+            width: AppSize.s120,
+            height: AppSize.s30,
+            child: Center(
+              child: Text(
+                '2',
+                style:
+                    getBoldStyle(color: Colors.black, fontSize: FontSize.s17),
+              ),
+            )),
+        Positioned(
+          left: 0,
+          child: Container(
+            width: AppSize.s30,
+            height: AppSize.s30,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                gradient: ColorManager.linearGradientPink),
+            child: Center(
+              child: IconButton(
+                  iconSize: AppSize.s16,
+                  onPressed: () {},
+                  icon: const Icon(Icons.remove)),
+            ),
+          ),
+        ),
+        Positioned(
+          right: 0,
+          child: Container(
+            width: AppSize.s30,
+            height: AppSize.s30,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.r10),
+                gradient: ColorManager.linearGradientDarkBlue),
+            child: Center(
+              child: IconButton(
+                  iconSize: AppSize.s16,
+                  onPressed: () {},
+                  icon: const Icon(Icons.add)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _getFoodItem(double width, String foodName, int index) {
+    return AnimatedOpacity(
+      duration: Durations.medium1,
+      opacity: typePreferencesMap[index] ?? false ? 1 : 0.6,
+      child: Stack(
+        alignment: AlignmentDirectional.centerStart,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            width: width,
+            height: 35,
+            decoration: BoxDecoration(
+                color: ColorManager.whiteOrangeColor,
+                borderRadius: BorderRadius.circular(8)),
+            child: SizedBox(
+              width: width * 0.8,
+              child: Text(
+                foodName,
+                overflow: TextOverflow.clip,
+                style: getSemiBoldStyle(
+                    color: ColorManager.darkBlueColor, fontSize: FontSize.s18),
+              ),
+            ),
+          ),
+          Container(
+            width: 13,
+            height: 13,
+            transform: Matrix4.translationValues(-5, 0, 0),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: ColorManager.lightBG,
+                    width: 2,
+                    strokeAlign: BorderSide.strokeAlignOutside),
+                borderRadius: BorderRadius.circular(AppRadius.r45),
+                gradient: ColorManager.linearGradientDarkBlue),
+          ),
+        ],
+      ),
+    );
   }
 }
