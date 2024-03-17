@@ -1,34 +1,43 @@
-const String PICTURE_PATH = 'assets/images';
+const String _picturePath = 'assets/images';
+const String _jsonLottiePath = 'assets/json';
 
 class PicturePath {
-  static const String onBoarding1Path = '$PICTURE_PATH/onboarding_1.png';
-  static const String onBoarding2Path = '$PICTURE_PATH/onboarding_2.png';
-  static const String onBoarding3Path = '$PICTURE_PATH/onboarding_3.png';
-  static const String logoPath = '$PICTURE_PATH/logo.png';
-  static const String logoSVGPath = '$PICTURE_PATH/logo.svg';
-  static const String fbPath = '$PICTURE_PATH/Facebook.png';
-  static const String ggPath = '$PICTURE_PATH/Google.png';
-  static const String homePath = '$PICTURE_PATH/home_ic.svg';
-  static const String createPath = '$PICTURE_PATH/create_ic.svg';
-  static const String settingPath = '$PICTURE_PATH/setting_ic.svg';
-  static const String savePath = '$PICTURE_PATH/save_ic.svg';
-  static const String profilePath = '$PICTURE_PATH/profile_ic.svg';
-  static const String searchPath = '$PICTURE_PATH/search_ic.svg';
-  static const String instagramPath = '$PICTURE_PATH/instagram.svg';
-  static const String gmailPath = '$PICTURE_PATH/gmail.svg';
-  static const String emptyRecipePath = '$PICTURE_PATH/empty_recipe.svg';
-  static const String peoplePath = '$PICTURE_PATH/people.svg';
-  static const String timerPath = '$PICTURE_PATH/timer.svg';
-  static const String aboutPath = '$PICTURE_PATH/about.svg';
-  static const String messagesPath = '$PICTURE_PATH/messages.svg';
-  static const String notificationPath = '$PICTURE_PATH/notification.svg';
-  static const String privacyPath = '$PICTURE_PATH/privacy.svg';
-  static const String backArrowPath = '$PICTURE_PATH/back_arrow.svg';
-  static const String likedPath = '$PICTURE_PATH/liked.svg';
-  static const String unlikePath = '$PICTURE_PATH/unlike.svg';
-  static const String savedPath = '$PICTURE_PATH/saved.svg';
-  static const String unsavedPath = '$PICTURE_PATH/unsaved.svg';
-  static const String deletePath = '$PICTURE_PATH/delete.svg';
-  static const String emptyAvatarPath = '$PICTURE_PATH/empty_avatar.svg';
-  static const String editPath = '$PICTURE_PATH/edit.svg';
+  static const String onBoarding1Path = '$_picturePath/onboarding_1.png';
+  static const String onBoarding2Path = '$_picturePath/onboarding_2.png';
+  static const String onBoarding3Path = '$_picturePath/onboarding_3.png';
+  static const String logoPath = '$_picturePath/logo.png';
+  static const String logoSVGPath = '$_picturePath/logo.svg';
+  static const String fbPath = '$_picturePath/Facebook.png';
+  static const String ggPath = '$_picturePath/Google.png';
+  static const String homePath = '$_picturePath/home_ic.svg';
+  static const String createPath = '$_picturePath/create_ic.svg';
+  static const String settingPath = '$_picturePath/setting_ic.svg';
+  static const String savePath = '$_picturePath/save_ic.svg';
+  static const String profilePath = '$_picturePath/profile_ic.svg';
+  static const String searchPath = '$_picturePath/search_ic.svg';
+  static const String instagramPath = '$_picturePath/instagram.svg';
+  static const String gmailPath = '$_picturePath/gmail.svg';
+  static const String emptyRecipePath = '$_picturePath/empty_recipe.svg';
+  static const String peoplePath = '$_picturePath/people.svg';
+  static const String timerPath = '$_picturePath/timer.svg';
+  static const String aboutPath = '$_picturePath/about.svg';
+  static const String messagesPath = '$_picturePath/messages.svg';
+  static const String notificationPath = '$_picturePath/notification.svg';
+  static const String privacyPath = '$_picturePath/privacy.svg';
+  static const String backArrowPath = '$_picturePath/back_arrow.svg';
+  static const String likedPath = '$_picturePath/liked.svg';
+  static const String unlikePath = '$_picturePath/unlike.svg';
+  static const String savedPath = '$_picturePath/saved.svg';
+  static const String unsavedPath = '$_picturePath/unsaved.svg';
+  static const String deletePath = '$_picturePath/delete.svg';
+  static const String emptyAvatarPath = '$_picturePath/empty_avatar.svg';
+  static const String editPath = '$_picturePath/edit.svg';
+}
+
+class LottiePath {
+  static const String completePath = '$_jsonLottiePath/complete.json';
+  static const String questionPath = '$_jsonLottiePath/question.json';
+  static const String exclamationPath = '$_jsonLottiePath/exclamation.json';
+  static const String noConnectionPath = '$_jsonLottiePath/no_connection.json';
+  static const String loadingPath = '$_jsonLottiePath/loading.json';
 }

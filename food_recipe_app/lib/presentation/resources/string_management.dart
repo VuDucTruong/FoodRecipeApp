@@ -34,7 +34,7 @@ class AppStrings {
   static const String enterPhoneNum = 'Enter your Phone Number';
   static const String congratulation = 'Congratulations!!';
   static const String congratulationMessage =
-      'You have successfully created your account.';
+      'You have \n successfully created \n your account.';
   static const String congratulationBtnMessage = 'Let\'s Get Cooking';
   static const String homeTitle = 'Hungry? Choose a dish...';
   static const String homeSearch = 'What\'s cooking in your mind...?';
@@ -62,8 +62,9 @@ class AppStrings {
   static const String bio = 'Bio'; //Describe yourself
   static const String yes = 'Yes';
   static const String no = 'No';
-  static const String deleteProfileWarning =
-      'Do you really want to \n Delete your Recipe ?';
+  static const String deleteRecipeWarning = 'Delete your Recipe ?';
+  static const String deleteProfileWarning = 'Delete your Profile ?';
+  static const String warningMessage = 'Do you really want to \n';
   static const String addImg = 'Add Image';
   static const String nameDish = 'Name your Dish...';
   static const String serves = 'Serves';
@@ -87,4 +88,6 @@ class AppStrings {
   static const String veg = 'VEG';
   static const String nonVeg = 'NON VEG';
   static const String enterEmail = 'Please enter your email address';
+  static const String noInternet = 'Please check your \n internet connection !';
+  static const String tryAgain = 'Try Again';
 }

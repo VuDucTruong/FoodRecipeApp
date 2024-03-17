@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/common/widgets/dialogs.dart';
 
 import '../common/widgets/widget.dart';
 import '../resources/assets_management.dart';
@@ -63,7 +65,10 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showAnimatedDialog2(
+                          context, getNoConnectionDialog(context));
+                    },
                     style: OutlinedButton.styleFrom(
                         side: const BorderSide(style: BorderStyle.none),
                         backgroundColor: ColorManager.secondaryColor),
@@ -74,10 +79,10 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                   OutlinedButton(
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
-                        side: BorderSide(
+                        side: const BorderSide(
                             color: ColorManager.blueColor,
                             style: BorderStyle.solid,
-                            width: 1)),
+                            width: 2)),
                     child: Text(AppStrings.requestRecipe,
                         style: getBoldStyle(
                             color: ColorManager.blueColor,

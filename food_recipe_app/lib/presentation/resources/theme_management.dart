@@ -57,6 +57,10 @@ ThemeData getAppTheme() {
           style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(
                   vertical: 0, horizontal: AppPadding.p16),
+              side: BorderSide(
+                  color: ColorManager.secondaryColor,
+                  style: BorderStyle.solid,
+                  width: 2),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppRadius.r15)))));
 }

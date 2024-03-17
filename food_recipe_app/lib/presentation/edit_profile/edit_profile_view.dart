@@ -89,7 +89,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                   Navigator.of(context).pop();
                 },
                 style: OutlinedButton.styleFrom(
-                    side: BorderSide(
+                    side: const BorderSide(
                         color: ColorManager.blueColor,
                         style: BorderStyle.solid,
                         width: 1)),

@@ -1,19 +1,13 @@
-import 'dart:async';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
-
-import '../../chef_profile/chef_profile_view.dart';
 import '../../common/widgets/widget.dart';
 import '../../resources/font_manager.dart';
 
@@ -195,8 +189,8 @@ class _HomePageState extends State<HomePage> {
       child: Container(
           width: AppSize.s100,
           height: AppSize.s175,
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.vertical(
                   top: Radius.circular(AppRadius.r50),
                   bottom: Radius.circular(AppRadius.r18)),
               gradient: ColorManager.linearGradientPink),
@@ -298,9 +292,9 @@ class _HomePageState extends State<HomePage> {
         Container(
           width: width,
           height: 25,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: ColorManager.darkBlueColor,
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(AppRadius.r18),
                   bottomLeft: Radius.circular(AppRadius.r6),
                   topLeft: Radius.circular(AppRadius.r6))),
