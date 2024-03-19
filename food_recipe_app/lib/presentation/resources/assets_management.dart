@@ -30,8 +30,10 @@ class PicturePath {
   static const String savedPath = '$_picturePath/saved.svg';
   static const String unsavedPath = '$_picturePath/unsaved.svg';
   static const String deletePath = '$_picturePath/delete.svg';
-  static const String emptyAvatarPath = '$_picturePath/empty_avatar.svg';
+  static const String emptyAvatarPngPath = '$_picturePath/empty_avt.png';
   static const String editPath = '$_picturePath/edit.svg';
+  static const String emailPath = '$_picturePath/email.svg';
+  static const String phonePath = '$_picturePath/phone.svg';
 }
 
 class LottiePath {

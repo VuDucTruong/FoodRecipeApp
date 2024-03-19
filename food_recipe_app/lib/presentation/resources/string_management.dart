@@ -90,4 +90,18 @@ class AppStrings {
   static const String enterEmail = 'Please enter your email address';
   static const String noInternet = 'Please check your \n internet connection !';
   static const String tryAgain = 'Try Again';
+
+  // Validate message
+  static const String emailFormatError = 'Email format is wrong !';
+  static const String emailRequiredError = 'Email is required';
+  static const String passRequiredError = 'Password is required';
+  static const String passValidationError =
+      'Password must have more than 8 letters';
+  static const String nameRequiredError = 'Full name is required';
+  static const String phoneRequiredError = 'Phone number is required';
+  static const String phoneValidationError =
+      'Phone number must have 10-11 digits';
+  static const String disNameRequiredError = 'Dish name is required';
+  static const String ingredientMissingError = 'Ingredient is missing';
+  static const String loginError = 'Your email or password is wrong !';
 }

@@ -34,30 +34,27 @@ ThemeData getAppTheme() {
         // label style
         labelStyle: getMediumStyle(color: Colors.grey.shade800),
         // error style
-        errorStyle: getRegularStyle(color: Colors.red),
+        errorStyle: getMediumStyle(color: Colors.red),
         // enabled border
         enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
         // focused border
         focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
-
         // error border
         errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide.none,
+            borderSide: BorderSide(color: Colors.red),
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
         // focused error border
         focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide.none,
+            borderSide: BorderSide(color: Colors.red),
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(
                   vertical: 0, horizontal: AppPadding.p16),
-              side: BorderSide(
+              side: const BorderSide(
                   color: ColorManager.secondaryColor,
                   style: BorderStyle.solid,
                   width: 2),
