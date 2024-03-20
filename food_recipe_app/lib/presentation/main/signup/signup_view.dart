@@ -1,14 +1,15 @@
-import 'dart:ffi';
-import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
-import 'package:food_recipe_app/presentation/common/state_render/state_render.dart';
+import 'package:food_recipe_app/presentation/common/widgets/phong_widgets.dart';
 import 'package:food_recipe_app/presentation/common/widgets/widget.dart';
-import 'package:food_recipe_app/presentation/resources/style_management.dart';
+import 'package:food_recipe_app/presentation/common/widgets/common_style.dart';
+import 'package:food_recipe_app/presentation/resources/route_management.dart';
+import 'package:food_recipe_app/presentation/resources/string_management.dart';
 
 
 class SignUpView extends StatefulWidget {
@@ -19,27 +20,33 @@ class SignUpView extends StatefulWidget {
 }
 
 class SignUpViewState extends State<SignUpView>{
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool isRememberMe = false;
+
   @override
   Widget build(BuildContext context) {
     CommonTextInput emailInput = CommonTextInput(
-      label: 'Email',
-      hintText: 'Enter your email',
+      label: AppStrings.email,
+      controller: emailController,
+      hintText: 'Enter your ${AppStrings.email}',
       isRequired: true,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter your email';
+          return 'Please enter your ${AppStrings.email}';
         }
         return '';
       },
     );
     CommonTextInput passwordInput = CommonTextInput(
-      label: 'Password',
-      hintText: 'Enter your password',
+      label: AppStrings.password,
+      controller: passwordController,
+      hintText: 'Enter your ${AppStrings.password}',
       isObscure: true,
       isRequired: true,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter your password';
+          return 'Please enter your ${AppStrings.password}';
         }
         return '';
       },
@@ -60,7 +67,7 @@ class SignUpViewState extends State<SignUpView>{
                   ),
                   const SizedBox(height: 28),
                   const Text(
-                    'Continue with',
+                    AppStrings.continueWith,
                     style: TextStyle(
                       fontFamily: interFontFamily,
                       fontSize: 24,
@@ -73,14 +80,14 @@ class SignUpViewState extends State<SignUpView>{
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildIconTextButton(
-                          text: 'Facebook',
+                          text: AppStrings.facebook,
                           iconPath: PicturePath.fbPath,
                           width: 120,
                           height: 50,
                           onPressed: () {},
                         ),
                         _buildIconTextButton(
-                          text: 'Google',
+                          text: AppStrings.google,
                           iconPath: PicturePath.ggPath,
                           width: 120,
                           height: 50,
@@ -91,12 +98,12 @@ class SignUpViewState extends State<SignUpView>{
                   ),
             
                   const SizedBox(height: 20),
-                  const Text('Or',style: TextStyle(
+                  const Text(AppStrings.or,style: TextStyle(
                     color: Color.fromARGB(90, 0, 0, 0),
                     fontSize: 22,
                     fontWeight: FontWeight.w600,
                   ),),
-                  const Text('Create your account',style: TextStyle(
+                  const Text(AppStrings.createAccount,style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -106,11 +113,12 @@ class SignUpViewState extends State<SignUpView>{
                   passwordInput,
                   _RememberMeButton(),
                   const SizedBox(height: 8),
-                  getSubmitButton('Sign up'),
+                  getSubmitButton(AppStrings.signUp),
                   const SizedBox(height: 16),
                   _buildFooterText(
-                    prefix: 'Already have an account? ',
-                    suffix: 'Login',
+                    prefix: AppStrings.alreadyHaveAccount,
+                    suffix: AppStrings.login,
+                    context: context,
                   ),
                 ]
               ),
@@ -124,7 +132,8 @@ class SignUpViewState extends State<SignUpView>{
 
 class _RememberMeButton extends StatefulWidget {
   bool isChecked ;
-  _RememberMeButton({Key? key,this.isChecked = false}) : super(key: key);
+  final ValueChanged<bool>? onChanged;
+  _RememberMeButton({Key? key,this.isChecked = false,this.onChanged}) : super(key: key);
   @override
   _RememberMeButtonState createState() => _RememberMeButtonState();
 }
@@ -148,14 +157,14 @@ class _RememberMeButtonState extends State<_RememberMeButton> {
             ),
             onChanged: (value) {
               setState(() {
-                widget.isChecked = value!;
+                widget.onChanged?.call(value ?? false); // Update the check state through the callback
               });
             },
             checkColor: Colors.white,
             side: const BorderSide(color: ColorManager.blueColor, width: 2),
           ),
           const Text(
-            'Remember me',
+            AppStrings.rememberMe,
             style: TextStyle(
               color: ColorManager.blueColor,
               fontFamily: interFontFamily,
@@ -168,10 +177,9 @@ class _RememberMeButtonState extends State<_RememberMeButton> {
       ),
     );
   }
-
 }
 
-Widget _buildFooterText({String suffix = '',String prefix = ''}){
+Widget _buildFooterText({String suffix = '',String prefix = '',required BuildContext context}){
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -184,13 +192,18 @@ Widget _buildFooterText({String suffix = '',String prefix = ''}){
           fontWeight: FontWeight.w600,
         ),
       ),
-      Text(
-        suffix,
-        style: const TextStyle(
-          color: ColorManager.darkBlueColor,
-          fontFamily: interFontFamily,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
+      GestureDetector(
+        onTap: (){
+          Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+        },
+        child: Text(
+          suffix,
+          style: const TextStyle(
+            color: ColorManager.darkBlueColor,
+            fontFamily: interFontFamily,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     ],
@@ -209,10 +222,7 @@ Widget _buildIconTextButton({
   return Container(
     width: width,
     height: height,
-    // constraints: BoxConstraints(
-    //   maxWidth: maxWidth?? width,
-    //   maxHeight: maxHeight?? height,
-    // ),
+
     decoration: getBoxDecorationShadow(borderRadius: BorderRadius.circular(10)),
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),

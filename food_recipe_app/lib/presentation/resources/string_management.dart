@@ -1,5 +1,11 @@
 class AppStrings {
   static const String notFoundRoute = 'This route is not found !';
+  static const String onBoardingTitle1 = 'Recipe all';
+  static const String onBoardingDescription1 = 'over the World';
+  static const String onBoardingTitle2 = 'Recipe with';
+  static const String onBoardingDescription2 = 'each and every detail';
+  static const String onBoardingTitle3 = 'Cook it now or';
+  static const String onBoardingDescription3 = 'save it for later';
   static const String login = 'Login';
   static const String signUp = 'Sign up';
   static const String home = 'Home';
@@ -16,6 +22,7 @@ class AppStrings {
   static const String password = 'Password';
   static const String rememberMe = 'Remember me';
   static const String alreadyHaveAccount = 'Already have an account ?';
+  static const String notHaveAccount = "Don't have an account?";
   static const String sologan = 'Cook it Eat it';
   static const String setUpKitchen = 'Setting up your Kitchen...';
   static const String selectCountry = 'Select your Country';

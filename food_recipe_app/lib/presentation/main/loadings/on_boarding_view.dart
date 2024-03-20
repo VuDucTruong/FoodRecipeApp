@@ -5,6 +5,7 @@ import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
+import 'package:food_recipe_app/presentation/resources/string_management.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
@@ -19,18 +20,18 @@ class OnBoardingViewState extends State<OnBoardingView> {
     // Add your OnBoardingPage objects here
     OnBoardingPage(
       image: const AssetImage(PicturePath.onBoarding1Path),
-      title: 'Recipe from all',
-      description: 'over the World',
+      title: AppStrings.onBoardingTitle1,
+      description: AppStrings.onBoardingDescription1,
     ),
     OnBoardingPage(
       image: const AssetImage(PicturePath.onBoarding2Path),
-      title: 'Recipe with',
-      description: 'each and every detail',
+      title: AppStrings.onBoardingTitle2,
+      description: AppStrings.onBoardingDescription2,
     ),
     OnBoardingPage(
       image: const AssetImage(PicturePath.onBoarding3Path),
-      title: 'Cook it now or',
-      description: 'save it for later',
+      title: AppStrings.onBoardingTitle3,
+      description: AppStrings.onBoardingDescription3,
     ),
   ];
 
@@ -38,15 +39,14 @@ class OnBoardingViewState extends State<OnBoardingView> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: Container(
-        child: PageView.builder(
-          controller: _pageController,
-          itemCount: _boardingPages.length,
-          itemBuilder: (context, index) {
-            return _boardingPage(_boardingPages[index], index);
-          },
-        ),
-      )),
+          body: PageView.builder(
+            controller: _pageController,
+            itemCount: _boardingPages.length,
+            itemBuilder: (context, index) {
+              return _boardingPage(_boardingPages[index], index);
+            },
+          )
+      ),
     );
   }
 
@@ -70,6 +70,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
+                // logo
                 padding: const EdgeInsets.symmetric(vertical: 50),
                 child: SvgPicture.asset(
                   PicturePath.logoSVGPath,
@@ -82,25 +83,33 @@ class OnBoardingViewState extends State<OnBoardingView> {
                   padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Column(
                     children: [
-                      Text(
-                        page.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: interFontFamily,
-                          fontSize: 38,
-                          fontWeight: FontWeightManager.regular,
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "${page.title} \n",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontFamily: interFontFamily,
+                                fontSize: 38,
+                                fontWeight: FontWeightManager.regular,
+                              ),
+                            ),
+                            const WidgetSpan(child: SizedBox(height: 16)),
+                            TextSpan(
+                              text: page.description,
+                              style:const TextStyle(
+                                color:  Color(0xFFF8C89A),
+                                fontFamily: interFontFamily,
+                                fontSize: 38,
+                                fontWeight: FontWeightManager.regular,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        page.description,
-                        style: const TextStyle(
-                          color: Color(0xFFF8C89A),
-                          fontFamily: interFontFamily,
-                          fontSize: 38,
-                          fontWeight: FontWeightManager.regular,
-                        ),
-                      ),
+                      // idicators
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
@@ -109,7 +118,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      _continueButton(index == _boardingPages.length - 1
+                      _continueButton(text: index == _boardingPages.length - 1
                           ? 'Get Started'
                           : 'Continue'),
                       // skip text
@@ -135,17 +144,28 @@ class OnBoardingViewState extends State<OnBoardingView> {
       ),
     );
   }
-}
 
-Widget _continueButton(String text) {
-  return Container(
-    width: 200,
-    height: 50,
-    decoration: BoxDecoration(
-      color: ColorManager.blueColor,
-      borderRadius: BorderRadius.circular(25),
-    ),
-    child: Center(
+  Widget _continueButton({String text = ''}) {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(ColorManager.blueColor),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+        ),
+        minimumSize: MaterialStateProperty.all(Size(200, 50)),
+      ),
+      onPressed: () {
+        if (_pageController.page!.toInt() < _boardingPages.length - 1) {
+          _pageController.nextPage(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+          );
+        } else {
+          Navigator.pushReplacementNamed(context, Routes.registerRoute);
+        }
+      },
       child: Text(
         text,
         style: const TextStyle(
@@ -156,13 +176,15 @@ Widget _continueButton(String text) {
           fontWeight: FontWeightManager.bold,
         ),
       ),
-    ),
-  );
+    );
+  }
 }
+
+
 
 Widget _indicator(bool isActive) {
   return AnimatedContainer(
-    duration: const Duration(milliseconds: 150),
+    duration: const Duration(milliseconds: 500),
     margin: const EdgeInsets.symmetric(horizontal: 8),
     height: 8,
     width: 24,
