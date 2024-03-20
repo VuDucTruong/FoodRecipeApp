@@ -40,13 +40,12 @@ class OnBoardingViewState extends State<OnBoardingView> {
     return SafeArea(
       child: Scaffold(
           body: PageView.builder(
-            controller: _pageController,
-            itemCount: _boardingPages.length,
-            itemBuilder: (context, index) {
-              return _boardingPage(_boardingPages[index], index);
-            },
-          )
-      ),
+        controller: _pageController,
+        itemCount: _boardingPages.length,
+        itemBuilder: (context, index) {
+          return _boardingPage(_boardingPages[index], index);
+        },
+      )),
     );
   }
 
@@ -99,8 +98,8 @@ class OnBoardingViewState extends State<OnBoardingView> {
                             const WidgetSpan(child: SizedBox(height: 16)),
                             TextSpan(
                               text: page.description,
-                              style:const TextStyle(
-                                color:  Color(0xFFF8C89A),
+                              style: const TextStyle(
+                                color: Color(0xFFF8C89A),
                                 fontFamily: interFontFamily,
                                 fontSize: 38,
                                 fontWeight: FontWeightManager.regular,
@@ -118,13 +117,14 @@ class OnBoardingViewState extends State<OnBoardingView> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      _continueButton(text: index == _boardingPages.length - 1
-                          ? 'Get Started'
-                          : 'Continue'),
+                      _continueButton(
+                          text: index == _boardingPages.length - 1
+                              ? 'Get Started'
+                              : 'Continue'),
                       // skip text
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, Routes.registerRoute);
+                          Navigator.pushNamed(context, Routes.signUpRoute);
                         },
                         child: const Text(
                           'Skip',
@@ -148,7 +148,8 @@ class OnBoardingViewState extends State<OnBoardingView> {
   Widget _continueButton({String text = ''}) {
     return ElevatedButton(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(ColorManager.blueColor),
+        backgroundColor:
+            MaterialStateProperty.all<Color>(ColorManager.blueColor),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
@@ -163,7 +164,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
             curve: Curves.ease,
           );
         } else {
-          Navigator.pushReplacementNamed(context, Routes.registerRoute);
+          Navigator.pushReplacementNamed(context, Routes.signUpRoute);
         }
       },
       child: Text(
@@ -179,8 +180,6 @@ class OnBoardingViewState extends State<OnBoardingView> {
     );
   }
 }
-
-
 
 Widget _indicator(bool isActive) {
   return AnimatedContainer(

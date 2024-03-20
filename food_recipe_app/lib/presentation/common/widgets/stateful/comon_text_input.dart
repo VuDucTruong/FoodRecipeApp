@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:food_recipe_app/presentation/resources/font_manager.dart';
-import 'package:food_recipe_app/presentation/common/widgets/common_style.dart';
 
+BoxDecoration getBoxDecorationShadow({BorderRadiusGeometry? borderRadius}) {
+  return BoxDecoration(
+    color: Colors.white,
+    borderRadius: borderRadius ?? BorderRadius.circular(16),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.3), // Shadow color
+        spreadRadius: 0, // Spread radius
+        blurRadius: 2, // Blur radius
+        offset: const Offset(0, 2), // Offset for the shadow (left, top)
+      ),
+    ],
+  );
+}
 
 class CommonTextInput extends StatefulWidget {
   final String label;
@@ -11,7 +23,8 @@ class CommonTextInput extends StatefulWidget {
   final TextEditingController controller;
   bool isOn = true;
 
-  final String? Function(String?)? validator; // Updated to accept nullable return value
+  final String? Function(String?)?
+      validator; // Updated to accept nullable return value
 
   CommonTextInput({
     Key? key,
@@ -28,7 +41,6 @@ class CommonTextInput extends StatefulWidget {
 }
 
 class CommonTextInputState extends State<CommonTextInput> {
-
   IconButton _buildSuffixIcon() {
     return IconButton(
       icon: Icon(
@@ -42,7 +54,8 @@ class CommonTextInputState extends State<CommonTextInput> {
       },
     );
   }
-  Row _buildLabel(){
+
+  Row _buildLabel() {
     return Row(
       children: [
         Text(
@@ -59,7 +72,8 @@ class CommonTextInputState extends State<CommonTextInput> {
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.red,
-            ),),
+            ),
+          ),
       ],
     );
   }
@@ -69,14 +83,13 @@ class CommonTextInputState extends State<CommonTextInput> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        _buildLabel(),// Label here
+        _buildLabel(), // Label here
         Container(
-          decoration: getBoxDecorationShadow(),// box shadow for input
+          decoration: getBoxDecorationShadow(), // box shadow for input
           child: TextFormField(
             decoration: InputDecoration(
               hintText: widget.hintText,
               hintStyle: const TextStyle(
-                fontFamily: interFontFamily,
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
@@ -88,7 +101,6 @@ class CommonTextInputState extends State<CommonTextInput> {
               suffixIcon: widget.isObscure ? _buildSuffixIcon() : null,
             ),
             style: const TextStyle(
-              fontFamily: interFontFamily,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -107,4 +119,3 @@ class CommonTextInputState extends State<CommonTextInput> {
     super.dispose();
   }
 }
-

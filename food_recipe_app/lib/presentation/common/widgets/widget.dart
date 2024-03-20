@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless_widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/stateless_widget.dart';
 
 import '../../resources/assets_management.dart';
 import '../../resources/color_management.dart';
@@ -350,7 +350,6 @@ Widget getUserFoodTitle(double width, String foodName) {
   );
 }
 
-
 Widget getSubmitButton(String text) {
   return Container(
     width: 200,
@@ -428,4 +427,3 @@ Widget getOnOffSwitch(bool isOn) {
     ],
   );
 }
-
