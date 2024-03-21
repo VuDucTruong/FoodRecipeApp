@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless_widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/stateless_widget.dart';
 
 import '../../resources/assets_management.dart';
 import '../../resources/color_management.dart';
@@ -132,10 +132,8 @@ Widget getUserSocialStatus() {
             ),
             Text(
               AppStrings.recipes,
-              style: TextStyle(
-                  color: ColorManager.secondaryColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: FontSize.s16),
+              style: getBoldStyle(
+                  color: ColorManager.secondaryColor, fontSize: FontSize.s16),
             )
           ],
         ),
@@ -308,9 +306,9 @@ Widget getUserFoodTitle(double width, String foodName) {
       Container(
         width: width,
         height: 40,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: ColorManager.darkBlueColor,
-            borderRadius: const BorderRadius.only(
+            borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(AppRadius.r20),
                 bottomLeft: Radius.circular(AppRadius.r6),
                 topLeft: Radius.circular(AppRadius.r6))),
@@ -349,7 +347,6 @@ Widget getUserFoodTitle(double width, String foodName) {
     ],
   );
 }
-
 
 Widget getSubmitButton(String text) {
   return Container(
@@ -428,4 +425,3 @@ Widget getOnOffSwitch(bool isOn) {
     ],
   );
 }
-
