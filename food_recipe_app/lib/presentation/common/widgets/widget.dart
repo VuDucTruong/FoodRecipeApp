@@ -132,10 +132,8 @@ Widget getUserSocialStatus() {
             ),
             Text(
               AppStrings.recipes,
-              style: TextStyle(
-                  color: ColorManager.secondaryColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: FontSize.s16),
+              style: getBoldStyle(
+                  color: ColorManager.secondaryColor, fontSize: FontSize.s16),
             )
           ],
         ),
@@ -308,9 +306,9 @@ Widget getUserFoodTitle(double width, String foodName) {
       Container(
         width: width,
         height: 40,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: ColorManager.darkBlueColor,
-            borderRadius: const BorderRadius.only(
+            borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(AppRadius.r20),
                 bottomLeft: Radius.circular(AppRadius.r6),
                 topLeft: Radius.circular(AppRadius.r6))),

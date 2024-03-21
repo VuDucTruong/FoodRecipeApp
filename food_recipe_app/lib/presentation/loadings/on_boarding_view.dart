@@ -1,11 +1,14 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
+import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
@@ -15,193 +18,176 @@ class OnBoardingView extends StatefulWidget {
 }
 
 class OnBoardingViewState extends State<OnBoardingView> {
+  int _selectedIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
-  final List<OnBoardingPage> _boardingPages = [
-    // Add your OnBoardingPage objects here
-    OnBoardingPage(
-      image: const AssetImage(PicturePath.onBoarding1Path),
-      title: AppStrings.onBoardingTitle1,
-      description: AppStrings.onBoardingDescription1,
-    ),
-    OnBoardingPage(
-      image: const AssetImage(PicturePath.onBoarding2Path),
-      title: AppStrings.onBoardingTitle2,
-      description: AppStrings.onBoardingDescription2,
-    ),
-    OnBoardingPage(
-      image: const AssetImage(PicturePath.onBoarding3Path),
-      title: AppStrings.onBoardingTitle3,
-      description: AppStrings.onBoardingDescription3,
-    ),
-  ];
+  late List<OnBoardingObject> _boardingItemList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _boardingItemList = [
+      OnBoardingObject(
+        imageProvider: const AssetImage(PicturePath.onBoarding1Path),
+        title: AppStrings.onBoardingTitle1,
+        description: AppStrings.onBoardingDescription1,
+      ),
+      OnBoardingObject(
+        imageProvider: const AssetImage(PicturePath.onBoarding2Path),
+        title: AppStrings.onBoardingTitle2,
+        description: AppStrings.onBoardingDescription2,
+      ),
+      OnBoardingObject(
+        imageProvider: const AssetImage(PicturePath.onBoarding3Path),
+        title: AppStrings.onBoardingTitle3,
+        description: AppStrings.onBoardingDescription3,
+      ),
+    ];
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: PageView.builder(
-        controller: _pageController,
-        itemCount: _boardingPages.length,
-        itemBuilder: (context, index) {
-          return _boardingPage(_boardingPages[index], index);
-        },
+          body: Stack(
+        alignment: AlignmentDirectional.center,
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            itemCount: _boardingItemList.length,
+            itemBuilder: (context, index) {
+              return _getBoardingItem(_boardingItemList[index]);
+            },
+          ),
+          Positioned(
+            bottom: 10,
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    ...List.generate(_boardingItemList.length,
+                        (index) => _getIndicator(index)),
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                _getContinueButton(),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, Routes.signUpRoute);
+                  },
+                  child: Text(
+                    AppStrings.skip,
+                    style: getSemiBoldStyle(
+                            color: Colors.white, fontSize: FontSize.s16)
+                        .copyWith(decoration: TextDecoration.underline),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
       )),
     );
   }
 
-  Widget _boardingPage(OnBoardingPage page, int index) {
-    return Center(
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Image(
-            image: page.image,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-          Container(
-            color: Colors.black.withOpacity(0.3),
-            width: double.infinity,
-            height: double.infinity,
-          ), // Tao effect cho screen toi di
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                // logo
-                padding: const EdgeInsets.symmetric(vertical: 50),
-                child: SvgPicture.asset(
-                  PicturePath.logoSVGPath,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.contain,
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30),
-                  child: Column(
-                    children: [
-                      RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "${page.title} \n",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontFamily: interFontFamily,
-                                fontSize: 38,
-                                fontWeight: FontWeightManager.regular,
-                              ),
-                            ),
-                            const WidgetSpan(child: SizedBox(height: 16)),
-                            TextSpan(
-                              text: page.description,
-                              style: const TextStyle(
-                                color: Color(0xFFF8C89A),
-                                fontFamily: interFontFamily,
-                                fontSize: 38,
-                                fontWeight: FontWeightManager.regular,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // idicators
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          _boardingPages.length,
-                          (i) => _indicator(i == index),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _continueButton(
-                          text: index == _boardingPages.length - 1
-                              ? 'Get Started'
-                              : 'Continue'),
-                      // skip text
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, Routes.signUpRoute);
-                        },
-                        child: const Text(
-                          'Skip',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: interFontFamily,
-                            fontSize: 15,
-                            fontWeight: FontWeightManager.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ))
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _continueButton({String text = ''}) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor:
-            MaterialStateProperty.all<Color>(ColorManager.blueColor),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-        ),
-        minimumSize: MaterialStateProperty.all(Size(200, 50)),
-      ),
+  Widget _getContinueButton({String text = AppStrings.continueOnly}) {
+    return FilledButton(
+      style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
       onPressed: () {
-        if (_pageController.page!.toInt() < _boardingPages.length - 1) {
-          _pageController.nextPage(
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.ease,
-          );
+        if (_selectedIndex < _boardingItemList.length - 1) {
+          setState(() {
+            _pageController.animateToPage(++_selectedIndex,
+                duration: Durations.medium2, curve: Curves.ease);
+          });
         } else {
           Navigator.pushReplacementNamed(context, Routes.signUpRoute);
         }
       },
       child: Text(
         text,
-        style: const TextStyle(
-          color: ColorManager.darkBlueColor,
-          fontFamily: interFontFamily,
-          fontSize: 20,
-          height: 1.5,
-          fontWeight: FontWeightManager.bold,
-        ),
+        style: getMediumStyle(
+            color: ColorManager.darkBlueColor, fontSize: FontSize.s20),
       ),
+    );
+  }
+
+  Widget _getIndicator(int index) {
+    return AnimatedContainer(
+      duration: Durations.medium2,
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      height: 8,
+      width: _selectedIndex == index ? 24 : 14,
+      decoration: BoxDecoration(
+        gradient:
+            _selectedIndex == index ? ColorManager.linearGradientPink : null,
+        color: ColorManager.greyColor,
+        borderRadius: BorderRadius.circular(3),
+      ),
+    );
+  }
+
+  Widget _getBoardingItem(OnBoardingObject item) {
+    return Stack(
+      alignment: FractionalOffset.center,
+      children: [
+        Image(
+          image: item.imageProvider,
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
+        Container(
+          color: Colors.black.withOpacity(0.3),
+          width: double.infinity,
+          height: double.infinity,
+        ), // Tao effect cho screen toi di
+        Positioned(
+          top: MediaQuery.of(context).size.height * 0.1,
+          child: SvgPicture.asset(
+            PicturePath.logoSVGPath,
+            width: 100,
+            height: 100,
+            fit: BoxFit.contain,
+          ),
+        ),
+        Positioned(
+          bottom: MediaQuery.of(context).size.height * 0.2,
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              children: [
+                TextSpan(
+                    text: "${item.title} \n",
+                    style: getMediumStyle(
+                        color: Colors.white, fontSize: FontSize.s38)),
+                TextSpan(
+                    text: item.description,
+                    style: getMediumStyle(
+                        color: ColorManager.whiteOrangeColor,
+                        fontSize: FontSize.s38)),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-Widget _indicator(bool isActive) {
-  return AnimatedContainer(
-    duration: const Duration(milliseconds: 500),
-    margin: const EdgeInsets.symmetric(horizontal: 8),
-    height: 8,
-    width: 24,
-    decoration: BoxDecoration(
-      color: isActive ? const Color(0xFFF8C89A) : Colors.white,
-      borderRadius: BorderRadius.circular(3),
-    ),
-  );
-}
+class OnBoardingObject {
+  ImageProvider imageProvider;
+  String title, description;
 
-class OnBoardingPage {
-  final ImageProvider image;
-  final String title;
-  final String description;
-
-  OnBoardingPage({
-    required this.image,
-    required this.title,
-    required this.description,
-  });
+  OnBoardingObject(
+      {required this.imageProvider,
+      required this.title,
+      required this.description});
 }

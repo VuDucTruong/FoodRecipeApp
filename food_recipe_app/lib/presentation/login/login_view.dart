@@ -8,6 +8,7 @@ import 'package:food_recipe_app/presentation/common/widgets/widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/comon_text_input.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
+import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -62,54 +63,31 @@ class LoginViewState extends State<LoginView> {
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 28),
-              const Text(
-                AppStrings.continueWith,
-                style: TextStyle(
-                  fontFamily: interFontFamily,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
+              Text(AppStrings.continueWith,
+                  style: getSemiBoldStyle(
+                      color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 37),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildIconTextButton(
-                      text: AppStrings.facebook,
-                      iconPath: PicturePath.fbPath,
-                      width: 120,
-                      height: 50,
-                      onPressed: () {},
-                    ),
-                    _buildIconTextButton(
-                      text: AppStrings.google,
-                      iconPath: PicturePath.ggPath,
-                      width: 120,
-                      height: 50,
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _getIconTextButton(
+                    text: AppStrings.facebook,
+                    iconPath: PicturePath.fbPath,
+                    onPressed: () {},
+                  ),
+                  _getIconTextButton(
+                    text: AppStrings.google,
+                    iconPath: PicturePath.ggPath,
+                    onPressed: () {},
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              const Text(
-                AppStrings.or,
-                style: TextStyle(
-                  color: Color.fromARGB(90, 0, 0, 0),
-                  fontSize: 22,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const Text(
-                AppStrings.createAccount,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              Text(AppStrings.or,
+                  style: getSemiBoldStyle(
+                      color: ColorManager.greyColor, fontSize: FontSize.s22)),
+              Text(AppStrings.createAccount,
+                  style: getSemiBoldStyle(
+                      color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 4),
               emailInput,
               passwordInput,
@@ -166,15 +144,9 @@ class _RememberMeButtonState extends State<_RememberMeButton> {
             checkColor: Colors.white,
             side: const BorderSide(color: ColorManager.blueColor, width: 2),
           ),
-          const Text(
-            AppStrings.rememberMe,
-            style: TextStyle(
-              color: ColorManager.blueColor,
-              fontFamily: interFontFamily,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Text(AppStrings.rememberMe,
+              style: getSemiBoldStyle(
+                  color: ColorManager.blueColor, fontSize: FontSize.s14)),
         ],
       ),
     );
@@ -186,15 +158,7 @@ Widget _buildFooterText(
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Text(
-        prefix,
-        style: TextStyle(
-          color: ColorManager.greyColor,
-          fontFamily: interFontFamily,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      Text(prefix, style: getSemiBoldStyle(color: ColorManager.greyColor)),
       const SizedBox(
         width: 4,
       ),
@@ -202,35 +166,22 @@ Widget _buildFooterText(
         onTap: () {
           Navigator.of(context).pushReplacementNamed(Routes.signUpRoute);
         },
-        child: Text(
-          suffix,
-          style: const TextStyle(
-            color: ColorManager.darkBlueColor,
-            fontFamily: interFontFamily,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        child: Text(suffix,
+            style: getSemiBoldStyle(color: ColorManager.darkBlueColor)),
       ),
     ],
   );
 }
 
-Widget _buildIconTextButton({
+Widget _getIconTextButton({
   String text = '',
   String? iconPath,
   Function()? onPressed,
-  double width = 50,
-  double height = 50,
-  double? maxWidth,
-  double? maxHeight,
 }) {
-  return Container(
-    width: width,
-    height: height,
-    decoration: getBoxDecorationShadow(borderRadius: BorderRadius.circular(10)),
+  return Card(
+    color: Colors.white,
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           if (iconPath != null) ...[
@@ -241,15 +192,9 @@ Widget _buildIconTextButton({
             ),
             const SizedBox(width: 8),
           ],
-          Text(
-            text,
-            style: const TextStyle(
-              color: ColorManager.darkBlueColor,
-              fontFamily: interFontFamily,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          Text(text,
+              style: getSemiBoldStyle(
+                  color: Colors.black, fontSize: FontSize.s14)),
         ],
       ),
     ),

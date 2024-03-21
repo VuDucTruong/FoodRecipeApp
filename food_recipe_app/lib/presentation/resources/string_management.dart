@@ -1,6 +1,6 @@
 class AppStrings {
   static const String notFoundRoute = 'This route is not found !';
-  static const String onBoardingTitle1 = 'Recipe all';
+  static const String onBoardingTitle1 = 'Recipes from all';
   static const String onBoardingDescription1 = 'over the World';
   static const String onBoardingTitle2 = 'Recipe with';
   static const String onBoardingDescription2 = 'each and every detail';
@@ -97,6 +97,7 @@ class AppStrings {
   static const String enterEmail = 'Please enter your email address';
   static const String noInternet = 'Please check your \n internet connection !';
   static const String tryAgain = 'Try Again';
+  static const String skip = 'Skip';
 
   // Validate message
   static const String emailFormatError = 'Email format is wrong !';
