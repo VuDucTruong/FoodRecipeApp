@@ -1,2 +1,2 @@
 # FoodRecipeApp
-Ứng dụng chia sẽ công thức món ăn
+Ứng dụng chia sẻ công thức món ăn
