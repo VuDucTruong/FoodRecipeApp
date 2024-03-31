@@ -1,15 +1,14 @@
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_list.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
+import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
-import '../../common/widgets/widget.dart';
-import '../../resources/font_manager.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -49,7 +48,7 @@ class _HomePageState extends State<HomePage> {
               _getHeadingHome(AppStrings.trendingToday),
               _getCarouselSlider(),
               _getHeadingHome(AppStrings.categories),
-              getFoodTypeList(),
+              const FoodTypeList(),
               Container(
                 margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
                 height: AppSize.s175,

@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_recipe_app/presentation/common/widgets/widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_list.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 import '../resources/assets_management.dart';
@@ -63,7 +64,7 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
           const SizedBox(
             height: AppSize.s10,
           ),
-          getFoodTypeList(),
+          const FoodTypeList(),
           const SizedBox(
             height: AppSize.s10,
           ),
@@ -72,12 +73,10 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                return Center(child: getRecipeItem(context, true));
-
+                return Center(child: RecipeItem(isUser: true));
               }),
         ],
       )),
     );
   }
-
 }

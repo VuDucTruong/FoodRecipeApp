@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/submit_button.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
-import 'package:food_recipe_app/presentation/common/widgets/widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/comon_text_input.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
@@ -93,7 +93,7 @@ class SignUpViewState extends State<SignUpView> {
               emailInput,
               passwordInput,
               const SizedBox(height: 12),
-              getSubmitButton(AppStrings.signUp),
+              SubmitButton(text: AppStrings.signUp),
               const SizedBox(height: 16),
               _buildFooterText(
                 prefix: AppStrings.alreadyHaveAccount,

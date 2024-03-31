@@ -6,7 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
-import 'package:food_recipe_app/presentation/common/widgets/dialogs.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/create_profile/bloc/create_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -118,7 +118,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 showAnimatedDialog1(
-                                    context, getCongratulationDialog(context));
+                                    context, const CongratulationDialog());
                               }
                             },
                             child: Text(

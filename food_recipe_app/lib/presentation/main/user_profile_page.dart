@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_recipe_app/presentation/common/widgets/widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/user_description.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/user_introduction.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/user_social_status.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
@@ -41,13 +44,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppStrings.verifiedChefs,
+              AppStrings.yourProfile,
               style: getBoldStyle(
                   color: ColorManager.secondaryColor, fontSize: FontSize.s20),
             ),
-            getUserIntro(),
-            getUserDescription(),
-            getUserSocialStatus(),
+            const UserIntroduction(),
+            const UserDescription(),
+            const UserSocialStatus(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -58,22 +61,21 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       backgroundColor: ColorManager.secondaryColor),
                   child: Text(AppStrings.addRecipe,
                       style: getBoldStyle(
-                        color: Colors.white,
-                      )),
+                          color: Colors.white, fontSize: FontSize.s16)),
                 ),
                 OutlinedButton(
                   onPressed: () {
                     Navigator.of(context).pushNamed(Routes.editProfileRoute);
                   },
                   style: OutlinedButton.styleFrom(
-                      side: BorderSide(
+                      side: const BorderSide(
                           color: ColorManager.blueColor,
                           style: BorderStyle.solid,
                           width: 1)),
                   child: Text(AppStrings.editProfile,
                       style: getBoldStyle(
-                        color: ColorManager.blueColor,
-                      )),
+                          color: ColorManager.blueColor,
+                          fontSize: FontSize.s16)),
                 ),
               ],
             ),
@@ -84,7 +86,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 child: ListView.builder(
               itemCount: 3,
               itemBuilder: (context, index) {
-                return getRecipeItem(context, true);
+                return RecipeItem(isUser: true);
               },
             ))
           ],

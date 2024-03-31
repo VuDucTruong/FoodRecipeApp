@@ -29,7 +29,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static const LinearGradient linearGradientWhiteOrange =  LinearGradient(
+  static const LinearGradient linearGradientWhiteOrange = LinearGradient(
     colors: [
       Color(0xFFF8C89A),
       Color(0xFFF8C89A),
@@ -39,7 +39,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static const LinearGradient linearGradientBlue =  LinearGradient(
+  static const LinearGradient linearGradientBlue = LinearGradient(
     colors: [
       Color(0xFF0DC0DE),
       Color(0xFFF8C89A),
@@ -47,7 +47,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static const LinearGradient linearGradientDarkBlue =  LinearGradient(
+  static const LinearGradient linearGradientDarkBlue = LinearGradient(
     colors: [
       Color(0xFF103C4A),
       Color(0xFF0DC0DE),
@@ -55,7 +55,7 @@ class ColorManager {
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static const LinearGradient linearGradientLightTheme =  LinearGradient(
+  static const LinearGradient linearGradientLightTheme = LinearGradient(
     end: Alignment.centerLeft,
     begin: Alignment.bottomRight,
     colors: [
@@ -67,7 +67,7 @@ class ColorManager {
       1.0, // equivalent to 100%
     ],
   );
-  static const LinearGradient linearGradientDarkTheme =  LinearGradient(
+  static const LinearGradient linearGradientDarkTheme = LinearGradient(
     end: Alignment.centerLeft,
     begin: Alignment.bottomRight,
     colors: [

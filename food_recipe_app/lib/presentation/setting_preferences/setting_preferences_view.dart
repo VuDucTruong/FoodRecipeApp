@@ -3,7 +3,8 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:food_recipe_app/presentation/common/widgets/widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -205,15 +206,14 @@ class _SettingPreferencesViewState extends State<SettingPreferencesView> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
-        getLongSwitch(
-            AppStrings.veg,
-            AppStrings.nonVeg,
-            ColorManager.linearGradientLightTheme,
-            ColorManager.linearGradientSecondary,
-            false,
-            appWidth * 0.65,
-            40,
-            false),
+        LongSwitch(
+          onContent: AppStrings.veg,
+          offContent: AppStrings.nonVeg,
+          onColor: ColorManager.linearGradientLightTheme,
+          offColor: ColorManager.linearGradientSecondary,
+          width: appWidth * 0.65,
+          height: 40,
+        ),
         SizedBox(
           height: 300,
           child: Center(
@@ -247,7 +247,7 @@ class _SettingPreferencesViewState extends State<SettingPreferencesView> {
                   getSemiBoldStyle(color: Colors.black, fontSize: FontSize.s18),
             ),
             const Spacer(),
-            getOnOffSwitch(isOn)
+            const OnOffSwitch()
           ],
         ),
       ],

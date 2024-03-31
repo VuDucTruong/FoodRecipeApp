@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_recipe_app/presentation/common/widgets/widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
+
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -62,7 +64,7 @@ class _SettingPageState extends State<SettingPage> {
               _getIconText(AppStrings.notifications,
                   SvgPicture.asset(PicturePath.notificationPath)),
               const Spacer(),
-              getOnOffSwitch(isOn)
+              OnOffSwitch()
             ]),
             _getIconText(
                 AppStrings.help, SvgPicture.asset(PicturePath.messagesPath)),
@@ -79,15 +81,14 @@ class _SettingPageState extends State<SettingPage> {
                   style: getRegularStyle(
                       color: Colors.black, fontSize: FontSize.s17),
                 ),
-                getLongSwitch(
-                    AppStrings.light,
-                    AppStrings.dark,
-                    ColorManager.linearGradientLightTheme,
-                    ColorManager.linearGradientDarkTheme,
-                    isOn,
-                    180,
-                    30,
-                    true),
+                LongSwitch(
+                  onContent: AppStrings.light,
+                  offContent: AppStrings.dark,
+                  onColor: ColorManager.linearGradientLightTheme,
+                  offColor: ColorManager.linearGradientDarkTheme,
+                  width: 180,
+                  height: 30,
+                ),
               ],
             ),
             const SizedBox(

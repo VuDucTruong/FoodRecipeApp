@@ -24,7 +24,7 @@ ThemeData getAppTheme() {
       filledButtonTheme: FilledButtonThemeData(
           style: FilledButton.styleFrom(
               backgroundColor: ColorManager.secondaryColor)),
-      fontFamily: interFontFamily,
+      fontFamily: fontFamily,
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: ColorManager.secondaryColor),
       inputDecorationTheme: InputDecorationTheme(
