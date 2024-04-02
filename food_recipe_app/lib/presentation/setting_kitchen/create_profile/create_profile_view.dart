@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/custom_text_form_field.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -29,6 +30,9 @@ class CreateProfileView extends StatefulWidget {
 class _CreateProfileViewState extends State<CreateProfileView> {
   final _formKey = GlobalKey<FormState>();
   File? _selectedImage;
+  TextEditingController nameController = TextEditingController(),
+      emailController = TextEditingController(),
+      phoneController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -37,6 +41,9 @@ class _CreateProfileViewState extends State<CreateProfileView> {
   @override
   void dispose() {
     super.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
   }
 
   @override
@@ -73,11 +80,13 @@ class _CreateProfileViewState extends State<CreateProfileView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            _getTextField(
+            CompulsoryTextField(
+                controller: nameController,
                 content: AppStrings.fullName,
                 hint: AppStrings.enterFullName,
                 validator: validateFullName),
-            _getTextField(
+            CompulsoryTextField(
+                controller: emailController,
                 content: AppStrings.email,
                 hint: AppStrings.enterEmail,
                 icon: SvgPicture.asset(
@@ -85,7 +94,8 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                   fit: BoxFit.scaleDown,
                 ),
                 validator: validateEmail),
-            _getTextField(
+            CompulsoryTextField(
+                controller: phoneController,
                 content: AppStrings.phoneNum,
                 hint: AppStrings.enterPhoneNum,
                 icon: SvgPicture.asset(
@@ -96,38 +106,6 @@ class _CreateProfileViewState extends State<CreateProfileView> {
           ],
         ),
       ),
-    );
-  }
-
-  Column _getTextField(
-      {required String content,
-      required String? Function(String? x) validator,
-      Widget? icon,
-      required String hint}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-            text: TextSpan(
-                style: getSemiBoldStyle(
-                    color: Colors.black, fontSize: FontSize.s16),
-                children: [
-              TextSpan(text: content),
-              TextSpan(
-                text: " *",
-                style:
-                    getSemiBoldStyle(color: Colors.red, fontSize: FontSize.s16),
-              ),
-            ])),
-        const SizedBox(
-          height: AppSize.s4,
-        ),
-        CustomTextFormField(
-          validator: validator,
-          hint: hint,
-          icon: icon,
-        ),
-      ],
     );
   }
 }

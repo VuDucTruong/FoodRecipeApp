@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/submit_button.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateful/remember_check_box.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -20,35 +24,18 @@ class LoginView extends StatefulWidget {
 class LoginViewState extends State<LoginView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool isRememberMe = false;
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  MutableVariable<bool> isRememberMe = MutableVariable(false);
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    CommonTextInput emailInput = CommonTextInput(
-      label: AppStrings.email,
-      controller: emailController,
-      hintText: 'Enter your ${AppStrings.email}',
-      isRequired: true,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your ${AppStrings.email}';
-        }
-        return '';
-      },
-    );
-    CommonTextInput passwordInput = CommonTextInput(
-      label: AppStrings.password,
-      controller: passwordController,
-      hintText: 'Enter your ${AppStrings.password}',
-      isObscure: true,
-      isRequired: true,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your ${AppStrings.password}';
-        }
-        return '';
-      },
-    );
     return Scaffold(
         body: SafeArea(
       child: Center(
@@ -89,11 +76,10 @@ class LoginViewState extends State<LoginView> {
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 4),
-              emailInput,
-              passwordInput,
-              _RememberMeButton(),
+              _buildFormInput(),
+              RememberCheckBox(isChecked: isRememberMe),
               const SizedBox(height: 8),
-              SubmitButton(text: AppStrings.login),
+              _buildLoginButton(),
               const SizedBox(height: 16),
               _buildFooterText(
                 prefix: AppStrings.notHaveAccount,
@@ -106,48 +92,41 @@ class LoginViewState extends State<LoginView> {
       ),
     ));
   }
-}
 
-class _RememberMeButton extends StatefulWidget {
-  bool isChecked;
-  final ValueChanged<bool>? onChanged;
-  _RememberMeButton({Key? key, this.isChecked = false, this.onChanged})
-      : super(key: key);
-  @override
-  _RememberMeButtonState createState() => _RememberMeButtonState();
-}
+  Widget _buildFormInput() {
+    return Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            CompulsoryTextField(
+                content: AppStrings.email,
+                validator: validateEmail,
+                hint: AppStrings.enterEmail,
+                controller: emailController),
+            CompulsoryTextField(
+                content: AppStrings.password,
+                validator: validatePassword,
+                hint: AppStrings.enterPassword,
+                controller: passwordController),
+          ],
+        ));
+  }
 
-class _RememberMeButtonState extends State<_RememberMeButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Checkbox(
-            value: widget.isChecked,
-            // make the inner fill blue only when checked
-            fillColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
-                if (states.contains(MaterialState.selected)) {
-                  return ColorManager.blueColor;
-                }
-                return Colors.white;
-              },
-            ),
-            onChanged: (value) {
-              setState(() {
-                widget.onChanged?.call(value ??
-                    false); // Update the check state through the callback
-              });
-            },
-            checkColor: Colors.white,
-            side: const BorderSide(color: ColorManager.blueColor, width: 2),
-          ),
-          Text(AppStrings.rememberMe,
-              style: getSemiBoldStyle(
-                  color: ColorManager.blueColor, fontSize: FontSize.s14)),
-        ],
+  Widget _buildLoginButton() {
+    return FractionallySizedBox(
+      widthFactor: 0.5,
+      child: FilledButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            // zzzzzzzz
+          }
+        },
+        style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
+        child: Center(
+          child: Text(AppStrings.login,
+              style: getMediumStyle(
+                  color: ColorManager.darkBlueColor, fontSize: FontSize.s20)),
+        ),
       ),
     );
   }

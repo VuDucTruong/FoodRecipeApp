@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/submit_button.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -20,35 +22,18 @@ class SignUpView extends StatefulWidget {
 class SignUpViewState extends State<SignUpView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  GlobalKey<FormState> _formKey = GlobalKey();
   bool isRememberMe = false;
 
   @override
+  void dispose() {
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    CommonTextInput emailInput = CommonTextInput(
-      label: AppStrings.email,
-      controller: emailController,
-      hintText: 'Enter your ${AppStrings.email}',
-      isRequired: true,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your ${AppStrings.email}';
-        }
-        return '';
-      },
-    );
-    CommonTextInput passwordInput = CommonTextInput(
-      label: AppStrings.password,
-      controller: passwordController,
-      hintText: 'Enter your ${AppStrings.password}',
-      isObscure: true,
-      isRequired: true,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter your ${AppStrings.password}';
-        }
-        return '';
-      },
-    );
     return Scaffold(
         body: SafeArea(
       child: Center(
@@ -90,10 +75,9 @@ class SignUpViewState extends State<SignUpView> {
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s20)),
               const SizedBox(height: 4),
-              emailInput,
-              passwordInput,
+              _buildFormInput(),
               const SizedBox(height: 12),
-              SubmitButton(text: AppStrings.signUp),
+              _buildSignUpButton(),
               const SizedBox(height: 16),
               _buildFooterText(
                 prefix: AppStrings.alreadyHaveAccount,
@@ -106,52 +90,90 @@ class SignUpViewState extends State<SignUpView> {
       ),
     ));
   }
-}
 
-Widget _buildFooterText(
-    {String suffix = '', String prefix = '', required BuildContext context}) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Text(prefix, style: getSemiBoldStyle(color: ColorManager.greyColor)),
-      const SizedBox(
-        width: 4,
-      ),
-      GestureDetector(
-        onTap: () {
-          Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+  Widget _buildSignUpButton() {
+    return FractionallySizedBox(
+      widthFactor: 0.5,
+      child: FilledButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            // zzzzzzzz
+          }
         },
-        child: Text(suffix,
-            style: getSemiBoldStyle(color: ColorManager.darkBlueColor)),
+        style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
+        child: Center(
+          child: Text(AppStrings.signUp,
+              style: getMediumStyle(
+                  color: ColorManager.darkBlueColor, fontSize: FontSize.s20)),
+        ),
       ),
-    ],
-  );
-}
+    );
+  }
 
-Widget _getconTextButton({
-  String text = '',
-  String? iconPath,
-  Function()? onPressed,
-}) {
-  return Card(
-    color: Colors.white,
-    child: Padding(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          if (iconPath != null) ...[
-            Image.asset(
-              iconPath,
-              width: 36, // Adjust the width as needed
-              height: 36, // Adjust the height as needed
-            ),
-            const SizedBox(width: 8),
+  Widget _buildFormInput() {
+    return Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            CompulsoryTextField(
+                content: AppStrings.email,
+                validator: validateEmail,
+                hint: AppStrings.enterEmail,
+                controller: emailController),
+            CompulsoryTextField(
+                content: AppStrings.password,
+                validator: validatePassword,
+                hint: AppStrings.enterPassword,
+                controller: passwordController),
           ],
-          Text(text,
-              style: getSemiBoldStyle(
-                  color: Colors.black, fontSize: FontSize.s14)),
-        ],
+        ));
+  }
+
+  Widget _buildFooterText(
+      {String suffix = '', String prefix = '', required BuildContext context}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(prefix, style: getSemiBoldStyle(color: ColorManager.greyColor)),
+        const SizedBox(
+          width: 4,
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+          },
+          child: Text(suffix,
+              style: getSemiBoldStyle(color: ColorManager.darkBlueColor)),
+        ),
+      ],
+    );
+  }
+
+  Widget _getconTextButton({
+    String text = '',
+    String? iconPath,
+    Function()? onPressed,
+  }) {
+    return Card(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: [
+            if (iconPath != null) ...[
+              Image.asset(
+                iconPath,
+                width: 36, // Adjust the width as needed
+                height: 36, // Adjust the height as needed
+              ),
+              const SizedBox(width: 8),
+            ],
+            Text(text,
+                style: getSemiBoldStyle(
+                    color: Colors.black, fontSize: FontSize.s14)),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

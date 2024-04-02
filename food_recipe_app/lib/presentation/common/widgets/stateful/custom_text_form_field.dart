@@ -3,12 +3,17 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
 class CustomTextFormField extends StatefulWidget {
   CustomTextFormField(
-      {Key? key, required this.validator, this.icon, required this.hint})
+      {Key? key,
+      required this.validator,
+      this.icon,
+      required this.hint,
+      required this.controller})
       : super(key: key);
 
   late String hint;
   String? Function(String? x) validator;
   Widget? icon;
+  TextEditingController controller;
   @override
   _CustomTextFormFieldState createState() {
     return _CustomTextFormFieldState();
@@ -38,6 +43,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           surfaceTintColor: Colors.white70,
           color: Colors.white,
           child: TextFormField(
+            controller: widget.controller,
             validator: (value) {
               final error = widget.validator.call(value);
               WidgetsBinding.instance.addPostFrameCallback((_) {

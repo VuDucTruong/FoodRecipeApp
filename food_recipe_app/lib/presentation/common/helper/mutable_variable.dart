@@ -1,4 +1,4 @@
-class MutableVariable<T extends num> {
+class MutableVariable<T> {
   T value;
 
   MutableVariable(this.value);

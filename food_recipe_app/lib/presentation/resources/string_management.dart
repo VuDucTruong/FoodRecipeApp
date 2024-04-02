@@ -20,6 +20,7 @@ class AppStrings {
   static const String loginAccount = 'Login to your account';
   static const String email = 'Email';
   static const String password = 'Password';
+  static const String enterPassword = 'Enter a Password';
   static const String rememberMe = 'Remember me';
   static const String alreadyHaveAccount = 'Already have an account ?';
   static const String notHaveAccount = "Don't have an account?";
