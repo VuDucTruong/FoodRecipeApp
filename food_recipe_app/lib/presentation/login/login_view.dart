@@ -118,7 +118,7 @@ class LoginViewState extends State<LoginView> {
       child: FilledButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            // zzzzzzzz
+            Navigator.pushReplacementNamed(context, Routes.mainRoute);
           }
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),

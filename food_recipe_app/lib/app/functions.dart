@@ -61,7 +61,7 @@ String? validateEmail(String? value) {
   return null;
 }
 
-String? validateFullName(String? value) {
+String? validateEmpty(String? value) {
   if (value == null || value.isEmpty) {
     return AppStrings.nameRequiredError;
   }

@@ -8,7 +8,7 @@ import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/login/login_view.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/main/home/home_page.dart';
-import 'package:food_recipe_app/presentation/setting_kitchen/setting_preferences_view.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/setting_kitchen_view.dart';
 import 'package:food_recipe_app/presentation/signup/signup_view.dart';
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
 
@@ -23,7 +23,7 @@ class Routes {
   static const String detailFoodRoute = '/detailFood';
   static const String editProfileRoute = '/editProfile';
   static const String loadingRoute = '/loading';
-  static const String settingPreferencesRoute = '/settingPreferences';
+  static const String settingKitchenRoute = '/settingKitchen';
 }
 
 class RouteGenerator {
@@ -61,9 +61,9 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) => const EditProfileView(),
         );
-      case Routes.settingPreferencesRoute:
+      case Routes.settingKitchenRoute:
         return MaterialPageRoute(
-          builder: (context) => const SettingPreferencesView(),
+          builder: (context) => const SettingKitchenView(),
         );
       default:
         return undefinedRoute();

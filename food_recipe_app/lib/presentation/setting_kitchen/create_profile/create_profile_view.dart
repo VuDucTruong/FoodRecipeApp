@@ -84,7 +84,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                 controller: nameController,
                 content: AppStrings.fullName,
                 hint: AppStrings.enterFullName,
-                validator: validateFullName),
+                validator: validateEmpty),
             CompulsoryTextField(
                 controller: emailController,
                 content: AppStrings.email,

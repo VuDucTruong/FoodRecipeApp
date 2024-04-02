@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/edit_profile/widgets/edited_avatar.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 import '../resources/assets_management.dart';
@@ -19,6 +22,11 @@ class EditProfileView extends StatefulWidget {
 }
 
 class _EditProfileViewState extends State<EditProfileView> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController bioController = TextEditingController();
+  TextEditingController instagramController = TextEditingController();
+  TextEditingController gmailController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -27,79 +35,103 @@ class _EditProfileViewState extends State<EditProfileView> {
   @override
   void dispose() {
     super.dispose();
+    nameController.dispose();
+    bioController.dispose();
+    instagramController.dispose();
+    gmailController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          AppStrings.editProfile,
-          style: getBoldStyle(
-              color: ColorManager.secondaryColor, fontSize: FontSize.s20),
-        ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: SvgPicture.asset(
-            PicturePath.backArrowPath,
-          ),
-        ),
-      ),
+      appBar: _buildAppBar(context),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                height: AppSize.s100,
-                width: AppSize.s100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(AppRadius.r15),
-                    color: Colors.amber),
-              ),
-              Text(
-                AppStrings.editPicture,
-                style: getLightStyle(color: ColorManager.blueColor),
-              ),
-              _getNameEditField(),
+              const EditedAvatar(),
+              Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      _getNameEditField(),
+                    ],
+                  )),
               _getBioEditField(),
-              _getCountryEditField(),
-              _getIconEditField(Row(
-                children: [
-                  SvgPicture.asset(PicturePath.instagramPath),
-                  const Text(AppStrings.instagram),
-                ],
-              )),
-              _getIconEditField(Row(
-                children: [
-                  SvgPicture.asset(PicturePath.gmailPath),
-                  const Text(AppStrings.gmail),
-                ],
-              )),
+              _getIconEditField(
+                  iconPath: PicturePath.instagramPath,
+                  content: AppStrings.instagram,
+                  controller: instagramController),
+              _getIconEditField(
+                  iconPath: PicturePath.gmailPath,
+                  content: AppStrings.gmail,
+                  controller: gmailController),
               const SizedBox(
                 height: AppSize.s16,
-              ),
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                style: OutlinedButton.styleFrom(
-                    side: const BorderSide(
-                        color: ColorManager.blueColor,
-                        style: BorderStyle.solid,
-                        width: 1)),
-                child: Text(AppStrings.deleteProfile,
-                    style: getBoldStyle(color: ColorManager.blueColor)),
               ),
             ],
           ),
         ),
       ),
+      floatingActionButton: buildDeleteButton(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  Padding buildDeleteButton() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: OutlinedButton(
+        onPressed: () {
+          ////zzzzzz
+        },
+        style: OutlinedButton.styleFrom(
+            side: const BorderSide(
+                color: ColorManager.blueColor,
+                style: BorderStyle.solid,
+                width: 2)),
+        child: Text(AppStrings.deleteProfile,
+            style: getBoldStyle(color: ColorManager.blueColor)),
+      ),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text(
+        AppStrings.editProfile,
+        style: getBoldStyle(
+            color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      leading: IconButton(
+        onPressed: () {
+          if (!_formKey.currentState!.validate()) return;
+          Navigator.pop(context);
+        },
+        icon: SvgPicture.asset(
+          PicturePath.backArrowPath,
+        ),
+      ),
+    );
+  }
+
+  InputDecoration inputDecoration() {
+    return const InputDecoration(
+      isDense: true,
+      errorStyle: TextStyle(fontSize: FontSize.s12),
+      contentPadding: EdgeInsets.zero,
+      enabledBorder: UnderlineInputBorder(),
+      // focused border
+      focusedBorder: UnderlineInputBorder(),
+
+      // error border
+      errorBorder: UnderlineInputBorder(),
+      // focused error border
+      focusedErrorBorder: UnderlineInputBorder(),
     );
   }
 
@@ -117,24 +149,13 @@ class _EditProfileViewState extends State<EditProfileView> {
           const SizedBox(
             height: AppSize.s4,
           ),
-          Form(
-              child: TextFormField(
-                  maxLines: null,
-                  minLines: 1,
-                  maxLength: 500,
-                  style: getRegularStyle(color: Colors.black),
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    enabledBorder: UnderlineInputBorder(),
-                    // focused border
-                    focusedBorder: UnderlineInputBorder(),
-
-                    // error border
-                    errorBorder: UnderlineInputBorder(),
-                    // focused error border
-                    focusedErrorBorder: UnderlineInputBorder(),
-                  ))),
+          TextFormField(
+              controller: bioController,
+              maxLines: null,
+              minLines: 1,
+              maxLength: 500,
+              style: getLightStyle(color: Colors.black, fontSize: FontSize.s16),
+              decoration: inputDecoration()),
         ],
       ),
     );
@@ -154,91 +175,53 @@ class _EditProfileViewState extends State<EditProfileView> {
           const SizedBox(
             height: AppSize.s4,
           ),
-          Form(
-              child: TextFormField(
-                  maxLines: null,
-                  minLines: 1,
-                  maxLength: 50,
-                  style: getRegularStyle(color: Colors.black),
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    enabledBorder: UnderlineInputBorder(),
-                    // focused border
-                    focusedBorder: UnderlineInputBorder(),
-
-                    // error border
-                    errorBorder: UnderlineInputBorder(),
-                    // focused error border
-                    focusedErrorBorder: UnderlineInputBorder(),
-                  ))),
+          TextFormField(
+              controller: nameController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: validateEmpty,
+              maxLines: null,
+              minLines: 1,
+              maxLength: 50,
+              style: getLightStyle(color: Colors.black, fontSize: FontSize.s16),
+              decoration: inputDecoration()),
         ],
       ),
     );
   }
 
-  Widget _getCountryEditField() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppStrings.country,
-            style: getBoldStyle(
-                color: ColorManager.secondaryColor, fontSize: FontSize.s16),
-          ),
-          const SizedBox(
-            height: AppSize.s4,
-          ),
-          Form(
-              child: TextFormField(
-                  style: getRegularStyle(color: Colors.black),
-                  maxLines: null,
-                  minLines: 1,
-                  decoration: const InputDecoration(
-                    isDense: true,
-                    contentPadding: EdgeInsets.zero,
-                    enabledBorder: UnderlineInputBorder(),
-                    // focused border
-                    focusedBorder: UnderlineInputBorder(),
-                    // error border
-                    errorBorder: UnderlineInputBorder(),
-                    // focused error border
-                    focusedErrorBorder: UnderlineInputBorder(),
-                  ))),
-        ],
-      ),
-    );
-  }
-
-  Widget _getIconEditField(Widget title) {
+  Widget _getIconEditField(
+      {required String iconPath,
+      required String content,
+      required TextEditingController controller}) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppMargin.m12),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          title,
+          SizedBox(
+              width: 100,
+              child: Row(
+                children: [
+                  SvgPicture.asset(iconPath),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  Text(content,
+                      style: getBoldStyle(
+                          color: Colors.black, fontSize: FontSize.s14)),
+                ],
+              )),
           const SizedBox(
             width: AppSize.s8,
           ),
           Expanded(
-            child: Form(
-                child: TextFormField(
-                    style: getRegularStyle(color: Colors.black),
-                    maxLines: null,
-                    minLines: 1,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      isDense: true,
-                      enabledBorder: UnderlineInputBorder(),
-                      // focused border
-                      focusedBorder: UnderlineInputBorder(),
-                      // error border
-                      errorBorder: UnderlineInputBorder(),
-                      // focused error border
-                      focusedErrorBorder: UnderlineInputBorder(),
-                    ))),
+            child: TextFormField(
+                controller: controller,
+                style:
+                    getLightStyle(color: Colors.black, fontSize: FontSize.s16),
+                maxLines: null,
+                minLines: 1,
+                decoration: inputDecoration()),
           ),
         ],
       ),

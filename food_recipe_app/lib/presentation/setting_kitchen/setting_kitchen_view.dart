@@ -15,16 +15,16 @@ import '../resources/value_manament.dart';
 import 'create_profile/create_profile_view.dart';
 import 'food_type/setting_food_type_view.dart';
 
-class SettingPreferencesView extends StatefulWidget {
-  const SettingPreferencesView({super.key});
+class SettingKitchenView extends StatefulWidget {
+  const SettingKitchenView({super.key});
 
   @override
-  _SettingPreferencesViewState createState() {
-    return _SettingPreferencesViewState();
+  _SettingKitchenViewState createState() {
+    return _SettingKitchenViewState();
   }
 }
 
-class _SettingPreferencesViewState extends State<SettingPreferencesView> {
+class _SettingKitchenViewState extends State<SettingKitchenView> {
   late PageController _pageController;
 
   bool isOn = true;

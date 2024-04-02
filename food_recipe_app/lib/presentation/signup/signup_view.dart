@@ -22,7 +22,7 @@ class SignUpView extends StatefulWidget {
 class SignUpViewState extends State<SignUpView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
   bool isRememberMe = false;
 
   @override
@@ -97,7 +97,7 @@ class SignUpViewState extends State<SignUpView> {
       child: FilledButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            // zzzzzzzz
+            Navigator.pushNamed(context, Routes.settingKitchenRoute);
           }
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
