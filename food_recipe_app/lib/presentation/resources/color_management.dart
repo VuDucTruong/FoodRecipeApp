@@ -79,4 +79,16 @@ class ColorManager {
       1.0, // equivalent to 100%
     ],
   );
+  static const LinearGradient linearGradientNonVeg = LinearGradient(
+    end: Alignment.centerLeft,
+    begin: Alignment.bottomRight,
+    colors: [
+      Color(0xFFE9455D),
+      Color(0xFFFA9BB1),
+    ],
+    stops: [
+      -0.0563, // equivalent to -5.63%
+      1.0, // equivalent to 100%
+    ],
+  );
 }

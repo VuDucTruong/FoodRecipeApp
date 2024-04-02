@@ -34,12 +34,14 @@ ThemeData getAppTheme() {
         // label style
         labelStyle: getMediumStyle(color: Colors.grey.shade800),
         // error style
-        errorStyle: getMediumStyle(color: Colors.red),
+        errorStyle: const TextStyle(fontSize: 0),
         // enabled border
         enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
         // focused border
         focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide.none,
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
         // error border
         errorBorder: const OutlineInputBorder(
