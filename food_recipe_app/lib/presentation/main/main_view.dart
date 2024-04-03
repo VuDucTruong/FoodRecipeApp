@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_recipe_app/presentation/main/create_recipe_page.dart';
+import 'package:food_recipe_app/presentation/main/create_recipe/create_recipe_page.dart';
 import 'package:food_recipe_app/presentation/main/home/home_page.dart';
 import 'package:food_recipe_app/presentation/main/saved_recipe_page.dart';
 import 'package:food_recipe_app/presentation/main/setting_page.dart';
@@ -44,8 +45,8 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
         bottomNavigationBar: Container(
           padding: const EdgeInsets.all(AppPadding.p8),
-          decoration:
-              BoxDecoration(gradient: ColorManager.linearGradientSecondary),
+          decoration: const BoxDecoration(
+              gradient: ColorManager.linearGradientSecondary),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.max,
@@ -59,7 +60,12 @@ class _MainViewState extends State<MainView> {
             ],
           ),
         ),
-        body: pages[index]);
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: pages[index],
+          ),
+        ));
   }
 
   Widget _getAnimatedBarItem(int x, String picturePath) {
@@ -72,14 +78,16 @@ class _MainViewState extends State<MainView> {
         child: Container(
             padding: const EdgeInsets.all(AppPadding.p4),
             decoration: index == x
-                ? BoxDecoration(
+                ? const BoxDecoration(
                     gradient: ColorManager.linearGradientPink,
                     shape: BoxShape.circle)
                 : null,
             child: SvgPicture.asset(
               picturePath,
-              colorFilter: index == x ? ColorFilter.mode(
-                  ColorManager.darkBlueColor, BlendMode.srcIn) : null,
+              colorFilter: index == x
+                  ? const ColorFilter.mode(
+                      ColorManager.darkBlueColor, BlendMode.srcIn)
+                  : null,
             )),
       ),
       onTap: () {

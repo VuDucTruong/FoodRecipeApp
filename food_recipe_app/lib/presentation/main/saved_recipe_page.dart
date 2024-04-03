@@ -37,46 +37,43 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     double width = MediaQuery.of(context).size.width * 0.8;
-    return SafeArea(
-      child: SingleChildScrollView(
-          child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
-            child: Row(
-              children: [
-                Text(
-                  AppStrings.savedRecipes,
-                  style: getBoldStyle(
-                      color: ColorManager.secondaryColor,
-                      fontSize: FontSize.s20),
-                ),
-                const Spacer(),
-                SvgPicture.asset(
-                  PicturePath.logoSVGPath,
-                  width: AppSize.s50,
-                  height: AppSize.s50,
-                  fit: BoxFit.contain,
-                )
-              ],
-            ),
+    return SingleChildScrollView(
+        child: Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
+          child: Row(
+            children: [
+              Text(
+                AppStrings.savedRecipes,
+                style: getBoldStyle(
+                    color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+              ),
+              const Spacer(),
+              SvgPicture.asset(
+                PicturePath.logoSVGPath,
+                width: AppSize.s50,
+                height: AppSize.s50,
+                fit: BoxFit.contain,
+              )
+            ],
           ),
-          const SizedBox(
-            height: AppSize.s10,
-          ),
-          const FoodTypeList(),
-          const SizedBox(
-            height: AppSize.s10,
-          ),
-          ListView.builder(
-              itemCount: 20,
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return Center(child: RecipeItem(isUser: true));
-              }),
-        ],
-      )),
-    );
+        ),
+        const SizedBox(
+          height: AppSize.s10,
+        ),
+        const FoodTypeList(),
+        const SizedBox(
+          height: AppSize.s10,
+        ),
+        ListView.builder(
+            itemCount: 20,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Center(child: RecipeItem(isUser: true));
+            }),
+      ],
+    ));
   }
 }

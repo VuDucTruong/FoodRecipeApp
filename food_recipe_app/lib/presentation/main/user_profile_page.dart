@@ -37,61 +37,55 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(AppMargin.m8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppStrings.yourProfile,
+          style: getBoldStyle(
+              color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+        ),
+        const UserIntroduction(),
+        const UserDescription(),
+        const UserSocialStatus(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text(
-              AppStrings.yourProfile,
-              style: getBoldStyle(
-                  color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+            OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                  side: const BorderSide(style: BorderStyle.none),
+                  backgroundColor: ColorManager.secondaryColor),
+              child: Text(AppStrings.addRecipe,
+                  style: getBoldStyle(
+                      color: Colors.white, fontSize: FontSize.s16)),
             ),
-            const UserIntroduction(),
-            const UserDescription(),
-            const UserSocialStatus(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                      side: const BorderSide(style: BorderStyle.none),
-                      backgroundColor: ColorManager.secondaryColor),
-                  child: Text(AppStrings.addRecipe,
-                      style: getBoldStyle(
-                          color: Colors.white, fontSize: FontSize.s16)),
-                ),
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(Routes.editProfileRoute);
-                  },
-                  style: OutlinedButton.styleFrom(
-                      side: const BorderSide(
-                          color: ColorManager.blueColor,
-                          style: BorderStyle.solid,
-                          width: 1)),
-                  child: Text(AppStrings.editProfile,
-                      style: getBoldStyle(
-                          color: ColorManager.blueColor,
-                          fontSize: FontSize.s16)),
-                ),
-              ],
-            ),
-            const Divider(
-              color: Colors.black26,
-            ),
-            Expanded(
-                child: ListView.builder(
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return RecipeItem(isUser: true);
+            OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(Routes.editProfileRoute);
               },
-            ))
+              style: OutlinedButton.styleFrom(
+                  side: const BorderSide(
+                      color: ColorManager.blueColor,
+                      style: BorderStyle.solid,
+                      width: 1)),
+              child: Text(AppStrings.editProfile,
+                  style: getBoldStyle(
+                      color: ColorManager.blueColor, fontSize: FontSize.s16)),
+            ),
           ],
         ),
-      ),
+        const Divider(
+          color: Colors.black26,
+        ),
+        Expanded(
+            child: ListView.builder(
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return RecipeItem(isUser: true);
+          },
+        ))
+      ],
     );
   }
 }

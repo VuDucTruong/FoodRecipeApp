@@ -7,7 +7,7 @@ import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
-import 'package:food_recipe_app/presentation/setting_kitchen/food_type/widgets/default_heads.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateful/default_heads.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/widgets/food_item.dart';
 
 class SettingFoodTypeView extends StatefulWidget {

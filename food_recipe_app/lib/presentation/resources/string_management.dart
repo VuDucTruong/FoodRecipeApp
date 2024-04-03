@@ -113,4 +113,7 @@ class AppStrings {
   static const String disNameRequiredError = 'Dish name is required';
   static const String ingredientMissingError = 'Ingredient is missing';
   static const String loginError = 'Your email or password is wrong !';
+  static const String selectFoodType = 'Food type...';
+  static const String create = 'Create';
+  static const String foodCategory = 'Category';
 }
