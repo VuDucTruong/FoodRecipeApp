@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
 import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
 import 'package:food_recipe_app/presentation/edit_profile/edit_profile_view.dart';
@@ -54,6 +55,7 @@ class RouteGenerator {
           builder: (context) => const DetailFoodView(),
         );
       case Routes.mainRoute:
+        initHomeModule();
         return MaterialPageRoute(
           builder: (context) => const MainView(),
         );

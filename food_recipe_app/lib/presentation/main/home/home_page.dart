@@ -1,7 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_list.dart';
+import 'package:food_recipe_app/presentation/main/home/bloc/home_bloc.dart';
+import 'package:food_recipe_app/presentation/main/home/bloc/home_bloc.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -9,6 +14,7 @@ import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:get_it/get_it.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,9 +26,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late HomeBloc homeBloc;
+
   @override
   void initState() {
     super.initState();
+    homeBloc = GetIt.instance<HomeBloc>();
+    homeBloc.add(HomeInitialEvent());
   }
 
   @override
@@ -116,29 +126,53 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container _getCarouselSlider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
-      child: CarouselSlider(
-        options: CarouselOptions(
-          height: AppSize.s150,
-          autoPlay: true,
-        ),
-        items: [1, 2, 3, 4, 5].map((i) {
-          return Builder(
-            builder: (BuildContext context) {
-              return Container(
-                  width: MediaQuery.of(context).size.width,
-                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                  decoration: const BoxDecoration(color: Colors.amber),
-                  child: Text(
-                    'text $i',
-                    style: const TextStyle(fontSize: 16.0),
-                  ));
-            },
+  Widget _getCarouselSlider() {
+    return BlocConsumer<HomeBloc, HomeState>(
+      bloc: homeBloc,
+      listener: (context, state) {},
+      builder: (context, state) {
+        if (state is HomeLoadingSuccessState) {
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: AppSize.s150,
+                autoPlay: true,
+              ),
+              items: state.trendingRecipeList.map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: const BoxDecoration(color: Colors.amber),
+                        child: Text(
+                          'text ${i.title}',
+                          style: const TextStyle(fontSize: 16.0),
+                        ));
+                  },
+                );
+              }).toList(),
+            ),
           );
-        }).toList(),
-      ),
+        }
+        if (state is HomeErrorState) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            showAnimatedDialog2(context, const NoConnectionDialog());
+          });
+
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                state.failure.message.toString(),
+                style: getSemiBoldStyle(color: Colors.red),
+              ),
+            ),
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 

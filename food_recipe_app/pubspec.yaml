@@ -34,12 +34,15 @@ dependencies:
   get_it: ^7.6.7
   dartz: ^0.10.1
   internet_connection_checker: ^1.0.0+1
-  json_serializable: ^6.7.1
   flutter_svg: ^2.0.10+1
   carousel_slider: ^4.2.1
   lottie: ^3.1.0
   flutter_bloc: ^8.1.4
   image_picker: ^1.0.7
+  dio: ^5.4.2+1
+  retrofit: '>=4.0.0 <5.0.0'
+  logger: any  #for logging purpose
+  json_annotation: ^4.8.1
 
 
 dev_dependencies:
@@ -48,6 +51,9 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.13.1
+  retrofit_generator: '>=7.0.0 <8.0.0'
+  build_runner: '>=2.3.0 <4.0.0'
+  json_serializable: ^6.6.2
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
