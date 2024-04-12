@@ -14,7 +14,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
 
   @override
   Future<List<RecipeResponse>> getRecipesFromLikes() async {
-    Response response = await _dio.get('${recipeEndpoint}/get-from-likes');
+    Response response = await _dio.get('$recipeEndpoint/get-from-likes');
     List<RecipeResponse> recipeList = [];
     for (Map<String, dynamic> item in response.data) {
       print(item);
