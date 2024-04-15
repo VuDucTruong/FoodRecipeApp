@@ -6,6 +6,7 @@ import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/remember_check_box.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
+import 'package:food_recipe_app/presentation/login/bloc/login_bloc.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -13,6 +14,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateful/comon_text_
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
+import 'package:get_it/get_it.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -26,6 +28,13 @@ class LoginViewState extends State<LoginView> {
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
   MutableVariable<bool> isRememberMe = MutableVariable(false);
+  late LoginBloc _loginBloc;
+  @override
+  void initState() {
+    super.initState();
+    _loginBloc = GetIt.instance<LoginBloc>();
+    // _loginBloc.add(LoginButtonPressed('',''));
+  }
   @override
   void dispose() {
     // TODO: implement dispose
@@ -118,6 +127,8 @@ class LoginViewState extends State<LoginView> {
       child: FilledButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
+            _loginBloc.add(LoginButtonPressed(
+                emailController.text, passwordController.text));
             Navigator.pushReplacementNamed(context, Routes.mainRoute);
           }
         },

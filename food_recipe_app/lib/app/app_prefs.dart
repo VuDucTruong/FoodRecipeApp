@@ -57,9 +57,16 @@ class AppPreferences {
   Future<void> setUserToken(String token) async {
     _sharedPreferences.setString(PREFS_KEY_TOKEN, token);
   }
+  Future<void> setUserRefreshToken(String token) async {
+    _sharedPreferences.setString(PREFS_KEY_TOKEN, token);
+  }
 
   Future<String> getUserToken() async {
     return _sharedPreferences.getString(PREFS_KEY_TOKEN) ?? "";
+  }
+
+  Future<String> getUserRefreshToken() async {
+    return _sharedPreferences.getString(PREFS_KEY_TOKEN)??"";
   }
 
   Future<void> setIsUserLoggedIn() async {

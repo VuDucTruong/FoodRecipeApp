@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/responses/recipe_response.dart';
 
@@ -17,7 +18,7 @@ class RemoteDataSourceImpl implements RemoteDataSource {
     Response response = await _dio.get('$recipeEndpoint/get-from-likes');
     List<RecipeResponse> recipeList = [];
     for (Map<String, dynamic> item in response.data) {
-      print(item);
+      debugPrint(item.toString());
       recipeList.add(RecipeResponse.fromJson(item));
     }
     return recipeList;

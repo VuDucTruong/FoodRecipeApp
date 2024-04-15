@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'recipe_response.g.dart';
 
 @JsonSerializable()
-class RecipeResponse {
+class   RecipeResponse {
   String id;
   String userId;
   String title;

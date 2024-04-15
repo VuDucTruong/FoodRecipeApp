@@ -1,7 +1,9 @@
 import 'package:food_recipe_app/app/app_prefs.dart';
+import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
 import 'package:food_recipe_app/data/data_source/recipe_remote_data_source.dart';
 import 'package:food_recipe_app/data/network/dio_factory.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
+import 'package:food_recipe_app/data/respository_impl/login_repository.dart';
 import 'package:food_recipe_app/data/respository_impl/recipe_respository.dart';
 import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
@@ -19,8 +21,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
 
   // app prefs instance
-  instance
-      .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
+  instance.registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
 
   // network info
   instance.registerLazySingleton<NetworkInfo>(
@@ -33,11 +34,12 @@ Future<void> initAppModule() async {
   final dio = await instance<DioFactory>().getDio();
 
   // remote data source
-  instance
-      .registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(dio));
+  instance.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(dio));
+  instance.registerLazySingleton(() => LoginRemoteDataSourceImpl(dio));
 
   instance.registerLazySingleton<RecipeRespository>(
       () => RecipeRespositoryImpl(instance(), instance()));
+  instance.registerLazySingleton(() => LoginRepositoryImpl(instance(),instance(),instance()));
 }
 
 initHomeModule() {
@@ -47,4 +49,11 @@ initHomeModule() {
   // register home bloc
   instance.registerLazySingleton(
       () => HomeBloc(getRecipesFromLikesUseCase: instance()));
+}
+
+initLoginModule() {
+  // register necessary usecase in login page
+  // instance.registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
+  // register login bloc
+  // instance.registerLazySingleton(() => LoginBloc(loginUseCase: instance()));
 }
