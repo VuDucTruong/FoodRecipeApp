@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
@@ -35,6 +36,7 @@ class LoginViewState extends State<LoginView> {
     _loginBloc = GetIt.instance<LoginBloc>();
     // _loginBloc.add(LoginButtonPressed('',''));
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -88,6 +90,18 @@ class LoginViewState extends State<LoginView> {
               _buildFormInput(),
               RememberCheckBox(isChecked: isRememberMe),
               const SizedBox(height: 8),
+              BlocConsumer(
+                listener: (context, state) {
+                  if (state is LoginSuccess) {
+                    Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                  }
+                },
+                bloc: _loginBloc,
+                builder: (context, state) {
+                  if (state is LoginFailure) return Text('Error');
+                  return Container();
+                },
+              ),
               _buildLoginButton(),
               const SizedBox(height: 16),
               _buildFooterText(
@@ -126,11 +140,10 @@ class LoginViewState extends State<LoginView> {
       widthFactor: 0.5,
       child: FilledButton(
         onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            _loginBloc.add(LoginButtonPressed(
-                emailController.text, passwordController.text));
-            Navigator.pushReplacementNamed(context, Routes.mainRoute);
-          }
+          //if (_formKey.currentState!.validate()) {
+          _loginBloc.add(LoginButtonPressed(
+              emailController.text, passwordController.text));
+          //}
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
         child: Center(

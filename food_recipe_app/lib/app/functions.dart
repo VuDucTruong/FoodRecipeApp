@@ -82,7 +82,7 @@ String? validatePassword(String? value) {
   if (value == null || value.isEmpty) {
     return AppStrings.passRequiredError;
   }
-  if (value.length < 8) {
+  if (value.length < 6) {
     return AppStrings.passValidationError;
   }
   return null;

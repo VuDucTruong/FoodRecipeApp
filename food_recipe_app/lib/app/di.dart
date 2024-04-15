@@ -5,8 +5,11 @@ import 'package:food_recipe_app/data/network/dio_factory.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/respository_impl/login_repository.dart';
 import 'package:food_recipe_app/data/respository_impl/recipe_respository.dart';
+import 'package:food_recipe_app/domain/respository/login_repository.dart';
 import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
+import 'package:food_recipe_app/presentation/login/bloc/login_bloc.dart';
 import 'package:food_recipe_app/presentation/main/home/bloc/home_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -21,7 +24,8 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
 
   // app prefs instance
-  instance.registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
+  instance
+      .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
 
   // network info
   instance.registerLazySingleton<NetworkInfo>(
@@ -34,12 +38,15 @@ Future<void> initAppModule() async {
   final dio = await instance<DioFactory>().getDio();
 
   // remote data source
-  instance.registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(dio));
-  instance.registerLazySingleton(() => LoginRemoteDataSourceImpl(dio));
+  instance
+      .registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(dio));
+  instance.registerLazySingleton<LoginRemoteDataSource>(
+      () => LoginRemoteDataSourceImpl(dio));
 
   instance.registerLazySingleton<RecipeRespository>(
       () => RecipeRespositoryImpl(instance(), instance()));
-  instance.registerLazySingleton(() => LoginRepositoryImpl(instance(),instance(),instance()));
+  instance.registerLazySingleton<LoginRepository>(
+      () => LoginRepositoryImpl(instance(), instance(), instance()));
 }
 
 initHomeModule() {
@@ -52,8 +59,14 @@ initHomeModule() {
 }
 
 initLoginModule() {
-  // register necessary usecase in login page
-  // instance.registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
-  // register login bloc
-  // instance.registerLazySingleton(() => LoginBloc(loginUseCase: instance()));
+  //register necessary usecase in login page
+  if (!instance.isRegistered<LoginUseCase>()) {
+    instance
+        .registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
+  }
+
+  //register login bloc
+  if (!instance.isRegistered<LoginBloc>()) {
+    instance.registerLazySingleton(() => LoginBloc(instance()));
+  }
 }
