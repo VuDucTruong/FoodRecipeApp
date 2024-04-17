@@ -11,33 +11,43 @@ RecipeResponse _$RecipeResponseFromJson(Map<String, dynamic> json) =>
       json['id'] as String,
       json['userId'] as String,
       json['title'] as String,
+      json['description'] as String,
       json['instruction'] as String,
       DateTime.parse(json['createdAt'] as String),
       DateTime.parse(json['updatedAt'] as String),
+      json['representIndex'] as int,
       (json['attachmentUrls'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+      json['categories'] as String,
       json['likes'] as int,
-      (json['commentBatchIds'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
+      json['serves'] as int,
       json['cookTime'] as int,
-      Map<String, String>.from(json['ingredients'] as Map),
+      (json['ingredients'] as List<dynamic>).map((e) => e as String).toList(),
       json['isPublished'] as bool,
-    );
+      json['isVegan'] as bool,
+    )
+      ..status = json['status'] as int?
+      ..message = json['message'] as String?;
 
 Map<String, dynamic> _$RecipeResponseToJson(RecipeResponse instance) =>
     <String, dynamic>{
+      'status': instance.status,
+      'message': instance.message,
       'id': instance.id,
       'userId': instance.userId,
       'title': instance.title,
+      'description': instance.description,
       'instruction': instance.instruction,
       'createdAt': instance.createdAt.toIso8601String(),
       'updatedAt': instance.updatedAt.toIso8601String(),
+      'representIndex': instance.representIndex,
       'attachmentUrls': instance.attachmentUrls,
+      'categories': instance.categories,
       'likes': instance.likes,
-      'commentBatchIds': instance.commentBatchIds,
+      'serves': instance.serves,
       'cookTime': instance.cookTime,
       'ingredients': instance.ingredients,
       'isPublished': instance.isPublished,
+      'isVegan': instance.isVegan,
     };

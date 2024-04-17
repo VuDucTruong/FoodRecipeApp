@@ -4,8 +4,10 @@ import 'package:food_recipe_app/data/network/dio_factory.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/respository_impl/recipe_respository.dart';
 import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
+import 'package:food_recipe_app/domain/usecase/get_recipes_by_category.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
-import 'package:food_recipe_app/presentation/main/home/bloc/home_bloc.dart';
+import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
+import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,8 +35,8 @@ Future<void> initAppModule() async {
   final dio = await instance<DioFactory>().getDio();
 
   // remote data source
-  instance
-      .registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(dio));
+  instance.registerLazySingleton<RecipeRemoteDataSource>(
+      () => RecipeRemoteDataSourceImpl(dio));
 
   instance.registerLazySingleton<RecipeRespository>(
       () => RecipeRespositoryImpl(instance(), instance()));
@@ -42,9 +44,18 @@ Future<void> initAppModule() async {
 
 initHomeModule() {
   // register necessary usecase in home page
-  instance.registerLazySingleton<GetRecipesFromLikesUseCase>(
-      () => GetRecipesFromLikesUseCase(instance()));
-  // register home bloc
-  instance.registerLazySingleton(
-      () => HomeBloc(getRecipesFromLikesUseCase: instance()));
+  if (!instance.isRegistered<GetRecipesFromLikesUseCase>()) {
+    instance.registerLazySingleton<GetRecipesFromLikesUseCase>(
+        () => GetRecipesFromLikesUseCase(instance()));
+  }
+  if (!instance.isRegistered<GetRecipesByCategory>()) {
+    instance.registerLazySingleton<GetRecipesByCategory>(
+        () => GetRecipesByCategory(instance()));
+  }
+  if (!instance.isRegistered<RecipesByCategoryBloc>()) {
+    instance.registerLazySingleton(() => RecipesByCategoryBloc(instance()));
+  }
+  if (!instance.isRegistered<TrendingBloc>()) {
+    instance.registerLazySingleton(() => TrendingBloc(instance()));
+  }
 }
