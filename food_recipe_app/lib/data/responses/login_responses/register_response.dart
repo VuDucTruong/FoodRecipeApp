@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'register_response.g.dart';
 @JsonSerializable(explicitToJson: true)
-class RegisterResponse extends BaseResponse{
+class RegisterResponse{
   final String? accessToken;
   final String? refreshToken;
   final UserDomainResponse? user;

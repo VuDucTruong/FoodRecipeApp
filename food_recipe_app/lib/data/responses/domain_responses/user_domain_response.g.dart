@@ -6,30 +6,33 @@ part of 'user_domain_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserDomainResponse _$UserDomainResponseFromJson(Map<String, dynamic> json) =>
-    UserDomainResponse(
-      id: json['id'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      authenticationInfo: UserAuthenticationInfoResponse.fromJson(
-          json['authenticationInfo'] as Map<String, dynamic>),
-      profileInfo: UserProfileInfoResponse.fromJson(
-          json['profileInfo'] as Map<String, dynamic>),
-      recipeIds:
-          (json['recipeIds'] as List<dynamic>).map((e) => e as String).toList(),
-      savedRecipeIds: (json['savedRecipeIds'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      followingIds: (json['followingIds'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      followerIds: (json['followerIds'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      loginTickets: (json['loginTickets'] as List<dynamic>)
-          .map((e) =>
-              UserLoginTicketResponse.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+UserDomainResponse _$UserDomainResponseFromJson(Map<String, dynamic> json) {
+      debugPrint('in user domain response: ${json.toString()}');
+      return
+            UserDomainResponse(
+                  id: json['id'] as String,
+                  authenticationInfo: UserAuthenticationInfoResponse.fromJson(
+                      json['authenticationInfo'] as Map<String, dynamic>),
+                  createdAt: DateTime.parse(json['createdAt'] as String),
+                  profileInfo: UserProfileInfoResponse.fromJson(
+                      json['profileInfo'] as Map<String, dynamic>),
+                  recipeIds:
+                  (json['recipeIds'] as List<dynamic>).map((e) => e as String).toList(),
+                  savedRecipeIds: (json['savedRecipeIds'] as List<dynamic>)
+                      .map((e) => e as String)
+                      .toList(),
+                  followingIds: (json['followingIds'] as List<dynamic>)
+                      .map((e) => e as String)
+                      .toList(),
+                  followerIds: (json['followerIds'] as List<dynamic>)
+                      .map((e) => e as String)
+                      .toList(),
+                  loginTickets: (json['loginTickets'] as List<dynamic>)
+                      .map((e) =>
+                      UserLoginTicketResponse.fromJson(e as Map<String, dynamic>))
+                      .toList(),
+            );
+}
 
 Map<String, dynamic> _$UserDomainResponseToJson(UserDomainResponse instance) =>
     <String, dynamic>{
@@ -45,37 +48,53 @@ Map<String, dynamic> _$UserDomainResponseToJson(UserDomainResponse instance) =>
     };
 
 UserProfileInfoResponse _$UserProfileInfoResponseFromJson(
-        Map<String, dynamic> json) =>
-    UserProfileInfoResponse(
-      fullName: json['fullName'] as String,
-      avatarUrl: json['avatarUrl'] as String,
-      isVegan: json['isVegan'] as bool,
-      bio: json['bio'] as String,
-      categories: (json['categories'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      hungryHeads:
-          const Int8Converter().fromJson(json['hungryHeads'] as String),
-    );
+        Map<String, dynamic> json) {
+      debugPrint('in user profile info response: ${json.toString()}');
+      try{
+            return UserProfileInfoResponse(
+                  fullName: json['fullName'] as String,
+                  avatarUrl: json['avatarUrl'] as String,
+                  isVegan: json['isVegan'] as bool,
+                  bio: json['bio'] as String,
+                  categories: (json['categories'] as List<dynamic>)
+                      .map((e) => e as String)
+                      .toList(),
+                  hungryHeads:json['hungryHeads']
+            );
+      }
+      catch(e) {
+            debugPrint('error in user profile info response: ${e.toString()}');
+            return UserProfileInfoResponse(fullName: '', avatarUrl: '',
+                isVegan: false, bio: '', categories: [], hungryHeads: 0);
+      }
+}
 
 Map<String, dynamic> _$UserProfileInfoResponseToJson(
-        UserProfileInfoResponse instance) =>
-    <String, dynamic>{
-      'fullName': instance.fullName,
-      'avatarUrl': instance.avatarUrl,
-      'isVegan': instance.isVegan,
-      'bio': instance.bio,
-      'categories': instance.categories,
-      'hungryHeads': const Int8Converter().toJson(instance.hungryHeads),
-    };
+        UserProfileInfoResponse instance) {
+      try{
+            return
+                  <String, dynamic>{
+                        'fullName': instance.fullName,
+                        'avatarUrl': instance.avatarUrl,
+                        'isVegan': instance.isVegan,
+                        'bio': instance.bio,
+                        'categories': instance.categories,
+                        'hungryHeads': instance.hungryHeads,
+                  };
+      }
+      catch(e) {
+            debugPrint('error in user profile info response: ${e.toString()}');
+            return <String, dynamic>{};
+      }
+}
 
 UserAuthenticationInfoResponse _$UserAuthenticationInfoResponseFromJson(
         Map<String, dynamic> json) =>
     UserAuthenticationInfoResponse(
-      email: json['email'] as String,
-      password: json['password'] as String,
-      googleId: json['googleId'] as String,
-      facebookId: json['facebookId'] as String,
+      email: json['email'] as String?,
+      password: json['password'] as String?,
+      googleId: json['googleId'] as String?,
+      facebookId: json['facebookId'] as String?,
     );
 
 Map<String, dynamic> _$UserAuthenticationInfoResponseToJson(

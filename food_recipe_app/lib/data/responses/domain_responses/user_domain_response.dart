@@ -1,5 +1,6 @@
 import 'dart:ffi';
 
+import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/data/responses/special_datatypes/int_json_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user_domain_response.g.dart';
@@ -19,8 +20,8 @@ class UserDomainResponse {
 
   UserDomainResponse({
     required this.id,
-    required this.createdAt,
     required this.authenticationInfo,
+    required this.createdAt,
     required this.profileInfo,
     required this.recipeIds,
     required this.savedRecipeIds,
@@ -28,6 +29,17 @@ class UserDomainResponse {
     required this.followerIds,
     required this.loginTickets,
   });
+  UserDomainResponse.defaultValues({
+    this.id = '',
+    required this.authenticationInfo,
+    required this.profileInfo,
+    this.recipeIds = const [],
+    this.savedRecipeIds = const [],
+    this.followingIds = const [],
+    this.followerIds = const [],
+    this.loginTickets = const [],
+  }):createdAt = DateTime.now();
+
 
   factory UserDomainResponse.fromJson(Map<String,dynamic> json)
   => _$UserDomainResponseFromJson(json);
@@ -47,7 +59,7 @@ class UserProfileInfoResponse {
   final String bio;
   final List<String> categories;
   @Int8Converter()
-  final Int8 hungryHeads;
+  final int hungryHeads;
 
   UserProfileInfoResponse({
     required this.fullName,
@@ -57,6 +69,14 @@ class UserProfileInfoResponse {
     required this.categories,
     required this.hungryHeads,
   });
+
+  UserProfileInfoResponse.defaultValues({
+    this.fullName = '',
+    this.avatarUrl = '',
+    this.isVegan = false,
+    this.bio = '',
+    this.categories = const [],
+  }): hungryHeads = 1;
 
   factory UserProfileInfoResponse.fromJson(Map<String,dynamic> json)
   => _$UserProfileInfoResponseFromJson(json);
@@ -69,16 +89,22 @@ class UserProfileInfoResponse {
 }
 @JsonSerializable()
 class UserAuthenticationInfoResponse {
-  final String email;
-  final String password;
-  final String googleId;
-  final String facebookId;
+  final String? email;
+  final String? password;
+  final String? googleId;
+  final String? facebookId;
 
   UserAuthenticationInfoResponse({
     required this.email,
     required this.password,
     required this.googleId,
     required this.facebookId,
+  });
+  UserAuthenticationInfoResponse.defaultValues({
+    this.email = '',
+    this.password = '',
+    this.googleId = '',
+    this.facebookId = '',
   });
   factory UserAuthenticationInfoResponse.fromJson(Map<String,dynamic> json)
   => _$UserAuthenticationInfoResponseFromJson(json);
@@ -100,6 +126,14 @@ class UserLoginTicketResponse {
     required this.createTime,
     required this.expireTime,
   });
+
+  UserLoginTicketResponse.defaultValues({
+    this.deviceId = '',
+    this.refreshToken = '',
+    this.deviceInfo = '',
+  }):createTime = DateTime.now(),
+    expireTime = DateTime.now().add(const Duration(days: 7));
+
   factory UserLoginTicketResponse.fromJson(Map<String,dynamic> json)
   => _$UserLoginTicketResponseFromJson(json);
   Map<String,dynamic> toJson() => _$UserLoginTicketResponseToJson(this);

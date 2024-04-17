@@ -7,6 +7,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('MyAppadsfk;sajdfoja;sjdfo;ajo;sdfjoaijsfdoajk');
     // TODO: implement build
     return MaterialApp(
       debugShowCheckedModeBanner: false,

@@ -37,20 +37,25 @@ class LoginRepositoryImpl implements LoginRepository{
 
   @override
   Future<Either<Failure, UserEntity>> login(String email, String password) async {
+    debugPrint('login repository: say hallo');
     if (await _networkInfo.isConnected){
       try {
         final response = await _loginRemoteDataSource.login(email, password);
-        if(response.status==ApiInternalStatus.SUCCESS)
-          {
-            await _appPreferences.setUserRefreshToken(response.refreshToken);
-            await _appPreferences.setUserToken(response.accessToken);
-            return Right(response.user.toEntity());
-          }
-        else
-          {
-            return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
-                response.message ?? ResponseMessage.DEFAULT));
-          }
+        debugPrint('login repository: ${response.data.toString()}');
+        if(response.statusCode == 200){
+          if(response.data==null)
+            {
+              return Left(Failure(0,'Data is null'));
+            }
+          assert(response.data != null);
+          await _appPreferences.setUserToken(response.data!.accessToken);
+          await _appPreferences.setUserRefreshToken(response.data!.refreshToken);
+          return Right(response.data!.user.toEntity());
+        }
+        else{
+          return Left(Failure(response.statusCode??0,
+              response.statusMessage??"null message"));
+        }
       } catch (error) {
         debugPrint(error.toString());
         return (Left(ErrorHandler.handle(error).failure));

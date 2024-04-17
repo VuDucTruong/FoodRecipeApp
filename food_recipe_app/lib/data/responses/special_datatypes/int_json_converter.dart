@@ -1,5 +1,6 @@
 
 import 'dart:ffi';
+import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 class Int8Converter implements JsonConverter<Int8, String> {
@@ -7,6 +8,7 @@ class Int8Converter implements JsonConverter<Int8, String> {
 
   @override
   Int8 fromJson(String json) {
+    debugPrint('in Int8Converter: $json');
     int value = int.parse(json);
     if (value < -128 || value > 127) {
       throw RangeError("Value '$json' is outside valid Int8 range");
