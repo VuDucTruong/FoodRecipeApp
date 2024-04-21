@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:food_recipe_app/data/background_data/device_info.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:meta/meta.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
@@ -24,10 +26,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(LoginLoading());
     if (email.isNotEmpty && password.isNotEmpty) {
       try {
-        // await Future.delayed(Duration(seconds: 2));
         final result = await _loginUseCase.execute(LoginUseCaseInput(
-          email,
-          password,
+          email: email,
+          password: password,
         ));
         result.fold(
             (failure)=> emit(LoginFailure(failure.message)),

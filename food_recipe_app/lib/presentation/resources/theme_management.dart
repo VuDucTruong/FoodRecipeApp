@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -52,6 +54,7 @@ ThemeData getAppTheme() {
             borderSide: BorderSide(color: Colors.red),
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
       ),
+      platform: Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android,
       outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(

@@ -12,11 +12,13 @@ class MyApp extends StatelessWidget {
     // TODO: implement build
     InitialRoute initialRoute = InitialRoute(instance());
     initialRoute.setInitialRoute();
+    ThemeData themeData = getAppTheme();
+    initDeviceInfo(themeData.platform);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.getRoute,
       initialRoute: initialRoute.initialRoute,
-      theme: getAppTheme(),
+      theme: themeData,
     );
   }
 }

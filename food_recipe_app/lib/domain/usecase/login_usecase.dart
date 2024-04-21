@@ -21,5 +21,8 @@ class LoginUseCaseInput {
   final String email;
   final String password;
 
-  LoginUseCaseInput(this.email, this.password);
+  LoginUseCaseInput({
+    required this.email,
+    required this.password,
+});
 }

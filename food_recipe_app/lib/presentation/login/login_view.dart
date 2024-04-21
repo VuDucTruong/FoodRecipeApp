@@ -142,7 +142,7 @@ class LoginViewState extends State<LoginView> {
         onPressed: () {
           //if (_formKey.currentState!.validate()) {
           _loginBloc.add(LoginButtonPressed(
-              emailController.text, passwordController.text));
+              email: emailController.text, password: passwordController.text));
           //}
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),

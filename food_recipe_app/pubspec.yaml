@@ -45,6 +45,7 @@ dependencies:
   json_annotation: ^4.8.1
   google_sign_in: ^5.2.1
   flutter_facebook_auth: ^4.0.0
+  device_info:
 
 
 dev_dependencies:

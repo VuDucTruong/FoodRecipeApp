@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
+import 'package:food_recipe_app/data/background_data/device_info.dart';
 import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
 import 'package:food_recipe_app/data/data_source/recipe_remote_data_source.dart';
 import 'package:food_recipe_app/data/data_source/user_remote_data_source.dart';
@@ -25,12 +26,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 final instance = GetIt.instance;
 
 Future<void> initAppModule() async {
-  debugPrint('aklsdjflkádklfjaklsdf');
   final sharedPrefs = await SharedPreferences.getInstance();
-
   // shared prefs instance
   instance.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
-
   // app prefs instance
   instance
       .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
@@ -99,4 +97,8 @@ initLoginModule() {
   if (!instance.isRegistered<LoginBloc>()) {
     instance.registerLazySingleton(() => LoginBloc(instance()));
   }
+}
+
+initDeviceInfo(TargetPlatform targetPlatform){
+  instance.registerLazySingleton(() => DeviceInfo(targetPlatform: targetPlatform));
 }
