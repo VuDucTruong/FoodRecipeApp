@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/background_data/device_info.dart';
 import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
@@ -105,6 +106,7 @@ initLoginModule() {
     }
 
   instance.registerLazySingleton(() => GoogleSignIn());
+  instance.registerLazySingleton(() => FacebookAuth.instance);
   //register login bloc
   if (!instance.isRegistered<LoginBloc>()) {
     instance.registerLazySingleton(() => LoginBloc(
@@ -112,6 +114,7 @@ initLoginModule() {
       loginUseCase: instance(),
       facebookLoginUseCase: instance(),
       googleLoginUseCase: instance(),
+      facebookAuth: instance(),
     ));
   }
 }

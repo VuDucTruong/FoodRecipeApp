@@ -8,7 +8,7 @@ import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
-
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -16,16 +16,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUseCase _loginUseCase;
   final GoogleLoginUseCase _googleLoginUseCase;
   final FacebookLoginUseCase _facebookLoginUseCase;
+  final FacebookAuth _facebookAuth;
   final GoogleSignIn _googleSignIn;
 
   LoginBloc({required LoginUseCase loginUseCase,
   required GoogleLoginUseCase googleLoginUseCase,
   required FacebookLoginUseCase facebookLoginUseCase,
-  required GoogleSignIn googleSignIn}) :
+  required GoogleSignIn googleSignIn,
+  required FacebookAuth facebookAuth }) :
         _loginUseCase = loginUseCase,
         _googleLoginUseCase = googleLoginUseCase,
         _facebookLoginUseCase = facebookLoginUseCase,
         _googleSignIn = googleSignIn,
+        _facebookAuth = facebookAuth,
         super(LoginInitial())
   {
     on<LoginButtonPressed>(_loginPressed);
@@ -82,9 +85,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // Show loading state
     emit(LoginLoading());
     try {
-      final googleSignInAccount = await _googleSignIn.signIn();
-      debugPrint("Facebook Sign In Account: ${googleSignInAccount?.id}");
-      final request = FacebookLoginUseCaseInput(loginId: googleSignInAccount?.id??"");
+      final facebookSignInAccount = await _facebookAuth.login(
+        permissions: ["public_profile"],
+      );
+      final accountInfo = await _facebookAuth.getUserData(fields: "name,email,picture.width(200).height(200)");
+      debugPrint("Facebook Sign In Account logging: ${facebookSignInAccount?.accessToken}");
+      debugPrint("Facebook Account Info: $accountInfo");
+      final request = FacebookLoginUseCaseInput(loginId: accountInfo['email'].toString());
       final result = await _facebookLoginUseCase.execute(request);
       result.fold(
               (failure)=> emit(LoginFailure(failure.message)),

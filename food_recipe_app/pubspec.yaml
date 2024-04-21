@@ -47,7 +47,6 @@ dependencies:
   flutter_facebook_auth: ^4.0.0
   device_info:
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
