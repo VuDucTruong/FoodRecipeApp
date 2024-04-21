@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 class NotificationEntity{
-  final Uint32 offSet;
+  final int offSet;
   final DateTime createdAt;
   final String imageUrl;
   final String title;

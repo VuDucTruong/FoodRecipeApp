@@ -15,7 +15,7 @@ extension RecipeResponseMapper on RecipeResponse {
 
 extension RecipeDomainResponseMapper on RecipeDomainResponse {
   RecipeEntity toEntity() {
-    return RecipeEntity(id, userId, title, instruction, createdAt, updatedAt, attachmentUrls, likes as int, commentBatchIds, cookTime.inSeconds, ingredients, isPublished);
+    return RecipeEntity(id, userId, title, instruction, createdAt, updatedAt, attachmentUrls, likes , null, cookTime.inSeconds, ingredients, isPublished);
   }
 }
 
@@ -23,9 +23,9 @@ extension NotificationDomainResponseMapper on NotificationDomainResponse {
   NotificationEntity toEntity() {
     return NotificationEntity(
         offSet: offSet, createdAt: createdAt,
-        imageUrl: imageUrl, title: title,
+        imageUrl: imageUrl??"", title: title,
         content: content, isRead: isRead,
-        redirectPath: redirectPath);
+        redirectPath: redirectPath??"");
   }
 }
 
@@ -34,14 +34,14 @@ extension UserDomainResponseMapper on UserDomainResponse {
     var myProfile = ProfileInformation(
         profileInfo.fullName, profileInfo.avatarUrl,
         profileInfo.isVegan, profileInfo.bio,
-        profileInfo.categories, profileInfo.hungryHeads as int);
+        profileInfo.categories, profileInfo.hungryHeads);
 
     var myAuthenticationInfo = AuthenticationInformation(
-        authenticationInfo.googleId, authenticationInfo.facebookId,
-        authenticationInfo.email, authenticationInfo.password);
+        authenticationInfo.loginId, authenticationInfo.email,
+        authenticationInfo.password);
 
     var myLoginTickets = loginTickets.map((e) => LoginTicket(
-        e.refreshToken, e.deviceId, e.deviceInfo, e.createTime, e.expireTime)).toList();
+        e.refreshToken??"", e.deviceId??"", e.deviceInfo??"", e.createTime, e.expireTime)).toList();
     return UserEntity(id, createdAt, myAuthenticationInfo, myProfile, recipeIds, savedRecipeIds, followingIds, followerIds, myLoginTickets);
   }
 }

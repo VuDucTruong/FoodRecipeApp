@@ -11,25 +11,26 @@ class RecipeDomainResponse {
   final String id;
   final String userId;
   final String title;
+  final String description;
   final String instruction;
   final DateTime createdAt;
   final DateTime updatedAt;
-  @Uint8Converter()
-  final Uint8 representIndex;
+  final int representIndex;
   final List<String> attachmentUrls;
   final String categories;
-  @Uint32Converter()
-  final Uint32 likes;
-  final List<String> commentBatchIds;
+  final int likes;
+  final int serves;
   @DurationConverter()
   final Duration cookTime;
   final Map<String, String> ingredients;
   final bool isPublished;
+  final bool isVegan;
 
   RecipeDomainResponse({
     required this.id,
     required this.userId,
     required this.title,
+    required this.description,
     required this.instruction,
     required this.createdAt,
     required this.updatedAt,
@@ -37,10 +38,11 @@ class RecipeDomainResponse {
     required this.attachmentUrls,
     required this.categories,
     required this.likes,
-    required this.commentBatchIds,
+    required this.serves,
     required this.cookTime,
     required this.ingredients,
     required this.isPublished,
+    required this.isVegan,
   });
 
   factory RecipeDomainResponse.fromJson(Map<String,dynamic> json)

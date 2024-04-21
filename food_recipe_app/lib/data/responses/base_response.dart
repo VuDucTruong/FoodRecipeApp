@@ -6,19 +6,15 @@ class BaseResponse<T> {
   int? statusCode;
   String? statusMessage;
   T? data;
-  @HeadersConverter()
-  Headers? headers;
 
-  BaseResponse({this.statusCode, this.statusMessage, this.data, this.headers});
+  BaseResponse({this.statusCode, this.statusMessage, this.data});
 
   factory BaseResponse.fromJson(
       Map<String, dynamic> json, T Function(Map<String, dynamic>) fromJsonT) {
-    debugPrint('in base response: ${json.toString()}');
     return BaseResponse<T>(
-      statusCode: json['statusCode'] as int??0,
-      statusMessage: json['statusMessage'] as String??'hallo',
+      statusCode: json['statusCode'] as int?,
+      statusMessage: json['statusMessage'] as String?,
       data: json['data'] == null ? null : fromJsonT(json['data']),
-      // headers: const HeadersConverter().fromJson(json['headers'] as Map<String, dynamic>?),
     );
   }
 
@@ -26,8 +22,7 @@ class BaseResponse<T> {
     return <String, dynamic>{
       'status': statusCode,
       'message': statusMessage,
-      // 'data': data == null ? null : toJsonT!(this.data!),
-      // 'headers': const HeadersConverter().toJson(headers),
+      'data': data == null ? null : toJsonT(this.data!),
     };
   }
 }

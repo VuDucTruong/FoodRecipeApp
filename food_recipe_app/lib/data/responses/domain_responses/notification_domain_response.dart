@@ -6,14 +6,13 @@ part 'notification_domain_response.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class NotificationDomainResponse{
-  @Uint32Converter()
-  final Uint32 offSet;
+  final int offSet;
   final DateTime createdAt;
-  final String imageUrl;
+  final String? imageUrl;
   final String title;
   final String content;
   final bool isRead;
-  final String redirectPath;
+  final String? redirectPath;
   NotificationDomainResponse({
     required this.offSet,
     required this.createdAt,

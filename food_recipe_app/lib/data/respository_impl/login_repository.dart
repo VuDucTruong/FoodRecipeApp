@@ -17,31 +17,11 @@ class LoginRepositoryImpl implements LoginRepository{
   LoginRepositoryImpl(this._loginRemoteDataSource,
       this._networkInfo,this._appPreferences);
 
-
-  @override
-  Future<Either<Failure, UserEntity>> getUser() async {
-    // if (await _networkInfo.isConnected){
-    //   try {
-    //     final response = await _loginRemoteDataSource.getUser();
-    //     return Right(response.map((e) => e.toDomain()).toList());
-    //   } catch (error) {
-    //     print(error);
-    //     return (Left(ErrorHandler.handle(error).failure));
-    //   }
-    // } else {
-    //   return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
-    // }
-    // TODO: implement getUser
-    throw UnimplementedError();
-  }
-
   @override
   Future<Either<Failure, UserEntity>> login(String email, String password) async {
-    debugPrint('login repository: say hallo');
     if (await _networkInfo.isConnected){
       try {
         final response = await _loginRemoteDataSource.login(email, password);
-        debugPrint('login repository: ${response.data.toString()}');
         if(response.statusCode == 200){
           if(response.data==null)
             {
@@ -65,16 +45,50 @@ class LoginRepositoryImpl implements LoginRepository{
     }
   }
 
-  @override
-  Future<Either<Failure, UserEntity>> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
-  }
 
   @override
   Future<Either<Failure, UserEntity>> register(String email, String password) {
     // TODO: implement register
     throw UnimplementedError();
   }
-  
+
+  @override
+  Future<Either<Failure, String>> refreshAccessToken() async {
+    if(await _networkInfo.isConnected){
+      try {
+        final token = await _appPreferences.getUserRefreshToken();
+        if(token.isNotEmpty){
+          final response = await _loginRemoteDataSource.refreshAccessToken();
+          if(response.statusCode == 200){
+            if(response.data==null)
+            {
+              return Left(Failure(0,'Data is null'));
+            }
+            assert(response.data != null);
+            await _appPreferences.setUserToken(response.data!);
+            }
+          else if(response.statusCode == 401) {
+              return Left(Failure(response.statusCode??0,
+                  response.statusMessage??"expired refreshToken"));
+          }
+          return Left(Failure(response.statusCode??0,
+              response.statusMessage??"null message"));
+        } else {
+          return Left(Failure(0,'Token is empty'));
+        }
+      } catch (error) {
+        debugPrint(error.toString());
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> forgotPassword(String email) {
+    // TODO: implement forgotPassword
+    throw UnimplementedError();
+  }
+
 }

@@ -91,20 +91,20 @@ class UserProfileInfoResponse {
 class UserAuthenticationInfoResponse {
   final String? email;
   final String? password;
-  final String? googleId;
-  final String? facebookId;
+  final String? loginId;
+  final String? linkedAccountType;
 
   UserAuthenticationInfoResponse({
     required this.email,
     required this.password,
-    required this.googleId,
-    required this.facebookId,
+    required this.loginId,
+    required this.linkedAccountType,
   });
   UserAuthenticationInfoResponse.defaultValues({
     this.email = '',
     this.password = '',
-    this.googleId = '',
-    this.facebookId = '',
+    this.loginId = '',
+    this.linkedAccountType = '',
   });
   factory UserAuthenticationInfoResponse.fromJson(Map<String,dynamic> json)
   => _$UserAuthenticationInfoResponseFromJson(json);
@@ -113,9 +113,9 @@ class UserAuthenticationInfoResponse {
 
 @JsonSerializable()
 class UserLoginTicketResponse {
-  final String deviceId;
-  final String refreshToken;
-  final String deviceInfo;
+  final String? deviceId;
+  final String? refreshToken;
+  final String? deviceInfo;
   final DateTime createTime;
   final DateTime expireTime;
 

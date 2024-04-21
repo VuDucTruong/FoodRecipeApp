@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/presentation/main/create_recipe/create_recipe_page.dart';
 import 'package:food_recipe_app/presentation/main/home/home_page.dart';
+import 'package:food_recipe_app/presentation/main/main_view_bloc/main_view_bloc.dart';
 import 'package:food_recipe_app/presentation/main/saved_recipe_page.dart';
 import 'package:food_recipe_app/presentation/main/setting_page.dart';
 import 'package:food_recipe_app/presentation/main/user_profile_page.dart';
@@ -23,9 +24,12 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
+  late MainViewBloc _mainViewBloc;
   @override
   void initState() {
     super.initState();
+    _mainViewBloc = GetIt.instance<MainViewBloc>();
+    _mainViewBloc.add(MainInitialEvent());
   }
 
   @override

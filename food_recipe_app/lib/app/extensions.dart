@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:food_recipe_app/app/app_prefs.dart';
 
 extension ResponseExtension<T> on Response {
   Map<String,dynamic> toMap(){
@@ -19,3 +20,4 @@ extension HeadersLoggingExtension on Headers {
     return jsonMap;
   }
 }
+

@@ -3,11 +3,11 @@ class LoginRequest {
   final String? deviceInfo;
   final String? email;
   final String? password;
-  final String? googleId;
-  final String? facebookId;
+  final String? loginId;
+  final String? linkedAccountType;
 
   LoginRequest({this.deviceId,this.deviceInfo,this.email, this.password
-    ,this.googleId,this.facebookId});
+    ,this.loginId,this.linkedAccountType});
 
   Map<String, dynamic> toJson() {
     return {
@@ -15,8 +15,7 @@ class LoginRequest {
       'deviceInfo': deviceInfo,
       'email': email,
       'password': password,
-      'googleId': googleId,
-      'facebookId': facebookId,
+      'loginId': loginId,
     };
   }
 }

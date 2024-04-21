@@ -34,19 +34,18 @@ class ProfileInformation {
 }
 
 class AuthenticationInformation {
-  String? googleId;
-  String? facebookId;
+  String? loginId;
   String? email;
   String? password;
 
   AuthenticationInformation(
-      this.googleId, this.facebookId, this.email, this.password);
+      this.loginId,this.email, this.password);
 }
 
 class LoginTicket {
   String refreshToken;
   String deviceId;
-  String deviceInfo;
+  String? deviceInfo;
   DateTime createTime;
   DateTime expireTime;
 

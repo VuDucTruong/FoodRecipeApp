@@ -9,6 +9,7 @@ import 'package:food_recipe_app/domain/respository/login_repository.dart';
 import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
 import 'package:food_recipe_app/presentation/login/bloc/login_bloc.dart';
 import 'package:food_recipe_app/presentation/main/home/bloc/home_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -41,13 +42,18 @@ Future<void> initAppModule() async {
   instance
       .registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(dio));
   instance.registerLazySingleton<LoginRemoteDataSource>(
-      () => LoginRemoteDataSourceImpl(dio));
+      () => LoginRemoteDataSourceImpl(dio,instance()));
 
   instance.registerLazySingleton<RecipeRespository>(
       () => RecipeRespositoryImpl(instance(), instance()));
   instance.registerLazySingleton<LoginRepository>(
       () => LoginRepositoryImpl(instance(), instance(), instance()));
+
+  //INITIALIZE INTERCEPTOR FOR REFRESH TOKEN
+  instance<DioFactory>().initializeInterceptor(dio, instance());
 }
+
+
 
 initHomeModule() {
   // register necessary usecase in home page
@@ -64,6 +70,10 @@ initLoginModule() {
     instance
         .registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
   }
+  if(!instance.isRegistered<RefreshAccessTokenUseCase>())
+    {
+      instance.registerLazySingleton<RefreshAccessTokenUseCase>(() => RefreshAccessTokenUseCase(instance()));
+    }
 
   //register login bloc
   if (!instance.isRegistered<LoginBloc>()) {

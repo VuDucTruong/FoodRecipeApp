@@ -3,7 +3,7 @@ class RecipeEntity {
   DateTime createdAt, updatedAt;
   List<String> attachmentUrls;
   int likes;
-  List<String> commentBatchIds;
+  List<String>? commentBatchIds;
   int cookTime;
   Map<String, String> ingredients;
   bool isPublished;
