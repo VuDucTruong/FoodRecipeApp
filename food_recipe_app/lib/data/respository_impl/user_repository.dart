@@ -1,6 +1,7 @@
 
 
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/data_source/user_remote_data_source.dart';
 import 'package:food_recipe_app/data/mapper/mapper.dart';
@@ -20,6 +21,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<Failure,UserEntity>> getUserInfo() async {
+    debugPrint('getUserInfo');
     if(await _networkInfo.isConnected){
       try{
         final response = await userRemoteDataSource.getUserInfo();
@@ -27,6 +29,7 @@ class UserRepositoryImpl implements UserRepository {
           if(response.data == null){
             return Left(Failure(0,'Data is null'));
           }
+          debugPrint('getUserInfo: ${response.data}');
           assert(response.data != null);
           return Right(response.data!.toEntity());
         } else {

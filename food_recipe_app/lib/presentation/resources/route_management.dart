@@ -62,7 +62,6 @@ class RouteGenerator {
           builder: (context) => const LoadingScreen(),
         );
       case Routes.loginRoute:
-        initLoginModule();
         return MaterialPageRoute(
           builder: (context) => const LoginView(),
         );

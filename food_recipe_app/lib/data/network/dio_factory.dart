@@ -23,7 +23,15 @@ class DioFactory {
         .catchError((e) => Logger().e('Error: $e'));
         return handler.next(options);
       },
+      onResponse: (response, handler) {
+        debugPrint('interceptor response has message');
+        Logger().i('Response: ${response.statusCode}');
+        Logger().i('Response: ${response.data}');
+        return handler.next(response);
+      },
       onError: (DioException e, handler) {
+        debugPrint('interceptor error has error');
+        Logger().e('Error: ${e.message}');
         if(e.response?.statusCode==401){
           try{
             refreshAccessTokenUseCase.execute(null).then((value) {

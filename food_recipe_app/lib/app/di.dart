@@ -1,17 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
 import 'package:food_recipe_app/data/data_source/recipe_remote_data_source.dart';
+import 'package:food_recipe_app/data/data_source/user_remote_data_source.dart';
 import 'package:food_recipe_app/data/network/dio_factory.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/respository_impl/login_repository.dart';
 import 'package:food_recipe_app/data/respository_impl/recipe_respository.dart';
+import 'package:food_recipe_app/data/respository_impl/user_repository.dart';
 import 'package:food_recipe_app/domain/respository/login_repository.dart';
 import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
+import 'package:food_recipe_app/domain/respository/user_repository.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
 import 'package:food_recipe_app/presentation/login/bloc/login_bloc.dart';
 import 'package:food_recipe_app/presentation/main/home/bloc/home_bloc.dart';
+import 'package:food_recipe_app/presentation/main/main_view_bloc/main_view_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +25,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final instance = GetIt.instance;
 
 Future<void> initAppModule() async {
+  debugPrint('aklsdjflkádklfjaklsdf');
   final sharedPrefs = await SharedPreferences.getInstance();
 
   // shared prefs instance
@@ -43,16 +50,28 @@ Future<void> initAppModule() async {
       .registerLazySingleton<RemoteDataSource>(() => RemoteDataSourceImpl(dio));
   instance.registerLazySingleton<LoginRemoteDataSource>(
       () => LoginRemoteDataSourceImpl(dio,instance()));
+  instance.registerLazySingleton<UserRemoteDataSource>(
+      () => UserRemoteDataSourceImpl(dio,instance()));
 
   instance.registerLazySingleton<RecipeRespository>(
       () => RecipeRespositoryImpl(instance(), instance()));
   instance.registerLazySingleton<LoginRepository>(
       () => LoginRepositoryImpl(instance(), instance(), instance()));
+  instance.registerLazySingleton<UserRepository>(
+          () => UserRepositoryImpl(instance(),instance(),instance()));
 
+  initLoginModule();
+  initMainModule();
   //INITIALIZE INTERCEPTOR FOR REFRESH TOKEN
   instance<DioFactory>().initializeInterceptor(dio, instance());
 }
 
+initMainModule(){
+  instance.registerLazySingleton<GetUserInfoUseCase>(
+      () => GetUserInfoUseCase(instance()));
+  instance.registerLazySingleton
+    (() => MainViewBloc( instance()));
+}
 
 
 initHomeModule() {
@@ -66,6 +85,7 @@ initHomeModule() {
 
 initLoginModule() {
   //register necessary usecase in login page
+  debugPrint("initLoginmodule");
   if (!instance.isRegistered<LoginUseCase>()) {
     instance
         .registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
