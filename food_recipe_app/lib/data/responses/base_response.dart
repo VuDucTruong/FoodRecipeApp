@@ -11,10 +11,21 @@ class BaseResponse<T> {
 
   factory BaseResponse.fromJson(
       Map<String, dynamic> json, T Function(Map<String, dynamic>) fromJsonT) {
+    final myData = json['data'];
+    T myValue;
+    if(myData is Map<String, dynamic>) {
+      myValue = fromJsonT(myData);
+    }
+    else if(myData is List) {
+      myValue = myData.map((e) => fromJsonT(e)).toList() as T;
+    }
+    else {
+      myValue = myData as T;
+    }
     return BaseResponse<T>(
       statusCode: json['statusCode'] as int?,
       statusMessage: json['statusMessage'] as String?,
-      data: json['data'] == null ? null : fromJsonT(json['data']),
+      data: myValue,
     );
   }
 

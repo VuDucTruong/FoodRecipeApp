@@ -71,12 +71,16 @@ class LoginViewState extends State<LoginView> {
                   _getIconTextButton(
                     text: AppStrings.facebook,
                     iconPath: PicturePath.fbPath,
-                    onPressed: () {},
+                    onPressed: () {
+                      _loginBloc.add(LoginWithFacebookPressed());
+                    },
                   ),
                   _getIconTextButton(
                     text: AppStrings.google,
                     iconPath: PicturePath.ggPath,
-                    onPressed: () {},
+                    onPressed: () {
+                      _loginBloc.add(LoginWithGooglePressed());
+                    },
                   ),
                 ],
               ),
@@ -181,24 +185,27 @@ Widget _getIconTextButton({
   String? iconPath,
   Function()? onPressed,
 }) {
-  return Card(
-    color: Colors.white,
-    child: Padding(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          if (iconPath != null) ...[
-            Image.asset(
-              iconPath,
-              width: 36, // Adjust the width as needed
-              height: 36, // Adjust the height as needed
-            ),
-            const SizedBox(width: 8),
+  return GestureDetector(
+    onTap: onPressed,
+    child: Card(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: [
+            if (iconPath != null) ...[
+              Image.asset(
+                iconPath,
+                width: 36, // Adjust the width as needed
+                height: 36, // Adjust the height as needed
+              ),
+              const SizedBox(width: 8),
+            ],
+            Text(text,
+                style: getSemiBoldStyle(
+                    color: Colors.black, fontSize: FontSize.s14)),
           ],
-          Text(text,
-              style: getSemiBoldStyle(
-                  color: Colors.black, fontSize: FontSize.s14)),
-        ],
+        ),
       ),
     ),
   );

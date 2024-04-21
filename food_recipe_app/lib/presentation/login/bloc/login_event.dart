@@ -10,3 +10,6 @@ class LoginButtonPressed extends LoginEvent {
   LoginButtonPressed({required this.email,
     required this.password});
 }
+
+class LoginWithGooglePressed extends LoginEvent {}
+class LoginWithFacebookPressed extends LoginEvent {}

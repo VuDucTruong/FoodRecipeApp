@@ -6,21 +6,21 @@ import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/respository/login_repository.dart';
 import 'package:food_recipe_app/domain/usecase/base_usecase.dart';
 
-class GoogleLoginUseCase implements BaseUseCase<GoogleLoginUseCaseInput, UserEntity>{
+class FacebookLoginUseCase implements BaseUseCase<FacebookLoginUseCaseInput, UserEntity>{
   final LoginRepository _loginRepository;
-  GoogleLoginUseCase(this._loginRepository);
+  FacebookLoginUseCase(this._loginRepository);
 
   @override
-  Future<Either<Failure, UserEntity>> execute(GoogleLoginUseCaseInput params) {
-    return _loginRepository.loginWithGoogle(params.loginId);
+  Future<Either<Failure, UserEntity>> execute(FacebookLoginUseCaseInput params) {
+    return _loginRepository.loginWithFacebook(params.loginId);
   }
 
 }
 
-class GoogleLoginUseCaseInput {
+class FacebookLoginUseCaseInput {
   final String loginId;
 
-  GoogleLoginUseCaseInput({
+  FacebookLoginUseCaseInput({
     required this.loginId,
   });
 }

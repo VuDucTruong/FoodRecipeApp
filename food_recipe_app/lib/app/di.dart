@@ -12,14 +12,17 @@ import 'package:food_recipe_app/data/respository_impl/user_repository.dart';
 import 'package:food_recipe_app/domain/respository/login_repository.dart';
 import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/respository/user_repository.dart';
+import 'package:food_recipe_app/domain/usecase/facebook_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
 import 'package:food_recipe_app/presentation/login/bloc/login_bloc.dart';
 import 'package:food_recipe_app/presentation/main/home/bloc/home_bloc.dart';
 import 'package:food_recipe_app/presentation/main/main_view_bloc/main_view_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -92,13 +95,31 @@ initLoginModule() {
     {
       instance.registerLazySingleton<RefreshAccessTokenUseCase>(() => RefreshAccessTokenUseCase(instance()));
     }
+  if(!instance.isRegistered<GoogleLoginUseCase>())
+    {
+      instance.registerLazySingleton<GoogleLoginUseCase>(() => GoogleLoginUseCase(instance()));
+    }
+  if(!instance.isRegistered<FacebookLoginUseCase>())
+    {
+      instance.registerLazySingleton<FacebookLoginUseCase>(() => FacebookLoginUseCase(instance()));
+    }
 
+  instance.registerLazySingleton(() => GoogleSignIn());
   //register login bloc
   if (!instance.isRegistered<LoginBloc>()) {
-    instance.registerLazySingleton(() => LoginBloc(instance()));
+    instance.registerLazySingleton(() => LoginBloc(
+      googleSignIn: instance(),
+      loginUseCase: instance(),
+      facebookLoginUseCase: instance(),
+      googleLoginUseCase: instance(),
+    ));
   }
 }
 
 initDeviceInfo(TargetPlatform targetPlatform){
-  instance.registerLazySingleton(() => DeviceInfo(targetPlatform: targetPlatform));
+  debugPrint("initDeviceInfo");
+  if(!instance.isRegistered<DeviceInfo>())
+    {
+      instance.registerLazySingleton(() => DeviceInfo(targetPlatform:targetPlatform));
+    }
 }

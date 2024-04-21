@@ -51,7 +51,8 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
     final response = await _dio.post('$loginEndpoint/auto-login',
         data: refreshToken,
       options: Options(contentType: Headers.textPlainContentType));
-    BaseResponse<String> baseResponse = BaseResponse.fromJson(response.toMap(), (value) => value.toString());
+    BaseResponse<String> baseResponse =
+    BaseResponse.fromJson(response.toMap(), (value) => value.toString());
     return baseResponse;
   }
 
@@ -60,7 +61,8 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
     final response = await _dio.post('$loginEndpoint/forgot-password',
         data: email,
         options: Options(contentType: Headers.textPlainContentType));
-    BaseResponse<bool> baseResponse = BaseResponse.fromJson(response.toMap(), (value) => value as bool);
+    BaseResponse<bool> baseResponse =
+    BaseResponse.fromJson(response.toMap(), (value) => value as bool);
     return baseResponse;
   }
 
