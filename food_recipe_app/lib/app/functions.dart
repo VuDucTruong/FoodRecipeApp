@@ -95,3 +95,6 @@ Future<File?> selectImageFromGalery() async {
   if (image == null) return null;
   return File(image.path);
 }
+
+bool isThereCurrentDialogShowing(BuildContext context) =>
+    ModalRoute.of(context)?.isCurrent != true;

@@ -67,17 +67,14 @@ class _MainViewState extends State<MainView> {
           ),
         ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: pages[index],
-          ),
+          child: pages[index],
         ));
   }
 
   Widget _getAnimatedBarItem(int x, String picturePath) {
     return InkWell(
       child: AnimatedContainer(
-        padding: const EdgeInsets.symmetric(horizontal: AppMargin.m4),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         transform: Matrix4.translationValues(0, index == x ? -20 : 0, 0),
         duration: Durations.medium1,
         curve: Curves.decelerate,
@@ -89,6 +86,8 @@ class _MainViewState extends State<MainView> {
                     shape: BoxShape.circle)
                 : null,
             child: SvgPicture.asset(
+              height: 35,
+              width: 35,
               picturePath,
               colorFilter: index == x
                   ? const ColorFilter.mode(

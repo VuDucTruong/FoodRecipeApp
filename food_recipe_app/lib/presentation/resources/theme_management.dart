@@ -17,6 +17,7 @@ ThemeData getAppTheme() {
       cardTheme: const CardTheme(
         color: ColorManager.secondaryColor,
       ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(color: ColorManager.secondaryColor),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: ColorManager.secondaryColor,
         selectionColor: ColorManager.secondaryColor,

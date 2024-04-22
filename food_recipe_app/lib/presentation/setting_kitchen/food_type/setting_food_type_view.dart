@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
@@ -18,20 +19,7 @@ class SettingFoodTypeView extends StatefulWidget {
 }
 
 class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
-  List<String> typeList = [
-    "Healthy",
-    "Fast Food",
-    "Quick",
-    "Cuisine",
-    "Breakfast",
-    "Snack",
-    "Lunch",
-    "Dinner",
-    "Dessert",
-    "Soup",
-    "Drink",
-    "Traditional"
-  ];
+  List<String> typeList = Constant.typeList;
   Map<String, bool> typePreferencesMap = {};
   MutableVariable<int> headNumber = MutableVariable(2);
   @override

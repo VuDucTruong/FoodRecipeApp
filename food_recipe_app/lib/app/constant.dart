@@ -5,4 +5,18 @@ class Constant {
   static const String notificationEndpoint = '/Notification';
   static const String userEndpoint = '/User';
   static const String commentEndpoint = '/Comment';
+  static const List<String> typeList = [
+    "Healthy",
+    "Fast Food",
+    "Quick",
+    "Cuisine",
+    "Breakfast",
+    "Snack",
+    "Lunch",
+    "Dinner",
+    "Dessert",
+    "Soup",
+    "Drink",
+    "Traditional"
+  ];
 }

@@ -1,34 +1,44 @@
+import 'package:dio/dio.dart';
+import 'package:food_recipe_app/data/responses/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'recipe_response.g.dart';
 
 @JsonSerializable()
-class   RecipeResponse {
+class RecipeResponse {
   String id;
   String userId;
   String title;
+  String description;
   String instruction;
-  DateTime createdAt, updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
+  int representIndex;
   List<String> attachmentUrls;
+  String categories;
   int likes;
-  List<String> commentBatchIds;
+  int serves;
   int cookTime;
-  Map<String, String> ingredients;
+  List<String> ingredients;
   bool isPublished;
+  bool isVegan;
 
   RecipeResponse(
       this.id,
       this.userId,
       this.title,
+      this.description,
       this.instruction,
       this.createdAt,
       this.updatedAt,
+      this.representIndex,
       this.attachmentUrls,
+      this.categories,
       this.likes,
-      this.commentBatchIds,
+      this.serves,
       this.cookTime,
       this.ingredients,
-      this.isPublished);
-  // from json
+      this.isPublished,
+      this.isVegan); // from json
   factory RecipeResponse.fromJson(Map<String, dynamic> json) =>
       _$RecipeResponseFromJson(json);
 
