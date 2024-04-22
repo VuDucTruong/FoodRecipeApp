@@ -1,20 +1,20 @@
 class RecipeEntity {
-  String id ;
-  String userId ;
-  String title ;
-  String description ;
-  String instruction ;
-  DateTime createdAt ;
-  DateTime updatedAt ;
-  int representIndex ;
-  List<String> attachmentUrls ;
-  String categories ;
-  int likes ;
-  int serves ;
-  int cookTime ;
-  List<String> ingredients ;
-  bool isPublished ;
-  bool isVegan ;
+  String id;
+  String userId;
+  String title;
+  String description;
+  String instruction;
+  DateTime createdAt;
+  DateTime updatedAt;
+  int representIndex;
+  List<String> attachmentUrls;
+  String categories;
+  int likes;
+  int serves;
+  int cookTime;
+  List<String> ingredients;
+  bool isPublished;
+  bool isVegan;
 
   RecipeEntity(
       this.id,

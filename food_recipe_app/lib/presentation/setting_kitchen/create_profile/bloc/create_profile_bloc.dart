@@ -9,7 +9,7 @@ part 'create_profile_state.dart';
 
 class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
   CreateProfileBloc() : super(CreateProfileInitial()) {
-    on<InputText>(_onInputText);
+    on<InputText>(this._onInputText);
   }
 
   FutureOr<void> _onInputText(

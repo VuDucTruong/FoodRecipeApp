@@ -1,29 +1,47 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
+import 'package:food_recipe_app/data/background_data/device_info.dart';
+import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
 import 'package:food_recipe_app/data/data_source/recipe_remote_data_source.dart';
+import 'package:food_recipe_app/data/data_source/user_remote_data_source.dart';
 import 'package:food_recipe_app/data/network/dio_factory.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
-import 'package:food_recipe_app/data/respository_impl/recipe_respository.dart';
-import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
-import 'package:food_recipe_app/domain/usecase/get_recipes_by_category.dart';
+import 'package:food_recipe_app/data/repository_impl/login_repository.dart';
+import 'package:food_recipe_app/data/repository_impl/recipe_respository.dart';
+import 'package:food_recipe_app/data/repository_impl/user_repository.dart';
+import 'package:food_recipe_app/domain/repository/login_repository.dart';
+import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
+import 'package:food_recipe_app/domain/repository/user_repository.dart';
+import 'package:food_recipe_app/domain/usecase/facebook_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
+import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
+
+import 'package:food_recipe_app/domain/usecase/get_recipes_by_category.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
+
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../presentation/resources/route_management.dart';
 
 final instance = GetIt.instance;
 
 Future<void> initAppModule() async {
   final sharedPrefs = await SharedPreferences.getInstance();
-
   // shared prefs instance
   instance.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
-
   // app prefs instance
   instance
       .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
-
+  instance.registerLazySingleton(() => InitialRoute(instance()));
   // network info
   instance.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(InternetConnectionChecker()));
@@ -35,11 +53,30 @@ Future<void> initAppModule() async {
   final dio = await instance<DioFactory>().getDio();
 
   // remote data source
+  instance.registerLazySingleton<LoginRemoteDataSource>(
+      () => LoginRemoteDataSourceImpl(dio, instance()));
+  instance.registerLazySingleton<UserRemoteDataSource>(
+      () => UserRemoteDataSourceImpl(dio, instance()));
   instance.registerLazySingleton<RecipeRemoteDataSource>(
       () => RecipeRemoteDataSourceImpl(dio));
+  //Repository
+  initRepository();
 
-  instance.registerLazySingleton<RecipeRespository>(
-      () => RecipeRespositoryImpl(instance(), instance()));
+  //INITIALIZE INTERCEPTOR FOR REFRESH TOKEN
+  if (!instance.isRegistered<RefreshAccessTokenUseCase>()) {
+    instance.registerLazySingleton<RefreshAccessTokenUseCase>(
+        () => RefreshAccessTokenUseCase(instance()));
+  }
+  instance<DioFactory>().initializeInterceptor(dio, instance());
+}
+
+void initRepository() {
+  instance.registerLazySingleton<RecipeRepository>(
+      () => RecipeRepositoryImpl(instance(), instance()));
+  instance.registerLazySingleton<LoginRepository>(
+      () => LoginRepositoryImpl(instance(), instance(), instance()));
+  instance.registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(instance(), instance(), instance()));
 }
 
 initHomeModule() {
@@ -57,5 +94,43 @@ initHomeModule() {
   }
   if (!instance.isRegistered<TrendingBloc>()) {
     instance.registerLazySingleton(() => TrendingBloc(instance()));
+  }
+}
+
+initLoginModule() {
+  //register necessary usecase in login page
+  debugPrint("initLoginmodule");
+  if (!instance.isRegistered<LoginUseCase>()) {
+    instance
+        .registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
+  }
+  if (!instance.isRegistered<GoogleLoginUseCase>()) {
+    instance.registerLazySingleton<GoogleLoginUseCase>(
+        () => GoogleLoginUseCase(instance()));
+  }
+  if (!instance.isRegistered<FacebookLoginUseCase>()) {
+    instance.registerLazySingleton<FacebookLoginUseCase>(
+        () => FacebookLoginUseCase(instance()));
+  }
+
+  instance.registerLazySingleton(() => GoogleSignIn());
+  instance.registerLazySingleton(() => FacebookAuth.instance);
+  //register login bloc
+  if (!instance.isRegistered<LoginBloc>()) {
+    instance.registerLazySingleton(() => LoginBloc(
+          googleSignIn: instance(),
+          loginUseCase: instance(),
+          facebookLoginUseCase: instance(),
+          googleLoginUseCase: instance(),
+          facebookAuth: instance(),
+        ));
+  }
+}
+
+initDeviceInfo(TargetPlatform targetPlatform) {
+  debugPrint("initDeviceInfo");
+  if (!instance.isRegistered<DeviceInfo>()) {
+    instance.registerLazySingleton(
+        () => DeviceInfo(targetPlatform: targetPlatform));
   }
 }

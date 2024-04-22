@@ -41,6 +41,16 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled = true
+    }
+
+    signingConfigs {
+        debug {
+            keyAlias 'upload'
+            storeFile file('upload-keystore.jks')
+            keyPassword '123456789'
+            storePassword '123456789'
+        }
     }
 
     buildTypes {
@@ -54,4 +64,8 @@ android {
 
 flutter {
     source '../..'
+}
+
+dependencies{
+    implementation("androidx.multidex:multidex:2.0.1")
 }

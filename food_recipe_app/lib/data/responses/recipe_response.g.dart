@@ -26,14 +26,10 @@ RecipeResponse _$RecipeResponseFromJson(Map<String, dynamic> json) =>
       (json['ingredients'] as List<dynamic>).map((e) => e as String).toList(),
       json['isPublished'] as bool,
       json['isVegan'] as bool,
-    )
-      ..status = json['status'] as int?
-      ..message = json['message'] as String?;
+    );
 
 Map<String, dynamic> _$RecipeResponseToJson(RecipeResponse instance) =>
     <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
       'id': instance.id,
       'userId': instance.userId,
       'title': instance.title,

@@ -1,11 +1,37 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'base_response.g.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:food_recipe_app/data/responses/special_datatypes/headers_converter.dart';
 
+class BaseResponse<T> {
+  int? statusCode;
+  String? statusMessage;
+  T? data;
 
-@JsonSerializable()
-class BaseResponse {
-  @JsonKey(name: "status")
-  int? status;
-  @JsonKey(name: "message")
-  String? message;
+  BaseResponse({this.statusCode, this.statusMessage, this.data});
+
+  factory BaseResponse.fromJson(
+      Response response, T Function(Map<String, dynamic>) fromJsonT) {
+    final myData = response.data;
+    T myValue;
+    if (myData is Map<String, dynamic>) {
+      myValue = fromJsonT(myData);
+    } else if (myData is List) {
+      myValue = myData.map((e) => fromJsonT(e)).toList() as T;
+    } else {
+      myValue = myData as T;
+    }
+    return BaseResponse<T>(
+      statusCode: response.statusCode,
+      statusMessage: response.statusMessage,
+      data: myValue,
+    );
+  }
+
+  Map<String, dynamic> toJson(Map<String, dynamic>? Function(T value) toJsonT) {
+    return <String, dynamic>{
+      'status': statusCode,
+      'message': statusMessage,
+      'data': data == null ? null : toJsonT(this.data as T),
+    };
+  }
 }

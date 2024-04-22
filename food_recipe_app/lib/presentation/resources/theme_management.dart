@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
+import '../../app/di.dart';
+
 ThemeData getAppTheme() {
+  initDeviceInfo(Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android);
   return ThemeData(
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           type: BottomNavigationBarType.fixed,
@@ -15,7 +20,8 @@ ThemeData getAppTheme() {
       cardTheme: const CardTheme(
         color: ColorManager.secondaryColor,
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(color: ColorManager.secondaryColor),
+      progressIndicatorTheme:
+          const ProgressIndicatorThemeData(color: ColorManager.secondaryColor),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: ColorManager.secondaryColor,
         selectionColor: ColorManager.secondaryColor,
@@ -53,6 +59,7 @@ ThemeData getAppTheme() {
             borderSide: BorderSide(color: Colors.red),
             borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
       ),
+      platform: Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android,
       outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(

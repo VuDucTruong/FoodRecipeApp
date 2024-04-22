@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
 import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
@@ -27,6 +28,23 @@ class Routes {
   static const String settingKitchenRoute = '/settingKitchen';
 }
 
+class InitialRoute {
+  String initialRoute = Routes.loginRoute;
+  final AppPreferences _appPreferences;
+  InitialRoute(this._appPreferences) {
+    setInitialRoute();
+  }
+  void setInitialRoute() {
+    _appPreferences.getUserRefreshToken().then((value) {
+      if (value.isNotEmpty) {
+        initialRoute = Routes.mainRoute;
+      }
+    }).catchError((e) {
+      debugPrint('Error: $e');
+    });
+  }
+}
+
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
@@ -39,6 +57,7 @@ class RouteGenerator {
           builder: (context) => const LoadingScreen(),
         );
       case Routes.loginRoute:
+        initLoginModule();
         return MaterialPageRoute(
           builder: (context) => const LoginView(),
         );

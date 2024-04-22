@@ -1,9 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:food_recipe_app/data/responses/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'recipe_response.g.dart';
 
 @JsonSerializable()
-class RecipeResponse extends BaseResponse {
+class RecipeResponse {
   String id;
   String userId;
   String title;

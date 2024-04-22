@@ -6,13 +6,13 @@ import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/responses/recipe_response.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
-import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
+import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 
-class RecipeRespositoryImpl implements RecipeRespository {
+class RecipeRepositoryImpl implements RecipeRepository {
   RecipeRemoteDataSource _remoteDataSource;
   NetworkInfo _networkInfo;
 
-  RecipeRespositoryImpl(this._remoteDataSource, this._networkInfo);
+  RecipeRepositoryImpl(this._remoteDataSource, this._networkInfo);
 
   @override
   Future<Either<Failure, List<RecipeEntity>>> getRecipesFromLikes() async {
@@ -25,7 +25,7 @@ class RecipeRespositoryImpl implements RecipeRespository {
         {
           // return data (success)
           // return right
-          return Right(response.data.map((e) => e.toDomain()).toList());
+          return Right(response.data.map((e) => e.toEntity()).toList());
         } else {
           // return biz logic error
           // return left
@@ -50,7 +50,7 @@ class RecipeRespositoryImpl implements RecipeRespository {
         final response =
             await _remoteDataSource.getRecipesByCategory(category, page);
         if (response.status == ApiInternalStatus.SUCCESS) {
-          return Right(response.data.map((e) => e.toDomain()).toList());
+          return Right(response.data.map((e) => e.toEntity()).toList());
         } else {
           return Left(Failure(
               ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));

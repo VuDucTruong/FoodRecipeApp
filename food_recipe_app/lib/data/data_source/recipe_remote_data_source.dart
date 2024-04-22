@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/request/create_recipe_request.dart';
@@ -10,7 +11,8 @@ import 'package:food_recipe_app/data/responses/recipe_response.dart';
 abstract class RecipeRemoteDataSource {
   Future<ListResponse<RecipeResponse>> getRecipesFromLikes();
   //Future<RecipeResponse> createRecipe(CreateRecipeRequest createRecipeRequest);
-  Future<ListResponse<RecipeResponse>> getRecipesByCategory(String category, int page);
+  Future<ListResponse<RecipeResponse>> getRecipesByCategory(
+      String category, int page);
 }
 
 class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
@@ -26,6 +28,8 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
     for (Map<String, dynamic> item in response.data) {
       data.add(RecipeResponse.fromJson(item));
     }
+    RecipeResponse r;
+
     return ListResponse(data, response.statusCode, response.statusMessage);
   }
 
@@ -50,6 +54,7 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
         recipeList.add(RecipeResponse.fromJson(item));
       }
     }
-    return ListResponse(recipeList, response.statusCode, response.statusMessage);
+    return ListResponse(
+        recipeList, response.statusCode, response.statusMessage);
   }
 }

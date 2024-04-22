@@ -3,8 +3,6 @@ class UserEntity {
   DateTime createdAt;
   AuthenticationInformation authenticationInfo;
   ProfileInformation profileInfo;
-  List<String> notificationBatchIds;
-  String? currentNotificationBatchId;
   List<String> recipeIds;
   List<String> savedRecipeIds;
   List<String> followingIds;
@@ -16,8 +14,6 @@ class UserEntity {
       this.createdAt,
       this.authenticationInfo,
       this.profileInfo,
-      this.notificationBatchIds,
-      this.currentNotificationBatchId,
       this.recipeIds,
       this.savedRecipeIds,
       this.followingIds,
@@ -38,21 +34,21 @@ class ProfileInformation {
 }
 
 class AuthenticationInformation {
-  String? googleId;
-  String? facebookId;
+  String? loginId;
   String? email;
   String? password;
 
   AuthenticationInformation(
-      this.googleId, this.facebookId, this.email, this.password);
+      this.loginId,this.email, this.password);
 }
 
 class LoginTicket {
   String refreshToken;
-  String deviceInfo;
+  String deviceId;
+  String? deviceInfo;
   DateTime createTime;
   DateTime expireTime;
 
   LoginTicket(
-      this.refreshToken, this.deviceInfo, this.createTime, this.expireTime);
+      this.refreshToken, this.deviceInfo,this.deviceId, this.createTime, this.expireTime);
 }
