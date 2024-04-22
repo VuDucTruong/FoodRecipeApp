@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/data/responses/base_response.dart';
-import 'package:food_recipe_app/data/responses/domain_responses/user_domain_response.dart';
+import 'package:food_recipe_app/data/responses/user_response.dart';
 import 'package:food_recipe_app/data/responses/special_datatypes/headers_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,7 +11,7 @@ part 'login_response.g.dart';
 class LoginResponse {
   final String accessToken;
   final String refreshToken;
-  final UserDomainResponse user;
+  final UserResponse user;
  LoginResponse({
     required this.accessToken,
     required this.refreshToken,

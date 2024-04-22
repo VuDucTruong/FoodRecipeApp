@@ -1,12 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
-import 'package:food_recipe_app/domain/respository/recipe_respository.dart';
+import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/usecase/base_usecase.dart';
 
 class GetRecipesByCategory
     extends BaseUseCase<GetRecipesByCategoryInput, List<RecipeEntity>> {
-  final RecipeRespository _recipeRespository;
+  final RecipeRepository _recipeRespository;
 
   GetRecipesByCategory(this._recipeRespository);
 

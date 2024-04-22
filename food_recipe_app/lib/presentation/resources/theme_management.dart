@@ -6,7 +6,10 @@ import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
+import '../../app/di.dart';
+
 ThemeData getAppTheme() {
+  initDeviceInfo(Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android);
   return ThemeData(
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           type: BottomNavigationBarType.fixed,
@@ -17,7 +20,8 @@ ThemeData getAppTheme() {
       cardTheme: const CardTheme(
         color: ColorManager.secondaryColor,
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(color: ColorManager.secondaryColor),
+      progressIndicatorTheme:
+          const ProgressIndicatorThemeData(color: ColorManager.secondaryColor),
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: ColorManager.secondaryColor,
         selectionColor: ColorManager.secondaryColor,

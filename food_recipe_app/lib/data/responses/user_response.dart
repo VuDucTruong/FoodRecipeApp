@@ -3,10 +3,10 @@ import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/data/responses/special_datatypes/int_json_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'user_domain_response.g.dart';
+part 'user_response.g.dart';
 
 @JsonSerializable(explicitToJson: true,)
-class UserDomainResponse {
+class UserResponse {
   final String id;
   final DateTime createdAt;
   final UserAuthenticationInfoResponse authenticationInfo;
@@ -18,7 +18,7 @@ class UserDomainResponse {
 
   final List<UserLoginTicketResponse> loginTickets;
 
-  UserDomainResponse({
+  UserResponse({
     required this.id,
     required this.authenticationInfo,
     required this.createdAt,
@@ -29,7 +29,7 @@ class UserDomainResponse {
     required this.followerIds,
     required this.loginTickets,
   });
-  UserDomainResponse.defaultValues({
+  UserResponse.defaultValues({
     this.id = '',
     required this.authenticationInfo,
     required this.profileInfo,
@@ -41,9 +41,9 @@ class UserDomainResponse {
   }):createdAt = DateTime.now();
 
 
-  factory UserDomainResponse.fromJson(Map<String,dynamic> json)
-  => _$UserDomainResponseFromJson(json);
-  Map<String,dynamic> toJson() => _$UserDomainResponseToJson(this);
+  factory UserResponse.fromJson(Map<String,dynamic> json)
+  => _$UserResponseFromJson(json);
+  Map<String,dynamic> toJson() => _$UserResponseToJson(this);
 
   @override
   String toString() {
