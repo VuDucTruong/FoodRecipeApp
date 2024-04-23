@@ -8,8 +8,8 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:lottie/lottie.dart';
 
 class NoConnectionDialog extends StatelessWidget {
-  const NoConnectionDialog({Key? key}) : super(key: key);
-
+  NoConnectionDialog({Key? key, required this.reload}) : super(key: key);
+  Function reload;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -35,6 +35,7 @@ class NoConnectionDialog extends StatelessWidget {
             ),
             FilledButton(
                 onPressed: () {
+                  reload();
                   Navigator.pop(context);
                 },
                 child: Text(

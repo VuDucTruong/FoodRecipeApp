@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
-import 'package:food_recipe_app/domain/usecase/get_recipes_by_category.dart';
+import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:meta/meta.dart';
 
 part 'recipes_by_category_event.dart';
@@ -11,7 +11,7 @@ part 'recipes_by_category_state.dart';
 
 class RecipesByCategoryBloc
     extends Bloc<RecipesByCategoryEvent, RecipesByCategoryState> {
-  GetRecipesByCategory getRecipesByCategory;
+  GetRecipesByCategoryUseCase getRecipesByCategory;
 
   RecipesByCategoryBloc(this.getRecipesByCategory)
       : super(RecipesByCategoryInitial()) {

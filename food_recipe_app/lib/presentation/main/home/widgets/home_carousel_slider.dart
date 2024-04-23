@@ -9,12 +9,14 @@ import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart
 import 'package:food_recipe_app/presentation/common/widgets/stateless/common_food_title.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 class HomeCarouselSlider extends StatelessWidget {
-  HomeCarouselSlider({super.key, required this.bloc});
+  HomeCarouselSlider({super.key, required this.bloc, required this.reload});
   TrendingBloc bloc;
+  Function reload;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,11 @@ class HomeCarouselSlider extends StatelessWidget {
       bloc: bloc,
       listener: (context, state) async {
         if (state is TrendingErrorState) {
-          await showAnimatedDialog2(context, const NoConnectionDialog());
+          await showAnimatedDialog2(
+              context,
+              NoConnectionDialog(
+                reload: reload,
+              ));
         }
       },
       builder: (context, state) {
@@ -74,7 +80,7 @@ class HomeCarouselSlider extends StatelessWidget {
           );
         }
         if (state is TrendingLoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return const LoadingWidget();
         }
         if (state is TrendingErrorState) {
           return ErrorText(failure: state.failure);

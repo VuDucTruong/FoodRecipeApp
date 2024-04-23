@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
-import 'package:food_recipe_app/data/request/create_recipe_request.dart';
+import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
 import 'package:food_recipe_app/data/responses/list_response.dart';
 import 'package:food_recipe_app/data/responses/recipe_response.dart';
 

@@ -44,4 +44,5 @@ class LottiePath {
   static const String exclamationPath = '$_jsonLottiePath/exclamation.json';
   static const String noConnectionPath = '$_jsonLottiePath/no_connection.json';
   static const String loadingPath = '$_jsonLottiePath/loading.json';
+  static const String emptyPath = '$_jsonLottiePath/empty_list.json';
 }

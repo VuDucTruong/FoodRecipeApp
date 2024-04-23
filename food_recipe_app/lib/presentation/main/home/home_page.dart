@@ -6,13 +6,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
+import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_list.dart';
+import 'package:food_recipe_app/presentation/main/home/widgets/chef_list.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/home_carousel_slider.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/home_food_item.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/recipe_list_by_category.dart';
@@ -37,13 +40,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late TrendingBloc trendingBloc;
   late RecipesByCategoryBloc recipesByCategoryBloc;
+  late VerifiedChefsBloc verifiedChefsBloc;
   late MutableVariable<String> selectedCateogry;
+
   @override
   void initState() {
     super.initState();
     selectedCateogry = MutableVariable(Constant.typeList[0]);
     trendingBloc = GetIt.instance<TrendingBloc>();
+    verifiedChefsBloc = GetIt.instance<VerifiedChefsBloc>();
+    verifiedChefsBloc.add(VerifiedChefsLoad());
     recipesByCategoryBloc = GetIt.instance<RecipesByCategoryBloc>();
+    trendingBloc.add(TrendingLoad());
+    recipesByCategoryBloc.add(CategorySelected(selectedCateogry.value));
+  }
+
+  void reloadPage() {
+    verifiedChefsBloc.add(VerifiedChefsLoad());
     trendingBloc.add(TrendingLoad());
     recipesByCategoryBloc.add(CategorySelected(selectedCateogry.value));
   }
@@ -52,6 +65,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     trendingBloc.close();
     recipesByCategoryBloc.close();
+    verifiedChefsBloc.close();
     super.dispose();
   }
 
@@ -59,74 +73,42 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return SafeArea(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getSlogan(),
-              _getSearchBar(),
-              const SizedBox(
-                height: AppSize.s20,
-              ),
-              _getHeadingHome(AppStrings.trendingToday),
-              HomeCarouselSlider(bloc: trendingBloc),
-              _getHeadingHome(AppStrings.categories),
-              FoodTypeOptions(
-                selectedItem: selectedCateogry,
-                bloc: recipesByCategoryBloc,
-              ),
-              RecipeListByCategoy(recipesByCategoryBloc: recipesByCategoryBloc),
-              _getHeadingHome(AppStrings.verifiedChefs),
-              _getChefList(),
-              const SizedBox(
-                height: AppSize.s8,
-              )
-            ],
+      child: RefreshIndicator(
+        backgroundColor: ColorManager.secondaryColor,
+        color: ColorManager.primaryColor,
+        onRefresh: () => Future.delayed(Duration.zero, reloadPage),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _getSlogan(),
+                _getSearchBar(),
+                const SizedBox(
+                  height: AppSize.s20,
+                ),
+                _getHeadingHome(AppStrings.trendingToday),
+                HomeCarouselSlider(
+                  bloc: trendingBloc,
+                  reload: reloadPage,
+                ),
+                _getHeadingHome(AppStrings.categories),
+                FoodTypeOptions(
+                  selectedItem: selectedCateogry,
+                  bloc: recipesByCategoryBloc,
+                ),
+                RecipeListByCategoy(
+                    recipesByCategoryBloc: recipesByCategoryBloc),
+                _getHeadingHome(AppStrings.verifiedChefs),
+                ChefList(verifiedChefsBloc: verifiedChefsBloc),
+                const SizedBox(
+                  height: AppSize.s8,
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
-  }
-
-  Container _getChefList() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
-      height: AppSize.s130,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 6,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.only(right: AppMargin.m8),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, Routes.chefProfileRoute);
-              },
-              child: Column(
-                children: [
-                  Container(
-                    height: AppSize.s80,
-                    width: AppSize.s80,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppRadius.r20),
-                        color: Colors.amber),
-                  ),
-                  Container(
-                    width: 80,
-                    margin: const EdgeInsets.symmetric(vertical: AppMargin.m4),
-                    child: const Text(
-                      'Name Chefs',
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
       ),
     );
   }

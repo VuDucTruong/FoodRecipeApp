@@ -1,6 +1,8 @@
+import 'package:food_recipe_app/data/responses/chef_response.dart';
 import 'package:food_recipe_app/data/responses/notification_response.dart';
 import 'package:food_recipe_app/data/responses/user_response.dart';
 import 'package:food_recipe_app/data/responses/recipe_response.dart';
+import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
@@ -24,6 +26,20 @@ extension RecipeResponseMapper on RecipeResponse {
         ingredients,
         isPublished,
         isVegan);
+  }
+}
+
+extension ChefResponseMapper on ChefResponse {
+  ChefEntity toEntity() {
+    var chefProfile = ProfileInformation(
+        profileInfo.fullName,
+        profileInfo.avatarUrl,
+        profileInfo.isVegan,
+        profileInfo.bio,
+        profileInfo.categories,
+        profileInfo.hungryHeads);
+    return ChefEntity(
+        id, createdAt, chefProfile, recipeIds, followingIds, followerIds);
   }
 }
 

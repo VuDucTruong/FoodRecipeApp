@@ -4,11 +4,11 @@ import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/usecase/base_usecase.dart';
 
-class GetRecipesByCategory
+class GetRecipesByCategoryUseCase
     extends BaseUseCase<GetRecipesByCategoryInput, List<RecipeEntity>> {
   final RecipeRepository _recipeRespository;
 
-  GetRecipesByCategory(this._recipeRespository);
+  GetRecipesByCategoryUseCase(this._recipeRespository);
 
   @override
   Future<Either<Failure, List<RecipeEntity>>> execute(

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/home_food_item.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
@@ -20,6 +22,9 @@ class RecipeListByCategoy extends StatelessWidget {
       bloc: recipesByCategoryBloc,
       builder: (context, state) {
         if (state is RecipesByCategoryLoadedState) {
+          if (state.recipesByCategory.isEmpty) {
+            return const NoItemWidget();
+          }
           return Container(
             margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
             height: 210,
@@ -44,7 +49,7 @@ class RecipeListByCategoy extends StatelessWidget {
           );
         }
         if (state is RecipesByCategoryLoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          return const LoadingWidget();
         }
         if (state is RecipesByCategoryErrorState) {
           return ErrorText(failure: state.failure);

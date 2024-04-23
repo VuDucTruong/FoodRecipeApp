@@ -14,6 +14,7 @@ import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
 import 'package:food_recipe_app/domain/usecase/facebook_login_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
@@ -21,9 +22,10 @@ import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 
-import 'package:food_recipe_app/domain/usecase/get_recipes_by_category.dart';
+import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
+import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -85,15 +87,22 @@ initHomeModule() {
     instance.registerLazySingleton<GetRecipesFromLikesUseCase>(
         () => GetRecipesFromLikesUseCase(instance()));
   }
-  if (!instance.isRegistered<GetRecipesByCategory>()) {
-    instance.registerLazySingleton<GetRecipesByCategory>(
-        () => GetRecipesByCategory(instance()));
+  if (!instance.isRegistered<GetRecipesByCategoryUseCase>()) {
+    instance.registerLazySingleton<GetRecipesByCategoryUseCase>(
+        () => GetRecipesByCategoryUseCase(instance()));
+  }
+  if (!instance.isRegistered<GetChefsFromRankUseCase>()) {
+    instance.registerLazySingleton<GetChefsFromRankUseCase>(
+        () => GetChefsFromRankUseCase(instance()));
   }
   if (!instance.isRegistered<RecipesByCategoryBloc>()) {
     instance.registerLazySingleton(() => RecipesByCategoryBloc(instance()));
   }
   if (!instance.isRegistered<TrendingBloc>()) {
     instance.registerLazySingleton(() => TrendingBloc(instance()));
+  }
+  if (!instance.isRegistered<VerifiedChefsBloc>()) {
+    instance.registerLazySingleton(() => VerifiedChefsBloc(instance()));
   }
 }
 
