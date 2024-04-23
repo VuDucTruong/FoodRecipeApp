@@ -33,7 +33,6 @@ class InitialRoute{
   final AppPreferences _appPreferences;
   InitialRoute(this._appPreferences){
     setInitialRoute();
-    debugPrint('hallo');
   }
   void setInitialRoute(){
     _appPreferences.getUserRefreshToken()
