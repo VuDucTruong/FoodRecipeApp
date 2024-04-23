@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/presentation/main/create_recipe/create_recipe_page.dart';
 import 'package:food_recipe_app/presentation/main/home/home_page.dart';
-import 'package:food_recipe_app/presentation/main/main_view_bloc/main_view_bloc.dart';
 import 'package:food_recipe_app/presentation/main/saved_recipe_page.dart';
 import 'package:food_recipe_app/presentation/main/setting_page.dart';
 import 'package:food_recipe_app/presentation/main/user_profile_page.dart';
-import 'package:get_it/get_it.dart';
 
 import '../resources/assets_management.dart';
 import '../resources/color_management.dart';
@@ -24,12 +20,9 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  late MainViewBloc _mainViewBloc;
   @override
   void initState() {
     super.initState();
-    _mainViewBloc = GetIt.instance<MainViewBloc>();
-    _mainViewBloc.add(MainInitialEvent());
   }
 
   @override
@@ -67,17 +60,14 @@ class _MainViewState extends State<MainView> {
           ),
         ),
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: pages[index],
-          ),
+          child: pages[index],
         ));
   }
 
   Widget _getAnimatedBarItem(int x, String picturePath) {
     return InkWell(
       child: AnimatedContainer(
-        padding: const EdgeInsets.symmetric(horizontal: AppMargin.m4),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         transform: Matrix4.translationValues(0, index == x ? -20 : 0, 0),
         duration: Durations.medium1,
         curve: Curves.decelerate,
@@ -89,6 +79,8 @@ class _MainViewState extends State<MainView> {
                     shape: BoxShape.circle)
                 : null,
             child: SvgPicture.asset(
+              height: 35,
+              width: 35,
               picturePath,
               colorFilter: index == x
                   ? const ColorFilter.mode(

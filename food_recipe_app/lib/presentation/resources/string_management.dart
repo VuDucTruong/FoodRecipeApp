@@ -99,6 +99,7 @@ class AppStrings {
   static const String noInternet = 'Please check your \n internet connection !';
   static const String tryAgain = 'Try Again';
   static const String skip = 'Skip';
+  static const String noItem = 'There is no item here...';
 
   // Validate message
   static const String emailFormatError = 'Email format is wrong !';

@@ -35,6 +35,7 @@ class PicturePath {
   static const String editPath = '$_picturePath/edit.svg';
   static const String emailPath = '$_picturePath/email.svg';
   static const String phonePath = '$_picturePath/phone.svg';
+  static const String errorImagePath = '$_picturePath/error_img.png';
 }
 
 class LottiePath {
@@ -43,4 +44,5 @@ class LottiePath {
   static const String exclamationPath = '$_jsonLottiePath/exclamation.json';
   static const String noConnectionPath = '$_jsonLottiePath/no_connection.json';
   static const String loadingPath = '$_jsonLottiePath/loading.json';
+  static const String emptyPath = '$_jsonLottiePath/empty_list.json';
 }

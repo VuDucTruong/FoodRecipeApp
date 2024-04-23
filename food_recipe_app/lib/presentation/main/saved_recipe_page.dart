@@ -62,7 +62,7 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
         const SizedBox(
           height: AppSize.s10,
         ),
-        const FoodTypeList(),
+        //FoodTypeView(),
         const SizedBox(
           height: AppSize.s10,
         ),

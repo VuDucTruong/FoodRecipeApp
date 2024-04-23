@@ -68,9 +68,7 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   OutlinedButton(
-                    onPressed: () {
-                      showAnimatedDialog2(context, const NoConnectionDialog());
-                    },
+                    onPressed: () {},
                     style: OutlinedButton.styleFrom(
                         side: const BorderSide(style: BorderStyle.none),
                         backgroundColor: ColorManager.secondaryColor),

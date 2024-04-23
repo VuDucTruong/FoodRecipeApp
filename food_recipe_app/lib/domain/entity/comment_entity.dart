@@ -1,9 +1,9 @@
 import 'dart:ffi';
 
-class CommentEntity{
+class CommentEntity {
   final String offSet;
   final DateTime createdAt;
-  final Uint8 rating;
+  final int rating;
   final String content;
   final List<String> attachmentUrls;
   CommentEntity({

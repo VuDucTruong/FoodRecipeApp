@@ -28,28 +28,24 @@ class Routes {
   static const String settingKitchenRoute = '/settingKitchen';
 }
 
-class InitialRoute{
+class InitialRoute {
   String initialRoute = Routes.loginRoute;
   final AppPreferences _appPreferences;
-  InitialRoute(this._appPreferences){
+  InitialRoute(this._appPreferences) {
     setInitialRoute();
   }
-  void setInitialRoute(){
-    _appPreferences.getUserRefreshToken()
-        .then((value) {
-      if(value.isNotEmpty){
+  void setInitialRoute() {
+    _appPreferences.getUserRefreshToken().then((value) {
+      if (value.isNotEmpty) {
         initialRoute = Routes.mainRoute;
       }
-    }).catchError( (e){
+    }).catchError((e) {
       debugPrint('Error: $e');
     });
   }
 }
 
-
-
 class RouteGenerator {
-
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case Routes.onBoardingRoute:
@@ -61,6 +57,7 @@ class RouteGenerator {
           builder: (context) => const LoadingScreen(),
         );
       case Routes.loginRoute:
+        initLoginModule();
         return MaterialPageRoute(
           builder: (context) => const LoginView(),
         );

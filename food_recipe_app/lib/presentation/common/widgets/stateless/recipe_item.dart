@@ -11,6 +11,7 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 class RecipeItem extends StatelessWidget {
   RecipeItem({Key? key, required this.isUser}) : super(key: key);
   bool isUser;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
