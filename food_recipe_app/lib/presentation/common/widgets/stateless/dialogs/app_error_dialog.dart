@@ -7,10 +7,8 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:lottie/lottie.dart';
 
-class CongratulationDialog extends StatelessWidget {
-  CongratulationDialog(
-      {Key? key, this.content = AppStrings.congratulationMessage})
-      : super(key: key);
+class AppErrorDialog extends StatelessWidget {
+  AppErrorDialog({Key? key, required this.content}) : super(key: key);
   String content;
   @override
   Widget build(BuildContext context) {
@@ -19,28 +17,20 @@ class CongratulationDialog extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppPadding.p8),
         decoration: const BoxDecoration(
-            gradient: ColorManager.linearGradientPink,
+            color: ColorManager.darkBlueColor,
             borderRadius: BorderRadius.all(Radius.circular(15))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Lottie.asset(LottiePath.completePath,
-                width: 186, height: 186, fit: BoxFit.cover),
-            Text(
-              AppStrings.congratulation,
-              style: getBoldStyle(
-                  color: ColorManager.darkBlueColor, fontSize: FontSize.s25),
-            ),
-            const SizedBox(
-              height: AppSize.s8,
-            ),
-            Text(
-              textAlign: TextAlign.center,
-              maxLines: 3,
-              content,
-              style: getSemiBoldStyle(
-                  color: ColorManager.darkBlueColor, fontSize: FontSize.s18),
-            ),
+            Lottie.asset(LottiePath.exclamationPath,
+                width: 60, height: 60, fit: BoxFit.cover),
+            Text(content,
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                style: getBoldStyle(
+                    color: ColorManager.secondaryColor,
+                    fontSize: FontSize.s20)),
             const SizedBox(
               height: AppSize.s12,
             ),
@@ -49,10 +39,10 @@ class CongratulationDialog extends StatelessWidget {
                   Navigator.pop(context);
                 },
                 child: Text(
-                  AppStrings.congratulationBtnMessage,
+                  AppStrings.ok,
                   style: getMediumStyle(
                       color: Colors.white, fontSize: FontSize.s20),
-                ))
+                )),
           ],
         ),
       ),

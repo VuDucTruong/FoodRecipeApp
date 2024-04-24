@@ -13,14 +13,16 @@ const String DEFAULT_LANGUAGE = "language";
 class DioFactory {
   AppPreferences _appPreferences;
 
-  initializeInterceptor(dio, RefreshAccessTokenUseCase refreshAccessTokenUseCase){
+  initializeInterceptor(
+      dio, RefreshAccessTokenUseCase refreshAccessTokenUseCase) {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         Logger().i('Request: ${options.uri}');
-        _appPreferences.getUserToken()
+        _appPreferences
+            .getUserToken()
             .then((value) => options.headers['Authorization'] = 'Bearer $value')
-        // TODO: implement where even fail finding the token
-        .catchError((e) => Logger().e('Error: $e'));
+            // TODO: implement where even fail finding the token
+            .catchError((e) => Logger().e('Error: $e'));
         return handler.next(options);
       },
       onResponse: (response, handler) {
@@ -32,19 +34,19 @@ class DioFactory {
       onError: (DioException e, handler) {
         debugPrint('interceptor error has error');
         Logger().e('Error: ${e.message}');
-        if(e.response?.statusCode==401){
-          try{
+        if (e.response?.statusCode == 401) {
+          try {
             refreshAccessTokenUseCase.execute(null).then((value) {
               value.fold((l) {
                 return handler.reject(e);
                 //TODO: handle when refresh token failed, should logout user
               }, (r) {
                 _appPreferences.setUserToken(r);
-                return handler.resolve(dio.request(e.requestOptions.path, options: e.requestOptions));
+                return handler.resolve(dio.request(e.requestOptions.path,
+                    options: e.requestOptions));
               });
             });
-          }
-          catch(ex){
+          } catch (ex) {
             return handler.reject(e);
           }
         }
@@ -52,7 +54,6 @@ class DioFactory {
       },
     ));
   }
-
 
   DioFactory(this._appPreferences);
   Duration timeOut = const Duration(minutes: 1);
@@ -69,7 +70,6 @@ class DioFactory {
 
     dio.options = BaseOptions(
         connectTimeout: timeOut, receiveTimeout: timeOut, headers: headers);
-
 
     if (kReleaseMode) {
       print("release mode no logs");

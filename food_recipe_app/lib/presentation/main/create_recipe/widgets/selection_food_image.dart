@@ -1,13 +1,18 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 class SelectionFoodImage extends StatefulWidget {
-  SelectionFoodImage({super.key, required this.isVeg});
+  SelectionFoodImage({super.key, required this.isVeg, required this.fileList});
   MutableVariable<bool> isVeg;
+  List<MultipartFile> fileList;
 
   @override
   _SelectionFoodImageState createState() {
@@ -26,23 +31,42 @@ class _SelectionFoodImageState extends State<SelectionFoodImage> {
     super.dispose();
   }
 
+  File? selectedImage;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Stack(children: [
-      Container(
-        width: double.infinity,
-        height: AppSize.s150,
-        decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(AppRadius.r20),
-            border: Border.all(
-                color: ColorManager.secondaryColor, width: AppSize.s2)),
-        child: SvgPicture.asset(
-          PicturePath.emptyRecipePath,
-          fit: BoxFit.fill,
-        ),
-      ),
+      InkWell(
+          onTap: () async {
+            selectedImage = await selectImageFromGalery();
+            if (selectedImage != null) {
+              MultipartFile temp =
+                  await MultipartFile.fromFile(selectedImage!.path);
+              setState(() {
+                widget.fileList.add(temp);
+              });
+            }
+          },
+          child: Container(
+            width: double.infinity,
+            height: AppSize.s150,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.r20),
+                color: Colors.white70,
+                border: Border.all(
+                    color: ColorManager.secondaryColor, width: AppSize.s2)),
+            child: selectedImage == null
+                ? const Icon(
+                    Icons.add_a_photo_outlined,
+                    size: 100,
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(18),
+                    child: Image.file(
+                      selectedImage!,
+                      fit: BoxFit.cover,
+                    )),
+          )),
       Positioned(
         bottom: 5,
         left: 10,

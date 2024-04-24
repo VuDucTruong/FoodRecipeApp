@@ -100,6 +100,15 @@ class AppStrings {
   static const String tryAgain = 'Try Again';
   static const String skip = 'Skip';
   static const String noItem = 'There is no item here...';
+  static const String addCategories = 'Add categories';
+  static const String description = 'Description';
+  static const String descriptionHint = 'Describe your recipe...';
+  static const String emptyError = 'This field can\'t be empty';
+  static const String noImageError = 'Please add a image for your recipe!';
+  static const String ok = 'OK';
+  static const String deleteContent = 'Reset all the contents';
+  static const String loading = 'Loading...';
+  static const String createSuccess = 'You\'ve create a recipe successfully !';
 
   // Validate message
   static const String emailFormatError = 'Email format is wrong !';

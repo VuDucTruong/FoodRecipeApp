@@ -5,7 +5,8 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 class IngredientListView extends StatefulWidget {
-  const IngredientListView({super.key});
+  IngredientListView({super.key, required this.ingredients});
+  List<String> ingredients;
   @override
   _IngredientListViewState createState() {
     return _IngredientListViewState();
@@ -31,16 +32,21 @@ class _IngredientListViewState extends State<IngredientListView> {
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: 2,
+          itemCount: widget.ingredients.length,
           itemBuilder: (context, index) {
             return Container(
               margin: const EdgeInsets.symmetric(vertical: AppMargin.m4),
-              child: _getIngredientItem(),
+              child: _getIngredientItem(index),
             );
           },
         ),
-        const InkWell(
-          child: Row(
+        InkWell(
+          onTap: () {
+            setState(() {
+              widget.ingredients.add('');
+            });
+          },
+          child: const Row(
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: AppPadding.p4),
@@ -61,7 +67,7 @@ class _IngredientListViewState extends State<IngredientListView> {
     );
   }
 
-  Widget _getIngredientItem() {
+  Widget _getIngredientItem(int index) {
     return Row(
       children: [
         Flexible(
@@ -69,24 +75,19 @@ class _IngredientListViewState extends State<IngredientListView> {
           child: SizedBox(
             height: 40,
             child: TextFormField(
+              initialValue: widget.ingredients[index],
               style: getSemiBoldStyle(color: Colors.black),
               decoration: inputDecoration(hint: AppStrings.item),
             ),
           ),
         ),
-        const SizedBox(
-          width: AppSize.s8,
-        ),
-        Flexible(
-          flex: 1,
-          child: SizedBox(
-            height: 40,
-            child: TextFormField(
-                keyboardType: TextInputType.number,
-                style: getSemiBoldStyle(color: Colors.black),
-                decoration: inputDecoration(hint: AppStrings.quantity)),
-          ),
-        )
+        IconButton(
+            onPressed: () {
+              setState(() {
+                widget.ingredients.removeAt(index);
+              });
+            },
+            icon: const Icon(Icons.remove_circle))
       ],
     );
   }
