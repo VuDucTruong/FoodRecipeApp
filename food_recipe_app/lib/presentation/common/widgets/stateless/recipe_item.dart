@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_food_title.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -9,8 +10,10 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 class RecipeItem extends StatelessWidget {
-  RecipeItem({Key? key, required this.isUser}) : super(key: key);
+  RecipeItem({Key? key, required this.isUser, required this.recipe})
+      : super(key: key);
   bool isUser;
+  RecipeEntity recipe;
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +27,18 @@ class RecipeItem extends StatelessWidget {
             height: AppSize.s200,
             width: double.infinity,
             decoration: BoxDecoration(
-                color: Colors.amber,
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                        recipe.attachmentUrls[recipe.representIndex])),
                 borderRadius: BorderRadius.circular(AppRadius.r20)),
           ),
           Positioned(
               bottom: 0,
               right: 0,
               child: UserFoodTitle(
-                foodName: "Food Name",
+                like: recipe.likes,
+                foodName: recipe.title,
                 width: MediaQuery.of(context).size.width * 0.8,
               )),
           isUser

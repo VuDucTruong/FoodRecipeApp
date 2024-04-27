@@ -9,7 +9,12 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 class UserFoodTitle extends StatelessWidget {
   double width;
   String foodName;
-  UserFoodTitle({Key? key, required this.width, required this.foodName})
+  int like;
+  UserFoodTitle(
+      {Key? key,
+      required this.width,
+      required this.foodName,
+      required this.like})
       : super(key: key);
 
   @override
@@ -30,21 +35,14 @@ class UserFoodTitle extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(
-                foodName,
-                style:
-                    getBoldStyle(color: Colors.white, fontSize: FontSize.s20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  foodName,
+                  style:
+                      getBoldStyle(color: Colors.white, fontSize: FontSize.s20),
+                ),
               ),
-              Row(
-                children: [
-                  SvgPicture.asset(PicturePath.likedPath),
-                  Text(
-                    '1.2k',
-                    style: getSemiBoldStyle(
-                        color: ColorManager.blueColor, fontSize: FontSize.s20),
-                  )
-                ],
-              )
             ],
           ),
         ),

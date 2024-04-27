@@ -97,7 +97,8 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                   child: ListView.builder(
                 itemCount: 3,
                 itemBuilder: (context, index) {
-                  return RecipeItem(isUser: false);
+                  return Container();
+                  /*return RecipeItem(isUser: false);*/
                 },
               ))
             ],

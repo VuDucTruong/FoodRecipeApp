@@ -8,4 +8,5 @@ abstract class RecipeRepository {
   Future<Either<Failure, List<RecipeEntity>>> getRecipesByCategory(
       String category, int page);
   Future<Either<Failure , RecipeEntity>> createRecipe(CreateRecipeObject createRecipeObject);
+  Future<Either<Failure , List<RecipeEntity>>> getSavedRecipesByCategory(List<String> ids , String categories , int page);
 }

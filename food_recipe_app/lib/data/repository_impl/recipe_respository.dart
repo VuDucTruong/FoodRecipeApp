@@ -5,6 +5,7 @@ import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
+import 'package:food_recipe_app/data/requests/get_saved_recipes_request.dart';
 import 'package:food_recipe_app/data/responses/recipe_response.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
@@ -74,6 +75,27 @@ class RecipeRepositoryImpl implements RecipeRepository {
             .createRecipe(CreateRecipeRequest.fromObject(object));
         if (response.statusCode == ApiInternalStatus.SUCCESS) {
           return Right(response.data!.toEntity());
+        } else {
+          return Left(Failure(
+              ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));
+        }
+      } catch (error) {
+        print(error);
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+  }
+
+  @override
+  Future<Either<Failure, List<RecipeEntity>>> getSavedRecipesByCategory(
+      List<String> categories, String searchTerm, int page) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _recipeDataSource.getSavedRecipes(
+            GetSavedRecipesRequest(categories, searchTerm), page);
+        if (response.status == ApiInternalStatus.SUCCESS) {
+          return Right(response.data.map((e) => e.toEntity()).toList());
         } else {
           return Left(Failure(
               ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));

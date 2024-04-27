@@ -14,7 +14,7 @@ import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_list.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_options.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/chef_list.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/home_carousel_slider.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/home_food_item.dart';
