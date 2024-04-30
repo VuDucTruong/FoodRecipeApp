@@ -20,12 +20,14 @@ import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/signup_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 
 import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -108,7 +110,6 @@ initHomeModule() {
 
 initLoginModule() {
   //register necessary usecase in login page
-  debugPrint("initLoginmodule");
   if (!instance.isRegistered<LoginUseCase>()) {
     instance
         .registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
@@ -136,6 +137,17 @@ initLoginModule() {
   }
 }
 
+initCreateProfileModule() {
+  //register necessary usecase in create profile page
+  if(!instance.isRegistered<SignupWithEmailUseCase>()){
+    instance.registerLazySingleton<SignupWithEmailUseCase>(() => SignupWithEmailUseCase(instance()));
+  }
+  if (!instance.isRegistered<CreateProfileBloc>()) {
+    instance.registerLazySingleton<CreateProfileBloc>(
+            () => CreateProfileBloc(signupUseCase: instance()));
+  }
+}
+
 initDeviceInfo(TargetPlatform targetPlatform) {
   debugPrint("initDeviceInfo");
   if (!instance.isRegistered<DeviceInfo>()) {
@@ -143,3 +155,5 @@ initDeviceInfo(TargetPlatform targetPlatform) {
         () => DeviceInfo(targetPlatform: targetPlatform));
   }
 }
+
+

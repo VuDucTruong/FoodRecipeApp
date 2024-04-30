@@ -10,8 +10,8 @@ import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/login/login_view.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/main/home/home_page.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/create_profile_view.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/setting_kitchen_view.dart';
-import 'package:food_recipe_app/presentation/signup/signup_view.dart';
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
 
 class Routes {
@@ -26,6 +26,7 @@ class Routes {
   static const String editProfileRoute = '/editProfile';
   static const String loadingRoute = '/loading';
   static const String settingKitchenRoute = '/settingKitchen';
+  static const String createProfileRoute = '/createProfile';
 }
 
 class InitialRoute {
@@ -61,10 +62,6 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) => const LoginView(),
         );
-      case Routes.signUpRoute:
-        return MaterialPageRoute(
-          builder: (context) => const SignUpView(),
-        );
       case Routes.chefProfileRoute:
         return MaterialPageRoute(
           builder: (context) => const ChefProfileView(),
@@ -83,6 +80,12 @@ class RouteGenerator {
           builder: (context) => const EditProfileView(),
         );
       case Routes.settingKitchenRoute:
+        initCreateProfileModule();
+        if(routeSettings.arguments != null){
+          return MaterialPageRoute(
+            builder: (context) => const SettingKitchenView(),
+          );
+        }
         return MaterialPageRoute(
           builder: (context) => const SettingKitchenView(),
         );

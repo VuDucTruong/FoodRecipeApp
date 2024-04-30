@@ -11,7 +11,6 @@ import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateful/comon_text_input.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -102,7 +101,20 @@ class LoginViewState extends State<LoginView> {
                 },
                 bloc: _loginBloc,
                 builder: (context, state) {
-                  if (state is LoginFailure) return Text('Error');
+                  if (state is LoginLoading) {
+                    return const CircularProgressIndicator();
+                  } else if (state is LoginFailure) {
+                      if(state is LoginWithFacebookFailure) {
+                          Navigator.pushReplacementNamed(context, Routes.createProfileRoute, arguments: state.facebookSignInAccount);
+                        }
+                      if(state is LoginWithGoogleFailure) {
+                          Navigator.pushReplacementNamed(context, Routes.createProfileRoute, arguments: state.googleSignInAccount);
+                        }
+                      return Text('Error: ${(state).errorMessage}');
+                    }
+                  else if(state is LoginSuccess){
+                    Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                    }
                   return Container();
                 },
               ),
@@ -171,7 +183,7 @@ Widget _buildFooterText(
       ),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushReplacementNamed(Routes.signUpRoute);
+          Navigator.of(context).pushReplacementNamed(Routes.settingKitchenRoute);
         },
         child: Text(suffix,
             style: getSemiBoldStyle(color: ColorManager.darkBlueColor)),

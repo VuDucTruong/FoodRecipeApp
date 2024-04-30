@@ -50,15 +50,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           password: password,
         ));
         result.fold(
-            (failure)=> emit(LoginFailure(failure.message)),
+            (failure)=> emit(LoginFailure(errorMessage: failure.message)),
             (userEntity)=>emit(LoginSuccess(userEntity)) );
       } catch (e) {
         // Error occurred during login
-        emit(LoginFailure("Login Failed: $e"));
+        emit(LoginFailure(errorMessage: "Login Failed: $e"));
       }
     } else {
       // Empty email or password, show error state
-      emit(LoginFailure("Email and password are required."));
+      emit(LoginFailure(errorMessage: "Email password requires"));
     }
   }
 
@@ -68,16 +68,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(LoginLoading());
     try {
       final googleSignInAccount = await _googleSignIn.signIn();
-      debugPrint("Google Sign In Account: ${googleSignInAccount?.id}");
-      final request = GoogleLoginUseCaseInput(loginId: googleSignInAccount?.id??"");
+      if(googleSignInAccount == null){
+        emit(LoginFailure(errorMessage: "Google Sign In Failed"));
+        return;
+      }
+      debugPrint("Google Sign In Account: ${googleSignInAccount.id}");
+      final request = GoogleLoginUseCaseInput(loginId: googleSignInAccount.id);
       final result = await _googleLoginUseCase.execute(request);
       result.fold(
-              (failure)=> emit(LoginFailure(failure.message)),
+              (failure)=> emit(LoginWithGoogleFailure(
+                  errorMessage: 'not found linked account',
+                  googleSignInAccount: ThirdPartySignInAccount(
+                      email: googleSignInAccount.email,
+                      name: googleSignInAccount.displayName??"",
+                      id: googleSignInAccount.id
+                  ))),
               (userEntity)=>emit(LoginSuccess(userEntity)) );
       }
       catch(e){
         // Error occurred during login
-        emit(LoginFailure("Login Failed: $e"));
+        emit(LoginFailure(errorMessage: "Login Failed: $e"));
       }
   }
   FutureOr<void> _loginWithFacebookPressed(LoginWithFacebookPressed loginWithFacebookPressed,
@@ -85,21 +95,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // Show loading state
     emit(LoginLoading());
     try {
-      final facebookSignInAccount = await _facebookAuth.login(
-        permissions: ["public_profile"],
-      );
-      final accountInfo = await _facebookAuth.getUserData(fields: "name,email,picture.width(200).height(200)");
-      debugPrint("Facebook Sign In Account logging: ${facebookSignInAccount?.accessToken}");
+      // final facebookSignInAccount = await _facebookAuth.login(
+      //   permissions: ["public_profile"],
+      // );
+      final accountInfo = await _facebookAuth.getUserData(fields: "id,name,email,picture.width(200).height(200)");
       debugPrint("Facebook Account Info: $accountInfo");
+      if(accountInfo["id"] == null){
+        emit(LoginFailure(errorMessage: "Facebook Sign In Failed"));
+        return;
+      }
       final request = FacebookLoginUseCaseInput(loginId: accountInfo['email'].toString());
       final result = await _facebookLoginUseCase.execute(request);
       result.fold(
-              (failure)=> emit(LoginFailure(failure.message)),
+              (failure)=> emit(LoginWithFacebookFailure(errorMessage: failure.message,
+                  facebookSignInAccount: ThirdPartySignInAccount.fromJson(accountInfo))),
               (userEntity)=>emit(LoginSuccess(userEntity)) );
     }
     catch(e){
       // Error occurred during login
-      emit(LoginFailure("Login Failed: $e"));
+      emit(LoginFailure(errorMessage: "Login Failed: $e"));
     }
   }
 }
+
+

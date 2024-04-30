@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/background_data/device_info.dart';
@@ -8,10 +11,9 @@ import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/requests/login_request.dart';
-import 'package:food_recipe_app/data/responses/base_response.dart';
+import 'package:food_recipe_app/data/requests/register_request.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
-
 import 'package:get_it/get_it.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
@@ -23,8 +25,7 @@ class LoginRepositoryImpl implements LoginRepository {
       this._loginRemoteDataSource, this._networkInfo, this._appPreferences);
 
   @override
-  Future<Either<Failure, UserEntity>> login(
-      String email, String password) async {
+  Future<Either<Failure, UserEntity>> login(String email, String password) async {
     if (await _networkInfo.isConnected) {
       try {
         DeviceInfoParams deviceInfoParams =
@@ -33,8 +34,7 @@ class LoginRepositoryImpl implements LoginRepository {
             email: email,
             password: password,
             deviceInfo: deviceInfoParams.deviceInfo,
-            deviceId: deviceInfoParams.deviceId,
-            linkedAccountType: 'default'));
+            deviceId: deviceInfoParams.deviceId));
         if (response.statusCode == 200) {
           if (response.data == null) {
             return Left(Failure(0, 'Data is null'));
@@ -58,9 +58,26 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> register(String email, String password) {
-    // TODO: implement register
-    throw UnimplementedError();
+  Future<Either<Failure, void>> registerWithEmail(RegisterWithEmailRepositoryDTO registerWithEmailRepositoryDTO) async {
+    try {
+      final response = await _loginRemoteDataSource
+          .registerWithEmail(RegisterWithEmailRequest(
+          email: registerWithEmailRepositoryDTO.email, password: registerWithEmailRepositoryDTO.password,
+          fullName: registerWithEmailRepositoryDTO.fullName,
+          bio: registerWithEmailRepositoryDTO.bio, file: registerWithEmailRepositoryDTO.file));
+      if (response.statusCode == 200) {
+        if(response.data==null){ return Left(Failure(0, 'Data is null')); }
+        assert(response.data != null);
+        await _appPreferences.setUserToken(response.data!.accessToken??"");
+        await _appPreferences
+            .setUserRefreshToken(response.data!.refreshToken??"");
+        return const Right(null);
+      }
+      return Left(Failure(response.statusCode ?? 0,
+          response.statusMessage ?? "null message"));
+    } catch (ex) {
+      return Left(ErrorHandler.handle(ex).failure);
+    }
   }
 
   @override
@@ -113,7 +130,6 @@ class LoginRepositoryImpl implements LoginRepository {
   Future<Either<Failure, UserEntity>> loginWithFacebook(String loginId) async {
     LoginRequest loginRequest = LoginRequest(
       loginId: loginId,
-      linkedAccountType: 'facebook',
     );
     final response =
         await _loginRemoteDataSource.loginWithLoginId(loginRequest);
@@ -135,7 +151,6 @@ class LoginRepositoryImpl implements LoginRepository {
   Future<Either<Failure, UserEntity>> loginWithGoogle(String loginId) async {
     final response = await _loginRemoteDataSource.loginWithLoginId(LoginRequest(
       loginId: loginId,
-      linkedAccountType: 'google',
     ));
     if (response.statusCode == 200) {
       if (response.data == null) {
@@ -149,5 +164,25 @@ class LoginRepositoryImpl implements LoginRepository {
       return Left(Failure(
           response.statusCode ?? 0, response.statusMessage ?? "null message"));
     }
+  }
+
+  @override
+  Future<Either<Failure, void>> registerWithLoginId(RegisterWithLoginIdDTOs registerWithLoginIdDTOs) async {
+    final response = await _loginRemoteDataSource.registerWithLoginId(
+        RegisterWithLoginIdRequest(
+            loginId: registerWithLoginIdDTOs.loginId,
+            fullName: registerWithLoginIdDTOs.fullName,
+            bio: registerWithLoginIdDTOs.bio,
+            file: registerWithLoginIdDTOs.file));
+    if(response.statusCode == 200){
+      if(response.data==null){ return Left(Failure(0, 'Data is null')); }
+      assert(response.data != null);
+      await _appPreferences.setUserToken(response.data!.accessToken??"");
+      await _appPreferences.setUserRefreshToken(response.data!.refreshToken??"");
+      return const Right(null);
+    }
+    return Left(Failure(response.statusCode ?? 0,
+        response.statusMessage ?? "null message"));
+
   }
 }

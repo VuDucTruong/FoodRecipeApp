@@ -7,13 +7,15 @@ class CustomTextFormField extends StatefulWidget {
       required this.validator,
       this.icon,
       required this.hint,
-      required this.controller})
+      required this.controller,
+      this.maxLines = 1 })
       : super(key: key);
 
   late String hint;
   String? Function(String? x) validator;
   Widget? icon;
   TextEditingController controller;
+  int maxLines;
   @override
   _CustomTextFormFieldState createState() {
     return _CustomTextFormFieldState();
@@ -43,6 +45,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           surfaceTintColor: Colors.white70,
           color: Colors.white,
           child: TextFormField(
+            maxLines: widget.maxLines,
             controller: widget.controller,
             validator: (value) {
               final error = widget.validator.call(value);
