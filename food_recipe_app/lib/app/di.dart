@@ -13,18 +13,22 @@ import 'package:food_recipe_app/data/repository_impl/user_repository.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
+import 'package:food_recipe_app/domain/usecase/create_recipe_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/facebook_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/signup_usecase.dart';
+import 'package:food_recipe_app/presentation/blocs/create_recipe/create_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 
 import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
+import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
@@ -55,7 +59,6 @@ Future<void> initAppModule() async {
 
   // app  service client
   final dio = await instance<DioFactory>().getDio();
-
   // remote data source
   instance.registerLazySingleton<LoginRemoteDataSource>(
       () => LoginRemoteDataSourceImpl(dio, instance()));
@@ -105,6 +108,28 @@ initHomeModule() {
   }
   if (!instance.isRegistered<VerifiedChefsBloc>()) {
     instance.registerLazySingleton(() => VerifiedChefsBloc(instance()));
+  }
+}
+
+initSavedRecipeModule() {
+  if (!instance.isRegistered<GetSavedRecipesUseCase>()) {
+    instance.registerLazySingleton<GetSavedRecipesUseCase>(
+        () => GetSavedRecipesUseCase(instance()));
+  }
+  if (!instance.isRegistered<SavedRecipesBloc>()) {
+    instance.registerLazySingleton<SavedRecipesBloc>(
+        () => SavedRecipesBloc(instance()));
+  }
+}
+
+initCreateRecipeModule() {
+  if (!instance.isRegistered<CreateRecipeBloc>()) {
+    instance.registerLazySingleton<CreateRecipeBloc>(
+        () => CreateRecipeBloc(instance()));
+  }
+  if (!instance.isRegistered<CreateRecipeUseCase>()) {
+    instance.registerLazySingleton<CreateRecipeUseCase>(
+        () => CreateRecipeUseCase(instance()));
   }
 }
 

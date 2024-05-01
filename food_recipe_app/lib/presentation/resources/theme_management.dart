@@ -11,6 +11,8 @@ import '../../app/di.dart';
 ThemeData getAppTheme() {
   initDeviceInfo(Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android);
   return ThemeData(
+      checkboxTheme: const CheckboxThemeData(
+          fillColor: MaterialStatePropertyAll(ColorManager.secondaryColor)),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           type: BottomNavigationBarType.fixed,
           backgroundColor: ColorManager.secondaryColor,

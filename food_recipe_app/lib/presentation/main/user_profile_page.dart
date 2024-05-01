@@ -82,7 +82,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: ListView.builder(
           itemCount: 3,
           itemBuilder: (context, index) {
-            return RecipeItem(isUser: true);
+            return Container();
+            /*return RecipeItem(isUser: true);*/
           },
         ))
       ],

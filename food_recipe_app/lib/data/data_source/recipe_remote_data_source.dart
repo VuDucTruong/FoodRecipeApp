@@ -5,14 +5,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
+import 'package:food_recipe_app/data/requests/get_saved_recipes_request.dart';
+import 'package:food_recipe_app/data/responses/base_response.dart';
 import 'package:food_recipe_app/data/responses/list_response.dart';
 import 'package:food_recipe_app/data/responses/recipe_response.dart';
 
 abstract class RecipeRemoteDataSource {
   Future<ListResponse<RecipeResponse>> getRecipesFromLikes();
-  //Future<RecipeResponse> createRecipe(CreateRecipeRequest createRecipeRequest);
+  Future<BaseResponse<RecipeResponse>> createRecipe(
+      CreateRecipeRequest createRecipeRequest);
   Future<ListResponse<RecipeResponse>> getRecipesByCategory(
       String category, int page);
+  Future<ListResponse<RecipeResponse>> getSavedRecipes(
+      GetSavedRecipesRequest getSavedRecipesRequest, int page);
 }
 
 class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
@@ -33,13 +38,15 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
     return ListResponse(data, response.statusCode, response.statusMessage);
   }
 
-  /*@override
-  Future<RecipeResponse> createRecipe(
+  @override
+  Future<BaseResponse<RecipeResponse>> createRecipe(
       CreateRecipeRequest createRecipeRequest) async {
     FormData formData = FormData.fromMap(createRecipeRequest.toJson());
-    Response response = await _dio.post('$recipeEndpoint/get-from-likes' , data: formData);
-    return RecipeResponse.fromJson(response.data);
-  }*/
+    Response response = await _dio.post('$recipeEndpoint/create',
+        data: formData,
+        options: Options(contentType: Headers.multipartFormDataContentType));
+    return BaseResponse.fromJson(response, RecipeResponse.fromJson);
+  }
 
   @override
   Future<ListResponse<RecipeResponse>> getRecipesByCategory(
@@ -56,5 +63,18 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
     }
     return ListResponse(
         recipeList, response.statusCode, response.statusMessage);
+  }
+
+  @override
+  Future<ListResponse<RecipeResponse>> getSavedRecipes(
+      GetSavedRecipesRequest getSavedRecipesRequest, int page) async {
+    Response response = await _dio.post(
+        '$recipeEndpoint/get-saved-recipes/$page',
+        data: getSavedRecipesRequest.toJson());
+    List<RecipeResponse> data = [];
+    for (Map<String, dynamic> item in response.data) {
+      data.add(RecipeResponse.fromJson(item));
+    }
+    return ListResponse(data, response.statusCode, response.statusMessage);
   }
 }

@@ -55,6 +55,7 @@ class _DefaultHeadsState extends State<DefaultHeads> {
               child: IconButton(
                   iconSize: AppSize.s16,
                   onPressed: () {
+                    if (widget.headNumber.value == 1) return;
                     setState(() {
                       widget.headNumber.value--;
                     });

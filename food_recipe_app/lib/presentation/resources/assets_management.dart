@@ -37,6 +37,7 @@ class PicturePath {
   static const String phonePath = '$_picturePath/phone.svg';
   static const String passwordPath = '$_picturePath/password.svg';
   static const String errorImagePath = '$_picturePath/error_img.png';
+  static const String recipeCategoryPath = '$_picturePath/recipe_category.svg';
 }
 
 class LottiePath {

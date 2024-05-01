@@ -33,4 +33,9 @@ class RecipeEntity {
       this.ingredients,
       this.isPublished,
       this.isVegan);
+
+  @override
+  String toString() {
+    return 'RecipeEntity{id: $title}';
+  }
 }

@@ -25,17 +25,18 @@ class AppAlertDialog extends StatelessWidget {
             Lottie.asset(LottiePath.exclamationPath,
                 width: 60, height: 60, fit: BoxFit.cover),
             RichText(
+                textAlign: TextAlign.center,
                 text: TextSpan(children: [
-              TextSpan(
-                  text: AppStrings.warningMessage,
-                  style: getBoldStyle(
-                      color: Colors.white, fontSize: FontSize.s18)),
-              TextSpan(
-                  text: content,
-                  style: getBoldStyle(
-                      color: ColorManager.secondaryColor,
-                      fontSize: FontSize.s20)),
-            ])),
+                  TextSpan(
+                      text: AppStrings.warningMessage,
+                      style: getBoldStyle(
+                          color: Colors.white, fontSize: FontSize.s18)),
+                  TextSpan(
+                      text: content,
+                      style: getBoldStyle(
+                          color: ColorManager.secondaryColor,
+                          fontSize: FontSize.s20)),
+                ])),
             const SizedBox(
               height: AppSize.s12,
             ),
@@ -44,7 +45,7 @@ class AppAlertDialog extends StatelessWidget {
               children: [
                 FilledButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, true);
                     },
                     child: Text(
                       AppStrings.yes,
@@ -53,7 +54,7 @@ class AppAlertDialog extends StatelessWidget {
                     )),
                 OutlinedButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.pop(context, false);
                     },
                     child: Text(
                       AppStrings.no,

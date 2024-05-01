@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/presentation/main/create_recipe/create_recipe_page.dart';
 import 'package:food_recipe_app/presentation/main/home/home_page.dart';
 import 'package:food_recipe_app/presentation/main/saved_recipe_page.dart';
@@ -30,7 +31,7 @@ class _MainViewState extends State<MainView> {
     super.dispose();
   }
 
-  int index = 2;
+  int index = 1;
   List<Widget> pages = [
     const CreateRecipePage(),
     const SavedRecipePage(),
@@ -60,7 +61,24 @@ class _MainViewState extends State<MainView> {
           ),
         ),
         body: SafeArea(
-          child: pages[index],
+          child: Builder(builder: (context) {
+            switch (index) {
+              case 0:
+                initCreateRecipeModule();
+                break;
+              case 1:
+                initSavedRecipeModule();
+                break;
+              case 2:
+                initHomeModule();
+                break;
+              case 3:
+                break;
+              case 4:
+                break;
+            }
+            return pages[index];
+          }),
         ));
   }
 
