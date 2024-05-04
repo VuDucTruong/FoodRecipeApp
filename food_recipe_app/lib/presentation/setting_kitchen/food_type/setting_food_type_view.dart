@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
+import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/default_heads.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/create_profile_view.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/widgets/food_item.dart';
+import 'package:get_it/get_it.dart';
 
 class SettingFoodTypeView extends StatefulWidget {
-  const SettingFoodTypeView({super.key});
-
+  final UserRegisterProfileBasics userRegisterProfile = UserRegisterProfileBasics(
+    fullName: "",
+    email: "",
+    password: "",
+    linkedAccountType: "",
+    loginId: "",
+    avatarUrl: "",
+    bio: "",
+  );
+  SettingFoodTypeView({super.key}){
+    debugPrint("my log in foodtypeview: SettingFoodTypeView");
+  }
   @override
   State<SettingFoodTypeView> createState() => _SettingFoodTypeViewState();
 }
@@ -23,6 +39,8 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
   Map<String, bool> typePreferencesMap = {};
   MutableVariable<int> headNumber = MutableVariable(2);
   MutableVariable<bool> isVeg = MutableVariable(true);
+
+  late FoodTypeBloc _foodTypeBloc;
   @override
   void initState() {
     // TODO: implement initState
@@ -30,6 +48,13 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
     typePreferencesMap = {
       for (int i = 0; i < typeList.length; i++) typeList[i]: false
     };
+    _foodTypeBloc = GetIt.instance<FoodTypeBloc>();
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _foodTypeBloc.close();
+
   }
 
   @override
@@ -39,106 +64,130 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(AppPadding.p12),
-                child: Text(
-                  AppStrings.setUpKitchen,
-                  style:
-                      getBoldStyle(color: Colors.black, fontSize: FontSize.s20),
-                ),
-              ),
-              Row(
+          child: BlocConsumer(
+            listener: (context,state){
+              if(state is FoodTypeLoading)
+                {
+                  showDialog(context: context, builder: (context)=>const
+                  Center(child: CircularProgressIndicator(),));
+                }
+              if(state is FoodTypeSubmitSuccess){
+                showDialog(context: context, builder: (context)=> CongratulationDialog());
+                Future.delayed(const Duration(milliseconds: 500),(){
+                  Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+                });
+              }
+            },
+            builder: (context,state){
+              return Column(
                 children: [
-                  Container(
-                      margin:
-                          const EdgeInsets.symmetric(vertical: AppMargin.m8),
-                      child: Text(
-                        AppStrings.selectPreferences,
-                        style: getSemiBoldStyle(
-                            color: ColorManager.secondaryColor,
-                            fontSize: FontSize.s20),
-                      )),
-                ],
-              ),
-              Center(
-                child: LongSwitch(
-                  onContent: AppStrings.veg,
-                  offContent: AppStrings.nonVeg,
-                  onColor: ColorManager.linearGradientLightTheme,
-                  offColor: ColorManager.linearGradientNonVeg,
-                  width: appWidth * 0.65,
-                  height: 40,
-                ),
-              ),
-              _buildTypeList(appWidth),
-              Row(
-                children: [
-                  Text(
-                    AppStrings.hungryHeads,
-                    style: getSemiBoldStyle(
-                        color: Colors.black, fontSize: FontSize.s18),
-                  ),
-                  const Spacer(),
-                  DefaultHeads(
-                    headNumber: headNumber,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: AppSize.s12,
-              ),
-              Row(
-                children: [
-                  Text(
-                    AppStrings.newDishNotification,
-                    style: getSemiBoldStyle(
-                        color: Colors.black, fontSize: FontSize.s18),
-                  ),
-                  const Spacer(),
-                  OnOffSwitch(
-                    isOn: isVeg,
-                  )
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: FilledButton(
-                    onPressed: () {
-                      int count = 0;
-                      for (var element in typePreferencesMap.values) {
-                        if (element) count++;
-                      }
-                      if (count <= 3) {
-                        print('Fail  qua it');
-                      } else {
-                        print('OK');
-                      }
-                      /*if (typePreferencesMap.values
-                              .map((e) => e == true)
-                              .toList()
-                              .length <=
-                          3) {
-                        print(typePreferencesMap);
-                      } else {
-                        print('OK thanh cong');
-                      }*/
-                      /*if (pageIndex >= pages.length - 1) {
-                              return;
-                            }
-                            _pageController.jumpToPage(++pageIndex);*/
-                    },
+                  Padding(
+                    padding: const EdgeInsets.all(AppPadding.p12),
                     child: Text(
-                      AppStrings.continueOnly,
-                      style: getMediumStyle(
-                          color: Colors.white, fontSize: FontSize.s20),
-                    )),
-              ),
-            ],
+                      AppStrings.setUpKitchen,
+                      style:
+                      getBoldStyle(color: Colors.black, fontSize: FontSize.s20),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          margin:
+                          const EdgeInsets.symmetric(vertical: AppMargin.m8),
+                          child: Text(
+                            AppStrings.selectPreferences,
+                            style: getSemiBoldStyle(
+                                color: ColorManager.secondaryColor,
+                                fontSize: FontSize.s20),
+                          )),
+                    ],
+                  ),
+                  Center(
+                    child: LongSwitch(
+                      onContent: AppStrings.veg,
+                      offContent: AppStrings.nonVeg,
+                      onColor: ColorManager.linearGradientLightTheme,
+                      offColor: ColorManager.linearGradientNonVeg,
+                      width: appWidth * 0.65,
+                      height: 40,),),
+                  _buildTypeList(appWidth),
+                  Row(
+                    children: [
+                      Text(
+                        AppStrings.hungryHeads,
+                        style: getSemiBoldStyle(
+                            color: Colors.black, fontSize: FontSize.s18),),
+                      const Spacer(),
+                      DefaultHeads(
+                        headNumber: headNumber,),],
+                  ),
+                  const SizedBox(
+                    height: AppSize.s12,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        AppStrings.newDishNotification,
+                        style: getSemiBoldStyle(
+                            color: Colors.black, fontSize: FontSize.s18),
+                      ),
+                      const Spacer(),
+                      OnOffSwitch(
+                        isOn: isVeg,
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16.0),
+                    child: FilledButton(
+                        onPressed: () {
+                          int count = 0;
+                          for (var element in typePreferencesMap.values) {
+                            if (element) count++;
+                            if(count>3) break;
+                          }
+                          if (count <= 3) {
+                            showDialog(context: context, builder: (context) {
+                              return AlertDialog(
+                                title: const Text("Error"),
+                                content: const Text("Please select at least 3 preferences"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {Navigator.pop(context);},
+                                      child: const Text("OK"))
+                                ],
+                              );
+                            });
+                          } else {
+                            _foodTypeBloc.add(FoodTypeSubmit(
+                                userRegisterProfile: gatherProfileSubmit()));
+                          }
+                        },
+                        child: Text(
+                          AppStrings.continueOnly,
+                          style: getMediumStyle(
+                              color: Colors.white, fontSize: FontSize.s20),
+                        )),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
+    );
+  }
+
+  UserRegisterProfileAdvanced gatherProfileSubmit(){
+    List<String> categories = [];
+    typePreferencesMap.forEach((key, value) {
+      if (value) {
+        categories.add(key);}
+    });
+    return UserRegisterProfileAdvanced(
+      userRegisterProfile: widget.userRegisterProfile,
+      categories: categories,
+      hungryHeads: headNumber.value,
     );
   }
 

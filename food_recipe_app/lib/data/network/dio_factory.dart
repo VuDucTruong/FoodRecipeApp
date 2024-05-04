@@ -18,6 +18,7 @@ class DioFactory {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         Logger().i('Request: ${options.uri}');
+        Logger().i('Request: ${options.data}');
         _appPreferences
             .getUserToken()
             .then((value) => options.headers['Authorization'] = 'Bearer $value')
@@ -69,7 +70,9 @@ class DioFactory {
     };
 
     dio.options = BaseOptions(
-        connectTimeout: timeOut, receiveTimeout: timeOut, headers: headers);
+        connectTimeout: timeOut,
+        receiveTimeout: timeOut, headers: headers,
+    );
 
     if (kReleaseMode) {
       print("release mode no logs");

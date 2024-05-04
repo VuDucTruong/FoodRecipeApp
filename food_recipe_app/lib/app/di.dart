@@ -22,7 +22,8 @@ import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
-import 'package:food_recipe_app/domain/usecase/signup_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/signup_with_email_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/signup_with_loginId_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/create_recipe/create_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 
@@ -31,7 +32,7 @@ import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_b
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
-import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -148,8 +149,12 @@ initLoginModule() {
         () => FacebookLoginUseCase(instance()));
   }
 
-  instance.registerLazySingleton(() => GoogleSignIn());
-  instance.registerLazySingleton(() => FacebookAuth.instance);
+  if(!instance.isRegistered<GoogleSignIn>()){
+    instance.registerLazySingleton(() => GoogleSignIn());
+  }
+  if(!instance.isRegistered<FacebookAuth>()){
+    instance.registerLazySingleton(() => FacebookAuth.instance);
+  }
   //register login bloc
   if (!instance.isRegistered<LoginBloc>()) {
     instance.registerLazySingleton(() => LoginBloc(
@@ -164,12 +169,18 @@ initLoginModule() {
 
 initCreateProfileModule() {
   //register necessary usecase in create profile page
+}
+
+initFoodTypeModule(){
   if(!instance.isRegistered<SignupWithEmailUseCase>()){
     instance.registerLazySingleton<SignupWithEmailUseCase>(() => SignupWithEmailUseCase(instance()));
   }
-  if (!instance.isRegistered<CreateProfileBloc>()) {
-    instance.registerLazySingleton<CreateProfileBloc>(
-            () => CreateProfileBloc(signupUseCase: instance()));
+  if(!instance.isRegistered<SignupWithLoginIdUseCase>()){
+    instance.registerLazySingleton<SignupWithLoginIdUseCase>(() => SignupWithLoginIdUseCase(instance()));
+  }
+  if (!instance.isRegistered<FoodTypeBloc>()) {
+    instance.registerLazySingleton(
+            () => FoodTypeBloc(signupWithLoginIdUseCase: instance(),signupUseCase: instance()));
   }
 }
 

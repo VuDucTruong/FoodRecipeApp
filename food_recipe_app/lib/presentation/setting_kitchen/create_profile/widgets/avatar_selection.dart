@@ -9,8 +9,9 @@ import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 
 class AvatarSelection extends StatefulWidget {
-  AvatarSelection({super.key, required this.selectedImage});
+  AvatarSelection({super.key, required this.selectedImage,this.imageUrl});
   MutableVariable<MultipartFile?> selectedImage;
+  String? imageUrl;
   @override
   _AvatarSelectionState createState() {
     return _AvatarSelectionState();
@@ -49,7 +50,7 @@ class _AvatarSelectionState extends State<AvatarSelection> {
               backgroundColor: Colors.white,
               radius: 133 / 2 + 4,
               backgroundImage: (selectedImage == null
-                  ? const AssetImage(PicturePath.emptyAvatarPngPath)
+                  ? (widget.imageUrl!=null?NetworkImage(widget.imageUrl!):const AssetImage(PicturePath.emptyAvatarPngPath))
                   : FileImage(selectedImage!)) as ImageProvider,
             ),
             Positioned(

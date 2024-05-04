@@ -81,7 +81,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   googleSignInAccount: ThirdPartySignInAccount(
                       email: googleSignInAccount.email,
                       name: googleSignInAccount.displayName??"",
-                      id: googleSignInAccount.id
+                      id: googleSignInAccount.id,
+                    photoUrl: googleSignInAccount.photoUrl,
+                    linkedAccountType: 'google'
                   ))),
               (userEntity)=>emit(LoginSuccess(userEntity)) );
       }
@@ -94,21 +96,28 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Emitter<LoginState> emit) async {
     // Show loading state
     emit(LoginLoading());
+    Map<String,dynamic> accountInfo;
     try {
-      // final facebookSignInAccount = await _facebookAuth.login(
-      //   permissions: ["public_profile"],
-      // );
-      final accountInfo = await _facebookAuth.getUserData(fields: "id,name,email,picture.width(200).height(200)");
-      debugPrint("Facebook Account Info: $accountInfo");
-      if(accountInfo["id"] == null){
-        emit(LoginFailure(errorMessage: "Facebook Sign In Failed"));
-        return;
+      if (await _checkIfIsLogged())
+        {
+          accountInfo = await _facebookAuth.getUserData();
+        }
+      else{
+        final LoginResult facebookLoginResult = await FacebookAuth.instance.login();
+        if (facebookLoginResult.status == LoginStatus.success) {
+          accountInfo = await _facebookAuth.getUserData();
+        } else {
+          debugPrint(facebookLoginResult.message);
+          emit(LoginFailure(errorMessage: "Facebook Sign In Failed"));
+          return;
+        }
       }
-      final request = FacebookLoginUseCaseInput(loginId: accountInfo['email'].toString());
+      final request = FacebookLoginUseCaseInput(loginId: accountInfo['id'].toString());
+      debugPrint("Facebook Sign In Account: ${accountInfo}");
       final result = await _facebookLoginUseCase.execute(request);
       result.fold(
               (failure)=> emit(LoginWithFacebookFailure(errorMessage: failure.message,
-                  facebookSignInAccount: ThirdPartySignInAccount.fromJson(accountInfo))),
+              facebookSignInAccount: ThirdPartySignInAccount.fromJson(accountInfo))),
               (userEntity)=>emit(LoginSuccess(userEntity)) );
     }
     catch(e){
@@ -116,6 +125,29 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginFailure(errorMessage: "Login Failed: $e"));
     }
   }
+  Future<bool> _checkIfIsLogged() async {
+    final accessToken = await FacebookAuth.instance.accessToken;
+    if (accessToken != null) {
+      debugPrint("is Logged:::: ${accessToken.toJson()}");
+      // final userData = await FacebookAuth.instance.getUserData();
+      return true;
+    }
+    return false;
+  }
+  // Future<void> _login() async {
+  //   debugPrint('In check logged');
+  //   if (await _checkIfIsLogged()) return;
+  //   debugPrint('In login now!');
+  //   final LoginResult result = await FacebookAuth.instance
+  //       .login(); // by default we request the email and the public profile
+  //   if (result.status == LoginStatus.success) {
+  //     final userData = await FacebookAuth.instance.getUserData();
+  //     debugPrint(userData);
+  //   } else {
+  //     debugPrint(result.status);
+  //     debugPrint(result.message);
+  //   }
+  // }
 }
 
 

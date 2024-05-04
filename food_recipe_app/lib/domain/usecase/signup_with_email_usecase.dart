@@ -8,36 +8,34 @@ import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/usecase/base_usecase.dart';
 
-class SignupWithEmailUseCase implements BaseUseCase<SignupUseCaseInput, void> {
+class SignupWithEmailUseCase implements BaseUseCase<SignupWithEmailUseCaseInput, void> {
   final LoginRepository _loginRepository;
 
   SignupWithEmailUseCase(this._loginRepository);
 
   @override
-  Future<Either<Failure, void>> execute(SignupUseCaseInput params) async {
+  Future<Either<Failure, void>> execute(SignupWithEmailUseCaseInput params) async {
     return await _loginRepository.registerWithEmail(
         RegisterWithEmailRepositoryDTO(
             email: params.email,
             password: params.password,
             fullName: params.fullName,
             bio: params.bio,
-            file: params.file==null
-                ?null
-                :await MultipartFile.fromFile(params.file!.path)
+            file: params.file
         )
     );
   }
 }
 
 
-class SignupUseCaseInput{
+class SignupWithEmailUseCaseInput{
   final String email;
   final String password;
   final String fullName;
   final String bio;
-  final File? file;
+  final MultipartFile? file;
 
-  SignupUseCaseInput({
+  SignupWithEmailUseCaseInput({
     required this.email,
     required this.password,
     required this.fullName,

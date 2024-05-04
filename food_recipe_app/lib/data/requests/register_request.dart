@@ -32,11 +32,12 @@ class RegisterWithLoginIdRequest {
   final String fullName;
   final String bio;
   final MultipartFile? file;
+  final String linkedAccountType;
 
   RegisterWithLoginIdRequest({
     required this.loginId,
     required this.fullName,required this.bio,
-    this.file});
+    required this.linkedAccountType,this.file});
 
   Map<String, dynamic> toJson()
   {

@@ -32,11 +32,15 @@ class ThirdPartySignInAccount {
   final String email;
   final String name;
   final String id;
+  final String? photoUrl;
+  final String linkedAccountType;
 
-  ThirdPartySignInAccount({required this.email,required this.name,required this.id});
+  ThirdPartySignInAccount({required this.email,required this.name,
+    required this.id,required this.photoUrl,required this.linkedAccountType});
   ThirdPartySignInAccount.fromJson(Map<String, dynamic> json)
       : email = json['email'] as String,
         name = json['name'] as String,
-        id = json['id'] as String;
-
+        id = json['id'] as String,
+        photoUrl = json['picture']['data']['url'] as String,
+        linkedAccountType = 'facebook';
 }

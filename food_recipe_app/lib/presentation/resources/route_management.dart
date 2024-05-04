@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
+import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
 import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
 import 'package:food_recipe_app/presentation/edit_profile/edit_profile_view.dart';
@@ -9,10 +10,7 @@ import 'package:food_recipe_app/presentation/resources/string_management.dart';
 
 import 'package:food_recipe_app/presentation/login/login_view.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
-import 'package:food_recipe_app/presentation/main/home/home_page.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/create_profile_view.dart';
-import 'package:food_recipe_app/presentation/setting_kitchen/food_type/setting_food_type_view.dart';
-import 'package:food_recipe_app/presentation/setting_kitchen/setting_kitchen_view.dart';
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
 
 class Routes {
@@ -51,6 +49,11 @@ class InitialRoute {
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
+      case "/halo":
+        initHomeModule();
+        return MaterialPageRoute(
+          builder: (context) => const MainView(),
+        );
       case Routes.onBoardingRoute:
         return MaterialPageRoute(
           builder: (context) => const OnBoardingView(),
@@ -82,13 +85,17 @@ class RouteGenerator {
           builder: (context) => const EditProfileView(),
         );
       case Routes.createProfileRoute:
+        if(routeSettings.arguments != null && routeSettings.arguments is ThirdPartySignInAccount){
+          return MaterialPageRoute(
+            builder: (context) => CreateProfileView(
+              thirdPartySignInAccount: routeSettings.arguments as ThirdPartySignInAccount,
+            ),
+          );
+        }
         return MaterialPageRoute(
-          builder: (context) => const CreateProfileView(),
+          builder: (context) => CreateProfileView(),
         );
-      case Routes.foodTypeRoute:
-        return MaterialPageRoute(
-          builder: (context) => const SettingFoodTypeView(),
-        );
+
       default:
         return undefinedRoute();
     }

@@ -96,7 +96,7 @@ class LoginViewState extends State<LoginView> {
               BlocConsumer(
                 listener: (context, state) {
                   if (state is LoginSuccess) {
-                    Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                    Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
                   }
                 },
                 bloc: _loginBloc,
@@ -105,15 +105,16 @@ class LoginViewState extends State<LoginView> {
                     return const CircularProgressIndicator();
                   } else if (state is LoginFailure) {
                       if(state is LoginWithFacebookFailure) {
-                          Navigator.pushReplacementNamed(context, Routes.createProfileRoute, arguments: state.facebookSignInAccount);
+                        debugPrint('login with facebook failed, not found in my system');
+                        Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.facebookSignInAccount);
                         }
                       if(state is LoginWithGoogleFailure) {
-                          Navigator.pushReplacementNamed(context, Routes.createProfileRoute, arguments: state.googleSignInAccount);
+                        Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
                         }
                       return Text('Error: ${(state).errorMessage}');
                     }
                   else if(state is LoginSuccess){
-                    Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                    Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
                     }
                   return Container();
                 },
@@ -183,7 +184,7 @@ Widget _buildFooterText(
       ),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushReplacementNamed(Routes.settingKitchenRoute);
+          Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute);
         },
         child: Text(suffix,
             style: getSemiBoldStyle(color: ColorManager.darkBlueColor)),

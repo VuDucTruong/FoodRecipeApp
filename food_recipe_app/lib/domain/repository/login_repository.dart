@@ -40,22 +40,26 @@ class RegisterWithEmailRepositoryDTO extends _LoginRepositoryDTOBase{
   RegisterWithEmailRepositoryDTO({
     required this.email,required this.password,
     required String fullName,
-    MultipartFile? file, String? bio}):
+    MultipartFile? file,required String bio}):
         super(
     fullName: fullName,
     file: file,
-    bio: bio??"");
+    bio: bio);
 }
 
 class RegisterWithLoginIdDTOs extends _LoginRepositoryDTOBase{
   final String loginId;
+  final String avatarUrl;
+  final String linkedAccountType;
 
   RegisterWithLoginIdDTOs({
     required this.loginId,
+    required this.avatarUrl,
+    required this.linkedAccountType,
     required String fullName,
-    MultipartFile? file, String? bio}):
+    MultipartFile? file,required String bio}):
         super(
           fullName: fullName,
           file: file,
-          bio: bio??"");
+          bio: bio);
 }
