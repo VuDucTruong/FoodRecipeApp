@@ -21,13 +21,25 @@ abstract class LoginRepository {
 
 class _LoginRepositoryDTOBase{
   final String fullName;
+  final String avatarUrl;
   final MultipartFile? file;
   final String bio;
+  final bool isVegan;
+  final int hungryHeads;
+  final List<String> categories;
+  final String deviceInfo;
+  final String deviceId;
 
   _LoginRepositoryDTOBase({
     required this.fullName,
+    required this.bio,
+    required this.avatarUrl,
     this.file,
-    required this.bio
+    required this.isVegan,
+    required this.hungryHeads,
+    required this.categories,
+    required this.deviceInfo,
+    required this.deviceId
 });
 }
 
@@ -40,26 +52,44 @@ class RegisterWithEmailRepositoryDTO extends _LoginRepositoryDTOBase{
   RegisterWithEmailRepositoryDTO({
     required this.email,required this.password,
     required String fullName,
-    MultipartFile? file,required String bio}):
+    required String bio,
+    required String avatarUrl,
+    MultipartFile? file,
+    required bool isVegan,
+    required int hungryHeads,
+    required List<String> categories,
+    required String deviceInfo,
+    required String deviceId}):
         super(
-    fullName: fullName,
-    file: file,
-    bio: bio);
+          fullName: fullName, bio: bio,
+          avatarUrl: avatarUrl, file: file,
+          isVegan: isVegan, hungryHeads: hungryHeads,
+          categories: categories,
+          deviceInfo: deviceInfo, deviceId: deviceId
+      );
 }
 
 class RegisterWithLoginIdDTOs extends _LoginRepositoryDTOBase{
   final String loginId;
-  final String avatarUrl;
   final String linkedAccountType;
 
   RegisterWithLoginIdDTOs({
     required this.loginId,
-    required this.avatarUrl,
     required this.linkedAccountType,
     required String fullName,
-    MultipartFile? file,required String bio}):
+    required String bio,
+    required String avatarUrl,
+    MultipartFile? file,
+    required bool isVegan,
+    required int hungryHeads,
+    required List<String> categories,
+    required String deviceInfo,
+    required String deviceId}):
         super(
-          fullName: fullName,
-          file: file,
-          bio: bio);
+          fullName: fullName, bio: bio,
+          avatarUrl: avatarUrl, file: file,
+          isVegan: isVegan, hungryHeads: hungryHeads,
+          categories: categories,
+          deviceInfo: deviceInfo, deviceId: deviceId
+      );
 }

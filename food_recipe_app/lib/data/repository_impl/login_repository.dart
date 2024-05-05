@@ -64,11 +64,15 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<Either<Failure, void>> registerWithEmail(RegisterWithEmailRepositoryDTO registerWithEmailRepositoryDTO) async {
     try {
+      RegisterWithEmailRepositoryDTO dto = registerWithEmailRepositoryDTO;
       final response = await _loginRemoteDataSource
           .registerWithEmail(RegisterWithEmailRequest(
-          email: registerWithEmailRepositoryDTO.email, password: registerWithEmailRepositoryDTO.password,
-          fullName: registerWithEmailRepositoryDTO.fullName,
-          bio: registerWithEmailRepositoryDTO.bio, file: registerWithEmailRepositoryDTO.file));
+          email: dto.email, password: dto.password,
+          fullName: dto.fullName, bio: dto.bio,
+          categories: dto.categories,
+          deviceId: dto.deviceId, deviceInfo: dto.deviceInfo,
+          hungryHeads: dto.hungryHeads, isVegan: dto.isVegan,
+          avatarUrl: dto.avatarUrl, file: dto.file));
       if (response.statusCode == 200) {
         if(response.data==null){ return Left(Failure(0, 'Data is null')); }
         assert(response.data != null);
@@ -195,13 +199,16 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<Either<Failure, void>> registerWithLoginId(RegisterWithLoginIdDTOs registerWithLoginIdDTOs) async {
     try{
+      RegisterWithLoginIdDTOs dto = registerWithLoginIdDTOs;
       final response = await _loginRemoteDataSource.registerWithLoginId(
           RegisterWithLoginIdRequest(
               loginId: registerWithLoginIdDTOs.loginId,
-              fullName: registerWithLoginIdDTOs.fullName,
-              bio: registerWithLoginIdDTOs.bio,
-              file: registerWithLoginIdDTOs.file,
-              linkedAccountType: registerWithLoginIdDTOs.linkedAccountType));
+              linkedAccountType: registerWithLoginIdDTOs.linkedAccountType,
+              fullName: dto.fullName, bio: dto.bio,
+              categories: dto.categories,
+              deviceId: dto.deviceId, deviceInfo: dto.deviceInfo,
+              hungryHeads: dto.hungryHeads, isVegan: dto.isVegan,
+              avatarUrl: dto.avatarUrl, file: dto.file));
       if(response.statusCode == 200){
         if(response.data==null){ return Left(Failure(0, 'Data is null')); }
         assert(response.data != null);

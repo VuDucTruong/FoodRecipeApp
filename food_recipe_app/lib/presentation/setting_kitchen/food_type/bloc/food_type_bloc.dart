@@ -21,8 +21,8 @@ class FoodTypeBloc extends Bloc<FoodTypeEvent, FoodTypeState> {
         _signupWithLoginIdUseCase = signupWithLoginIdUseCase,super(FoodTypeInitial()) {
     on<FoodTypeSubmit>(_onProfileSubmit);
   }
-  FutureOr<void> _onProfileSubmit(
-      FoodTypeSubmit event, Emitter<FoodTypeState> emit) {
+  Future<FutureOr<void>> _onProfileSubmit(
+      FoodTypeSubmit event, Emitter<FoodTypeState> emit) async {
     emit(FoodTypeLoading());
     final userProfile = event.userRegisterProfile;
     final String? loginId = userProfile.loginId;
@@ -32,18 +32,24 @@ class FoodTypeBloc extends Bloc<FoodTypeEvent, FoodTypeState> {
     final String bio = userProfile.bio;
     final String? avatarUrl = userProfile.avatarUrl;
     final MultipartFile? file = userProfile.file;
+    final bool isVegan =  userProfile.isVegan;
+    final int hungryHeads = userProfile.hungryHeads;
+    final List<String> categories = userProfile.categories;
     if(loginId==null)
     {
       debugPrint('in login id is null');
       if(email==null||password==null||fullName.isEmpty)
       {
         emit(FoodTypeSubmitFailure(errorMessage: "Email, Password or Name is empty"));
-        return Future<void>.value();
+        return null;
       }
       debugPrint("Email: $email, Password: $password, Name: $fullName, Bio: $bio, File: $file");
-      _signupWithEmailUseCase.execute(SignupWithEmailUseCaseInput(
+      await _signupWithEmailUseCase.execute(SignupWithEmailUseCaseInput(
         email: email, password: password,
-        fullName: fullName, bio: bio, file: file,
+        fullName: fullName, bio: bio,
+        avatarUrl: avatarUrl??"", file: file,
+        isVegan: isVegan, hungryHeads: hungryHeads,
+        categories: categories,
       )).then((value) {
         value.fold((l) {
           emit(FoodTypeSubmitFailure(errorMessage: l.message));
@@ -54,13 +60,17 @@ class FoodTypeBloc extends Bloc<FoodTypeEvent, FoodTypeState> {
     }
     else // login id not null
         {
-      _signupWithLoginIdUseCase.execute(SignupWithLoginIdUseCaseInput(
-          loginId: loginId, fullName: fullName, bio: bio,
-        avatarUrl: avatarUrl??"",file: file,linkedAccountType: userProfile.linkedAccountType))
+      await _signupWithLoginIdUseCase.execute(SignupWithLoginIdUseCaseInput(
+        loginId: loginId,linkedAccountType: userProfile.linkedAccountType,
+        fullName: fullName, bio: bio,
+        avatarUrl: avatarUrl??"", file: file,
+        isVegan: isVegan, hungryHeads: hungryHeads,
+        categories: categories,))
           .then((value) {value.fold(
-              (l) {emit(FoodTypeSubmitFailure(errorMessage: l.message));},
-              (r) {emit(FoodTypeSubmitSuccess());});
+          (l) { emit(FoodTypeSubmitFailure(errorMessage: l.message));},
+          (r) {emit(FoodTypeSubmitSuccess());});
       }).catchError((e){
+        debugPrint('Error in food type bloc: ${e.toString()}');
         emit(FoodTypeSubmitFailure(errorMessage: e.toString()));
       });
     }

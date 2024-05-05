@@ -19,18 +19,15 @@ class UserRegisterProfileAdvanced extends FoodTypeEvent {
   final String linkedAccountType;
   final String? avatarUrl;
   final MultipartFile? file;
+  final bool isVegan;
   final int hungryHeads;
   final List<String> categories;
 
   UserRegisterProfileAdvanced({required UserRegisterProfileBasics userRegisterProfile,
-  required this.hungryHeads,required this.categories}):
-        loginId = userRegisterProfile.loginId,
-        fullName = userRegisterProfile.fullName,
-        email = userRegisterProfile.email,
-        password = userRegisterProfile.password,
-        bio = userRegisterProfile.bio,
-        linkedAccountType = userRegisterProfile.linkedAccountType,
-        avatarUrl = userRegisterProfile.avatarUrl,
-        file = userRegisterProfile.file;
+  required this.hungryHeads,required this.categories,required this.isVegan}):
+        loginId = userRegisterProfile.loginId,linkedAccountType = userRegisterProfile.linkedAccountType,
+        email = userRegisterProfile.email, password = userRegisterProfile.password,
+        fullName = userRegisterProfile.fullName, bio = userRegisterProfile.bio,
+        avatarUrl = userRegisterProfile.avatarUrl,file = userRegisterProfile.file;
 }
 

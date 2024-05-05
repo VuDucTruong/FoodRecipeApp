@@ -12,6 +12,7 @@ import 'package:food_recipe_app/presentation/login/login_view.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/create_profile_view.dart';
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/food_type/setting_food_type_view.dart';
 
 class Routes {
   static const String splashRoute = '/';
@@ -49,11 +50,6 @@ class InitialRoute {
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      case "/halo":
-        initHomeModule();
-        return MaterialPageRoute(
-          builder: (context) => const MainView(),
-        );
       case Routes.onBoardingRoute:
         return MaterialPageRoute(
           builder: (context) => const OnBoardingView(),
@@ -95,7 +91,16 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) => CreateProfileView(),
         );
-
+      case Routes.foodTypeRoute:
+        initFoodTypeModule();
+        if(routeSettings.arguments != null && routeSettings.arguments is UserRegisterProfileBasics){
+          return MaterialPageRoute(
+            builder: (context) => SettingFoodTypeView(
+              userRegisterProfile: routeSettings.arguments as UserRegisterProfileBasics,
+            ),
+          );
+        }
+        return undefinedRoute();
       default:
         return undefinedRoute();
     }

@@ -94,28 +94,24 @@ class LoginViewState extends State<LoginView> {
               RememberCheckBox(isChecked: isRememberMe),
               const SizedBox(height: 8),
               BlocConsumer(
+                bloc: _loginBloc,
                 listener: (context, state) {
                   if (state is LoginSuccess) {
                     Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
                   }
+                  else if (state is LoginFailure) {
+                    if(state is LoginWithFacebookFailure) {
+                      Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.facebookSignInAccount);
+                    }
+                  else if(state is LoginWithGoogleFailure) {
+                      Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
+                    }
+                  }
                 },
-                bloc: _loginBloc,
                 builder: (context, state) {
                   if (state is LoginLoading) {
                     return const CircularProgressIndicator();
-                  } else if (state is LoginFailure) {
-                      if(state is LoginWithFacebookFailure) {
-                        debugPrint('login with facebook failed, not found in my system');
-                        Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.facebookSignInAccount);
-                        }
-                      if(state is LoginWithGoogleFailure) {
-                        Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
-                        }
-                      return Text('Error: ${(state).errorMessage}');
-                    }
-                  else if(state is LoginSuccess){
-                    Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
-                    }
+                  }
                   return Container();
                 },
               ),

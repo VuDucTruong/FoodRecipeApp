@@ -18,18 +18,8 @@ import 'package:food_recipe_app/presentation/setting_kitchen/food_type/widgets/f
 import 'package:get_it/get_it.dart';
 
 class SettingFoodTypeView extends StatefulWidget {
-  final UserRegisterProfileBasics userRegisterProfile = UserRegisterProfileBasics(
-    fullName: "",
-    email: "",
-    password: "",
-    linkedAccountType: "",
-    loginId: "",
-    avatarUrl: "",
-    bio: "",
-  );
-  SettingFoodTypeView({super.key}){
-    debugPrint("my log in foodtypeview: SettingFoodTypeView");
-  }
+  final UserRegisterProfileBasics userRegisterProfile;
+  SettingFoodTypeView({super.key,required this.userRegisterProfile});
   @override
   State<SettingFoodTypeView> createState() => _SettingFoodTypeViewState();
 }
@@ -65,6 +55,7 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: BlocConsumer(
+            bloc: _foodTypeBloc,
             listener: (context,state){
               if(state is FoodTypeLoading)
                 {
@@ -186,6 +177,7 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
     });
     return UserRegisterProfileAdvanced(
       userRegisterProfile: widget.userRegisterProfile,
+      isVegan: isVeg.value,
       categories: categories,
       hungryHeads: headNumber.value,
     );

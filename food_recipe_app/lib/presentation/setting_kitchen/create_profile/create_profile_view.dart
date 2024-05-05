@@ -101,13 +101,12 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                 _getInputForm(),
                 FilledButton(
                     onPressed: () {
-                      try{
-                        if (_formKey.currentState!.validate()) {
-                          final registerProfileBasic = gatherProfileSubmit();
-                          Navigator.of(context).pushReplacementNamed(Routes.loginRoute,);
-                        }
+
+                      if (_formKey.currentState!.validate()) {
+                        final registerProfileBasic = gatherProfileSubmit();
+                        Navigator.of(context).pushReplacementNamed(Routes.foodTypeRoute,
+                            arguments: registerProfileBasic);
                       }
-                      catch(e){debugPrint(e.toString());}
                     },
                     child: Text(
                       AppStrings.continueOnly,
@@ -154,28 +153,28 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                   fit: BoxFit.scaleDown,
                 ),
                 validator: validateEmail),
-            // CompulsoryTextField(
-            //     controller: passwordController,
-            //     content: AppStrings.password,
-            //     hint: AppStrings.enterPassword,
-            //     icon: SvgPicture.asset(
-            //       PicturePath.passwordPath,
-            //       fit: BoxFit.scaleDown,
-            //     ),
-            //     validator: validatePassword),
-            // CompulsoryTextField(
-            //     controller: nameController,
-            //     content: AppStrings.fullName,
-            //     hint: AppStrings.enterFullName,
-            //     validator: validateEmpty),
-            // CompulsoryTextField(
-            //   controller: bioController,
-            //   content: AppStrings.bio,
-            //   hint: AppStrings.enterFullName,
-            //   validator: (String? str) => null,
-            //   isCompulsory: false,
-            //   maxLines: 5,
-            // ),
+            CompulsoryTextField(
+                controller: passwordController,
+                content: AppStrings.password,
+                hint: AppStrings.enterPassword,
+                icon: SvgPicture.asset(
+                  PicturePath.passwordPath,
+                  fit: BoxFit.scaleDown,
+                ),
+                validator: validatePassword),
+            CompulsoryTextField(
+                controller: nameController,
+                content: AppStrings.fullName,
+                hint: AppStrings.enterFullName,
+                validator: validateEmpty),
+            CompulsoryTextField(
+              controller: bioController,
+              content: AppStrings.bio,
+              hint: AppStrings.enterFullName,
+              validator: (String? str) => null,
+              isCompulsory: false,
+              maxLines: 5,
+            ),
           ],
         ),
       ),

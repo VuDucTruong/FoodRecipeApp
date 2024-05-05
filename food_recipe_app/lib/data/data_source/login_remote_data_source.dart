@@ -71,6 +71,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
   @override
   Future<BaseResponse<RegisterResponse>> registerWithEmail(
       RegisterWithEmailRequest request) async {
+    debugPrint("${request.toJson()}");
     final response = await _dio.post(
       '$loginEndpoint/register-email',
       data: FormData.fromMap(request.toJson()),
@@ -84,6 +85,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
 
   @override
   Future<BaseResponse<RegisterResponse>> registerWithLoginId(RegisterWithLoginIdRequest request) async {    debugPrint('$loginEndpoint/register');
+  debugPrint("${request.toJson()}");
   final response = await _dio.post(
     '$loginEndpoint/register-loginId',
     data: FormData.fromMap(request.toJson()),
