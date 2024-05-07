@@ -27,9 +27,8 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
 
   @override
   Future<BaseResponse<LoginResponse>> login(LoginRequest request) async {
-    debugPrint('$loginEndpoint/login-email');
     final response = await _dio.post(
-      '$loginEndpoint/login',
+      '$loginEndpoint/login-email',
       data: request.toJson(),
     );
     BaseResponse<LoginResponse> baseResponse = BaseResponse.fromJson(
