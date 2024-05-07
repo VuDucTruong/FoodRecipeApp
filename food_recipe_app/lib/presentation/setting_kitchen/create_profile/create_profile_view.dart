@@ -9,6 +9,7 @@ import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -21,7 +22,7 @@ import '../../resources/string_management.dart';
 
 class CreateProfileView extends StatefulWidget {
   ThirdPartySignInAccount? thirdPartySignInAccount;
-  CreateProfileView({super.key,this.thirdPartySignInAccount});
+  CreateProfileView({super.key, this.thirdPartySignInAccount});
 
   @override
   _CreateProfileViewState createState() {
@@ -41,7 +42,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
   @override
   void initState() {
     super.initState();
-    if(widget.thirdPartySignInAccount!= null){
+    if (widget.thirdPartySignInAccount != null) {
       emailController.text = widget.thirdPartySignInAccount!.email;
       nameController.text = widget.thirdPartySignInAccount!.name;
       photoUrl = widget.thirdPartySignInAccount!.photoUrl;
@@ -66,74 +67,80 @@ class _CreateProfileViewState extends State<CreateProfileView> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppPadding.p12),
-                    child: Text(
-                      AppStrings.setUpKitchen,
-                      style: getBoldStyle(
-                          color: Colors.black, fontSize: FontSize.s20),
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppPadding.p12),
+                      child: Text(
+                        AppStrings.setUpKitchen,
+                        style: getBoldStyle(
+                            color: Colors.black, fontSize: FontSize.s20),
+                      ),
                     ),
                   ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      textAlign: TextAlign.left,
-                      AppStrings.createProfile,
-                      style: getBoldStyle(
-                          color: ColorManager.secondaryColor,
-                          fontSize: FontSize.s20),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: AppSize.s20,
-                ),
-                AvatarSelection(
-                  selectedImage: avatarImage,
-                  imageUrl: photoUrl,
-                ),
-                _getInputForm(),
-                FilledButton(
-                    onPressed: () {
-
-                      if (_formKey.currentState!.validate()) {
-                        final registerProfileBasic = gatherProfileSubmit();
-                        Navigator.of(context).pushReplacementNamed(Routes.foodTypeRoute,
-                            arguments: registerProfileBasic);
-                      }
-                    },
-                    child: Text(
-                      AppStrings.continueOnly,
-                      style: getMediumStyle(
-                          color: Colors.white, fontSize: FontSize.s20),
-                    )),
-                const SizedBox(
-                  height: 8,
-                )
-              ],
-            )
-          ),
+                  Row(
+                    children: [
+                      Text(
+                        textAlign: TextAlign.left,
+                        AppStrings.createProfile,
+                        style: getBoldStyle(
+                            color: ColorManager.secondaryColor,
+                            fontSize: FontSize.s20),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: AppSize.s20,
+                  ),
+                  AvatarSelection(
+                    selectedImage: avatarImage,
+                    imageUrl: photoUrl,
+                  ),
+                  _getInputForm(),
+                  FilledButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          if (avatarImage.value == null) {
+                            showAnimatedDialog2(
+                                context,
+                                AppErrorDialog(
+                                    content: AppStrings.missingAvatar));
+                            return;
+                          }
+                          final registerProfileBasic = gatherProfileSubmit();
+                          Navigator.of(context).pushNamed(Routes.foodTypeRoute,
+                              arguments: registerProfileBasic);
+                        }
+                      },
+                      child: Text(
+                        AppStrings.continueOnly,
+                        style: getMediumStyle(
+                            color: Colors.white, fontSize: FontSize.s20),
+                      )),
+                  const SizedBox(
+                    height: 8,
+                  )
+                ],
+              )),
         ),
       ),
     );
   }
-  UserRegisterProfileBasics gatherProfileSubmit(){
+
+  UserRegisterProfileBasics gatherProfileSubmit() {
     return UserRegisterProfileBasics(
-      loginId: widget.thirdPartySignInAccount?.id,
-      email: emailController.text,
-      password: passwordController.text,
-      fullName: nameController.text,
-      bio: bioController.text,
-      file: avatarImage.value,
-      avatarUrl: photoUrl,
-      linkedAccountType: widget.thirdPartySignInAccount?.linkedAccountType??""
-    );
+        loginId: widget.thirdPartySignInAccount?.id,
+        email: emailController.text,
+        password: passwordController.text,
+        fullName: nameController.text,
+        bio: bioController.text,
+        file: avatarImage.value,
+        avatarUrl: photoUrl,
+        linkedAccountType:
+            widget.thirdPartySignInAccount?.linkedAccountType ?? "");
   }
 
   Widget _getInputForm() {
@@ -154,6 +161,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                 ),
                 validator: validateEmail),
             CompulsoryTextField(
+                isPassword: true,
                 controller: passwordController,
                 content: AppStrings.password,
                 hint: AppStrings.enterPassword,
@@ -181,6 +189,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
     );
   }
 }
+
 class UserRegisterProfileBasics {
   final String? loginId;
   final String fullName;
@@ -191,10 +200,13 @@ class UserRegisterProfileBasics {
   final MultipartFile? file;
   final String linkedAccountType;
 
-  UserRegisterProfileBasics({
-    this.loginId, required this.fullName,
-    this.email,  this.password,
-    required this.bio, this.avatarUrl, this.file,
-    required this.linkedAccountType
-  });
+  UserRegisterProfileBasics(
+      {this.loginId,
+      required this.fullName,
+      this.email,
+      this.password,
+      required this.bio,
+      this.avatarUrl,
+      this.file,
+      required this.linkedAccountType});
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/constant.dart';
+import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
@@ -19,7 +22,7 @@ import 'package:get_it/get_it.dart';
 
 class SettingFoodTypeView extends StatefulWidget {
   final UserRegisterProfileBasics userRegisterProfile;
-  SettingFoodTypeView({super.key,required this.userRegisterProfile});
+  SettingFoodTypeView({super.key, required this.userRegisterProfile});
   @override
   State<SettingFoodTypeView> createState() => _SettingFoodTypeViewState();
 }
@@ -40,11 +43,11 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
     };
     _foodTypeBloc = GetIt.instance<FoodTypeBloc>();
   }
+
   @override
   void dispose() {
     super.dispose();
     _foodTypeBloc.close();
-
   }
 
   @override
@@ -56,35 +59,42 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
           padding: const EdgeInsets.all(8.0),
           child: BlocConsumer(
             bloc: _foodTypeBloc,
-            listener: (context,state){
-              if(state is FoodTypeLoading)
-                {
-                  showDialog(context: context, builder: (context)=>const
-                  Center(child: CircularProgressIndicator(),));
+            listener: (context, state) async {
+              if (state is FoodTypeLoading) {
+                showDialog(
+                  context: context,
+                  builder: (context) => const LoadingDialog(),
+                );
+              }
+              if (state is FoodTypeSubmitSuccess) {
+                bool isNext = await showDialog(
+                        context: context,
+                        builder: (context) => CongratulationDialog()) ??
+                    true;
+                if (isNext) {
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.mainRoute);
+                  });
                 }
-              if(state is FoodTypeSubmitSuccess){
-                showDialog(context: context, builder: (context)=> CongratulationDialog());
-                Future.delayed(const Duration(milliseconds: 500),(){
-                  Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
-                });
               }
             },
-            builder: (context,state){
+            builder: (context, state) {
               return Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(AppPadding.p12),
                     child: Text(
                       AppStrings.setUpKitchen,
-                      style:
-                      getBoldStyle(color: Colors.black, fontSize: FontSize.s20),
+                      style: getBoldStyle(
+                          color: Colors.black, fontSize: FontSize.s20),
                     ),
                   ),
                   Row(
                     children: [
                       Container(
-                          margin:
-                          const EdgeInsets.symmetric(vertical: AppMargin.m8),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: AppMargin.m8),
                           child: Text(
                             AppStrings.selectPreferences,
                             style: getSemiBoldStyle(
@@ -100,17 +110,22 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
                       onColor: ColorManager.linearGradientLightTheme,
                       offColor: ColorManager.linearGradientNonVeg,
                       width: appWidth * 0.65,
-                      height: 40,),),
+                      height: 40,
+                    ),
+                  ),
                   _buildTypeList(appWidth),
                   Row(
                     children: [
                       Text(
                         AppStrings.hungryHeads,
                         style: getSemiBoldStyle(
-                            color: Colors.black, fontSize: FontSize.s18),),
+                            color: Colors.black, fontSize: FontSize.s18),
+                      ),
                       const Spacer(),
                       DefaultHeads(
-                        headNumber: headNumber,),],
+                        headNumber: headNumber,
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: AppSize.s12,
@@ -135,20 +150,14 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
                           int count = 0;
                           for (var element in typePreferencesMap.values) {
                             if (element) count++;
-                            if(count>3) break;
+                            if (count > 3) break;
                           }
-                          if (count <= 3) {
-                            showDialog(context: context, builder: (context) {
-                              return AlertDialog(
-                                title: const Text("Error"),
-                                content: const Text("Please select at least 3 preferences"),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {Navigator.pop(context);},
-                                      child: const Text("OK"))
-                                ],
-                              );
-                            });
+                          if (count < 3) {
+                            showAnimatedDialog1(
+                                context,
+                                AppErrorDialog(
+                                    content:
+                                        AppStrings.choosePreferencesWarning));
                           } else {
                             _foodTypeBloc.add(FoodTypeSubmit(
                                 userRegisterProfile: gatherProfileSubmit()));
@@ -169,11 +178,12 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
     );
   }
 
-  UserRegisterProfileAdvanced gatherProfileSubmit(){
+  UserRegisterProfileAdvanced gatherProfileSubmit() {
     List<String> categories = [];
     typePreferencesMap.forEach((key, value) {
       if (value) {
-        categories.add(key);}
+        categories.add(key);
+      }
     });
     return UserRegisterProfileAdvanced(
       userRegisterProfile: widget.userRegisterProfile,

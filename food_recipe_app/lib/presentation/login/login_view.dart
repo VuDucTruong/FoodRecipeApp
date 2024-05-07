@@ -8,6 +8,7 @@ import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart
 import 'package:food_recipe_app/presentation/common/widgets/stateful/remember_check_box.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -64,56 +65,43 @@ class LoginViewState extends State<LoginView> {
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _getIconTextButton(
-                    text: AppStrings.facebook,
-                    iconPath: PicturePath.fbPath,
-                    onPressed: () {
-                      _loginBloc.add(LoginWithFacebookPressed());
-                    },
-                  ),
-                  _getIconTextButton(
-                    text: AppStrings.google,
-                    iconPath: PicturePath.ggPath,
-                    onPressed: () {
-                      _loginBloc.add(LoginWithGooglePressed());
-                    },
-                  ),
-                ],
+              Center(
+                child: _getIconTextButton(
+                  text: AppStrings.google,
+                  iconPath: PicturePath.ggPath,
+                  onPressed: () {
+                    _loginBloc.add(LoginWithGooglePressed());
+                  },
+                ),
               ),
               Text(AppStrings.or,
                   style: getSemiBoldStyle(
                       color: ColorManager.greyColor, fontSize: FontSize.s22)),
-              Text(AppStrings.createAccount,
+              Text(AppStrings.loginAccount,
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 4),
               _buildFormInput(),
               RememberCheckBox(isChecked: isRememberMe),
-              const SizedBox(height: 8),
-              BlocConsumer(
+              BlocListener(
                 bloc: _loginBloc,
                 listener: (context, state) {
-                  if (state is LoginSuccess) {
-                    Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
-                  }
-                  else if (state is LoginFailure) {
-                    if(state is LoginWithFacebookFailure) {
-                      Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.facebookSignInAccount);
-                    }
-                  else if(state is LoginWithGoogleFailure) {
-                      Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
-                    }
-                  }
-                },
-                builder: (context, state) {
                   if (state is LoginLoading) {
-                    return const CircularProgressIndicator();
+                    showAnimatedDialog2(context, const LoadingDialog());
                   }
-                  return Container();
+                  Navigator.pop(context);
+                  if (state is LoginSuccess) {
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.mainRoute);
+                  } else if (state is LoginFailure) {
+                    if (state is LoginWithGoogleFailure) {
+                      Navigator.of(context).pushReplacementNamed(
+                          Routes.createProfileRoute,
+                          arguments: state.googleSignInAccount);
+                    }
+                  }
                 },
+                child: Container(),
               ),
               _buildLoginButton(),
               const SizedBox(height: 16),
@@ -140,6 +128,7 @@ class LoginViewState extends State<LoginView> {
                 hint: AppStrings.enterEmail,
                 controller: emailController),
             CompulsoryTextField(
+                isPassword: true,
                 content: AppStrings.password,
                 validator: validatePassword,
                 hint: AppStrings.enterPassword,
@@ -153,10 +142,11 @@ class LoginViewState extends State<LoginView> {
       widthFactor: 0.5,
       child: FilledButton(
         onPressed: () {
-          //if (_formKey.currentState!.validate()) {
-          _loginBloc.add(LoginButtonPressed(
-              email: emailController.text, password: passwordController.text));
-          //}
+          if (_formKey.currentState!.validate()) {
+            _loginBloc.add(LoginButtonPressed(
+                email: emailController.text,
+                password: passwordController.text));
+          }
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
         child: Center(
@@ -201,6 +191,7 @@ Widget _getIconTextButton({
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (iconPath != null) ...[
               Image.asset(

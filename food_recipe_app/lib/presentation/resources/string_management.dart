@@ -6,7 +6,7 @@ class AppStrings {
   static const String onBoardingDescription2 = 'each and every detail';
   static const String onBoardingTitle3 = 'Cook it now or';
   static const String onBoardingDescription3 = 'save it for later';
-  static const String login = 'login_responses';
+  static const String login = 'Login';
   static const String signUp = 'Sign up';
   static const String home = 'Home';
   static const String forgotPass = 'Forgot password ?';
@@ -17,7 +17,7 @@ class AppStrings {
   static const String google = 'Google';
   static const String or = 'or';
   static const String createAccount = 'Create your account';
-  static const String loginAccount = 'login_responses to your account';
+  static const String loginAccount = 'Login to your account';
   static const String email = 'Email';
   static const String password = 'Password';
   static const String enterPassword = 'Enter a Password';
@@ -109,6 +109,9 @@ class AppStrings {
   static const String deleteContent = 'Reset all the contents';
   static const String loading = 'Loading...';
   static const String createSuccess = 'You\'ve create a recipe successfully !';
+  static const String missingAvatar = 'Your avatar is empty !';
+  static const String choosePreferencesWarning =
+      'Please choose up to 3 preferences !';
 
   // Validate message
   static const String emailFormatError = 'Email format is wrong !';

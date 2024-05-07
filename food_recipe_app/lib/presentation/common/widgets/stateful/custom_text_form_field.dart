@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/presentation/resources/assets_management.dart';
+import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
 class CustomTextFormField extends StatefulWidget {
@@ -8,7 +11,8 @@ class CustomTextFormField extends StatefulWidget {
       this.icon,
       required this.hint,
       required this.controller,
-      this.maxLines = 1 })
+      this.maxLines = 1,
+      required this.isPassword})
       : super(key: key);
 
   late String hint;
@@ -16,6 +20,7 @@ class CustomTextFormField extends StatefulWidget {
   Widget? icon;
   TextEditingController controller;
   int maxLines;
+  bool isPassword;
   @override
   _CustomTextFormFieldState createState() {
     return _CustomTextFormFieldState();
@@ -23,9 +28,11 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool isVisible;
   @override
   void initState() {
     super.initState();
+    isVisible = widget.isPassword;
   }
 
   @override
@@ -57,8 +64,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               return _errorMessage;
             },
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            obscureText: isVisible,
             decoration: InputDecoration(
-              suffixIcon: widget.icon,
+              suffixIcon: widget.isPassword ? _getPasswordIcon() : widget.icon,
               hintText: widget.hint,
             ),
           ),
@@ -73,6 +81,34 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               )
             : const SizedBox(height: 16)
       ],
+    );
+  }
+
+  Widget _getPasswordIcon() {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          isVisible = !isVisible;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: isVisible
+            ? SvgPicture.asset(
+                width: 24,
+                height: 24,
+                PicturePath.eyeSolidPath,
+                colorFilter: const ColorFilter.mode(
+                    ColorManager.blueColor, BlendMode.srcIn),
+              )
+            : SvgPicture.asset(
+                width: 24,
+                height: 24,
+                PicturePath.eyeSplashSolidPath,
+                colorFilter: const ColorFilter.mode(
+                    ColorManager.blueColor, BlendMode.srcIn),
+              ),
+      ),
     );
   }
 }
