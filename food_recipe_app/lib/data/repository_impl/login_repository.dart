@@ -222,4 +222,18 @@ class LoginRepositoryImpl implements LoginRepository {
       return Left(ErrorHandler.handle(ex).failure);
     }
   }
-}
+  @override
+  Future<Either<Failure, bool>> verifyLogin(String email) async {
+    try{
+      final response = await _loginRemoteDataSource.verifyLogin(email);
+      if (response.statusCode == 200) {
+        return const Right(true);
+      } else {
+        return Left(Failure(
+            response.statusCode ?? 0, response.statusMessage ?? "null message"));
+      }
+    } catch (ex) {
+      return Left(ErrorHandler.handle(ex).failure);
+    }
+  }
+  }

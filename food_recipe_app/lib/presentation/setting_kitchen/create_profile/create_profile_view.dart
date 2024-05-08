@@ -4,16 +4,21 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/widgets/avatar_selection.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../resources/assets_management.dart';
 import '../../resources/font_manager.dart';
@@ -35,6 +40,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
       emailController = TextEditingController(),
       passwordController = TextEditingController(),
       bioController = TextEditingController();
+  late CreateProfileBloc _createProfileBloc;
 
   MutableVariable<MultipartFile?> avatarImage = MutableVariable(null);
   String? photoUrl;
@@ -46,6 +52,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
       nameController.text = widget.thirdPartySignInAccount!.name;
       photoUrl = widget.thirdPartySignInAccount!.photoUrl;
     }
+    _createProfileBloc = GetIt.instance<CreateProfileBloc>();
   }
 
   @override
@@ -61,68 +68,78 @@ class _CreateProfileViewState extends State<CreateProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppPadding.p12),
-                    child: Text(
-                      AppStrings.setUpKitchen,
-                      style: getBoldStyle(
-                          color: Colors.black, fontSize: FontSize.s20),
-                    ),
-                  ),
-                ),
-                Row(
+            child: BlocConsumer(
+              bloc: _createProfileBloc,
+              listener: (context, state) {
+                if (state is CreateProfileLoading) {
+                  showDialog(context: context, builder: (context)
+                  => const Center(child: CircularProgressIndicator(),));
+                } else if (state is CreateProfileSubmitSuccess) {
+                  debugPrint("success");
+                  Navigator.of(context).canPop()?Navigator.of(context).pop():{};
+                  Navigator.pushNamed(context, Routes.foodTypeRoute,arguments: gatherProfileSubmit());
+                } else if (state is CreateProfileSubmitFailed) {
+                  Navigator.of(context).canPop()?Navigator.of(context).pop():{};
+                  showDialog(context: context, builder:
+                      (context){return _getAlertDialog(state,state.message);}
+                  );
+                }
+              },
+              builder: (context, state) {
+                return Column(
                   children: [
-                    Text(
-                      textAlign: TextAlign.left,
-                      AppStrings.createProfile,
-                      style: getBoldStyle(
-                          color: ColorManager.secondaryColor,
-                          fontSize: FontSize.s20),
+                    AvatarSelection(
+                      imageUrl: photoUrl,
+                      selectedImage: avatarImage,
                     ),
+                    _getInputForm(),
+                    FilledButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _createProfileBloc.add(CreateProfileOnContinuePressed(
+                                email: emailController.text));
+                          }
+                          if(state is CreateProfileSubmitSuccess){
+                            final registerProfileBasic = gatherProfileSubmit();
+                            Navigator.of(context).pushNamed(Routes.foodTypeRoute,
+                                arguments: registerProfileBasic);
+                          }
+                        },
+                        child: Text(
+                          AppStrings.continueOnly,
+                          style: getMediumStyle(
+                              color: Colors.white, fontSize: FontSize.s20),
+                        )),
+                    const SizedBox(height: 8,)
                   ],
-                ),
-                const SizedBox(
-                  height: AppSize.s20,
-                ),
-                AvatarSelection(
-                  selectedImage: avatarImage,
-                  imageUrl: photoUrl,
-                ),
-                _getInputForm(),
-                FilledButton(
-                    onPressed: () {
-
-                      if (_formKey.currentState!.validate()) {
-                        final registerProfileBasic = gatherProfileSubmit();
-                        Navigator.of(context).pushReplacementNamed(Routes.foodTypeRoute,
-                            arguments: registerProfileBasic);
-                      }
-                    },
-                    child: Text(
-                      AppStrings.continueOnly,
-                      style: getMediumStyle(
-                          color: Colors.white, fontSize: FontSize.s20),
-                    )),
-                const SizedBox(
-                  height: 8,
-                )
-              ],
-            )
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
+  Widget _getAlertDialog(state,String text){
+    return AlertDialog(
+      title: Text("Error:$text"),
+      content: Text(state.message),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text(AppStrings.ok),
+        )
+      ],
+    );
+  }
+
   UserRegisterProfileBasics gatherProfileSubmit(){
     return UserRegisterProfileBasics(
       loginId: widget.thirdPartySignInAccount?.id,

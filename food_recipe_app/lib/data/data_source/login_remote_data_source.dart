@@ -16,6 +16,7 @@ abstract class LoginRemoteDataSource {
   Future<BaseResponse<RegisterResponse>> registerWithLoginId(RegisterWithLoginIdRequest request);
   Future<BaseResponse<String>> refreshAccessToken();
   Future<BaseResponse<bool>> forgotPassword(String email);
+  Future<BaseResponse<String>> verifyLogin(String email);
 }
 
 class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
@@ -84,7 +85,6 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
 
   @override
   Future<BaseResponse<RegisterResponse>> registerWithLoginId(RegisterWithLoginIdRequest request) async {    debugPrint('$loginEndpoint/register');
-  debugPrint("${request.toJson()}");
   final response = await _dio.post(
     '$loginEndpoint/register-loginId',
     data: FormData.fromMap(request.toJson()),
@@ -93,5 +93,14 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
   BaseResponse<RegisterResponse> baseResponse = BaseResponse.fromJson(
       response, (value) => RegisterResponse.fromJson(value));
   return baseResponse;
+  }
+  @override
+  Future<BaseResponse<String>> verifyLogin(String email) async {
+    final response = await _dio.post('$loginEndpoint/verify-login',
+        data: email,
+        options: Options(contentType: Headers.textPlainContentType));
+    BaseResponse<String> baseResponse =
+        BaseResponse.fromJson(response, (value) => value as String);
+    return baseResponse;
   }
 }

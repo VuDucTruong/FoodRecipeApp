@@ -81,6 +81,7 @@ class RouteGenerator {
           builder: (context) => const EditProfileView(),
         );
       case Routes.createProfileRoute:
+        initCreateProfileModule();
         if(routeSettings.arguments != null && routeSettings.arguments is ThirdPartySignInAccount){
           return MaterialPageRoute(
             builder: (context) => CreateProfileView(

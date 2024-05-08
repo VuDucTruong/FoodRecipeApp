@@ -18,9 +18,9 @@ import 'package:food_recipe_app/domain/usecase/facebook_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
-import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/login_verify_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/signup_with_email_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/signup_with_loginId_usecase.dart';
@@ -32,6 +32,7 @@ import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_b
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
 
 import 'package:get_it/get_it.dart';
@@ -167,10 +168,6 @@ initLoginModule() {
   }
 }
 
-initCreateProfileModule() {
-  //register necessary usecase in create profile page
-}
-
 initFoodTypeModule(){
   if(!instance.isRegistered<SignupWithEmailUseCase>()){
     instance.registerLazySingleton<SignupWithEmailUseCase>(() => SignupWithEmailUseCase(instance()));
@@ -183,6 +180,15 @@ initFoodTypeModule(){
             () => FoodTypeBloc(signupWithLoginIdUseCase: instance(),signupUseCase: instance()));
   }
 }
+initCreateProfileModule(){
+  if(!instance.isRegistered<LoginVerifyUseCase>()){
+    instance.registerLazySingleton<LoginVerifyUseCase>(() => LoginVerifyUseCase(instance()));
+  }
+  if (!instance.isRegistered<CreateProfileBloc>()) {
+    instance.registerLazySingleton(() => CreateProfileBloc(loginVerifyUseCase: instance()));
+  }
+}
+
 
 initDeviceInfo(TargetPlatform targetPlatform) {
   debugPrint("initDeviceInfo");

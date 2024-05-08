@@ -16,6 +16,7 @@ abstract class LoginRepository {
   Future<Either<Failure, void>> registerWithLoginId(RegisterWithLoginIdDTOs registerWithLoginIdDTOs);
   Future<Either<Failure, String>> refreshAccessToken();
   Future<Either<Failure, bool>> forgotPassword(String email);
+  Future<Either<Failure, bool>> verifyLogin(String email);
 
 }
 

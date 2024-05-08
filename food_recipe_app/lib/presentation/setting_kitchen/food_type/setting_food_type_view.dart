@@ -64,6 +64,7 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
                 }
               if(state is FoodTypeSubmitSuccess){
                 showDialog(context: context, builder: (context)=> CongratulationDialog());
+                Navigator.of(context).popUntil(ModalRoute.withName(Routes.loginRoute));
                 Future.delayed(const Duration(milliseconds: 500),(){
                   Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
                 });
