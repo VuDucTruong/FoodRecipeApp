@@ -18,13 +18,8 @@ final class LoginFailure extends LoginState {
 final class LoginWithGoogleFailure extends LoginFailure {
   final ThirdPartySignInAccount? googleSignInAccount;
 
-  LoginWithGoogleFailure({required String errorMessage,required this.googleSignInAccount})
-      : super(errorMessage: errorMessage);
-}
-final class LoginWithFacebookFailure extends LoginFailure {
-  final ThirdPartySignInAccount? facebookSignInAccount;
-
-  LoginWithFacebookFailure({required String errorMessage,required this.facebookSignInAccount})
+  LoginWithGoogleFailure(
+      {required String errorMessage, required this.googleSignInAccount})
       : super(errorMessage: errorMessage);
 }
 
@@ -35,12 +30,16 @@ class ThirdPartySignInAccount {
   final String? photoUrl;
   final String linkedAccountType;
 
-  ThirdPartySignInAccount({required this.email,required this.name,
-    required this.id,required this.photoUrl,required this.linkedAccountType});
+  ThirdPartySignInAccount(
+      {required this.email,
+      required this.name,
+      required this.id,
+      required this.photoUrl,
+      required this.linkedAccountType});
   ThirdPartySignInAccount.fromJson(Map<String, dynamic> json)
       : email = json['email'] as String,
         name = json['name'] as String,
         id = json['id'] as String,
         photoUrl = json['picture']['data']['url'] as String,
-        linkedAccountType = 'facebook';
+        linkedAccountType = 'google';
 }

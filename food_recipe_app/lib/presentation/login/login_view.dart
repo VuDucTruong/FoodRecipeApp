@@ -140,6 +140,7 @@ class LoginViewState extends State<LoginView> {
                 hint: AppStrings.enterEmail,
                 controller: emailController),
             CompulsoryTextField(
+                isPassword: true,
                 content: AppStrings.password,
                 validator: validatePassword,
                 hint: AppStrings.enterPassword,
@@ -153,10 +154,11 @@ class LoginViewState extends State<LoginView> {
       widthFactor: 0.5,
       child: FilledButton(
         onPressed: () {
-          //if (_formKey.currentState!.validate()) {
-          _loginBloc.add(LoginButtonPressed(
-              email: emailController.text, password: passwordController.text));
-          //}
+          if (_formKey.currentState!.validate()) {
+            _loginBloc.add(LoginButtonPressed(
+                email: emailController.text,
+                password: passwordController.text));
+          }
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
         child: Center(

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
-import 'package:food_recipe_app/domain/usecase/facebook_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
@@ -125,29 +124,4 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginFailure(errorMessage: "Login Failed: $e"));
     }
   }
-  Future<bool> _checkIfIsLogged() async {
-    final accessToken = await FacebookAuth.instance.accessToken;
-    if (accessToken != null) {
-      debugPrint("is Logged:::: ${accessToken.toJson()}");
-      // final userData = await FacebookAuth.instance.getUserData();
-      return true;
-    }
-    return false;
-  }
-  // Future<void> _login() async {
-  //   debugPrint('In check logged');
-  //   if (await _checkIfIsLogged()) return;
-  //   debugPrint('In login now!');
-  //   final LoginResult result = await FacebookAuth.instance
-  //       .login(); // by default we request the email and the public profile
-  //   if (result.status == LoginStatus.success) {
-  //     final userData = await FacebookAuth.instance.getUserData();
-  //     debugPrint(userData);
-  //   } else {
-  //     debugPrint(result.status);
-  //     debugPrint(result.message);
-  //   }
-  // }
 }
-
-
