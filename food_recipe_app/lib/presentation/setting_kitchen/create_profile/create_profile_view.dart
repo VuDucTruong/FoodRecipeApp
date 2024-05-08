@@ -86,7 +86,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                 } else if (state is CreateProfileSubmitFailed) {
                   Navigator.of(context).canPop()?Navigator.of(context).pop():{};
                   showDialog(context: context, builder:
-                      (context){return _getAlertDialog(state,state.message);}
+                      (context){return _getAlertDialog(state,"email already existed");}
                   );
                 }
               },

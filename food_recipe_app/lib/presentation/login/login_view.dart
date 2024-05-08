@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -68,13 +69,6 @@ class LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _getIconTextButton(
-                    text: AppStrings.facebook,
-                    iconPath: PicturePath.fbPath,
-                    onPressed: () {
-                      _loginBloc.add(LoginWithFacebookPressed());
-                    },
-                  ),
-                  _getIconTextButton(
                     text: AppStrings.google,
                     iconPath: PicturePath.ggPath,
                     onPressed: () {
@@ -97,16 +91,11 @@ class LoginViewState extends State<LoginView> {
                 bloc: _loginBloc,
                 listener: (context, state) {
                   if (state is LoginSuccess) {
-                    Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+                    Navigator.of(context).pushNamed(Routes.mainRoute);
                   }
-                  else if (state is LoginFailure) {
-                    if(state is LoginWithFacebookFailure) {
-                      Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.facebookSignInAccount);
-                    }
                   else if(state is LoginWithGoogleFailure) {
                       Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
                     }
-                  }
                 },
                 builder: (context, state) {
                   if (state is LoginLoading) {
@@ -140,7 +129,6 @@ class LoginViewState extends State<LoginView> {
                 hint: AppStrings.enterEmail,
                 controller: emailController),
             CompulsoryTextField(
-                isPassword: true,
                 content: AppStrings.password,
                 validator: validatePassword,
                 hint: AppStrings.enterPassword,
@@ -154,11 +142,14 @@ class LoginViewState extends State<LoginView> {
       widthFactor: 0.5,
       child: FilledButton(
         onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            _loginBloc.add(LoginButtonPressed(
-                email: emailController.text,
-                password: passwordController.text));
-          }
+          if(_formKey.currentState!=null)
+            {
+              if (_formKey.currentState!.validate()) {
+                _loginBloc.add(LoginButtonPressed(
+                    email: emailController.text,
+                    password: passwordController.text));
+              }
+            }
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
         child: Center(
