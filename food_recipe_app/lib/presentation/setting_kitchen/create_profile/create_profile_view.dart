@@ -12,6 +12,7 @@ import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -78,16 +79,14 @@ class _CreateProfileViewState extends State<CreateProfileView> {
               listener: (context, state) {
                 if (state is CreateProfileLoading) {
                   showDialog(context: context, builder: (context)
-                  => const Center(child: CircularProgressIndicator(),));
+                  => const LoadingDialog());
                 } else if (state is CreateProfileSubmitSuccess) {
-                  debugPrint("success");
                   Navigator.of(context).canPop()?Navigator.of(context).pop():{};
                   Navigator.pushNamed(context, Routes.foodTypeRoute,arguments: gatherProfileSubmit());
                 } else if (state is CreateProfileSubmitFailed) {
                   Navigator.of(context).canPop()?Navigator.of(context).pop():{};
                   showDialog(context: context, builder:
-                      (context){return _getAlertDialog(state,"email already existed");}
-                  );
+                      (context)=>AppErrorDialog(content: "email already existed"));
                 }
               },
               builder: (context, state) {
@@ -123,20 +122,6 @@ class _CreateProfileViewState extends State<CreateProfileView> {
           ),
         ),
       ),
-    );
-  }
-  Widget _getAlertDialog(state,String text){
-    return AlertDialog(
-      title: Text("Error:$text"),
-      content: Text(state.message),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text(AppStrings.ok),
-        )
-      ],
     );
   }
 

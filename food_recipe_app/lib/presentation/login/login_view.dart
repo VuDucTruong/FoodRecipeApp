@@ -9,6 +9,8 @@ import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart
 import 'package:food_recipe_app/presentation/common/widgets/stateful/remember_check_box.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -95,6 +97,16 @@ class LoginViewState extends State<LoginView> {
                   }
                   else if(state is LoginWithGoogleFailure) {
                       Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
+                    }
+                  if(state is LoginFailure)
+                    {
+                      showDialog(context: context, builder:
+                      (context) =>AppErrorDialog
+                        (content: "Login Failed: Please check your user name or password"));
+                    }
+                  if(state is LoginLoading)
+                    {
+                      showDialog(context: context, builder: (context) => const LoadingDialog());
                     }
                 },
                 builder: (context, state) {

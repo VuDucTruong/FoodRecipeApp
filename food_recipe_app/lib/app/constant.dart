@@ -1,5 +1,5 @@
 class Constant {
-  static const String baseUrl = 'http://192.168.1.10:5115/api';
+  static const String baseUrl = 'http://192.168.1.16:5115/api';
   static const String loginEndpoint = '/Login';
   static const String recipeEndpoint = '/Recipe';
   static const String notificationEndpoint = '/Notification';

@@ -19,7 +19,7 @@ class UserRepositoryImpl implements UserRepository {
       this.userRemoteDataSource, this._networkInfo, this._appPreferences);
 
   @override
-  Future<Either<Failure, UserEntity>> getUserInfo() async {
+  Future<Either<Failure, BackgroundUser>> getUserInfo() async {
     debugPrint('getUserInfo');
     if (await _networkInfo.isConnected) {
       try {
@@ -30,7 +30,7 @@ class UserRepositoryImpl implements UserRepository {
           }
           debugPrint('getUserInfo: ${response.data}');
           assert(response.data != null);
-          return Right(response.data!.toEntity());
+          return Right(response.data!.toBackgroundUser());
         } else {
           return Left(Failure(response.statusCode ?? 0,
               response.statusMessage ?? "null message"));

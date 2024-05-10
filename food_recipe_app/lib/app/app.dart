@@ -4,17 +4,30 @@ import 'package:food_recipe_app/presentation/resources/theme_management.dart';
 import 'package:get_it/get_it.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  const MyApp({super.key}) ;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    InitialRoute initialRoute = GetIt.instance<InitialRoute>();
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: RouteGenerator.getRoute,
-      initialRoute: Routes.loginRoute,
-      theme: getAppTheme(),
+    final InitialRoute initialRoute = GetIt.instance<InitialRoute>();
+    return FutureBuilder<String>(
+      future: initialRoute.getInitialRoute(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // While waiting for the result, you can show a loading indicator
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // If there's an error, handle it appropriately
+          return Text('Error: ${snapshot.error}');
+        } else {
+          // Once the result is available, create MaterialApp with the initial route
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            onGenerateRoute: RouteGenerator.getRoute,
+            initialRoute: snapshot.data,
+            theme: getAppTheme(),
+          );
+        }
+      },
     );
   }
 }
+

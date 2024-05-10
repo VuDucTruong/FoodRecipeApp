@@ -50,7 +50,7 @@ Future<void> initAppModule() async {
   // app prefs instance
   instance
       .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
-  instance.registerLazySingleton(() => InitialRoute(instance()));
+
   // network info
   instance.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(InternetConnectionChecker()));
@@ -75,6 +75,15 @@ Future<void> initAppModule() async {
     instance.registerLazySingleton<RefreshAccessTokenUseCase>(
         () => RefreshAccessTokenUseCase(instance()));
   }
+  if(!instance.isRegistered<GetUserInfoUseCase>())
+    {
+      instance.registerLazySingleton<GetUserInfoUseCase>(() =>
+          GetUserInfoUseCase(instance()));
+    }
+  if(!instance.isRegistered<InitialRoute>())
+    {
+      instance.registerLazySingleton(() => InitialRoute(instance(),instance()));
+    }
   instance<DioFactory>().initializeInterceptor(dio, instance());
 }
 

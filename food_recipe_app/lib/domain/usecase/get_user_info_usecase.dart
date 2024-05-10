@@ -10,7 +10,7 @@ class GetUserInfoUseCase implements BaseUseCase {
   GetUserInfoUseCase(this._userRepository);
 
   @override
-  Future<Either<Failure, UserEntity>> execute(input) {
+  Future<Either<Failure, BackgroundUser>> execute(input) {
     return _userRepository.getUserInfo();
   }
 }

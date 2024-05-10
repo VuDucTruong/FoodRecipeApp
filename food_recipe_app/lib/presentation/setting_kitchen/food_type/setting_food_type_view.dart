@@ -4,7 +4,8 @@ import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
@@ -55,13 +56,13 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
           child: BlocConsumer(
             bloc: _foodTypeBloc,
             listener: (context,state){
-              if(state is FoodTypeLoading)
-                {
-                  showDialog(context: context, builder: (context)=>const
-                  Center(child: CircularProgressIndicator(),));
-                }
-              if(state is FoodTypeSubmitSuccess){
-                showDialog(context: context, builder: (context)=> CongratulationDialog());
+              if(state is FoodTypeLoading) {
+                  showDialog(context: context, builder: (context)
+                  =>const LoadingDialog());
+                } else if (state is FoodTypeSubmitFailure) {
+                  showDialog(context: context, builder: (context)
+                  =>AppErrorDialog(content: 'Information invalid please check again'));
+                }else if(state is FoodTypeSubmitSuccess){
                 Future.delayed(const Duration(milliseconds: 500),(){
                   Navigator.of(context).pushNamedAndRemoveUntil(Routes.mainRoute, ModalRoute.withName(Routes.createProfileRoute) );
                 });
@@ -133,21 +134,12 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
                           int count = 0;
                           for (var element in typePreferencesMap.values) {
                             if (element) count++;
-                            if(count>3) break;
+                            if(count>=3) break;
                           }
                           if (count <= 3) {
-                            showDialog(context: context, builder: (context) {
-                              return AlertDialog(
-                                title: const Text("Error"),
-                                content: const Text("Please select at least 3 preferences"),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {Navigator.pop(context);},
-                                      child: const Text("OK"))
-                                ],
-                              );
-                            });
-                          } else {
+                            showDialog(context: context, builder: (context)
+                              =>AppErrorDialog(content: 'Please select at least 3 preferences'));
+                          }else {
                             _foodTypeBloc.add(FoodTypeSubmit(
                                 userRegisterProfile: gatherProfileSubmit()));
                           }
