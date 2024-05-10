@@ -42,8 +42,10 @@ class InitialRoute {
       bool value = await _appPreferences.getOnBoardingScreenViewed();
       if (value) {
         debugPrint('value is $value');
-        await _getUserInfoUseCase.execute(null);
-        return Routes.mainRoute;
+        final backgroundUser = await _getUserInfoUseCase.execute(null);
+        final isSuccess = backgroundUser.isRight();
+        if(isSuccess) {return Routes.mainRoute;}
+        else {return Routes.loginRoute;}
       } else {
         return Routes.onBoardingRoute;
       }

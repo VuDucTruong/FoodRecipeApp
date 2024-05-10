@@ -95,14 +95,16 @@ class LoginViewState extends State<LoginView> {
                   if (state is LoginSuccess) {
                     Navigator.of(context).pushNamed(Routes.mainRoute);
                   }
-                  else if(state is LoginWithGoogleFailure) {
-                      Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
-                    }
                   if(state is LoginFailure)
                     {
-                      showDialog(context: context, builder:
-                      (context) =>AppErrorDialog
-                        (content: "Login Failed: Please check your user name or password"));
+                      if(state is LoginWithGoogleFailure) {
+                        Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
+                      }
+                      else{
+                        showDialog(context: context, builder:
+                            (context) =>AppErrorDialog
+                          (content: "Login Failed: Please check your user name or password"));
+                      }
                     }
                   if(state is LoginLoading)
                     {
