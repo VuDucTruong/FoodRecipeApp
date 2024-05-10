@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/theme_management.dart';
 import 'package:get_it/get_it.dart';
@@ -13,7 +14,16 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // While waiting for the result, you can show a loading indicator
-          return const CircularProgressIndicator();
+          return Center(
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: Image.asset(
+                'assets/images/loading_screen.png', // Replace with the path to your local image
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
         } else if (snapshot.hasError) {
           // If there's an error, handle it appropriately
           return Text('Error: ${snapshot.error}');
