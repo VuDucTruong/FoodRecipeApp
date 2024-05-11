@@ -1,23 +1,32 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:food_recipe_app/app/functions.dart';
+import 'package:flutter/material.dart';
+import 'package:food_recipe_app/data/network/failure.dart';
+import 'package:food_recipe_app/domain/usecase/login_verify_usecase.dart';
 import 'package:meta/meta.dart';
 
 part 'create_profile_event.dart';
 part 'create_profile_state.dart';
 
 class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
-  CreateProfileBloc() : super(CreateProfileInitial()) {
-    on<InputText>(this._onInputText);
+  final LoginVerifyUseCase _loginVerifyUseCase;
+
+  CreateProfileBloc({required LoginVerifyUseCase loginVerifyUseCase})
+      : _loginVerifyUseCase = loginVerifyUseCase,
+        super(CreateProfileInitial()) {
+    on<CreateProfileOnContinuePressed>(_onCreateProfileOnContinuePressed);
   }
 
-  FutureOr<void> _onInputText(
-      InputText event, Emitter<CreateProfileState> emit) {
-    String? errorMessage = event.validator(event.textInput);
-    if (errorMessage != null) {
-      emit(ErrorTextInputState(errorMessage: errorMessage));
-    }
-    emit(CreateProfileInitial());
+  FutureOr<void> _onCreateProfileOnContinuePressed(
+      CreateProfileOnContinuePressed event,
+      Emitter<CreateProfileState> emit) async {
+    emit(CreateProfileLoading());
+    final email = event.email;
+    final result = await _loginVerifyUseCase.execute(email);
+    result.fold(
+      (failure) => emit(CreateProfileSubmitFailed(failure: failure)),
+      (value) => emit(CreateProfileSubmitSuccess()),
+    );
   }
 }

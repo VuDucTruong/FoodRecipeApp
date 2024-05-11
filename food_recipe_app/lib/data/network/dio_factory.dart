@@ -18,6 +18,7 @@ class DioFactory {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         Logger().i('Request: ${options.uri}');
+        Logger().i('Request: ${options.data}');
         _appPreferences
             .getUserToken()
             .then((value) => options.headers['Authorization'] = 'Bearer $value')
@@ -56,7 +57,7 @@ class DioFactory {
   }
 
   DioFactory(this._appPreferences);
-  Duration timeOut = const Duration(minutes: 1);
+  Duration timeOut = const Duration(seconds: 3);
   Future<Dio> getDio() async {
     Dio dio = Dio();
     String language = await _appPreferences.getAppLanguage();
@@ -69,7 +70,10 @@ class DioFactory {
     };
 
     dio.options = BaseOptions(
-        connectTimeout: timeOut, receiveTimeout: timeOut, headers: headers);
+      connectTimeout: timeOut,
+      receiveTimeout: timeOut,
+      headers: headers,
+    );
 
     if (kReleaseMode) {
       print("release mode no logs");

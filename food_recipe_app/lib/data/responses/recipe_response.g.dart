@@ -15,14 +15,14 @@ RecipeResponse _$RecipeResponseFromJson(Map<String, dynamic> json) =>
       json['instruction'] as String,
       DateTime.parse(json['createdAt'] as String),
       DateTime.parse(json['updatedAt'] as String),
-      json['representIndex'] as int,
+      (json['representIndex'] as num).toInt(),
       (json['attachmentUrls'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
       json['categories'] as String,
-      json['likes'] as int,
-      json['serves'] as int,
-      json['cookTime'] as int,
+      (json['likes'] as num).toInt(),
+      (json['serves'] as num).toInt(),
+      (json['cookTime'] as num).toInt(),
       (json['ingredients'] as List<dynamic>).map((e) => e as String).toList(),
       json['isPublished'] as bool,
       json['isVegan'] as bool,

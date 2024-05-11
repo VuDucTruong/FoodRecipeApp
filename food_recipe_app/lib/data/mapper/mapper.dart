@@ -78,4 +78,21 @@ extension UserDomainResponseMapper on UserResponse {
     return UserEntity(id, createdAt, myAuthenticationInfo, myProfile, recipeIds,
         savedRecipeIds, followingIds, followerIds, myLoginTickets);
   }
+  BackgroundUser toBackgroundUser(){
+    var myProfile = ProfileInformation(
+        profileInfo.fullName,
+        profileInfo.avatarUrl,
+        profileInfo.isVegan,
+        profileInfo.bio,
+        profileInfo.categories,
+        profileInfo.hungryHeads);
+    var myLoginTickets = loginTickets
+        .map((e) => LoginTicket(e.refreshToken ?? "", e.deviceId ?? "",
+        e.deviceInfo ?? "", e.createTime, e.expireTime))
+        .toList();
+    return BackgroundUser( id:id,createdAt:createdAt, profileInfo:myProfile,
+        followerIds:followerIds,followingIds:followingIds,
+        loginTickets:myLoginTickets, savedRecipeIds:savedRecipeIds,
+        recipeIds:recipeIds);
+  }
 }

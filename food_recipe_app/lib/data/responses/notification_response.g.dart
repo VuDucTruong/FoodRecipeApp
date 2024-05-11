@@ -9,7 +9,7 @@ part of 'notification_response.dart';
 NotificationResponse _$NotificationResponseFromJson(
         Map<String, dynamic> json) =>
     NotificationResponse(
-      offSet: json['offSet'] as int,
+      offSet: (json['offSet'] as num).toInt(),
       createdAt: DateTime.parse(json['createdAt'] as String),
       imageUrl: json['imageUrl'] as String?,
       title: json['title'] as String,

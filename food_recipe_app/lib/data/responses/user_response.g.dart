@@ -53,7 +53,7 @@ UserProfileInfoResponse _$UserProfileInfoResponseFromJson(
       categories: (json['categories'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      hungryHeads: json['hungryHeads'] as int,
+      hungryHeads: (json['hungryHeads'] as num).toInt(),
     );
 
 Map<String, dynamic> _$UserProfileInfoResponseToJson(

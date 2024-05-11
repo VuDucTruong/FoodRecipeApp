@@ -11,12 +11,17 @@ class CompulsoryTextField extends StatelessWidget {
       required this.validator,
       this.icon,
       required this.hint,
-      required this.controller});
+      required this.controller,
+      this.maxLines=1,
+        this.isCompulsory = true
+      });
   String content;
   String? Function(String? x) validator;
   Widget? icon;
   String hint;
   TextEditingController controller;
+  int maxLines;
+  bool isCompulsory;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -24,16 +29,18 @@ class CompulsoryTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
+          maxLines: maxLines,
             text: TextSpan(
                 style: getSemiBoldStyle(
                     color: Colors.black, fontSize: FontSize.s16),
                 children: [
               TextSpan(text: content),
-              TextSpan(
-                text: " *",
-                style:
-                    getSemiBoldStyle(color: Colors.red, fontSize: FontSize.s16),
-              ),
+              if(isCompulsory)
+                TextSpan(
+                  text: " *",
+                  style:
+                  getSemiBoldStyle(color: Colors.red, fontSize: FontSize.s16),
+                ),
             ])),
         const SizedBox(
           height: AppSize.s4,
@@ -43,6 +50,7 @@ class CompulsoryTextField extends StatelessWidget {
           validator: validator,
           hint: hint,
           icon: icon,
+          maxLines: maxLines,
         ),
       ],
     );
