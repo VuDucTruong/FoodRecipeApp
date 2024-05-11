@@ -10,6 +10,6 @@ final class CreateProfileLoading extends CreateProfileState {}
 final class CreateProfileSubmitSuccess extends CreateProfileState {}
 
 final class CreateProfileSubmitFailed extends CreateProfileState {
-  final String message;
-  CreateProfileSubmitFailed({required this.message});
+  final Failure failure;
+  CreateProfileSubmitFailed({required this.failure});
 }

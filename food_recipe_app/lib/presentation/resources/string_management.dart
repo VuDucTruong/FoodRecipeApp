@@ -110,6 +110,7 @@ class AppStrings {
   static const String loading = 'Loading...';
   static const String createSuccess = 'You\'ve create a recipe successfully !';
   static const String missingAvatar = 'Your avatar is empty !';
+  static const String duplicatedUserError = 'Your email have already existed !';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 

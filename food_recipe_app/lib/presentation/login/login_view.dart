@@ -82,41 +82,39 @@ class LoginViewState extends State<LoginView> {
               Text(AppStrings.or,
                   style: getSemiBoldStyle(
                       color: ColorManager.greyColor, fontSize: FontSize.s22)),
-              Text(AppStrings.createAccount,
+              Text(AppStrings.loginAccount,
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 4),
               _buildFormInput(),
               RememberCheckBox(isChecked: isRememberMe),
               const SizedBox(height: 8),
-              BlocConsumer(
+              BlocListener(
                 bloc: _loginBloc,
                 listener: (context, state) {
                   if (state is LoginSuccess) {
                     Navigator.of(context).pushNamed(Routes.mainRoute);
                   }
-                  if(state is LoginFailure)
-                    {
-                      if(state is LoginWithGoogleFailure) {
-                        Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute, arguments: state.googleSignInAccount);
-                      }
-                      else{
-                        showDialog(context: context, builder:
-                            (context) =>AppErrorDialog
-                          (content: "Login Failed: Please check your user name or password"));
-                      }
+                  if (state is LoginFailure) {
+                    if (state is LoginWithGoogleFailure) {
+                      Navigator.of(context).pushReplacementNamed(
+                          Routes.createProfileRoute,
+                          arguments: state.googleSignInAccount);
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) => AppErrorDialog(
+                              content:
+                                  "Login Failed: Please check your user name or password"));
                     }
-                  if(state is LoginLoading)
-                    {
-                      showDialog(context: context, builder: (context) => const LoadingDialog());
-                    }
-                },
-                builder: (context, state) {
-                  if (state is LoginLoading) {
-                    return const CircularProgressIndicator();
                   }
-                  return Container();
+                  if (state is LoginLoading) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => const LoadingDialog());
+                  }
                 },
+                child: Container(),
               ),
               _buildLoginButton(),
               const SizedBox(height: 16),
@@ -156,14 +154,13 @@ class LoginViewState extends State<LoginView> {
       widthFactor: 0.5,
       child: FilledButton(
         onPressed: () {
-          if(_formKey.currentState!=null)
-            {
-              if (_formKey.currentState!.validate()) {
-                _loginBloc.add(LoginButtonPressed(
-                    email: emailController.text,
-                    password: passwordController.text));
-              }
+          if (_formKey.currentState != null) {
+            if (_formKey.currentState!.validate()) {
+              _loginBloc.add(LoginButtonPressed(
+                  email: emailController.text,
+                  password: passwordController.text));
             }
+          }
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
         child: Center(

@@ -37,24 +37,26 @@ class InitialRoute {
 
   InitialRoute(this._getUserInfoUseCase, this._appPreferences);
 
-  Future<String> getInitialRoute() async {
+  Future<void> getInitialRoute() async {
     try {
       bool value = await _appPreferences.getOnBoardingScreenViewed();
       if (value) {
         debugPrint('value is $value');
         final backgroundUser = await _getUserInfoUseCase.execute(null);
         final isSuccess = backgroundUser.isRight();
-        if(isSuccess) {return Routes.mainRoute;}
-        else {return Routes.loginRoute;}
+        if (isSuccess) {
+          initialRoute = Routes.mainRoute;
+        } else {
+          initialRoute = Routes.loginRoute;
+        }
       } else {
-        return Routes.onBoardingRoute;
+        initialRoute = Routes.onBoardingRoute;
       }
     } catch (e) {
       debugPrint('Error: $e');
-      return Routes.loginRoute;
+      initialRoute = Routes.loginRoute;
     }
   }
-
 }
 
 class RouteGenerator {

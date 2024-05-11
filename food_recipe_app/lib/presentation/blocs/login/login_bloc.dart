@@ -15,21 +15,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final GoogleLoginUseCase _googleLoginUseCase;
   final GoogleSignIn _googleSignIn;
 
-  LoginBloc({required LoginUseCase loginUseCase,
-  required GoogleLoginUseCase googleLoginUseCase,
-  required GoogleSignIn googleSignIn,}) :
-        _loginUseCase = loginUseCase,
+  LoginBloc({
+    required LoginUseCase loginUseCase,
+    required GoogleLoginUseCase googleLoginUseCase,
+    required GoogleSignIn googleSignIn,
+  })  : _loginUseCase = loginUseCase,
         _googleLoginUseCase = googleLoginUseCase,
         _googleSignIn = googleSignIn,
-        super(LoginInitial())
-  {
+        super(LoginInitial()) {
     on<LoginButtonPressed>(_loginPressed);
     on<LoginWithGooglePressed>(_loginWithGooglePressed);
   }
 
-  FutureOr<void> _loginPressed(LoginButtonPressed loginButtonPressed,
-      Emitter<LoginState> emit) async
-  {
+  FutureOr<void> _loginPressed(
+      LoginButtonPressed loginButtonPressed, Emitter<LoginState> emit) async {
     var email = loginButtonPressed.email;
     var password = loginButtonPressed.password;
     // Show loading state
@@ -41,8 +40,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           password: password,
         ));
         result.fold(
-            (failure)=> emit(LoginFailure(errorMessage: failure.message)),
-            (userEntity)=>emit(LoginSuccess(userEntity)) );
+            (failure) => emit(LoginFailure(errorMessage: failure.message)),
+            (userEntity) => emit(LoginSuccess(userEntity)));
       } catch (e) {
         // Error occurred during login
         emit(LoginFailure(errorMessage: "Login Failed: $e"));
@@ -53,13 +52,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  FutureOr<void> _loginWithGooglePressed(LoginWithGooglePressed loginWithGooglePressed,
+  FutureOr<void> _loginWithGooglePressed(
+      LoginWithGooglePressed loginWithGooglePressed,
       Emitter<LoginState> emit) async {
     // Show loading state
     emit(LoginLoading());
     try {
+      await _googleSignIn.signOut();
       final googleSignInAccount = await _googleSignIn.signIn();
-      if(googleSignInAccount == null){
+
+      if (googleSignInAccount == null) {
         emit(LoginFailure(errorMessage: "Google Sign In Failed"));
         return;
       }
@@ -67,21 +69,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final request = GoogleLoginUseCaseInput(loginId: googleSignInAccount.id);
       final result = await _googleLoginUseCase.execute(request);
       result.fold(
-              (failure)=> emit(LoginWithGoogleFailure(
-                  errorMessage: 'not found linked account',
-                  googleSignInAccount: ThirdPartySignInAccount(
-                      email: googleSignInAccount.email,
-                      name: googleSignInAccount.displayName??"",
-                      id: googleSignInAccount.id,
-                    photoUrl: googleSignInAccount.photoUrl,
-                    linkedAccountType: 'google'
-                  ))),
-              (userEntity)=>emit(LoginSuccess(userEntity)) );
-      }
-      catch(e){
-        // Error occurred during login
-        emit(LoginFailure(errorMessage: "Login Failed: $e"));
-      }
+          (failure) => emit(LoginWithGoogleFailure(
+              errorMessage: 'not found linked account',
+              googleSignInAccount: ThirdPartySignInAccount(
+                  email: googleSignInAccount.email,
+                  name: googleSignInAccount.displayName ?? "",
+                  id: googleSignInAccount.id,
+                  photoUrl: googleSignInAccount.photoUrl,
+                  linkedAccountType: 'google'))),
+          (userEntity) => emit(LoginSuccess(userEntity)));
+    } catch (e) {
+      // Error occurred during login
+      emit(LoginFailure(errorMessage: "Login Failed: $e"));
+    }
   }
-
 }

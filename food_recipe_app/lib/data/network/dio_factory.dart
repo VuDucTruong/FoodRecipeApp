@@ -57,7 +57,7 @@ class DioFactory {
   }
 
   DioFactory(this._appPreferences);
-  Duration timeOut = const Duration(seconds: 8);
+  Duration timeOut = const Duration(seconds: 3);
   Future<Dio> getDio() async {
     Dio dio = Dio();
     String language = await _appPreferences.getAppLanguage();
@@ -70,8 +70,9 @@ class DioFactory {
     };
 
     dio.options = BaseOptions(
-        connectTimeout: timeOut,
-        receiveTimeout: timeOut, headers: headers,
+      connectTimeout: timeOut,
+      receiveTimeout: timeOut,
+      headers: headers,
     );
 
     if (kReleaseMode) {
