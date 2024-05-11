@@ -2,11 +2,15 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/data/network/error_handler.dart';
+import 'package:food_recipe_app/data/network/failure.dart';
+import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:meta/meta.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
+import 'package:food_recipe_app/presentation/resources/string_management.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -14,14 +18,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUseCase _loginUseCase;
   final GoogleLoginUseCase _googleLoginUseCase;
   final GoogleSignIn _googleSignIn;
+  final NetworkInfo _networkInfo;
 
   LoginBloc({
     required LoginUseCase loginUseCase,
     required GoogleLoginUseCase googleLoginUseCase,
     required GoogleSignIn googleSignIn,
+    required NetworkInfo networkInfo,
   })  : _loginUseCase = loginUseCase,
         _googleLoginUseCase = googleLoginUseCase,
         _googleSignIn = googleSignIn,
+        _networkInfo = networkInfo,
         super(LoginInitial()) {
     on<LoginButtonPressed>(_loginPressed);
     on<LoginWithGooglePressed>(_loginWithGooglePressed);
@@ -34,21 +41,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // Show loading state
     emit(LoginLoading());
     if (email.isNotEmpty && password.isNotEmpty) {
-      try {
-        final result = await _loginUseCase.execute(LoginUseCaseInput(
-          email: email,
-          password: password,
-        ));
-        result.fold(
-            (failure) => emit(LoginFailure(errorMessage: failure.message)),
-            (userEntity) => emit(LoginSuccess(userEntity)));
-      } catch (e) {
-        // Error occurred during login
-        emit(LoginFailure(errorMessage: "Login Failed: $e"));
+      if (await _networkInfo.isConnected) {
+        try {
+          final result = await _loginUseCase.execute(LoginUseCaseInput(
+            email: email,
+            password: password,
+          ));
+          result.fold(
+              (failure) => emit(LoginFailure(failure: failure)),
+              (userEntity) => emit(LoginSuccess(userEntity)));
+        } catch (e) {
+          // Error occurred during login
+          emit(LoginFailure(failure: Failure(ResponseCode.DEFAULT, AppStrings.loginError)));
+        }
+      } else {
+        emit(LoginFailure(failure: Failure.noInternet()));
       }
     } else {
-      // Empty email or password, show error state
-      emit(LoginFailure(errorMessage: "Email password requires"));
+      emit(LoginFailure(failure: Failure(ResponseCode.DEFAULT, AppStrings.loginError)));
     }
   }
 
@@ -57,30 +67,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Emitter<LoginState> emit) async {
     // Show loading state
     emit(LoginLoading());
-    try {
-      await _googleSignIn.signOut();
-      final googleSignInAccount = await _googleSignIn.signIn();
-
-      if (googleSignInAccount == null) {
-        emit(LoginFailure(errorMessage: "Google Sign In Failed"));
-        return;
+    if (await _networkInfo.isConnected) {
+      try {
+        await _googleSignIn.signOut();
+        final googleSignInAccount = await _googleSignIn.signIn();
+        if (googleSignInAccount == null) {
+          emit(LoginFailure(failure: Failure.dataNotExisted("Google Account")));
+          return;
+        }
+        final request = GoogleLoginUseCaseInput(loginId: googleSignInAccount.id);
+        final result = await _googleLoginUseCase.execute(request);
+        result.fold(
+            (failure) => emit(LoginWithGoogleFailure(failure: failure,
+                googleSignInAccount: ThirdPartySignInAccount.fromGoogleSignInAccount(googleSignInAccount))),
+            (userEntity) => emit(LoginSuccess(userEntity)));
+      } catch (e) {
+        // Error occurred during login
+        emit(LoginFailure(failure: Failure.notFound()));
       }
-      debugPrint("Google Sign In Account: ${googleSignInAccount.id}");
-      final request = GoogleLoginUseCaseInput(loginId: googleSignInAccount.id);
-      final result = await _googleLoginUseCase.execute(request);
-      result.fold(
-          (failure) => emit(LoginWithGoogleFailure(
-              errorMessage: 'not found linked account',
-              googleSignInAccount: ThirdPartySignInAccount(
-                  email: googleSignInAccount.email,
-                  name: googleSignInAccount.displayName ?? "",
-                  id: googleSignInAccount.id,
-                  photoUrl: googleSignInAccount.photoUrl,
-                  linkedAccountType: 'google'))),
-          (userEntity) => emit(LoginSuccess(userEntity)));
-    } catch (e) {
-      // Error occurred during login
-      emit(LoginFailure(errorMessage: "Login Failed: $e"));
+    } else {
+      emit(LoginFailure(failure: Failure.noInternet()));
     }
   }
 }

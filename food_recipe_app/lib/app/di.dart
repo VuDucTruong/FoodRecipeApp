@@ -162,6 +162,7 @@ initLoginModule() {
           googleSignIn: instance(),
           loginUseCase: instance(),
           googleLoginUseCase: instance(),
+          networkInfo: instance(),
         ));
   }
 }
@@ -172,6 +173,7 @@ initCreateProfileModule() {
   }
   if(!instance.isRegistered<CreateProfileBloc>()){
     instance.registerLazySingleton<CreateProfileBloc>(() => CreateProfileBloc(
+      networkInfo: instance(),
       loginVerifyUseCase: instance()
     ));
   }
@@ -188,6 +190,7 @@ initFoodTypeModule() {
   }
   if (!instance.isRegistered<FoodTypeBloc>()) {
     instance.registerLazySingleton(() => FoodTypeBloc(
+        networkInfo: instance(),
         signupWithLoginIdUseCase: instance(), signupUseCase: instance()));
   }
 }

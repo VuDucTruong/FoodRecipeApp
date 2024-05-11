@@ -1,16 +1,18 @@
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/remember_check_box.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -92,23 +94,27 @@ class LoginViewState extends State<LoginView> {
               BlocListener(
                 bloc: _loginBloc,
                 listener: (context, state) {
+                  Navigator.popUntil(context, (route) => !(route is DialogRoute));
                   if (state is LoginSuccess) {
                     Navigator.of(context).pushNamed(Routes.mainRoute);
                   }
-                  if (state is LoginFailure) {
+                  else if (state is LoginFailure) {
+                    final failure = state.failure;
                     if (state is LoginWithGoogleFailure) {
-                      Navigator.of(context).pushReplacementNamed(
-                          Routes.createProfileRoute,
-                          arguments: state.googleSignInAccount);
-                    } else {
-                      showDialog(
-                          context: context,
-                          builder: (context) => AppErrorDialog(
-                              content:
-                                  "Login Failed: Please check your user name or password"));
+                      if(failure.code==ResponseCode.BAD_REQUEST)
+                        {
+                          Navigator.of(context).pushReplacementNamed(
+                              Routes.createProfileRoute,
+                              arguments: state.googleSignInAccount);
+                          return;
+                        }
                     }
+                    debugPrint('failure: ${failure.code}: ${failure.message}');
+                      handleBlocFailures(context, failure, (){
+                        Navigator.of(context).pop();
+                        setState(() {});});
                   }
-                  if (state is LoginLoading) {
+                  else if (state is LoginLoading) {
                     showDialog(
                         context: context,
                         builder: (context) => const LoadingDialog());
@@ -155,7 +161,9 @@ class LoginViewState extends State<LoginView> {
       child: FilledButton(
         onPressed: () {
           if (_formKey.currentState != null) {
-            if (_formKey.currentState!.validate()) {
+            if (_formKey.currentState!.validate()
+            && emailController.text.isNotEmpty
+            && passwordController.text.isNotEmpty) {
               _loginBloc.add(LoginButtonPressed(
                   email: emailController.text,
                   password: passwordController.text));
@@ -179,9 +187,7 @@ Widget _buildFooterText(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(prefix, style: getSemiBoldStyle(color: ColorManager.greyColor)),
-      const SizedBox(
-        width: 4,
-      ),
+      const SizedBox(width: 4,),
       GestureDetector(
         onTap: () {
           Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute);

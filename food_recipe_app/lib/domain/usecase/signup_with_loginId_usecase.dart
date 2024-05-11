@@ -7,6 +7,7 @@ import 'package:food_recipe_app/data/background_data/device_info.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/usecase/base_usecase.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 class SignupWithLoginIdUseCase implements BaseUseCase<SignupWithLoginIdUseCaseInput, void> {
@@ -50,5 +51,17 @@ class SignupWithLoginIdUseCaseInput{
     required this.isVegan, required this.hungryHeads,
     required this.categories,
   });
+  SignupWithLoginIdUseCaseInput.fromUserRegisterProfileAdvanced({
+    required UserRegisterProfileAdvanced userRegisterProfileAdvanced,
+  }):
+        loginId = userRegisterProfileAdvanced.loginId!,
+        linkedAccountType = userRegisterProfileAdvanced.linkedAccountType,
+        fullName = userRegisterProfileAdvanced.fullName,
+        bio = userRegisterProfileAdvanced.bio,
+        avatarUrl = userRegisterProfileAdvanced.avatarUrl??"",
+        file = userRegisterProfileAdvanced.file,
+        hungryHeads = userRegisterProfileAdvanced.hungryHeads,
+        categories = userRegisterProfileAdvanced.categories,
+        isVegan = userRegisterProfileAdvanced.isVegan;
 
 }

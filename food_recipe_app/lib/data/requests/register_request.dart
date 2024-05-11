@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:food_recipe_app/domain/repository/login_repository.dart';
 
 
 class RegisterBaseRequestBase {
@@ -66,6 +67,20 @@ class RegisterWithEmailRequest extends RegisterBaseRequestBase {
         categories: categories,
         deviceInfo: deviceInfo, deviceId: deviceId
       );
+  RegisterWithEmailRequest.fromRegisterWithEmailDTOs({required RegisterWithEmailRepositoryDTO registerWithEmailRepositoryDTO}):
+      this(
+        email: registerWithEmailRepositoryDTO.email,
+        password: registerWithEmailRepositoryDTO.password,
+        fullName: registerWithEmailRepositoryDTO.fullName,
+        bio: registerWithEmailRepositoryDTO.bio,
+        avatarUrl: registerWithEmailRepositoryDTO.avatarUrl,
+        file: registerWithEmailRepositoryDTO.file,
+        isVegan: registerWithEmailRepositoryDTO.isVegan,
+        hungryHeads: registerWithEmailRepositoryDTO.hungryHeads,
+        categories: registerWithEmailRepositoryDTO.categories,
+        deviceInfo: registerWithEmailRepositoryDTO.deviceInfo,
+        deviceId: registerWithEmailRepositoryDTO.deviceId
+      );
 
 @override
   Map<String, dynamic> toJson()
@@ -100,6 +115,20 @@ class RegisterWithLoginIdRequest extends RegisterBaseRequestBase {
         isVegan: isVegan, hungryHeads: hungryHeads,
         categories: categories,
         deviceInfo: deviceInfo, deviceId: deviceId
+      );
+  RegisterWithLoginIdRequest.fromRegisterWithLoginIdDTOs({required RegisterWithLoginIdDTOs registerWithLoginIdDTOs}):
+      this(
+        loginId: registerWithLoginIdDTOs.loginId,
+        linkedAccountType: registerWithLoginIdDTOs.linkedAccountType,
+        fullName: registerWithLoginIdDTOs.fullName,
+        bio: registerWithLoginIdDTOs.bio,
+        avatarUrl: registerWithLoginIdDTOs.avatarUrl,
+        file: registerWithLoginIdDTOs.file,
+        isVegan: registerWithLoginIdDTOs.isVegan,
+        hungryHeads: registerWithLoginIdDTOs.hungryHeads,
+        categories: registerWithLoginIdDTOs.categories,
+        deviceInfo: registerWithLoginIdDTOs.deviceInfo,
+        deviceId: registerWithLoginIdDTOs.deviceId
       );
 @override
   Map<String, dynamic> toJson()

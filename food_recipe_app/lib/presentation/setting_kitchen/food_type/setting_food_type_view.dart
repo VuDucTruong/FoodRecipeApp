@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/constant.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
@@ -48,7 +53,6 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
 
   @override
   Widget build(BuildContext context) {
-    double appWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -56,93 +60,38 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
           child: BlocConsumer(
             bloc: _foodTypeBloc,
             listener: (context,state){
+              Navigator.popUntil(context, (route) => !(route is DialogRoute));
               if(state is FoodTypeLoading) {
-                  showDialog(context: context, builder: (context)
-                  =>const LoadingDialog());
-                } else if (state is FoodTypeSubmitFailure) {
-                  showDialog(context: context, builder: (context)
-                  =>AppErrorDialog(content: 'Information invalid please check again'));
-                }else if(state is FoodTypeSubmitSuccess){
+                  showDialog(context: context, builder: (context) =>const LoadingDialog());
+                }
+              else if (state is FoodTypeSubmitFailure) {
+                final failure = state.failure;
+                handleBlocFailures(context, failure,()=>Navigator.of(context).pop());
+                }
+              else if(state is FoodTypeSubmitSuccess){
                 Future.delayed(const Duration(milliseconds: 500),(){
                   Navigator.of(context).pushNamedAndRemoveUntil(Routes.mainRoute, ModalRoute.withName(Routes.createProfileRoute) );
                 });
               }
             },
             builder: (context,state){
+              double appWidth = MediaQuery.of(context).size.width;
               return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(AppPadding.p12),
-                    child: Text(
-                      AppStrings.setUpKitchen,
-                      style:
-                      getBoldStyle(color: Colors.black, fontSize: FontSize.s20),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                          margin:
-                          const EdgeInsets.symmetric(vertical: AppMargin.m8),
-                          child: Text(
-                            AppStrings.selectPreferences,
-                            style: getSemiBoldStyle(
-                                color: ColorManager.secondaryColor,
-                                fontSize: FontSize.s20),
-                          )),
-                    ],
-                  ),
-                  Center(
-                    child: LongSwitch(
-                      onContent: AppStrings.veg,
-                      offContent: AppStrings.nonVeg,
-                      onColor: ColorManager.linearGradientLightTheme,
-                      offColor: ColorManager.linearGradientNonVeg,
-                      width: appWidth * 0.65,
-                      height: 40,),),
+                  _buildTitleSetupKitchen(),
+                  _buildSubTitleSelectPreference(),
+                  _buildLongSwitch(appWidth),
                   _buildTypeList(appWidth),
-                  Row(
-                    children: [
-                      Text(
-                        AppStrings.hungryHeads,
-                        style: getSemiBoldStyle(
-                            color: Colors.black, fontSize: FontSize.s18),),
-                      const Spacer(),
-                      DefaultHeads(
-                        headNumber: headNumber,),],
-                  ),
+                  _buildHungryHeads(),
                   const SizedBox(
                     height: AppSize.s12,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        AppStrings.newDishNotification,
-                        style: getSemiBoldStyle(
-                            color: Colors.black, fontSize: FontSize.s18),
-                      ),
-                      const Spacer(),
-                      OnOffSwitch(
-                        isOn: isVeg,
-                      )
-                    ],
-                  ),
+                  _buildNotificationOption(),
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: FilledButton(
                         onPressed: () {
-                          int count = 0;
-                          for (var element in typePreferencesMap.values) {
-                            if (element) count++;
-                            if(count>=3) break;
-                          }
-                          if (count <= 3) {
-                            showDialog(context: context, builder: (context)
-                              =>AppErrorDialog(content: 'Please select at least 3 preferences'));
-                          }else {
-                            _foodTypeBloc.add(FoodTypeSubmit(
-                                userRegisterProfile: gatherProfileSubmit()));
-                          }
+                          _handleOnPressed();
                         },
                         child: Text(
                           AppStrings.continueOnly,
@@ -158,6 +107,87 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
       ),
     );
   }
+
+  void _handleOnPressed(){
+    int count = 0;
+    for (var element in typePreferencesMap.values) {
+      if (element) count++;
+      if(count>=3) break;
+    }
+    if (count < 3) {
+      showDialog(context: context, builder: (context)
+      =>AppErrorDialog(content: 'Please select at least 3 preferences'));
+    }else {
+      _foodTypeBloc.add(FoodTypeSubmit(
+          userRegisterProfile: gatherProfileSubmit()));
+    }
+  }
+
+
+
+  Widget _buildTitleSetupKitchen(){
+    return  Padding(
+      padding: const EdgeInsets.all(AppPadding.p12),
+      child: Text(
+        AppStrings.setUpKitchen,
+        style:
+        getBoldStyle(color: Colors.black, fontSize: FontSize.s20),
+      ),
+    );
+  }
+  Widget _buildLongSwitch(double appWidth){
+    return  Center(
+      child: LongSwitch(
+        onContent: AppStrings.veg,
+        offContent: AppStrings.nonVeg,
+        onColor: ColorManager.linearGradientLightTheme,
+        offColor: ColorManager.linearGradientNonVeg,
+        width: appWidth * 0.65,
+        height: 40,),);
+  }
+  Widget _buildSubTitleSelectPreference(){
+    return Row(
+      children: [
+        Container(
+            margin:
+            const EdgeInsets.symmetric(vertical: AppMargin.m8),
+            child: Text(
+              AppStrings.selectPreferences,
+              style: getSemiBoldStyle(
+                  color: ColorManager.secondaryColor,
+                  fontSize: FontSize.s20),
+            )),
+      ],
+    );
+  }
+  Widget _buildHungryHeads(){
+    return Row(
+      children: [
+        Text(
+          AppStrings.hungryHeads,
+          style: getSemiBoldStyle(
+              color: Colors.black, fontSize: FontSize.s18),),
+        const Spacer(),
+        DefaultHeads(
+          headNumber: headNumber,),],
+    );
+  }
+  Widget _buildNotificationOption(){
+    return  Row(
+      children: [
+        Text(
+          AppStrings.newDishNotification,
+          style: getSemiBoldStyle(
+              color: Colors.black, fontSize: FontSize.s18),
+        ),
+        const Spacer(),
+        OnOffSwitch(
+          isOn: isVeg,
+        )
+      ],
+    );
+  }
+
 
   UserRegisterProfileAdvanced gatherProfileSubmit(){
     List<String> categories = [];

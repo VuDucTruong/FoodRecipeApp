@@ -24,22 +24,21 @@ class UserRepositoryImpl implements UserRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await userRemoteDataSource.getUserInfo();
-        if (response.statusCode == 200) {
+        if (response.statusCode == ResponseCode.SUCCESS) {
           if (response.data == null) {
-            return Left(Failure(0, 'Data is null'));
+            return Left(Failure.dataNotExisted('User'));
           }
-          debugPrint('getUserInfo: ${response.data}');
           assert(response.data != null);
           return Right(response.data!.toBackgroundUser());
-        } else {
-          return Left(Failure(response.statusCode ?? 0,
-              response.statusMessage ?? "null message"));
+        }
+        else {
+          return Left(Failure.internalServerError());
         }
       } catch (error) {
         return (Left(ErrorHandler.handle(error).failure));
       }
     } else {
-      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      return Left(Failure.noInternet());
     }
   }
 
@@ -48,17 +47,16 @@ class UserRepositoryImpl implements UserRepository {
     if (await _networkInfo.isConnected) {
       try {
         final response = await userRemoteDataSource.getVerifiedChefs();
-        if (response.status == 200) {
+        if (response.status == ResponseCode.SUCCESS) {
           return Right(response.data.map((e) => e.toEntity()).toList());
         } else {
-          return Left(Failure(response.status ?? ResponseCode.DEFAULT,
-              ResponseMessage.DEFAULT ?? "null message"));
+          return Left(Failure.dataNotExisted("Chef"));
         }
       } catch (error) {
         return (Left(ErrorHandler.handle(error).failure));
       }
     } else {
-      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      return Left(Failure.noInternet());
     }
   }
 }
