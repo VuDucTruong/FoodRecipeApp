@@ -9,6 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final InitialRoute initialRoute = GetIt.instance<InitialRoute>();
+    debugPrint('initialRoute.initialRoute: ${initialRoute.initialRoute}');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.getRoute,

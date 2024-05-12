@@ -5,15 +5,15 @@ import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
-import 'package:food_recipe_app/data/requests/get_saved_recipes_request.dart';
-import 'package:food_recipe_app/data/responses/recipe_response.dart';
+import 'package:food_recipe_app/data/requests/get_recipes_search_request.dart';
+import 'package:food_recipe_app/data/requests/recipe_update_request.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/presentation/common/helper/create_recipe_object.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
-  RecipeRemoteDataSource _recipeDataSource;
-  NetworkInfo _networkInfo;
+  final RecipeRemoteDataSource _recipeDataSource;
+  final NetworkInfo _networkInfo;
 
   RecipeRepositoryImpl(this._recipeDataSource, this._networkInfo);
 
@@ -21,49 +21,22 @@ class RecipeRepositoryImpl implements RecipeRepository {
   Future<Either<Failure, List<RecipeEntity>>> getRecipesFromLikes() async {
     if (await _networkInfo.isConnected) {
       try {
-        // its safe to call the API
-
-        final response = await _recipeDataSource.getRecipesFromLikes();
-        if (response.status == ApiInternalStatus.SUCCESS) // success
-        {
-          // return data (success)
-          // return right
-          return Right(response.data.map((e) => e.toEntity()).toList());
-        } else {
-          // return biz logic error
-          // return left
-          return Left(Failure(response.status ?? ApiInternalStatus.FAILURE,
-              response.message ?? ResponseMessage.CONNECTION_ERROR));
-        }
+        return await _recipeDataSource.getRecipesFromLikes().then((response){
+          if (response.statusCode == ApiInternalStatus.SUCCESS) // success
+              {
+            return response.data==null
+                ?Left(Failure.dataNotFound("Recipes"))
+                :Right(response.data!.map((e) => e.toEntity()).toList());
+          } else {
+            return Left(Failure.internalServerError());
+          }
+        });
       } catch (error) {
-        print(error);
         return (Left(ErrorHandler.handle(error).failure));
       }
     } else {
-      // return connection error
-      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+      return Left(Failure.noInternet());
     }
-  }
-
-  @override
-  Future<Either<Failure, List<RecipeEntity>>> getRecipesByCategory(
-      String category, int page) async {
-    if (await _networkInfo.isConnected) {
-      try {
-        final response =
-            await _recipeDataSource.getRecipesByCategory(category, page);
-        if (response.status == ApiInternalStatus.SUCCESS) {
-          return Right(response.data.map((e) => e.toEntity()).toList());
-        } else {
-          return Left(Failure(
-              ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));
-        }
-      } catch (error) {
-        print(error);
-        return Left(ErrorHandler.handle(error).failure);
-      }
-    }
-    return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
   }
 
   @override
@@ -80,31 +53,181 @@ class RecipeRepositoryImpl implements RecipeRepository {
               ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));
         }
       } catch (error) {
-        print(error);
-        return Left(ErrorHandler.handle(error).failure);
+        return (Left(ErrorHandler.handle(error).failure));
       }
     }
     return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
   }
 
   @override
-  Future<Either<Failure, List<RecipeEntity>>> getSavedRecipesByCategory(
-      List<String> categories, String searchTerm, int page) async {
+  Future<Either<Failure, List<RecipeEntity>>> getSavedRecipesSearch(
+      GetRecipesSearchRequestDto request) async {
     if (await _networkInfo.isConnected) {
       try {
-        final response = await _recipeDataSource.getSavedRecipes(
-            GetSavedRecipesRequest(categories, searchTerm), page);
-        if (response.status == ApiInternalStatus.SUCCESS) {
-          return Right(response.data.map((e) => e.toEntity()).toList());
+        GetRecipesSearchRequest searchRequest = GetRecipesSearchRequest.fromGetRecipesSearchRequestDto(request);
+        final response = await _recipeDataSource.getSavedRecipesSearch(searchRequest);
+        if (response.statusCode == ApiInternalStatus.SUCCESS) {
+          return response.data!=null
+              ?Right(response.data!.map((e) => e.toEntity()).toList())
+              :Left(Failure.dataNotFound("Recipes"));
         } else {
           return Left(Failure(
               ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));
         }
       } catch (error) {
-        print(error);
         return Left(ErrorHandler.handle(error).failure);
       }
     }
-    return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    return Left(Failure.noInternet());
+  }
+
+  @override
+  Future<Either<Failure, List<RecipeEntity>>> getLikedRecipesSearch(GetRecipesSearchRequestDto request) async {
+    if(await _networkInfo.isConnected){
+      try{
+        GetRecipesSearchRequest searchRequest = GetRecipesSearchRequest.fromGetRecipesSearchRequestDto(request);
+        final response = await _recipeDataSource.getLikedRecipesSearch(searchRequest);
+        if(response.statusCode == ApiInternalStatus.SUCCESS){
+          return response.data!=null
+              ?Right(response.data!.map((e) => e.toEntity()).toList())
+              :Left(Failure.dataNotFound("Recipes"));
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    else{
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<RecipeEntity>>> getRecipesFromIds(List<String> ids) async {
+    if(await _networkInfo.isConnected){
+      try{
+        final response = await _recipeDataSource.getRecipesFromIds(ids);
+        if(response.statusCode == ApiInternalStatus.SUCCESS){
+          return response.data!=null
+              ?Right(response.data!.map((e) => e.toEntity()).toList())
+              :Left(Failure.dataNotFound("Recipes"));
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    else{
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<RecipeEntity>>> getRecipesSearch(GetRecipesSearchRequestDto request) async {
+    if(await _networkInfo.isConnected){
+      try{
+        GetRecipesSearchRequest searchRequest = GetRecipesSearchRequest.fromGetRecipesSearchRequestDto(request);
+        final response = await _recipeDataSource.getRecipesSearch(searchRequest);
+        if(response.statusCode == ApiInternalStatus.SUCCESS){
+          return response.data!=null
+              ?Right(response.data!.map((e) => e.toEntity()).toList())
+              :Left(Failure.dataNotFound("Recipes"));
+        }else{
+          return Left(Failure(ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    else{
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateLikeRecipe(String recipeId, bool option) async {
+    if(await _networkInfo.isConnected){
+      try{
+        final response = await _recipeDataSource.updateLikeRecipe(recipeId, option);
+        if(response.statusCode == ApiInternalStatus.SUCCESS){
+          return response.data!=null
+              ?Right(response.data!)
+              :Left(Failure.actionFailed("Like Recipe"));
+        }else{
+          return Left(Failure.internalServerError());
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    else{
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateRecipe(UpdateRecipeRequestDto request) async {
+    if(await _networkInfo.isConnected){
+      try{
+        final updateRequest =  RecipeUpdateRequest.fromRecipeUpdateRequestDto(request);
+        final response = await _recipeDataSource.updateRecipe(updateRequest);
+        if(response.statusCode == ApiInternalStatus.SUCCESS){
+          return response.data!=null
+              ?Right(response.data!)
+              :Left(Failure.actionFailed("Update Recipe"));
+        }else{
+          return Left(Failure.internalServerError());
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    else{
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateSaveRecipe(String recipeId, bool option) async {
+    if(await _networkInfo.isConnected){
+      try{
+        final response = await _recipeDataSource.updateSaveRecipe(recipeId, option);
+        if(response.statusCode == ApiInternalStatus.SUCCESS){
+          return response.data!=null
+              ?Right(response.data!)
+              :Left(Failure.actionFailed("Save Recipe"));
+        }else{
+          return Left(Failure.internalServerError());
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    else{
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> deleteRecipe(String recipeId) async {
+    if(await _networkInfo.isConnected){
+      try{
+        final response = await _recipeDataSource.deleteRecipe(recipeId);
+        if(response.statusCode == ApiInternalStatus.SUCCESS){
+          return response.data!=null
+              ?Right(response.data!)
+              :Left(Failure.actionFailed("Delete Recipe"));
+        }else{
+          return Left(Failure.internalServerError());
+        }
+      }catch(error){
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    }
+    else{
+      return Left(Failure.noInternet());
+    }
   }
 }

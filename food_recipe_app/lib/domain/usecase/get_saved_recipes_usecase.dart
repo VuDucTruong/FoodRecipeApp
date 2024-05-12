@@ -14,7 +14,7 @@ class GetSavedRecipesUseCase
   @override
   Future<Either<Failure, List<RecipeEntity>>> execute(
       GetSavedRecipesObject input) async {
-    return await _recipeRepository.getSavedRecipesByCategory(
-        input.categories, input.searchTerm, input.page);
+    return await _recipeRepository.getSavedRecipesSearch(GetRecipesSearchRequestDto(
+        categories: input.categories, page: input.page, searchTerm: input.searchTerm));
   }
 }

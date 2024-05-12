@@ -72,7 +72,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await _googleSignIn.signOut();
         final googleSignInAccount = await _googleSignIn.signIn();
         if (googleSignInAccount == null) {
-          emit(LoginFailure(failure: Failure.dataNotExisted("Google Account")));
+          emit(LoginFailure(failure: Failure.dataNotFound("Google Account")));
           return;
         }
         final request = GoogleLoginUseCaseInput(loginId: googleSignInAccount.id);

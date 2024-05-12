@@ -66,7 +66,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
     cookTimeController.dispose();
     instructionController.dispose();
     descriptionController.dispose();
-    createRecipeBloc.close();
+    // createRecipeBloc.close();
   }
 
   void clearContent() {

@@ -17,14 +17,14 @@ class DioFactory {
       dio, RefreshAccessTokenUseCase refreshAccessTokenUseCase) {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        Logger().i('Request: ${options.uri} - Data: ${options.data}');
+        Logger().i('Request: ${options.uri} - Data: ${options.data} - params: ${options.queryParameters}');
         String token = await _appPreferences.getUserToken();
         _appPreferences
             .getUserToken()
             .then((value) => options.headers[AUTHORIZATION] = 'Bearer $value')
             // TODO: implement where even fail finding the token
             .catchError((e) {
-          Logger().e('Error: $e');
+          Logger().w('Request: ${options.uri} - Data: ${options.data}: token not yet found');
           return e;
         });
         return handler.next(options);
@@ -50,9 +50,11 @@ class DioFactory {
               });
             });
           } catch (ex) {
+            Logger().e('Request: ${e.requestOptions.uri} - Data: ${e.requestOptions.data}: refreshToken unauthorized');
             return handler.reject(e);
           }
         } else {
+          Logger().e('Request: ${e.requestOptions.uri} - Data: ${e.requestOptions.data} - ${e.response}: error not 401');
           return handler.next(e);
         }
       },

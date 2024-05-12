@@ -23,12 +23,19 @@ class Failure {
   Failure.connectTimeout():
         code = ResponseCode.CONNECT_TIMEOUT,
         message = ResponseMessage.CONNECT_TIMEOUT;
-  Failure.dataExisted(String fieldName):
+  Failure.dataAlreadyExisted(String fieldName):
         code = ResponseCode.DEFAULT,
         message = '$fieldName existed';
-  Failure.dataNotExisted(String fieldName):
+  Failure.dataNotFound(String fieldName):
         code = ResponseCode.DEFAULT,
         message = '$fieldName not existed';
+  Failure.actionFailed(String action):
+        code = ResponseCode.DEFAULT,
+        message = '$action failed';
+  Failure.actionNotAllowed(String action):
+        code = ResponseCode.DEFAULT,
+        message = '$action not allowed';
+
 }
 
 class DefaultFailure extends Failure {

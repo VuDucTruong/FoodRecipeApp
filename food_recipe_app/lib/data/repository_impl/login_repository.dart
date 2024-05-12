@@ -37,7 +37,7 @@ class LoginRepositoryImpl implements LoginRepository {
               deviceId: deviceInfoParams.deviceId));
           if (response.statusCode == ResponseCode.SUCCESS) {
             if (response.data == null) {
-              return Left(Failure.dataNotExisted('User'));
+              return Left(Failure.dataNotFound('User'));
             }
             assert(response.data != null);
             await _appPreferences.setUserToken(response.data!.accessToken);
@@ -64,7 +64,7 @@ class LoginRepositoryImpl implements LoginRepository {
           .registerWithEmail(RegisterWithEmailRequest.fromRegisterWithEmailDTOs(
           registerWithEmailRepositoryDTO: registerWithEmailRepositoryDTO));
       if (response.statusCode == ResponseCode.SUCCESS) {
-        if(response.data==null){ return Left(Failure.dataNotExisted('User')); }
+        if(response.data==null){ return Left(Failure.dataNotFound('User')); }
         assert(response.data != null);
         await _appPreferences.setUserToken(response.data!.accessToken??"");
         await _appPreferences.setUserRefreshToken(response.data!.refreshToken??"");
@@ -85,14 +85,14 @@ class LoginRepositoryImpl implements LoginRepository {
           if (token.isNotEmpty) {
             final response = await _loginRemoteDataSource.refreshAccessToken();
             if (response.statusCode == ResponseCode.SUCCESS) {
-              if (response.data == null) {return Left(Failure.dataNotExisted("Data"));}
+              if (response.data == null) {return Left(Failure.dataNotFound("Data"));}
               assert(response.data != null);
               await _appPreferences.setUserToken(response.data!);
             }
             else if (response.statusCode == 401) {return Left(Failure.unauthorised());}
             return Left(Failure.internalServerError());
           }
-          else {return Left(Failure.dataNotExisted("Token"));}
+          else {return Left(Failure.dataNotFound("Token"));}
         }
         catch (error) {
           debugPrint(error.toString());
@@ -111,7 +111,7 @@ class LoginRepositoryImpl implements LoginRepository {
       final response = await _loginRemoteDataSource.forgotPassword(email);
       if (response.statusCode == ResponseCode.SUCCESS) {
         if (response.data == null) {
-          return Left(Failure.dataNotExisted('User'));
+          return Left(Failure.dataNotFound('User'));
         }
         assert(response.data != null);
         return Right(response.data!);
@@ -137,7 +137,7 @@ class LoginRepositoryImpl implements LoginRepository {
       await _loginRemoteDataSource.loginWithLoginId(loginRequest);
       if (response.statusCode == ResponseCode.SUCCESS) {
         if (response.data == null) {
-          return Left(Failure.dataNotExisted('User'));
+          return Left(Failure.dataNotFound('User'));
         }
         assert(response.data != null);
         await _appPreferences.setUserToken(response.data!.accessToken);
@@ -186,7 +186,7 @@ class LoginRepositoryImpl implements LoginRepository {
       final response = await _loginRemoteDataSource.registerWithLoginId(
           RegisterWithLoginIdRequest.fromRegisterWithLoginIdDTOs(registerWithLoginIdDTOs: registerWithLoginIdDTOs));
       if(response.statusCode == ResponseCode.SUCCESS){
-        if(response.data==null){ return Left(Failure.dataNotExisted('User')); }
+        if(response.data==null){ return Left(Failure.dataNotFound('User')); }
         assert(response.data != null);
         await _appPreferences.setUserToken(response.data!.accessToken??"");
         await _appPreferences.setUserRefreshToken(response.data!.refreshToken??"");
@@ -204,7 +204,7 @@ class LoginRepositoryImpl implements LoginRepository {
       if (response.statusCode == ResponseCode.SUCCESS) {
         return const Right(true);
       } else {
-        return Left(Failure.dataExisted('Email'));
+        return Left(Failure.dataAlreadyExisted('Email'));
       }
     } catch (ex) {
       return Left(ErrorHandler.handle(ex).failure);
