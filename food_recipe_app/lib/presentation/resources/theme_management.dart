@@ -9,7 +9,6 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import '../../app/di.dart';
 
 ThemeData getAppTheme() {
-  initDeviceInfo(Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android);
   return ThemeData(
       checkboxTheme: const CheckboxThemeData(
           fillColor: MaterialStatePropertyAll(ColorManager.secondaryColor)),

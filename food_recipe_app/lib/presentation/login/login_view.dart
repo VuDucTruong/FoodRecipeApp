@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -94,27 +93,26 @@ class LoginViewState extends State<LoginView> {
               BlocListener(
                 bloc: _loginBloc,
                 listener: (context, state) {
-                  Navigator.popUntil(context, (route) => !(route is DialogRoute));
+                  Navigator.popUntil(
+                      context, (route) => !(route is DialogRoute));
                   if (state is LoginSuccess) {
                     Navigator.of(context).pushNamed(Routes.mainRoute);
-                  }
-                  else if (state is LoginFailure) {
+                  } else if (state is LoginFailure) {
                     final failure = state.failure;
                     if (state is LoginWithGoogleFailure) {
-                      if(failure.code==ResponseCode.BAD_REQUEST)
-                        {
-                          Navigator.of(context).pushReplacementNamed(
-                              Routes.createProfileRoute,
-                              arguments: state.googleSignInAccount);
-                          return;
-                        }
+                      if (failure.code == ResponseCode.BAD_REQUEST) {
+                        Navigator.of(context).pushReplacementNamed(
+                            Routes.createProfileRoute,
+                            arguments: state.googleSignInAccount);
+                        return;
+                      }
                     }
                     debugPrint('failure: ${failure.code}: ${failure.message}');
-                      handleBlocFailures(context, failure, (){
-                        Navigator.of(context).pop();
-                        setState(() {});});
-                  }
-                  else if (state is LoginLoading) {
+                    handleBlocFailures(context, failure, () {
+                      Navigator.of(context).pop();
+                      setState(() {});
+                    });
+                  } else if (state is LoginLoading) {
                     showDialog(
                         context: context,
                         builder: (context) => const LoadingDialog());
@@ -149,6 +147,7 @@ class LoginViewState extends State<LoginView> {
             CompulsoryTextField(
                 content: AppStrings.password,
                 validator: validatePassword,
+                isPassword: true,
                 hint: AppStrings.enterPassword,
                 controller: passwordController),
           ],
@@ -161,9 +160,9 @@ class LoginViewState extends State<LoginView> {
       child: FilledButton(
         onPressed: () {
           if (_formKey.currentState != null) {
-            if (_formKey.currentState!.validate()
-            && emailController.text.isNotEmpty
-            && passwordController.text.isNotEmpty) {
+            if (_formKey.currentState!.validate() &&
+                emailController.text.isNotEmpty &&
+                passwordController.text.isNotEmpty) {
               _loginBloc.add(LoginButtonPressed(
                   email: emailController.text,
                   password: passwordController.text));
@@ -187,10 +186,12 @@ Widget _buildFooterText(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Text(prefix, style: getSemiBoldStyle(color: ColorManager.greyColor)),
-      const SizedBox(width: 4,),
+      const SizedBox(
+        width: 4,
+      ),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushReplacementNamed(Routes.createProfileRoute);
+          Navigator.of(context).pushNamed(Routes.createProfileRoute);
         },
         child: Text(suffix,
             style: getSemiBoldStyle(color: ColorManager.darkBlueColor)),

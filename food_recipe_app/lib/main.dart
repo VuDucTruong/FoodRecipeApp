@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/di.dart';
@@ -11,5 +13,6 @@ Future<void> main() async {
   await initAppModule();
   final InitialRoute initialRoute = GetIt.instance<InitialRoute>();
   await initialRoute.getInitialRoute();
+  initDeviceInfo(Platform.isIOS ? TargetPlatform.iOS : TargetPlatform.android);
   runApp(const MyApp());
 }

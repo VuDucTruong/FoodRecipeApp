@@ -75,15 +75,13 @@ Future<void> initAppModule() async {
     instance.registerLazySingleton<RefreshAccessTokenUseCase>(
         () => RefreshAccessTokenUseCase(instance()));
   }
-  if(!instance.isRegistered<GetUserInfoUseCase>())
-    {
-      instance.registerLazySingleton<GetUserInfoUseCase>(() =>
-          GetUserInfoUseCase(instance()));
-    }
-  if(!instance.isRegistered<InitialRoute>())
-    {
-      instance.registerLazySingleton(() => InitialRoute(instance(),instance()));
-    }
+  if (!instance.isRegistered<GetUserInfoUseCase>()) {
+    instance.registerLazySingleton<GetUserInfoUseCase>(
+        () => GetUserInfoUseCase(instance()));
+  }
+  if (!instance.isRegistered<InitialRoute>()) {
+    instance.registerLazySingleton(() => InitialRoute(instance(), instance()));
+  }
   instance<DioFactory>().initializeInterceptor(dio, instance());
 }
 
@@ -168,14 +166,13 @@ initLoginModule() {
 }
 
 initCreateProfileModule() {
-  if(!instance.isRegistered<LoginVerifyUseCase>()){
-    instance.registerLazySingleton<LoginVerifyUseCase>(() => LoginVerifyUseCase(instance()));
+  if (!instance.isRegistered<LoginVerifyUseCase>()) {
+    instance.registerLazySingleton<LoginVerifyUseCase>(
+        () => LoginVerifyUseCase(instance()));
   }
-  if(!instance.isRegistered<CreateProfileBloc>()){
+  if (!instance.isRegistered<CreateProfileBloc>()) {
     instance.registerLazySingleton<CreateProfileBloc>(() => CreateProfileBloc(
-      networkInfo: instance(),
-      loginVerifyUseCase: instance()
-    ));
+        networkInfo: instance(), loginVerifyUseCase: instance()));
   }
 }
 
@@ -191,7 +188,8 @@ initFoodTypeModule() {
   if (!instance.isRegistered<FoodTypeBloc>()) {
     instance.registerLazySingleton(() => FoodTypeBloc(
         networkInfo: instance(),
-        signupWithLoginIdUseCase: instance(), signupUseCase: instance()));
+        signupWithLoginIdUseCase: instance(),
+        signupUseCase: instance()));
   }
 }
 

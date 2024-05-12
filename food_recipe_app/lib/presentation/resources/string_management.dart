@@ -111,6 +111,7 @@ class AppStrings {
   static const String createSuccess = 'You\'ve create a recipe successfully !';
   static const String missingAvatar = 'Your avatar is empty !';
   static const String duplicatedUserError = 'Your email have already existed !';
+  static const String enterBio = 'Describe a bit about yourself !';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 
@@ -126,7 +127,8 @@ class AppStrings {
       'Phone number must have 10-11 digits';
   static const String disNameRequiredError = 'Dish name is required';
   static const String ingredientMissingError = 'Ingredient is missing';
-  static const String loginError = 'Login Error: please check your email or password';
+  static const String loginError =
+      'Login Error: please check your email or password';
   static const String selectFoodType = 'Food type...';
   static const String create = 'Create';
   static const String foodCategory = 'Category';
@@ -149,5 +151,4 @@ class AppStrings {
   static const String success = "success";
   static const String badCertificate = "Server api is error";
   static const String connectionError = "No internet connection";
-
 }

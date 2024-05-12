@@ -46,7 +46,7 @@ class CongratulationDialog extends StatelessWidget {
             ),
             FilledButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context, true);
                 },
                 child: Text(
                   AppStrings.congratulationBtnMessage,
