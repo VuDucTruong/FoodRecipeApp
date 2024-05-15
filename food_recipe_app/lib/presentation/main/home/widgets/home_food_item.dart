@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/common_food_title.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
+import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
@@ -13,22 +15,20 @@ class HomeFoodItem extends StatelessWidget {
       {super.key,
       required this.width,
       required this.height,
-      required this.title,
-      required this.isVegan,
       required this.fontSize,
-      required this.imageUrl});
+      required this.item});
   double width;
   double height;
-  String title;
   double fontSize;
-  String imageUrl;
-  bool isVegan;
+  RecipeEntity item;
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return GestureDetector(
-      onTap: () => {Navigator.pushNamed(context, Routes.detailFoodRoute)},
+      onTap: () {
+        Navigator.pushNamed(context, Routes.detailFoodRoute, arguments: item);
+      },
       child: Container(
           width: width,
           height: height,
@@ -40,12 +40,10 @@ class HomeFoodItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(radius: 60, backgroundImage: NetworkImage(imageUrl)),
-              /*Image.network(
-                imageUrl,
-                errorBuilder: (context, error, stackTrace) =>
-                    Image.asset(PicturePath.errorImagePath),
-              ),*/
+              CircleAvatar(
+                  radius: 60,
+                  backgroundImage:
+                      NetworkImage(item.attachmentUrls[item.representIndex])),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
@@ -59,7 +57,7 @@ class HomeFoodItem extends StatelessWidget {
                           const SizedBox(
                             width: AppSize.s4,
                           ),
-                          Text('10-20 mins',
+                          Text('${item.cookTime} ${AppStrings.inMinutes}',
                               style: getRegularStyle(
                                   color: Colors.black, fontSize: fontSize))
                         ],
@@ -70,23 +68,9 @@ class HomeFoodItem extends StatelessWidget {
                           const SizedBox(
                             width: 4,
                           ),
-                          Text('4-5 people',
+                          Text('${item.serves} ${AppStrings.people}',
                               style: getRegularStyle(
                                   color: Colors.black, fontSize: fontSize))
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Gergous',
-                            style: getSemiBoldStyle(
-                                color: Colors.black, fontSize: fontSize),
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          const Icon(Icons.account_box_rounded, size: 14),
                         ],
                       ),
                     ],
@@ -97,10 +81,10 @@ class HomeFoodItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   CommonFoodTitle(
-                    isVegan: isVegan,
+                    isVegan: item.isVegan,
                     height: height * 0.12,
                     width: width * 0.9,
-                    title: title,
+                    title: item.title,
                     fontSize: fontSize,
                   ),
                 ],

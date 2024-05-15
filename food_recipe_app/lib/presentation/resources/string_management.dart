@@ -109,6 +109,9 @@ class AppStrings {
   static const String deleteContent = 'Reset all the contents';
   static const String loading = 'Loading...';
   static const String createSuccess = 'You\'ve create a recipe successfully !';
+  static const String people = 'people';
+  static const String notFound = 'Not found...';
+  static const String minutes = 'minutes';
   static const String missingAvatar = 'Your avatar is empty !';
   static const String duplicatedUserError = 'Your email have already existed !';
   static const String enterBio = 'Describe a bit about yourself !';

@@ -8,14 +8,17 @@ import 'package:food_recipe_app/data/responses/chef_response.dart';
 import 'package:food_recipe_app/data/responses/user_response.dart';
 
 abstract class UserRemoteDataSource {
+  Future<BaseResponse<ChefResponse>> getChefInfo(String id);
   Future<BaseResponse<List<ChefResponse>>> getVerifiedChefs();
   Future<BaseResponse<UserResponse>> getSelfInfo();
   Future<BaseResponse<ChefResponse>> getProfileById(String id);
-  Future<BaseResponse<List<ChefResponse>>> getProfileSearch(UserSearchRequest request);
-  Future<BaseResponse<UserProfileInfoResponse>> updateProfile(UserUpdateRequest request);
+  Future<BaseResponse<List<ChefResponse>>> getProfileSearch(
+      UserSearchRequest request);
+  Future<BaseResponse<UserProfileInfoResponse>> updateProfile(
+      UserUpdateRequest request);
   Future<BaseResponse<bool>> deleteProfile();
   Future<BaseResponse<bool>> updatePassword(String password);
-  Future<BaseResponse<bool>> updateFollow(String targetChefId,bool option);
+  Future<BaseResponse<bool>> updateFollow(String targetChefId, bool option);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -35,7 +38,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<BaseResponse<UserResponse>> getSelfInfo() async {
     final response = await _dio.get(userEndpoint);
     BaseResponse<UserResponse> userResponse = BaseResponse.fromJson(
-        response, (value)=>UserResponse.fromJson(value));
+        response, (value) => UserResponse.fromJson(value));
     return userResponse;
   }
 
@@ -46,19 +49,31 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
+  Future<BaseResponse<ChefResponse>> getChefInfo(String id) async {
+    final response = await _dio.get('$userEndpoint/$id');
+
+    return BaseResponse(
+        data: response.data,
+        statusCode: response.statusCode,
+        statusMessage: response.statusMessage);
+  }
+
   Future<BaseResponse<ChefResponse>> getProfileById(String id) async {
     final response = await _dio.get('$userEndpoint/$id');
     return BaseResponse.fromJson(response, ChefResponse.fromJsonMap);
   }
 
   @override
-  Future<BaseResponse<List<ChefResponse>>> getProfileSearch(UserSearchRequest request) async {
-    final response = await _dio.get('$userEndpoint/search', queryParameters: request.toJson());
+  Future<BaseResponse<List<ChefResponse>>> getProfileSearch(
+      UserSearchRequest request) async {
+    final response = await _dio.get('$userEndpoint/search',
+        queryParameters: request.toJson());
     return BaseResponse.fromJson(response, ChefResponse.fromJsonList);
   }
 
   @override
-  Future<BaseResponse<bool>> updateFollow(String targetChefId, bool option) async {
+  Future<BaseResponse<bool>> updateFollow(
+      String targetChefId, bool option) async {
     final response = await _dio.put('$userEndpoint/follow/$targetChefId',
         queryParameters: {'option': option});
     return BaseResponse.fromJson(response, (data) => data);
@@ -66,19 +81,18 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<BaseResponse<bool>> updatePassword(String password) async {
-    final response = await _dio.put('$userEndpoint/update-password',
-        data: password);
+    final response =
+        await _dio.put('$userEndpoint/update-password', data: password);
     return BaseResponse<bool>.fromJson(response, (data) => data as bool);
   }
 
   @override
-  Future<BaseResponse<UserProfileInfoResponse>> updateProfile(UserUpdateRequest request) async {
+  Future<BaseResponse<UserProfileInfoResponse>> updateProfile(
+      UserUpdateRequest request) async {
     final response = await _dio.put('$userEndpoint/update-profile',
         data: request.toJson(),
-    options: Options(contentType: Headers.multipartFormDataContentType));
-    return BaseResponse<UserProfileInfoResponse>
-        .fromJson(response, (value)=>UserProfileInfoResponse.fromJson(value));
+        options: Options(contentType: Headers.multipartFormDataContentType));
+    return BaseResponse<UserProfileInfoResponse>.fromJson(
+        response, (value) => UserProfileInfoResponse.fromJson(value));
   }
-
-
 }

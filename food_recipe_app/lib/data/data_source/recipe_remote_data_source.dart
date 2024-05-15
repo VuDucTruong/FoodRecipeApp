@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
@@ -9,7 +8,8 @@ import 'package:food_recipe_app/data/responses/recipe_response.dart';
 
 abstract class RecipeRemoteDataSource {
   Future<BaseResponse<List<RecipeResponse>>> getRecipesFromLikes();
-  Future<BaseResponse<List<RecipeResponse>>> getRecipesFromIds(List<String> ids);
+  Future<BaseResponse<List<RecipeResponse>>> getRecipesFromIds(
+      List<String> ids);
   Future<BaseResponse<List<RecipeResponse>>> getRecipesByCategoriesSearch(
       GetRecipesSearchRequest request);
   Future<BaseResponse<List<RecipeResponse>>> getSavedRecipesSearch(
@@ -38,8 +38,7 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
   @override
   Future<BaseResponse<List<RecipeResponse>>> getRecipesFromLikes() async {
     Response response = await _dio.get('$recipeEndpoint/get-from-likes');
-    return BaseResponse.fromJson(
-        response, RecipeResponse.fromJsonList);
+    return BaseResponse.fromJson(response, RecipeResponse.fromJsonList);
   }
 
   @override
@@ -49,60 +48,60 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
     Response response = await _dio.post('$recipeEndpoint/create',
         data: formData,
         options: Options(contentType: Headers.multipartFormDataContentType));
-    return BaseResponse.fromJson(response,RecipeResponse.fromJsonMap);
+    return BaseResponse.fromJson(response, RecipeResponse.fromJsonMap);
   }
 
   @override
-  Future<BaseResponse<List<RecipeResponse>>> getRecipesByCategoriesSearch(GetRecipesSearchRequest request) async {
-    Response response =
-        await _dio.get('$recipeEndpoint/search', queryParameters: request.toJson());
-    return BaseResponse.fromJson(
-        response, RecipeResponse.fromJsonList);
+  Future<BaseResponse<List<RecipeResponse>>> getRecipesByCategoriesSearch(
+      GetRecipesSearchRequest request) async {
+    Response response = await _dio.get('$recipeEndpoint/search',
+        queryParameters: request.toJson());
+    return BaseResponse.fromJson(response, RecipeResponse.fromJsonList);
   }
 
   @override
   Future<BaseResponse<List<RecipeResponse>>> getSavedRecipesSearch(
       GetRecipesSearchRequest getSavedRecipesRequest) async {
-    Response response = await _dio.get(
-        '$recipeEndpoint/get-saved-recipes',
+    Response response = await _dio.get('$recipeEndpoint/get-saved-recipes',
         queryParameters: getSavedRecipesRequest.toJson());
-    return BaseResponse.fromJson(
-        response, RecipeResponse.fromJsonList);
+    return BaseResponse.fromJson(response, RecipeResponse.fromJsonList);
   }
 
   @override
-  Future<BaseResponse<List<RecipeResponse>>> getRecipesFromIds(List<String> recipeIds) async {
+  Future<BaseResponse<List<RecipeResponse>>> getRecipesFromIds(
+      List<String> recipeIds) async {
     Response response = await _dio.get('$recipeEndpoint/get-from-ids',
         queryParameters: {'recipeIds': recipeIds});
-    return BaseResponse.fromJson(
-        response, RecipeResponse.fromJsonList);
+    return BaseResponse.fromJson(response, RecipeResponse.fromJsonList);
   }
 
   @override
-  Future<BaseResponse<List<RecipeResponse>>> getLikedRecipesSearch(GetRecipesSearchRequest request) async {
+  Future<BaseResponse<List<RecipeResponse>>> getLikedRecipesSearch(
+      GetRecipesSearchRequest request) async {
     Response response = await _dio.get('$recipeEndpoint/get-liked-recipes',
         queryParameters: request.toJson());
-    return BaseResponse.fromJson(
-        response, RecipeResponse.fromJsonList);
+    return BaseResponse.fromJson(response, RecipeResponse.fromJsonList);
   }
 
   @override
-  Future<BaseResponse<List<RecipeResponse>>> getRecipesSearch(GetRecipesSearchRequest request) async {
+  Future<BaseResponse<List<RecipeResponse>>> getRecipesSearch(
+      GetRecipesSearchRequest request) async {
     Response response = await _dio.get('$recipeEndpoint/search',
         queryParameters: request.toJson());
-    return BaseResponse.fromJson(
-        response, RecipeResponse.fromJsonList);
+    return BaseResponse.fromJson(response, RecipeResponse.fromJsonList);
   }
 
   @override
-  Future<BaseResponse<bool>> updateLikeRecipe(String recipeId, bool option) async {
+  Future<BaseResponse<bool>> updateLikeRecipe(
+      String recipeId, bool option) async {
     Response response = await _dio.put('$recipeEndpoint/like-recipe/$recipeId',
         queryParameters: {'option': option});
     return BaseResponse.fromJson(response, (data) => data as bool);
   }
 
   @override
-  Future<BaseResponse<bool>> updateSaveRecipe(String recipeId, bool option) async {
+  Future<BaseResponse<bool>> updateSaveRecipe(
+      String recipeId, bool option) async {
     Response response = await _dio.put('$recipeEndpoint/save-recipe/$recipeId',
         queryParameters: {'option': option});
     return BaseResponse.fromJson(response, (data) => data as bool);
@@ -113,7 +112,7 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
     Response response = await _dio.put('$recipeEndpoint/update',
         data: request.toJson(),
         options: Options(contentType: Headers.jsonContentType));
-    return BaseResponse.fromJson(response, (data)=> data as bool);
+    return BaseResponse.fromJson(response, (data) => data as bool);
   }
 
   @override

@@ -8,10 +8,10 @@ class ChefResponse {
   final String id;
   final DateTime createdAt;
   final List<String> recipeIds;
+
   final UserProfileInfoResponse profileInfo;
   final int followingCount;
   final int followerCount;
-
 
   ChefResponse(this.id, this.createdAt, this.profileInfo, this.recipeIds,
       this.followingCount, this.followerCount);
@@ -23,18 +23,17 @@ class ChefResponse {
   static ChefResponse fromJsonMap(dynamic json) {
     return ChefResponse.fromJson(json as Map<String, dynamic>);
   }
+
   static List<ChefResponse> fromJsonList(dynamic jsonList) {
-    try{
+    try {
       debugPrint("jsonList: $jsonList");
-      if(jsonList!=null)
-        {
-          if(jsonList is List){
-            return jsonList.map((e) => ChefResponse.fromJson(e)).toList();
-          }
+      if (jsonList != null) {
+        if (jsonList is List) {
+          return jsonList.map((e) => ChefResponse.fromJson(e)).toList();
         }
+      }
       return [];
-    }
-    catch(e){
+    } catch (e) {
       debugPrint("error in list map: $e");
       return [];
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
+import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
@@ -80,8 +81,11 @@ class RouteGenerator {
           builder: (context) => const ChefProfileView(),
         );
       case Routes.detailFoodRoute:
+        initDetailFoodModule();
         return MaterialPageRoute(
-          builder: (context) => const DetailFoodView(),
+          builder: (context) => DetailFoodView(
+            recipeEntity: routeSettings.arguments as RecipeEntity,
+          ),
         );
       case Routes.mainRoute:
         initHomeModule();
