@@ -35,8 +35,11 @@ class PicturePath {
   static const String editPath = '$_picturePath/edit.svg';
   static const String emailPath = '$_picturePath/email.svg';
   static const String phonePath = '$_picturePath/phone.svg';
+  static const String passwordPath = '$_picturePath/password.svg';
   static const String errorImagePath = '$_picturePath/error_img.png';
   static const String recipeCategoryPath = '$_picturePath/recipe_category.svg';
+  static const String eyeSolidPath = '$_picturePath/eye-solid.svg';
+  static const String eyeSlashSolidPath = '$_picturePath/eye-slash-solid.svg';
 }
 
 class LottiePath {

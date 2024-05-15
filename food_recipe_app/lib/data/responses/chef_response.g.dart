@@ -12,8 +12,8 @@ ChefResponse _$ChefResponseFromJson(Map<String, dynamic> json) => ChefResponse(
       UserProfileInfoResponse.fromJson(
           json['profileInfo'] as Map<String, dynamic>),
       (json['recipeIds'] as List<dynamic>).map((e) => e as String).toList(),
-      json['followingCount'] as int,
-      json['followerCount'] as int,
+      (json['followingCount'] as num).toInt(),
+      (json['followerCount'] as num).toInt(),
     );
 
 Map<String, dynamic> _$ChefResponseToJson(ChefResponse instance) =>

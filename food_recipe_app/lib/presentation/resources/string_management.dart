@@ -17,7 +17,7 @@ class AppStrings {
   static const String google = 'Google';
   static const String or = 'or';
   static const String createAccount = 'Create your account';
-  static const String loginAccount = 'login_responses to your account';
+  static const String loginAccount = 'Login to your account';
   static const String email = 'Email';
   static const String password = 'Password';
   static const String enterPassword = 'Enter a Password';
@@ -112,6 +112,11 @@ class AppStrings {
   static const String people = 'people';
   static const String notFound = 'Not found...';
   static const String minutes = 'minutes';
+  static const String missingAvatar = 'Your avatar is empty !';
+  static const String duplicatedUserError = 'Your email have already existed !';
+  static const String enterBio = 'Describe a bit about yourself !';
+  static const String choosePreferencesWarning =
+      'Please choose up to 3 preferences !';
 
   // Validate message
   static const String emailFormatError = 'Email format is wrong !';
@@ -125,10 +130,13 @@ class AppStrings {
       'Phone number must have 10-11 digits';
   static const String disNameRequiredError = 'Dish name is required';
   static const String ingredientMissingError = 'Ingredient is missing';
-  static const String loginError = 'Your email or password is wrong !';
+  static const String loginError =
+      'Login Error: please check your email or password';
   static const String selectFoodType = 'Food type...';
   static const String create = 'Create';
   static const String foodCategory = 'Category';
+  static const String invalidInput = 'Invalid inputs please check again !';
+  static const String somethingWentWrong = 'Something went wrong';
 
   //response
   static const String badRequestError = "bad_request_error";
@@ -139,7 +147,7 @@ class AppStrings {
   static const String conflictError = "conflict_error";
   static const String internalServerError = "internal_server_error";
   static const String unknownError = "unknown_error";
-  static const String timeoutError = "timeout_error";
+  static const String timeoutError = "connection timeout";
   static const String defaultError = "default_error";
   static const String cacheError = "cache_error";
   static const String noInternetError = "no_internet_error";

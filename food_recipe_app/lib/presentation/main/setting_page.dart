@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
 
@@ -31,7 +32,7 @@ class _SettingPageState extends State<SettingPage> {
     super.dispose();
   }
 
-  bool isOn = true;
+  MutableVariable<bool> isLightTheme = MutableVariable(true);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -60,7 +61,9 @@ class _SettingPageState extends State<SettingPage> {
           _getIconText(AppStrings.notifications,
               SvgPicture.asset(PicturePath.notificationPath)),
           const Spacer(),
-          OnOffSwitch()
+          OnOffSwitch(
+            isOn: isLightTheme,
+          )
         ]),
         _getIconText(
             AppStrings.help, SvgPicture.asset(PicturePath.messagesPath)),

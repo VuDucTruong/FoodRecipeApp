@@ -1,10 +1,11 @@
 class Constant {
-  static const String baseUrl = 'http://192.168.1.105:5115/api';
+  static const String baseUrl = 'http://192.168.1.16:5115/api';
   static const String loginEndpoint = '/Login';
   static const String recipeEndpoint = '/Recipe';
   static const String notificationEndpoint = '/Notification';
   static const String userEndpoint = '/User';
   static const String commentEndpoint = '/Comment';
+  static const String notificationHub = "/NotificationHub";
   static const List<String> typeList = [
     "Healthy",
     "Fast Food",

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/presentation/resources/assets_management.dart';
+import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
 class CustomTextFormField extends StatefulWidget {
@@ -7,13 +10,17 @@ class CustomTextFormField extends StatefulWidget {
       required this.validator,
       this.icon,
       required this.hint,
-      required this.controller})
+      required this.controller,
+      required this.isPassword,
+      this.maxLines = 1})
       : super(key: key);
 
   late String hint;
+  bool isPassword;
   String? Function(String? x) validator;
   Widget? icon;
   TextEditingController controller;
+  int maxLines;
   @override
   _CustomTextFormFieldState createState() {
     return _CustomTextFormFieldState();
@@ -21,9 +28,12 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool isVisible;
+
   @override
   void initState() {
     super.initState();
+    isVisible = widget.isPassword;
   }
 
   @override
@@ -43,6 +53,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           surfaceTintColor: Colors.white70,
           color: Colors.white,
           child: TextFormField(
+            maxLines: widget.maxLines,
             controller: widget.controller,
             validator: (value) {
               final error = widget.validator.call(value);
@@ -53,9 +64,33 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               });
               return _errorMessage;
             },
+            obscureText: isVisible,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
-              suffixIcon: widget.icon,
+              isDense: true,
+              suffixIcon: widget.isPassword
+                  ? InkWell(
+                      onTap: () {
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: isVisible
+                            ? SvgPicture.asset(
+                                PicturePath.eyeSolidPath,
+                                height: 24,
+                                width: 24,
+                              )
+                            : SvgPicture.asset(
+                                PicturePath.eyeSlashSolidPath,
+                                height: 24,
+                                width: 24,
+                              ),
+                      ),
+                    )
+                  : widget.icon,
               hintText: widget.hint,
             ),
           ),

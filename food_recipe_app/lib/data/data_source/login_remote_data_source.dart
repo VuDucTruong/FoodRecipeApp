@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/constant.dart';
-import 'package:food_recipe_app/app/extensions.dart';
 import 'package:food_recipe_app/data/requests/login_request.dart';
 import 'package:food_recipe_app/data/requests/register_request.dart';
 import 'package:food_recipe_app/data/responses/base_response.dart';
@@ -12,9 +11,11 @@ import 'package:food_recipe_app/data/responses/register_response.dart';
 abstract class LoginRemoteDataSource {
   Future<BaseResponse<LoginResponse>> login(LoginRequest request);
   Future<BaseResponse<LoginResponse>> loginWithLoginId(LoginRequest request);
-  Future<BaseResponse<RegisterResponse>> register(RegisterRequest request);
+  Future<BaseResponse<RegisterResponse>> registerWithEmail(RegisterWithEmailRequest request);
+  Future<BaseResponse<RegisterResponse>> registerWithLoginId(RegisterWithLoginIdRequest request);
   Future<BaseResponse<String>> refreshAccessToken();
   Future<BaseResponse<bool>> forgotPassword(String email);
+  Future<BaseResponse<String>> verifyLogin(String email);
 }
 
 class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
@@ -26,15 +27,12 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
 
   @override
   Future<BaseResponse<LoginResponse>> login(LoginRequest request) async {
-    debugPrint('$loginEndpoint/login');
     final response = await _dio.post(
-      '$loginEndpoint/login',
+      '$loginEndpoint/login-email',
       data: request.toJson(),
     );
     BaseResponse<LoginResponse> baseResponse = BaseResponse.fromJson(
         response, (value) => LoginResponse.fromJson(value));
-    debugPrint('in loginRemoteDataSourceImpl'
-        'logging part: ${baseResponse.statusMessage.toString()}');
     return baseResponse;
   }
 
@@ -70,17 +68,38 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
   }
 
   @override
-  Future<BaseResponse<RegisterResponse>> register(
-      RegisterRequest request) async {
-    debugPrint('$loginEndpoint/register');
+  Future<BaseResponse<RegisterResponse>> registerWithEmail(
+      RegisterWithEmailRequest request) async {
+    debugPrint("${request.toJson()}");
     final response = await _dio.post(
-      '$loginEndpoint/register',
-      data: request.toJson(),
+      '$loginEndpoint/register-email',
+      data: FormData.fromMap(request.toJson()),
     );
     BaseResponse<RegisterResponse> baseResponse = BaseResponse.fromJson(
         response, (value) => RegisterResponse.fromJson(value));
     debugPrint('in loginRemoteDataSourceImpl'
         'register part: ${baseResponse.statusMessage.toString()}');
+    return baseResponse;
+  }
+
+  @override
+  Future<BaseResponse<RegisterResponse>> registerWithLoginId(RegisterWithLoginIdRequest request) async {    debugPrint('$loginEndpoint/register');
+  final response = await _dio.post(
+    '$loginEndpoint/register-loginId',
+    data: FormData.fromMap(request.toJson()),
+    options: Options(contentType: Headers.multipartFormDataContentType),
+  );
+  BaseResponse<RegisterResponse> baseResponse = BaseResponse.fromJson(
+      response, (value) => RegisterResponse.fromJson(value));
+  return baseResponse;
+  }
+  @override
+  Future<BaseResponse<String>> verifyLogin(String email) async {
+    final response = await _dio.post('$loginEndpoint/verify-login',
+        data: email,
+        options: Options(contentType: Headers.textPlainContentType));
+    BaseResponse<String> baseResponse =
+        BaseResponse.fromJson(response, (value) => value as String);
     return baseResponse;
   }
 }

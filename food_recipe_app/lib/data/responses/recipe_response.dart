@@ -42,6 +42,13 @@ class RecipeResponse {
   factory RecipeResponse.fromJson(Map<String, dynamic> json) =>
       _$RecipeResponseFromJson(json);
 
+  static List<RecipeResponse> fromJsonList(dynamic list) {
+    return (list as List).map((e) => RecipeResponse.fromJson(e)).toList();
+  }
+  static RecipeResponse fromJsonMap(dynamic map) {
+    return RecipeResponse.fromJson(map as Map<String, dynamic>);
+  }
+
   // to json
   Map<String, dynamic> toJson() => _$RecipeResponseToJson(this);
 }

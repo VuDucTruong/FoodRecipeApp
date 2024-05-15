@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/background_data/device_info.dart';
 import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
@@ -14,7 +13,6 @@ import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
 import 'package:food_recipe_app/domain/usecase/create_recipe_usecase.dart';
-import 'package:food_recipe_app/domain/usecase/facebook_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chef_info_by_id_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
@@ -22,8 +20,14 @@ import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/login_verify_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
+
 import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
+
+import 'package:food_recipe_app/domain/usecase/signup_with_email_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/signup_with_loginId_usecase.dart';
+
 import 'package:food_recipe_app/presentation/blocs/create_recipe/create_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 
@@ -32,6 +36,8 @@ import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_b
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -49,7 +55,7 @@ Future<void> initAppModule() async {
   // app prefs instance
   instance
       .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
-  instance.registerLazySingleton(() => InitialRoute(instance()));
+
   // network info
   instance.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(InternetConnectionChecker()));
@@ -73,6 +79,13 @@ Future<void> initAppModule() async {
   if (!instance.isRegistered<RefreshAccessTokenUseCase>()) {
     instance.registerLazySingleton<RefreshAccessTokenUseCase>(
         () => RefreshAccessTokenUseCase(instance()));
+  }
+  if (!instance.isRegistered<GetUserInfoUseCase>()) {
+    instance.registerLazySingleton<GetUserInfoUseCase>(
+        () => GetUserInfoUseCase(instance()));
+  }
+  if (!instance.isRegistered<InitialRoute>()) {
+    instance.registerLazySingleton(() => InitialRoute(instance(), instance()));
   }
   instance<DioFactory>().initializeInterceptor(dio, instance());
 }
@@ -135,7 +148,6 @@ initCreateRecipeModule() {
 
 initLoginModule() {
   //register necessary usecase in login page
-  debugPrint("initLoginmodule");
   if (!instance.isRegistered<LoginUseCase>()) {
     instance
         .registerLazySingleton<LoginUseCase>(() => LoginUseCase(instance()));
@@ -144,21 +156,16 @@ initLoginModule() {
     instance.registerLazySingleton<GoogleLoginUseCase>(
         () => GoogleLoginUseCase(instance()));
   }
-  if (!instance.isRegistered<FacebookLoginUseCase>()) {
-    instance.registerLazySingleton<FacebookLoginUseCase>(
-        () => FacebookLoginUseCase(instance()));
+  if (!instance.isRegistered<GoogleSignIn>()) {
+    instance.registerLazySingleton(() => GoogleSignIn());
   }
-
-  instance.registerLazySingleton(() => GoogleSignIn());
-  instance.registerLazySingleton(() => FacebookAuth.instance);
   //register login bloc
   if (!instance.isRegistered<LoginBloc>()) {
     instance.registerLazySingleton(() => LoginBloc(
           googleSignIn: instance(),
           loginUseCase: instance(),
-          facebookLoginUseCase: instance(),
           googleLoginUseCase: instance(),
-          facebookAuth: instance(),
+          networkInfo: instance(),
         ));
   }
 }
@@ -171,6 +178,34 @@ initDetailFoodModule() {
   if (!instance.isRegistered<ChefInfoBloc>()) {
     instance
         .registerLazySingleton<ChefInfoBloc>(() => ChefInfoBloc(instance()));
+  }
+}
+
+initCreateProfileModule() {
+  if (!instance.isRegistered<LoginVerifyUseCase>()) {
+    instance.registerLazySingleton<LoginVerifyUseCase>(
+        () => LoginVerifyUseCase(instance()));
+  }
+  if (!instance.isRegistered<CreateProfileBloc>()) {
+    instance.registerLazySingleton<CreateProfileBloc>(() => CreateProfileBloc(
+        networkInfo: instance(), loginVerifyUseCase: instance()));
+  }
+}
+
+initFoodTypeModule() {
+  if (!instance.isRegistered<SignupWithEmailUseCase>()) {
+    instance.registerLazySingleton<SignupWithEmailUseCase>(
+        () => SignupWithEmailUseCase(instance()));
+  }
+  if (!instance.isRegistered<SignupWithLoginIdUseCase>()) {
+    instance.registerLazySingleton<SignupWithLoginIdUseCase>(
+        () => SignupWithLoginIdUseCase(instance()));
+  }
+  if (!instance.isRegistered<FoodTypeBloc>()) {
+    instance.registerLazySingleton(() => FoodTypeBloc(
+        networkInfo: instance(),
+        signupWithLoginIdUseCase: instance(),
+        signupUseCase: instance()));
   }
 }
 

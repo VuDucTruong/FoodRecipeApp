@@ -4,10 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/remember_check_box.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -68,13 +70,6 @@ class LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _getIconTextButton(
-                    text: AppStrings.facebook,
-                    iconPath: PicturePath.fbPath,
-                    onPressed: () {
-                      _loginBloc.add(LoginWithFacebookPressed());
-                    },
-                  ),
-                  _getIconTextButton(
                     text: AppStrings.google,
                     iconPath: PicturePath.ggPath,
                     onPressed: () {
@@ -86,24 +81,42 @@ class LoginViewState extends State<LoginView> {
               Text(AppStrings.or,
                   style: getSemiBoldStyle(
                       color: ColorManager.greyColor, fontSize: FontSize.s22)),
-              Text(AppStrings.createAccount,
+              Text(AppStrings.loginAccount,
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 4),
               _buildFormInput(),
               RememberCheckBox(isChecked: isRememberMe),
               const SizedBox(height: 8),
-              BlocConsumer(
+              BlocListener(
+                bloc: _loginBloc,
                 listener: (context, state) {
+                  Navigator.popUntil(
+                      context, (route) => !(route is DialogRoute));
                   if (state is LoginSuccess) {
-                    Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                    Navigator.of(context).pushNamed(Routes.mainRoute);
+                  } else if (state is LoginFailure) {
+                    final failure = state.failure;
+                    if (state is LoginWithGoogleFailure) {
+                      if (failure.code == ResponseCode.BAD_REQUEST) {
+                        Navigator.of(context).pushReplacementNamed(
+                            Routes.createProfileRoute,
+                            arguments: state.googleSignInAccount);
+                        return;
+                      }
+                    }
+                    debugPrint('failure: ${failure.code}: ${failure.message}');
+                    handleBlocFailures(context, failure, () {
+                      Navigator.of(context).pop();
+                      setState(() {});
+                    });
+                  } else if (state is LoginLoading) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => const LoadingDialog());
                   }
                 },
-                bloc: _loginBloc,
-                builder: (context, state) {
-                  if (state is LoginFailure) return Text('Error');
-                  return Container();
-                },
+                child: Container(),
               ),
               _buildLoginButton(),
               const SizedBox(height: 16),
@@ -132,6 +145,7 @@ class LoginViewState extends State<LoginView> {
             CompulsoryTextField(
                 content: AppStrings.password,
                 validator: validatePassword,
+                isPassword: true,
                 hint: AppStrings.enterPassword,
                 controller: passwordController),
           ],
@@ -143,10 +157,15 @@ class LoginViewState extends State<LoginView> {
       widthFactor: 0.5,
       child: FilledButton(
         onPressed: () {
-          //if (_formKey.currentState!.validate()) {
-          _loginBloc.add(LoginButtonPressed(
-              email: emailController.text, password: passwordController.text));
-          //}
+          if (_formKey.currentState != null) {
+            if (_formKey.currentState!.validate() &&
+                emailController.text.isNotEmpty &&
+                passwordController.text.isNotEmpty) {
+              _loginBloc.add(LoginButtonPressed(
+                  email: emailController.text,
+                  password: passwordController.text));
+            }
+          }
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
         child: Center(
@@ -170,7 +189,7 @@ Widget _buildFooterText(
       ),
       GestureDetector(
         onTap: () {
-          Navigator.of(context).pushReplacementNamed(Routes.signUpRoute);
+          Navigator.of(context).pushNamed(Routes.createProfileRoute);
         },
         child: Text(suffix,
             style: getSemiBoldStyle(color: ColorManager.darkBlueColor)),

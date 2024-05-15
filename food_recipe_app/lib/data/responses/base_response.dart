@@ -10,20 +10,20 @@ class BaseResponse<T> {
   BaseResponse({this.statusCode, this.statusMessage, this.data});
 
   factory BaseResponse.fromJson(
-      Response response, T Function(Map<String, dynamic>) fromJsonT) {
-    final myData = response.data;
-    T myValue;
-    if (myData is Map<String, dynamic>) {
-      myValue = fromJsonT(myData);
-    } else if (myData is List) {
-      myValue = myData.map((e) => fromJsonT(e)).toList() as T;
-    } else {
-      myValue = myData as T;
-    }
+      Response response, T Function(dynamic) fromJsonT) {
+    // final myData = response.data;
+    // T myValue;
+    // if (myData is Map<String, dynamic>) {
+    //   myValue = fromJsonT(myData);
+    // } else if (myData is List) {
+    //   myValue = myData.map((e) => fromJsonT(e)).toList() as T;
+    // } else {
+    //   myValue = myData as T;
+    // }
     return BaseResponse<T>(
       statusCode: response.statusCode,
       statusMessage: response.statusMessage,
-      data: myValue,
+      data: response.data == null ? null : fromJsonT(response.data),
     );
   }
 

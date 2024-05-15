@@ -3,12 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
+import 'package:get_it/get_it.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
@@ -21,6 +23,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController(initialPage: 0);
   late List<OnBoardingObject> _boardingItemList;
+  late AppPreferences _appPreferences;
 
   @override
   void initState() {
@@ -43,6 +46,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
         description: AppStrings.onBoardingDescription3,
       ),
     ];
+    _appPreferences = GetIt.instance<AppPreferences>();
   }
 
   @override
@@ -59,6 +63,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
         alignment: AlignmentDirectional.center,
         children: [
           PageView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
             itemCount: _boardingItemList.length,
             itemBuilder: (context, index) {
@@ -81,7 +86,8 @@ class OnBoardingViewState extends State<OnBoardingView> {
                 _getContinueButton(),
                 InkWell(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, Routes.signUpRoute);
+                    Navigator.pushReplacementNamed(context, Routes.loginRoute);
+                    _appPreferences.setOnBoardingScreenViewed();
                   },
                   child: Text(
                     AppStrings.skip,
@@ -108,7 +114,8 @@ class OnBoardingViewState extends State<OnBoardingView> {
                 duration: Durations.medium2, curve: Curves.ease);
           });
         } else {
-          Navigator.pushReplacementNamed(context, Routes.signUpRoute);
+          Navigator.pushReplacementNamed(context, Routes.loginRoute);
+          _appPreferences.setOnBoardingScreenViewed();
         }
       },
       child: Text(
@@ -160,7 +167,10 @@ class OnBoardingViewState extends State<OnBoardingView> {
         ),
         Positioned(
           bottom: MediaQuery.of(context).size.height * 0.2,
+          width: MediaQuery.of(context).size.width-5,
           child: RichText(
+            softWrap: true,
+            maxLines: 3,
             textAlign: TextAlign.center,
             text: TextSpan(
               children: [

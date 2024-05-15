@@ -3,9 +3,7 @@ part of 'create_profile_bloc.dart';
 @immutable
 sealed class CreateProfileEvent {}
 
-class InputText extends CreateProfileEvent {
-  String? textInput;
-  String? Function(String? value) validator;
-
-  InputText({this.textInput, required this.validator});
+class CreateProfileOnContinuePressed extends CreateProfileEvent {
+  final String email;
+  CreateProfileOnContinuePressed({required this.email});
 }

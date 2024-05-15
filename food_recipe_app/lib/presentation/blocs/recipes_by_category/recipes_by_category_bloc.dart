@@ -22,7 +22,7 @@ class RecipesByCategoryBloc
       CategorySelected event, Emitter<RecipesByCategoryState> emit) async {
     emit(RecipesByCategoryLoadingState());
     (await getRecipesByCategory
-            .execute(GetRecipesByCategoryInput(category: event.category)))
+            .execute(GetRecipesByCategoryInput(categories: [event.category],page: 0)))
         .fold((l) => emit(RecipesByCategoryErrorState(l)),
             (r) => emit(RecipesByCategoryLoadedState(r)));
   }

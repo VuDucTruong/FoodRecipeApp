@@ -11,24 +11,29 @@ const String AUTHORIZATION = "authorization";
 const String DEFAULT_LANGUAGE = "language";
 
 class DioFactory {
-  AppPreferences _appPreferences;
+  final AppPreferences _appPreferences;
 
   initializeInterceptor(
       dio, RefreshAccessTokenUseCase refreshAccessTokenUseCase) {
-    /*dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        Logger().i('Request: ${options.uri}');
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        Logger().i(
+            'Request: ${options.uri} - Data: ${options.data} - params: ${options.queryParameters}');
+        String token = await _appPreferences.getUserToken();
         _appPreferences
             .getUserToken()
-            .then((value) => options.headers['Authorization'] = 'Bearer $value')
+            .then((value) => options.headers[AUTHORIZATION] = 'Bearer $value')
             // TODO: implement where even fail finding the token
-            .catchError((e) => Logger().e('Error: $e'));
+            .catchError((e) {
+          Logger().w(
+              'Request: ${options.uri} - Data: ${options.data}: token not yet found');
+          return e;
+        });
         return handler.next(options);
       },
       onResponse: (response, handler) {
         debugPrint('interceptor response has message');
-        Logger().i('Response: ${response.statusCode}');
-        Logger().i('Response: ${response.data}');
+        Logger().i('Response: ${response.statusCode} - Data: ${response.data}');
         return handler.next(response);
       },
       onError: (DioException e, handler) {
@@ -47,29 +52,36 @@ class DioFactory {
               });
             });
           } catch (ex) {
+            Logger().e(
+                'Request: ${e.requestOptions.uri} - Data: ${e.requestOptions.data}: refreshToken unauthorized');
             return handler.reject(e);
           }
+        } else {
+          Logger().e(
+              'Request: ${e.requestOptions.uri} - Data: ${e.requestOptions.data} - ${e.response}: error not 401');
+          return handler.next(e);
         }
-        return handler.next(e);
       },
-    ));*/
+    ));
   }
 
   DioFactory(this._appPreferences);
-  Duration timeOut = const Duration(minutes: 1);
+  Duration timeOut = const Duration(seconds: 10);
   Future<Dio> getDio() async {
     Dio dio = Dio();
     String language = await _appPreferences.getAppLanguage();
-    String token = await _appPreferences.getUserToken();
+
     Map<String, String> headers = {
       CONTENT_TYPE: APPLICATION_JSON,
       ACCEPT: APPLICATION_JSON,
-      AUTHORIZATION: "Bearer $token",
       DEFAULT_LANGUAGE: language
     };
 
     dio.options = BaseOptions(
-        connectTimeout: timeOut, receiveTimeout: timeOut, headers: headers);
+      connectTimeout: timeOut,
+      receiveTimeout: timeOut,
+      headers: headers,
+    );
 
     if (kReleaseMode) {
       print("release mode no logs");
