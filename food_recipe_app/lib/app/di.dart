@@ -15,6 +15,7 @@ import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
 import 'package:food_recipe_app/domain/usecase/create_recipe_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/facebook_login_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_chef_info_by_id_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
@@ -22,6 +23,7 @@ import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
+import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/create_recipe/create_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 
@@ -158,6 +160,17 @@ initLoginModule() {
           googleLoginUseCase: instance(),
           facebookAuth: instance(),
         ));
+  }
+}
+
+initDetailFoodModule() {
+  if (!instance.isRegistered<GetChefInfoByIdUseCase>()) {
+    instance.registerLazySingleton<GetChefInfoByIdUseCase>(
+        () => GetChefInfoByIdUseCase(instance()));
+  }
+  if (!instance.isRegistered<ChefInfoBloc>()) {
+    instance
+        .registerLazySingleton<ChefInfoBloc>(() => ChefInfoBloc(instance()));
   }
 }
 

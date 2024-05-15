@@ -6,4 +6,5 @@ import 'package:food_recipe_app/domain/entity/user_entity.dart';
 abstract class UserRepository {
   Future<Either<Failure, UserEntity>> getUserInfo();
   Future<Either<Failure, List<ChefEntity>>> getVerifiedChefs();
+  Future<Either<Failure, ChefEntity>> getChefInfo(String id);
 }

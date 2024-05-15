@@ -39,7 +39,7 @@ extension ChefResponseMapper on ChefResponse {
         profileInfo.categories,
         profileInfo.hungryHeads);
     return ChefEntity(
-        id, createdAt, chefProfile, recipeIds, followingIds, followerIds);
+        id, createdAt, chefProfile, recipeIds, followingCount, followerCount);
   }
 }
 

@@ -31,7 +31,7 @@ class _MainViewState extends State<MainView> {
     super.dispose();
   }
 
-  int index = 1;
+  int index = 2;
   List<Widget> pages = [
     const CreateRecipePage(),
     const SavedRecipePage(),

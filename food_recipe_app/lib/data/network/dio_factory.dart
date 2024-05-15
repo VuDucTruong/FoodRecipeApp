@@ -15,7 +15,7 @@ class DioFactory {
 
   initializeInterceptor(
       dio, RefreshAccessTokenUseCase refreshAccessTokenUseCase) {
-    dio.interceptors.add(InterceptorsWrapper(
+    /*dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
         Logger().i('Request: ${options.uri}');
         _appPreferences
@@ -52,7 +52,7 @@ class DioFactory {
         }
         return handler.next(e);
       },
-    ));
+    ));*/
   }
 
   DioFactory(this._appPreferences);

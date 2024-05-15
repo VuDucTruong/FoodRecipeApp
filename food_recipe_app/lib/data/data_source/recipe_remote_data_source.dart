@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
@@ -28,12 +29,14 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
 
   @override
   Future<ListResponse<RecipeResponse>> getRecipesFromLikes() async {
-    Response response = await _dio.get('$recipeEndpoint/get-from-likes');
+    Response response = await compute(
+        (message) => _dio.get('$recipeEndpoint/get-from-likes'), null);
+    /*Response response = await _dio.get('$recipeEndpoint/get-from-likes');*/
     List<RecipeResponse> data = [];
+
     for (Map<String, dynamic> item in response.data) {
       data.add(RecipeResponse.fromJson(item));
     }
-    RecipeResponse r;
 
     return ListResponse(data, response.statusCode, response.statusMessage);
   }
@@ -52,8 +55,9 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
   Future<ListResponse<RecipeResponse>> getRecipesByCategory(
       String category, int page) async {
     // TODO: implement getRecipesByCategory
-    Response response =
-        await _dio.get('$recipeEndpoint/search-categories/$category/$page');
+    Response response = await _dio.post('$recipeEndpoint/search/$page', data: {
+      'categories': [category]
+    });
 
     List<RecipeResponse> recipeList = [];
     if (response.statusCode == 200) {

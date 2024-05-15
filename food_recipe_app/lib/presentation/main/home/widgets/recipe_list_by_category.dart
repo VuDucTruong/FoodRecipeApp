@@ -37,12 +37,10 @@ class RecipeListByCategoy extends StatelessWidget {
                     margin:
                         const EdgeInsets.symmetric(horizontal: AppMargin.m4),
                     child: HomeFoodItem(
-                      isVegan: item.isVegan,
-                      imageUrl: item.attachmentUrls[item.representIndex],
                       width: 120,
                       height: 200,
-                      title: item.title,
                       fontSize: 12,
+                      item: item,
                     ));
               },
             ),

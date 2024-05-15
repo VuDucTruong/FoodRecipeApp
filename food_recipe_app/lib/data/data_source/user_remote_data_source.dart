@@ -10,6 +10,7 @@ import 'package:food_recipe_app/data/responses/user_response.dart';
 abstract class UserRemoteDataSource {
   Future<BaseResponse<UserResponse>> getUserInfo();
   Future<ListResponse<ChefResponse>> getVerifiedChefs();
+  Future<BaseResponse<ChefResponse>> getChefInfo(String id);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -37,5 +38,15 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       }
     }
     return ListResponse(chefList, response.statusCode, response.statusMessage);
+  }
+
+  @override
+  Future<BaseResponse<ChefResponse>> getChefInfo(String id) async {
+    final response = await _dio.get('$userEndpoint/$id');
+
+    return BaseResponse(
+        data: response.data,
+        statusCode: response.statusCode,
+        statusMessage: response.statusMessage);
   }
 }

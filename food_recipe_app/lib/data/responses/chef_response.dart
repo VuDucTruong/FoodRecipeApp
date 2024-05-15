@@ -8,11 +8,11 @@ class ChefResponse {
   final DateTime createdAt;
   final UserProfileInfoResponse profileInfo;
   final List<String> recipeIds;
-  final List<String> followingIds;
-  final List<String> followerIds;
+  final int followingCount;
+  final int followerCount;
 
   ChefResponse(this.id, this.createdAt, this.profileInfo, this.recipeIds,
-      this.followingIds, this.followerIds);
+      this.followingCount, this.followerCount);
 
   factory ChefResponse.fromJson(Map<String, dynamic> json) =>
       _$ChefResponseFromJson(json);

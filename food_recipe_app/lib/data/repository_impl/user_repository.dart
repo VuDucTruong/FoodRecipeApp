@@ -6,6 +6,7 @@ import 'package:food_recipe_app/data/mapper/mapper.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
+import 'package:food_recipe_app/data/responses/chef_response.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
@@ -53,6 +54,25 @@ class UserRepositoryImpl implements UserRepository {
         } else {
           return Left(Failure(response.status ?? ResponseCode.DEFAULT,
               ResponseMessage.DEFAULT ?? "null message"));
+        }
+      } catch (error) {
+        return (Left(ErrorHandler.handle(error).failure));
+      }
+    } else {
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ChefEntity>> getChefInfo(String id) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await userRemoteDataSource.getChefInfo(id);
+        if (response.statusCode == 200) {
+          return Right(response.data!.toEntity());
+        } else {
+          return Left(Failure(response.statusCode ?? ResponseCode.DEFAULT,
+              response.statusMessage ?? ResponseMessage.DEFAULT));
         }
       } catch (error) {
         return (Left(ErrorHandler.handle(error).failure));
