@@ -24,19 +24,21 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<Either<Failure, BackgroundUser>> getUserInfo() async {
-    debugPrint('getUserInfo');
     if (await _networkInfo.isConnected) {
       try {
         final response = await userRemoteDataSource.getSelfInfo();
         if (response.statusCode == ResponseCode.SUCCESS) {
-          if (response.data == null) {
-            return Left(Failure.dataNotFound('Profile information'));
+          if (response.data != null) {
+            await _appPreferences.setBackgroundUser(
+                response.data!.toBackgroundUser().toString());
+            return Right(response.data!.toBackgroundUser());
           }
-          return Right(response.data!.toBackgroundUser());
+            return Left(Failure.dataNotFound('Profile information'));
         } else {
           return Left(Failure.internalServerError());
         }
       } catch (error) {
+        debugPrint('User info error: $error');
         return (Left(ErrorHandler.handle(error).failure));
       }
     } else {
@@ -90,9 +92,12 @@ class UserRepositoryImpl implements UserRepository {
       try {
         final response = await userRemoteDataSource.deleteProfile();
         if (response.statusCode == ResponseCode.SUCCESS) {
-          return response.data != null
-              ? const Right(true)
-              : Left(Failure.actionFailed("Delete profile"));
+          if (response.data != null) {
+            await _appPreferences.logout();
+            return const Right(true);
+          } else {
+            return Left(Failure.actionFailed("Delete profile"));
+          }
         } else {
           return Left(Failure.internalServerError());
         }
@@ -159,11 +164,22 @@ class UserRepositoryImpl implements UserRepository {
       try {
         return await userRemoteDataSource
             .updateFollow(targetChefId, option)
-            .then((response) {
+            .then((response) async {
           if (response.statusCode == ResponseCode.SUCCESS) {
-            return response.data != null
-                ? const Right(true)
-                : Left(Failure.actionFailed("Follow user"));
+            if(response.data != null) {
+              BackgroundUser user = BackgroundUser.decode(
+                  await _appPreferences.getBackgroundUser());
+              if (option) {
+                user.followingIds.add(targetChefId);
+              } else {
+                user.followerIds.remove(targetChefId);
+              }
+              await _appPreferences.setBackgroundUser(user.toString());
+              return const Right(true);
+            } else {
+              return Left(Failure.actionFailed("Follow user"));
+            }
+
           } else {
             return Left(Failure.internalServerError());
           }
@@ -182,11 +198,14 @@ class UserRepositoryImpl implements UserRepository {
       try {
         return await userRemoteDataSource
             .updatePassword(password)
-            .then((response) {
+            .then((response) async {
           if (response.statusCode == ResponseCode.SUCCESS) {
-            return response.data != null
-                ? const Right(true)
-                : Left(Failure.actionFailed("Update password"));
+            if(response.data!=null)
+              {
+                _appPreferences.logout();
+                const Right(true);
+              }
+            return Left(Failure.actionFailed("Update password"));
           } else {
             return Left(Failure.internalServerError());
           }
@@ -208,11 +227,18 @@ class UserRepositoryImpl implements UserRepository {
             UserUpdateRequest.fromUserUpdateRequestDto(request);
         return await userRemoteDataSource
             .updateProfile(updateRequest)
-            .then((response) {
+            .then((response) async {
           if (response.statusCode == ResponseCode.SUCCESS) {
-            return response.data != null
-                ? Right(response.data!.toProfileInformation())
-                : Left(Failure.actionFailed("Update profile"));
+            if(response.data != null)
+              {
+                BackgroundUser backgroundUser = BackgroundUser.decode(
+                    await _appPreferences.getBackgroundUser());
+                ProfileInformation profileInformation = response.data!.toProfileInformation();
+                backgroundUser.profileInfo = profileInformation;
+                await _appPreferences.setBackgroundUser(backgroundUser.toString());
+                return Right(profileInformation);
+              }
+            return Left(Failure.actionFailed("Update profile"));
           } else {
             return Left(Failure.internalServerError());
           }

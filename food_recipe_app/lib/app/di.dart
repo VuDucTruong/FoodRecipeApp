@@ -92,7 +92,7 @@ Future<void> initAppModule() async {
 
 void initRepository() {
   instance.registerLazySingleton<RecipeRepository>(
-      () => RecipeRepositoryImpl(instance(), instance()));
+      () => RecipeRepositoryImpl(instance(), instance(),instance()));
   instance.registerLazySingleton<LoginRepository>(
       () => LoginRepositoryImpl(instance(), instance(), instance()));
   instance.registerLazySingleton<UserRepository>(

@@ -1,4 +1,6 @@
+
 import 'package:dartz/dartz.dart';
+import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/data_source/recipe_remote_data_source.dart';
 import 'package:food_recipe_app/data/mapper/mapper.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
@@ -8,14 +10,16 @@ import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
 import 'package:food_recipe_app/data/requests/get_recipes_search_request.dart';
 import 'package:food_recipe_app/data/requests/recipe_update_request.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
+import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/presentation/common/helper/create_recipe_object.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeRemoteDataSource _recipeDataSource;
   final NetworkInfo _networkInfo;
+  final AppPreferences _appPreferences;
 
-  RecipeRepositoryImpl(this._recipeDataSource, this._networkInfo);
+  RecipeRepositoryImpl(this._recipeDataSource, this._networkInfo,this._appPreferences);
 
   @override
   Future<Either<Failure, List<RecipeEntity>>> getRecipesFromLikes() async {
@@ -47,7 +51,15 @@ class RecipeRepositoryImpl implements RecipeRepository {
         final response = await _recipeDataSource
             .createRecipe(CreateRecipeRequest.fromObject(object));
         if (response.statusCode == ApiInternalStatus.SUCCESS) {
-          return Right(response.data!.toEntity());
+          if(response.data!=null)
+            {
+              final recipeEntity = response.data!.toEntity();
+              BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
+              user.recipeIds.add(recipeEntity.id);
+              await _appPreferences.setBackgroundUser(user.toString());
+              return Right(recipeEntity);
+            }
+          return Left(Failure.internalServerError());
         } else {
           return Left(Failure(
               ApiInternalStatus.FAILURE, ResponseMessage.CONNECTION_ERROR));
@@ -152,6 +164,12 @@ class RecipeRepositoryImpl implements RecipeRepository {
       try{
         final response = await _recipeDataSource.updateLikeRecipe(recipeId, option);
         if(response.statusCode == ApiInternalStatus.SUCCESS){
+          if(response.data!=null) {
+            BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
+            user.likedRecipeIds.add(recipeId);
+            await _appPreferences.setBackgroundUser(user.toString());
+            return Right(response.data!);
+          }
           return response.data!=null
               ?Right(response.data!)
               :Left(Failure.actionFailed("Like Recipe"));
@@ -195,9 +213,13 @@ class RecipeRepositoryImpl implements RecipeRepository {
       try{
         final response = await _recipeDataSource.updateSaveRecipe(recipeId, option);
         if(response.statusCode == ApiInternalStatus.SUCCESS){
-          return response.data!=null
-              ?Right(response.data!)
-              :Left(Failure.actionFailed("Save Recipe"));
+          if(response.data!=null) {
+            BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
+            user.savedRecipeIds.add(recipeId);
+            await _appPreferences.setBackgroundUser(user.toString());
+            return Right(response.data!);
+          }
+          return Left(Failure.actionFailed("Save Recipe"));
         }else{
           return Left(Failure.internalServerError());
         }
@@ -216,9 +238,14 @@ class RecipeRepositoryImpl implements RecipeRepository {
       try{
         final response = await _recipeDataSource.deleteRecipe(recipeId);
         if(response.statusCode == ApiInternalStatus.SUCCESS){
-          return response.data!=null
-              ?Right(response.data!)
-              :Left(Failure.actionFailed("Delete Recipe"));
+          if(response.data!=null)
+            {
+              BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
+              user.recipeIds.remove(recipeId);
+              await _appPreferences.setBackgroundUser(user.toString());
+              return Right(response.data!);
+            }
+          return Left(Failure.actionFailed("Delete Recipe"));
         }else{
           return Left(Failure.internalServerError());
         }
