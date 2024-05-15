@@ -11,16 +11,16 @@ final class LoginSuccess extends LoginState {
   LoginSuccess(this.userEntity);
 }
 final class LoginFailure extends LoginState {
-  final String errorMessage;
+  final Failure failure;
 
-  LoginFailure({required this.errorMessage});
+  LoginFailure({required this.failure});
 }
 final class LoginWithGoogleFailure extends LoginFailure {
   final ThirdPartySignInAccount? googleSignInAccount;
 
   LoginWithGoogleFailure(
-      {required String errorMessage, required this.googleSignInAccount})
-      : super(errorMessage: errorMessage);
+      {required Failure failure, required this.googleSignInAccount})
+      : super(failure: failure);
 }
 
 class ThirdPartySignInAccount {
@@ -41,5 +41,11 @@ class ThirdPartySignInAccount {
         name = json['name'] as String,
         id = json['id'] as String,
         photoUrl = json['picture']['data']['url'] as String,
+        linkedAccountType = 'google';
+  ThirdPartySignInAccount.fromGoogleSignInAccount(GoogleSignInAccount account)
+      : email = account.email,
+        name = account.displayName ?? "",
+        id = account.id,
+        photoUrl = account.photoUrl,
         linkedAccountType = 'google';
 }

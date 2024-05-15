@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/data/network/error_handler.dart';
+import 'package:food_recipe_app/data/network/failure.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../presentation/resources/string_management.dart';
@@ -98,3 +102,36 @@ Future<File?> selectImageFromGalery() async {
 
 bool isThereCurrentDialogShowing(BuildContext context) =>
     ModalRoute.of(context)?.isCurrent != true;
+
+void handleBlocFailures(BuildContext context, Failure failure, Function reload)
+{
+  if (failure.code == ResponseCode.NO_INTERNET_CONNECTION){
+    showDialog(context: context, builder: (context)=>NoConnectionDialog(reload: reload));
+  }
+  else if (failure.code == ResponseCode.DEFAULT)
+    {
+      showDialog(context: context, builder: (context) =>
+          AppErrorDialog(content: failure.message));
+    }
+  else if(failure.code == ResponseCode.BAD_REQUEST) {
+    showDialog(context: context, builder: (context) =>
+        AppErrorDialog(content: AppStrings.invalidInput));
+  }
+  else if (failure.code == ResponseCode.UNAUTHORISED) {
+    showDialog(context: context, builder: (context) =>
+        AppErrorDialog(content: AppStrings.unauthorizedError));
+  }
+  else if (failure.code == ResponseCode.INTERNAL_SERVER_ERROR) {
+    showDialog(context: context, builder: (context) =>
+        AppErrorDialog(content: AppStrings.internalServerError));
+  }
+  else if(failure.code == ResponseCode.CONNECT_TIMEOUT)
+    {
+      showDialog(context: context, builder: (context) =>
+          AppErrorDialog(content: AppStrings.timeoutError));
+    }
+  else {
+    showDialog(context: context, builder: (context) =>
+        AppErrorDialog(content: AppStrings.somethingWentWrong));
+  }
+}

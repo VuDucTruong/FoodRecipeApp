@@ -11,10 +11,12 @@ class CustomTextFormField extends StatefulWidget {
       this.icon,
       required this.hint,
       required this.controller,
-      this.maxLines = 1 })
+      required this.isPassword,
+      this.maxLines = 1})
       : super(key: key);
 
   late String hint;
+  bool isPassword;
   String? Function(String? x) validator;
   Widget? icon;
   TextEditingController controller;
@@ -26,9 +28,12 @@ class CustomTextFormField extends StatefulWidget {
 }
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool isVisible;
+
   @override
   void initState() {
     super.initState();
+    isVisible = widget.isPassword;
   }
 
   @override
@@ -59,9 +64,33 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               });
               return _errorMessage;
             },
+            obscureText: isVisible,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
-              suffixIcon: widget.icon,
+              isDense: true,
+              suffixIcon: widget.isPassword
+                  ? InkWell(
+                      onTap: () {
+                        setState(() {
+                          isVisible = !isVisible;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: isVisible
+                            ? SvgPicture.asset(
+                                PicturePath.eyeSolidPath,
+                                height: 24,
+                                width: 24,
+                              )
+                            : SvgPicture.asset(
+                                PicturePath.eyeSlashSolidPath,
+                                height: 24,
+                                width: 24,
+                              ),
+                      ),
+                    )
+                  : widget.icon,
               hintText: widget.hint,
             ),
           ),

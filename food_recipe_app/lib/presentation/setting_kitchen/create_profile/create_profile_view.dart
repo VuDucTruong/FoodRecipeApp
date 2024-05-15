@@ -78,30 +78,19 @@ class _CreateProfileViewState extends State<CreateProfileView> {
             child: BlocConsumer(
               bloc: _createProfileBloc,
               listener: (context, state) {
+                Navigator.popUntil(context, (route) => route is! DialogRoute);
                 if (state is CreateProfileLoading) {
                   showDialog(
                       context: context,
                       builder: (context) => const LoadingDialog());
                 } else if (state is CreateProfileSubmitSuccess) {
-                  Navigator.of(context).canPop()
-                      ? Navigator.of(context).pop()
-                      : {};
                   final registerProfileBasic = gatherProfileSubmit();
                   Navigator.of(context).pushNamed(Routes.foodTypeRoute,
                       arguments: registerProfileBasic);
                 } else if (state is CreateProfileSubmitFailed) {
-                  Navigator.of(context).canPop()
-                      ? Navigator.of(context).pop()
-                      : {};
-                  if (state.failure.code == -2) {
-                    showAnimatedDialog1(
-                        context, NoConnectionDialog(reload: () {}));
-                  } else {
-                    showDialog(
-                        context: context,
-                        builder: (context) => AppErrorDialog(
-                            content: AppStrings.duplicatedUserError));
-                  }
+                  final failure = state.failure;
+                  handleBlocFailures(
+                      context, failure, () => Navigator.of(context).pop());
                 }
               },
               builder: (context, state) {
@@ -114,7 +103,9 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                     _getInputForm(),
                     FilledButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_formKey.currentState!.validate() &&
+                              emailController.text.isNotEmpty &&
+                              passwordController.text.isNotEmpty) {
                             _createProfileBloc.add(
                                 CreateProfileOnContinuePressed(
                                     email: emailController.text));
@@ -172,10 +163,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                 controller: passwordController,
                 content: AppStrings.password,
                 hint: AppStrings.enterPassword,
-                icon: SvgPicture.asset(
-                  PicturePath.passwordPath,
-                  fit: BoxFit.scaleDown,
-                ),
+                isPassword: true,
                 validator: validatePassword),
             CompulsoryTextField(
                 controller: nameController,
@@ -185,7 +173,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
             CompulsoryTextField(
               controller: bioController,
               content: AppStrings.bio,
-              hint: AppStrings.enterFullName,
+              hint: AppStrings.enterBio,
               validator: (String? str) => null,
               isCompulsory: false,
               maxLines: 5,

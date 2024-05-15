@@ -75,15 +75,13 @@ Future<void> initAppModule() async {
     instance.registerLazySingleton<RefreshAccessTokenUseCase>(
         () => RefreshAccessTokenUseCase(instance()));
   }
-  if(!instance.isRegistered<GetUserInfoUseCase>())
-    {
-      instance.registerLazySingleton<GetUserInfoUseCase>(() =>
-          GetUserInfoUseCase(instance()));
-    }
-  if(!instance.isRegistered<InitialRoute>())
-    {
-      instance.registerLazySingleton(() => InitialRoute(instance(),instance()));
-    }
+  if (!instance.isRegistered<GetUserInfoUseCase>()) {
+    instance.registerLazySingleton<GetUserInfoUseCase>(
+        () => GetUserInfoUseCase(instance()));
+  }
+  if (!instance.isRegistered<InitialRoute>()) {
+    instance.registerLazySingleton(() => InitialRoute(instance(), instance()));
+  }
   instance<DioFactory>().initializeInterceptor(dio, instance());
 }
 
@@ -162,18 +160,19 @@ initLoginModule() {
           googleSignIn: instance(),
           loginUseCase: instance(),
           googleLoginUseCase: instance(),
+          networkInfo: instance(),
         ));
   }
 }
 
 initCreateProfileModule() {
-  if(!instance.isRegistered<LoginVerifyUseCase>()){
-    instance.registerLazySingleton<LoginVerifyUseCase>(() => LoginVerifyUseCase(instance()));
+  if (!instance.isRegistered<LoginVerifyUseCase>()) {
+    instance.registerLazySingleton<LoginVerifyUseCase>(
+        () => LoginVerifyUseCase(instance()));
   }
-  if(!instance.isRegistered<CreateProfileBloc>()){
+  if (!instance.isRegistered<CreateProfileBloc>()) {
     instance.registerLazySingleton<CreateProfileBloc>(() => CreateProfileBloc(
-      loginVerifyUseCase: instance()
-    ));
+        networkInfo: instance(), loginVerifyUseCase: instance()));
   }
 }
 
@@ -188,7 +187,9 @@ initFoodTypeModule() {
   }
   if (!instance.isRegistered<FoodTypeBloc>()) {
     instance.registerLazySingleton(() => FoodTypeBloc(
-        signupWithLoginIdUseCase: instance(), signupUseCase: instance()));
+        networkInfo: instance(),
+        signupWithLoginIdUseCase: instance(),
+        signupUseCase: instance()));
   }
 }
 

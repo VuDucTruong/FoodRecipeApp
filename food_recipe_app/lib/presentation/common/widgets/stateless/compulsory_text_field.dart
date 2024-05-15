@@ -12,10 +12,11 @@ class CompulsoryTextField extends StatelessWidget {
       this.icon,
       required this.hint,
       required this.controller,
-      this.maxLines=1,
-        this.isCompulsory = true
-      });
+      this.maxLines = 1,
+      this.isCompulsory = true,
+      this.isPassword = false});
   String content;
+  bool isPassword;
   String? Function(String? x) validator;
   Widget? icon;
   String hint;
@@ -29,19 +30,19 @@ class CompulsoryTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RichText(
-          maxLines: maxLines,
+            maxLines: maxLines,
             text: TextSpan(
                 style: getSemiBoldStyle(
                     color: Colors.black, fontSize: FontSize.s16),
                 children: [
-              TextSpan(text: content),
-              if(isCompulsory)
-                TextSpan(
-                  text: " *",
-                  style:
-                  getSemiBoldStyle(color: Colors.red, fontSize: FontSize.s16),
-                ),
-            ])),
+                  TextSpan(text: content),
+                  if (isCompulsory)
+                    TextSpan(
+                      text: " *",
+                      style: getSemiBoldStyle(
+                          color: Colors.red, fontSize: FontSize.s16),
+                    ),
+                ])),
         const SizedBox(
           height: AppSize.s4,
         ),
@@ -49,6 +50,7 @@ class CompulsoryTextField extends StatelessWidget {
           controller: controller,
           validator: validator,
           hint: hint,
+          isPassword: isPassword,
           icon: icon,
           maxLines: maxLines,
         ),

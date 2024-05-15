@@ -11,7 +11,7 @@ final class FoodTypeSubmitSuccess extends FoodTypeState {
 
 }
 final class FoodTypeSubmitFailure extends FoodTypeState {
-  final String errorMessage;
-  FoodTypeSubmitFailure({required this.errorMessage});
+  final Failure failure;
+  FoodTypeSubmitFailure({required this.failure});
 }
 

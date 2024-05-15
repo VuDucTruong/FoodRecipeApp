@@ -14,14 +14,14 @@ class GetRecipesByCategoryUseCase
   Future<Either<Failure, List<RecipeEntity>>> execute(
       GetRecipesByCategoryInput input) async {
     // TODO: implement execute
-    return await _recipeRespository.getRecipesByCategory(
-        input.category, input.page);
+    return await _recipeRespository.getRecipesSearch(GetRecipesSearchRequestDto(
+        categories: input.categories, page: input.page));
   }
 }
 
 class GetRecipesByCategoryInput {
-  String category;
+  List<String> categories;
   int page;
 
-  GetRecipesByCategoryInput({required this.category, this.page = 0});
+  GetRecipesByCategoryInput({required this.categories, this.page = 0});
 }

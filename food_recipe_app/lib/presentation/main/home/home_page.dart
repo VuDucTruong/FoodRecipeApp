@@ -63,9 +63,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    trendingBloc.close();
-    recipesByCategoryBloc.close();
-    verifiedChefsBloc.close();
+    // trendingBloc.close();
+    // recipesByCategoryBloc.close();
+    // verifiedChefsBloc.close();
     super.dispose();
   }
 

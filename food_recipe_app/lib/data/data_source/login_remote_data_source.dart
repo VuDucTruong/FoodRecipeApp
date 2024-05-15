@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/constant.dart';
-import 'package:food_recipe_app/app/extensions.dart';
 import 'package:food_recipe_app/data/requests/login_request.dart';
 import 'package:food_recipe_app/data/requests/register_request.dart';
 import 'package:food_recipe_app/data/responses/base_response.dart';

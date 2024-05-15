@@ -14,6 +14,7 @@ import 'package:food_recipe_app/data/requests/login_request.dart';
 import 'package:food_recipe_app/data/requests/register_request.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
+import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:get_it/get_it.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
@@ -29,34 +30,29 @@ class LoginRepositoryImpl implements LoginRepository {
     try{
       if (await _networkInfo.isConnected) {
         try {
-          DeviceInfoParams deviceInfoParams =
-          await GetIt.instance<DeviceInfo>().getDeviceInfo();
+          DeviceInfoParams deviceInfoParams = await GetIt.instance<DeviceInfo>().getDeviceInfo();
           final response = await _loginRemoteDataSource.login(LoginRequest(
-              email: email,
-              password: password,
+              email: email, password: password,
               deviceInfo: deviceInfoParams.deviceInfo,
               deviceId: deviceInfoParams.deviceId));
-          if (response.statusCode == 200) {
+          if (response.statusCode == ResponseCode.SUCCESS) {
             if (response.data == null) {
-              return Left(Failure(0, 'Data is null'));
+              return Left(Failure.dataNotFound('User'));
             }
             assert(response.data != null);
             await _appPreferences.setUserToken(response.data!.accessToken);
             await _appPreferences
                 .setUserRefreshToken(response.data!.refreshToken);
             return Right(response.data!.user.toEntity());
-          } else {
-            return Left(Failure(response.statusCode ?? 0,
-                response.statusMessage ?? "null message"));
           }
+          else {return Left(Failure.internalServerError());}
         } catch (error) {
-          debugPrint(error.toString());
           return (Left(ErrorHandler.handle(error).failure));
         }
-      } else {
-        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
-    } catch (ex) {
+      else {return Left(Failure.noInternet());}
+    }
+    catch (ex) {
       return Left(ErrorHandler.handle(ex).failure);
     }
   }
@@ -64,25 +60,17 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<Either<Failure, void>> registerWithEmail(RegisterWithEmailRepositoryDTO registerWithEmailRepositoryDTO) async {
     try {
-      RegisterWithEmailRepositoryDTO dto = registerWithEmailRepositoryDTO;
       final response = await _loginRemoteDataSource
-          .registerWithEmail(RegisterWithEmailRequest(
-          email: dto.email, password: dto.password,
-          fullName: dto.fullName, bio: dto.bio,
-          categories: dto.categories,
-          deviceId: dto.deviceId, deviceInfo: dto.deviceInfo,
-          hungryHeads: dto.hungryHeads, isVegan: dto.isVegan,
-          avatarUrl: dto.avatarUrl, file: dto.file));
-      if (response.statusCode == 200) {
-        if(response.data==null){ return Left(Failure(0, 'Data is null')); }
+          .registerWithEmail(RegisterWithEmailRequest.fromRegisterWithEmailDTOs(
+          registerWithEmailRepositoryDTO: registerWithEmailRepositoryDTO));
+      if (response.statusCode == ResponseCode.SUCCESS) {
+        if(response.data==null){ return Left(Failure.dataNotFound('User')); }
         assert(response.data != null);
         await _appPreferences.setUserToken(response.data!.accessToken??"");
-        await _appPreferences
-            .setUserRefreshToken(response.data!.refreshToken??"");
+        await _appPreferences.setUserRefreshToken(response.data!.refreshToken??"");
         return const Right(null);
       }
-      return Left(Failure(response.statusCode ?? 0,
-          response.statusMessage ?? "null message"));
+      return Left(Failure.internalServerError());
     } catch (ex) {
       return Left(ErrorHandler.handle(ex).failure);
     }
@@ -96,28 +84,22 @@ class LoginRepositoryImpl implements LoginRepository {
           final token = await _appPreferences.getUserRefreshToken();
           if (token.isNotEmpty) {
             final response = await _loginRemoteDataSource.refreshAccessToken();
-            if (response.statusCode == 200) {
-              if (response.data == null) {
-                return Left(Failure(0, 'Data is null'));
-              }
+            if (response.statusCode == ResponseCode.SUCCESS) {
+              if (response.data == null) {return Left(Failure.dataNotFound("Data"));}
               assert(response.data != null);
               await _appPreferences.setUserToken(response.data!);
-            } else if (response.statusCode == 401) {
-              return Left(Failure(response.statusCode ?? 0,
-                  response.statusMessage ?? "expired refreshToken"));
             }
-            return Left(Failure(response.statusCode ?? 0,
-                response.statusMessage ?? "null message"));
-          } else {
-            return Left(Failure(0, 'Token is empty'));
+            else if (response.statusCode == 401) {return Left(Failure.unauthorised());}
+            return Left(Failure.internalServerError());
           }
-        } catch (error) {
+          else {return Left(Failure.dataNotFound("Token"));}
+        }
+        catch (error) {
           debugPrint(error.toString());
           return Left(ErrorHandler.handle(error).failure);
         }
-      } else {
-        return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
       }
+      else {return Left(Failure.noInternet());}
     } catch (ex) {
       return Left(ErrorHandler.handle(ex).failure);
     }
@@ -127,9 +109,9 @@ class LoginRepositoryImpl implements LoginRepository {
   Future<Either<Failure, bool>> forgotPassword(String email) async {
     try{
       final response = await _loginRemoteDataSource.forgotPassword(email);
-      if (response.statusCode == 200) {
+      if (response.statusCode == ResponseCode.SUCCESS) {
         if (response.data == null) {
-          return Left(Failure(0, 'Data is null'));
+          return Left(Failure.dataNotFound('User'));
         }
         assert(response.data != null);
         return Right(response.data!);
@@ -153,9 +135,9 @@ class LoginRepositoryImpl implements LoginRepository {
       );
       final response =
       await _loginRemoteDataSource.loginWithLoginId(loginRequest);
-      if (response.statusCode == 200) {
+      if (response.statusCode == ResponseCode.SUCCESS) {
         if (response.data == null) {
-          return Left(Failure(0, 'Data is null'));
+          return Left(Failure.dataNotFound('User'));
         }
         assert(response.data != null);
         await _appPreferences.setUserToken(response.data!.accessToken);
@@ -179,19 +161,20 @@ class LoginRepositoryImpl implements LoginRepository {
         deviceInfo: deviceInfoParams.deviceInfo,
         deviceId: deviceInfoParams.deviceId,
       ));
-      if (response.statusCode == 200) {
+      if (response.statusCode == ResponseCode.SUCCESS) {
         if (response.data == null) {
-          return Left(Failure(0, 'Data is null'));
+          return Left(Failure(ResponseCode.DEFAULT, AppStrings.loginError));
         }
         assert(response.data != null);
         await _appPreferences.setUserToken(response.data!.accessToken);
         await _appPreferences.setUserRefreshToken(response.data!.refreshToken);
         return Right(response.data!.user.toEntity());
-      } else {
-        return Left(Failure(
-            response.statusCode ?? 0, response.statusMessage ?? "null message"));
       }
-    } catch (ex) {
+      else {
+        return Left(Failure.internalServerError());
+      }
+    }
+    catch (ex) {
       return Left(ErrorHandler.handle(ex).failure);
     }
   }
@@ -201,36 +184,27 @@ class LoginRepositoryImpl implements LoginRepository {
     try{
       RegisterWithLoginIdDTOs dto = registerWithLoginIdDTOs;
       final response = await _loginRemoteDataSource.registerWithLoginId(
-          RegisterWithLoginIdRequest(
-              loginId: registerWithLoginIdDTOs.loginId,
-              linkedAccountType: registerWithLoginIdDTOs.linkedAccountType,
-              fullName: dto.fullName, bio: dto.bio,
-              categories: dto.categories,
-              deviceId: dto.deviceId, deviceInfo: dto.deviceInfo,
-              hungryHeads: dto.hungryHeads, isVegan: dto.isVegan,
-              avatarUrl: dto.avatarUrl, file: dto.file));
-      if(response.statusCode == 200){
-        if(response.data==null){ return Left(Failure(0, 'Data is null')); }
+          RegisterWithLoginIdRequest.fromRegisterWithLoginIdDTOs(registerWithLoginIdDTOs: registerWithLoginIdDTOs));
+      if(response.statusCode == ResponseCode.SUCCESS){
+        if(response.data==null){ return Left(Failure.dataNotFound('User')); }
         assert(response.data != null);
         await _appPreferences.setUserToken(response.data!.accessToken??"");
         await _appPreferences.setUserRefreshToken(response.data!.refreshToken??"");
         return const Right(null);
       }
-      return Left(Failure(response.statusCode ?? 0,
-          response.statusMessage ?? "null message"));
+      return Left(Failure.internalServerError());
     } catch (ex) {
-      return Left(ErrorHandler.handle(ex).failure);
+      return Left(Failure(ResponseCode.DEFAULT, AppStrings.loginError));
     }
   }
   @override
   Future<Either<Failure, bool>> verifyLogin(String email) async {
     try{
       final response = await _loginRemoteDataSource.verifyLogin(email);
-      if (response.statusCode == 200) {
+      if (response.statusCode == ResponseCode.SUCCESS) {
         return const Right(true);
       } else {
-        return Left(Failure(
-            response.statusCode ?? 0, response.statusMessage ?? "null message"));
+        return Left(Failure.dataAlreadyExisted('Email'));
       }
     } catch (ex) {
       return Left(ErrorHandler.handle(ex).failure);

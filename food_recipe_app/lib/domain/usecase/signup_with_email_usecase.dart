@@ -8,6 +8,7 @@ import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/usecase/base_usecase.dart';
+import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 class SignupWithEmailUseCase implements BaseUseCase<SignupWithEmailUseCaseInput, void> {
@@ -57,4 +58,16 @@ class SignupWithEmailUseCaseInput{
     required this.categories,
   });
 
+  SignupWithEmailUseCaseInput.fromUserRegisterProfileAdvanced({
+    required UserRegisterProfileAdvanced userRegisterProfileAdvanced,
+  }):
+        email = userRegisterProfileAdvanced.email!,
+        password = userRegisterProfileAdvanced.password!,
+        fullName = userRegisterProfileAdvanced.fullName,
+        bio = userRegisterProfileAdvanced.bio,
+        avatarUrl = userRegisterProfileAdvanced.avatarUrl??"",
+        file = userRegisterProfileAdvanced.file,
+        hungryHeads = userRegisterProfileAdvanced.hungryHeads,
+        categories = userRegisterProfileAdvanced.categories,
+        isVegan = userRegisterProfileAdvanced.isVegan;
 }

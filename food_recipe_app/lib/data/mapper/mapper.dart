@@ -39,7 +39,7 @@ extension ChefResponseMapper on ChefResponse {
         profileInfo.categories,
         profileInfo.hungryHeads);
     return ChefEntity(
-        id, createdAt, chefProfile, recipeIds, followingIds, followerIds);
+        id, createdAt, chefProfile, recipeIds, followingCount, followerCount);
   }
 }
 
@@ -94,5 +94,11 @@ extension UserDomainResponseMapper on UserResponse {
         followerIds:followerIds,followingIds:followingIds,
         loginTickets:myLoginTickets, savedRecipeIds:savedRecipeIds,
         recipeIds:recipeIds);
+  }
+}
+extension UserProfileInfoResponseMapper on UserProfileInfoResponse {
+  ProfileInformation toProfileInformation() {
+    return ProfileInformation(fullName, avatarUrl, isVegan, bio, categories,
+        hungryHeads);
   }
 }
