@@ -15,6 +15,7 @@ import 'package:food_recipe_app/domain/repository/user_repository.dart';
 import 'package:food_recipe_app/domain/usecase/create_recipe_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chef_info_by_id_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_recipes_from_ids_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
@@ -171,14 +172,7 @@ initLoginModule() {
 }
 
 initDetailFoodModule() {
-  if (!instance.isRegistered<GetChefInfoByIdUseCase>()) {
-    instance.registerLazySingleton<GetChefInfoByIdUseCase>(
-        () => GetChefInfoByIdUseCase(instance()));
-  }
-  if (!instance.isRegistered<ChefInfoBloc>()) {
-    instance
-        .registerLazySingleton<ChefInfoBloc>(() => ChefInfoBloc(instance()));
-  }
+  initChefProfileModule();
 }
 
 initCreateProfileModule() {
@@ -206,6 +200,21 @@ initFoodTypeModule() {
         networkInfo: instance(),
         signupWithLoginIdUseCase: instance(),
         signupUseCase: instance()));
+  }
+}
+
+initChefProfileModule() {
+  if (!instance.isRegistered<GetChefInfoByIdUseCase>()) {
+    instance.registerLazySingleton<GetChefInfoByIdUseCase>(
+        () => GetChefInfoByIdUseCase(instance()));
+  }
+  if (!instance.isRegistered<GetRecipesFromIdsUseCase>()) {
+    instance.registerLazySingleton<GetRecipesFromIdsUseCase>(
+        () => GetRecipesFromIdsUseCase(instance()));
+  }
+  if (!instance.isRegistered<ChefInfoBloc>()) {
+    instance.registerLazySingleton<ChefInfoBloc>(
+        () => ChefInfoBloc(instance(), instance()));
   }
 }
 

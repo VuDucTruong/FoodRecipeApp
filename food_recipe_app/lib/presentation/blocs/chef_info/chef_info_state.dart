@@ -5,20 +5,36 @@ sealed class ChefInfoState {
   ChefEntity? chefEntity;
 }
 
+class ChefProfileState extends ChefInfoState {}
+
+class ChefRecipeState extends ChefInfoState {}
+
 final class ChefInfoInitial extends ChefInfoState {}
 
-class ChefInfoLoadingState extends ChefInfoState {}
+class ChefInfoLoadingState extends ChefProfileState {}
 
-class ChefInfoLoadedState extends ChefInfoState {
+class ChefInfoLoadedState extends ChefProfileState {
   ChefInfoLoadedState(ChefEntity chefEntity) {
     super.chefEntity = chefEntity;
   }
 }
 
-class ChefInfoErrorState extends ChefInfoState {
+class ChefInfoErrorState extends ChefProfileState {
   Failure failure;
 
-  ChefInfoErrorState(this.failure) {
-    chefEntity = null;
-  }
+  ChefInfoErrorState(this.failure);
+}
+
+class ChefRecipeLoadingState extends ChefRecipeState {}
+
+class ChefRecipeLoadedState extends ChefRecipeState {
+  List<RecipeEntity> recipeList;
+
+  ChefRecipeLoadedState(this.recipeList);
+}
+
+class ChefRecipeErrorState extends ChefRecipeState {
+  Failure failure;
+
+  ChefRecipeErrorState(this.failure);
 }

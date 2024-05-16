@@ -45,9 +45,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
           style: getBoldStyle(
               color: ColorManager.secondaryColor, fontSize: FontSize.s20),
         ),
-        const UserIntroduction(),
-        const UserDescription(),
-        const UserSocialStatus(),
+        /*UserIntroduction(),
+        UserDescription(),
+        UserSocialStatus(),*/
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

@@ -63,7 +63,6 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
   @override
   void dispose() {
     super.dispose();
-    // savedRecipesBloc.close();
   }
 
   void reload() {

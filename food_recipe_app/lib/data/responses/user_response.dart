@@ -1,11 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/data/responses/special_datatypes/int_json_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user_response.g.dart';
 
-@JsonSerializable(explicitToJson: true,)
+@JsonSerializable(
+  explicitToJson: true,
+)
 class UserResponse {
   final String id;
   final DateTime createdAt;
@@ -38,12 +38,11 @@ class UserResponse {
     this.followingIds = const [],
     this.followerIds = const [],
     this.loginTickets = const [],
-  }):createdAt = DateTime.now();
+  }) : createdAt = DateTime.now();
 
-
-  factory UserResponse.fromJson(Map<String,dynamic> json)
-  => _$UserResponseFromJson(json);
-  Map<String,dynamic> toJson() => _$UserResponseToJson(this);
+  factory UserResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 
   @override
   String toString() {
@@ -76,17 +75,18 @@ class UserProfileInfoResponse {
     this.isVegan = false,
     this.bio = '',
     this.categories = const [],
-  }): hungryHeads = 1;
+  }) : hungryHeads = 1;
 
-  factory UserProfileInfoResponse.fromJson(Map<String,dynamic> json)
-  => _$UserProfileInfoResponseFromJson(json);
-  Map<String,dynamic> toJson() => _$UserProfileInfoResponseToJson(this);
+  factory UserProfileInfoResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserProfileInfoResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$UserProfileInfoResponseToJson(this);
 
   @override
   String toString() {
     return 'UserProfileInfoResponse{fullName: $fullName, avatarUrl: $avatarUrl, isVegan: $isVegan, bio: $bio, categories: $categories, hungryHeads: $hungryHeads}';
   }
 }
+
 @JsonSerializable()
 class UserAuthenticationInfoResponse {
   final String? email;
@@ -106,9 +106,9 @@ class UserAuthenticationInfoResponse {
     this.loginId = '',
     this.linkedAccountType = '',
   });
-  factory UserAuthenticationInfoResponse.fromJson(Map<String,dynamic> json)
-  => _$UserAuthenticationInfoResponseFromJson(json);
-  Map<String,dynamic> toJson() => _$UserAuthenticationInfoResponseToJson(this);
+  factory UserAuthenticationInfoResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserAuthenticationInfoResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$UserAuthenticationInfoResponseToJson(this);
 }
 
 @JsonSerializable()
@@ -131,10 +131,10 @@ class UserLoginTicketResponse {
     this.deviceId = '',
     this.refreshToken = '',
     this.deviceInfo = '',
-  }):createTime = DateTime.now(),
-    expireTime = DateTime.now().add(const Duration(days: 7));
+  })  : createTime = DateTime.now(),
+        expireTime = DateTime.now().add(const Duration(days: 7));
 
-  factory UserLoginTicketResponse.fromJson(Map<String,dynamic> json)
-  => _$UserLoginTicketResponseFromJson(json);
-  Map<String,dynamic> toJson() => _$UserLoginTicketResponseToJson(this);
+  factory UserLoginTicketResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserLoginTicketResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$UserLoginTicketResponseToJson(this);
 }

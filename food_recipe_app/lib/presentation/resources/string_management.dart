@@ -137,6 +137,8 @@ class AppStrings {
   static const String foodCategory = 'Category';
   static const String invalidInput = 'Invalid inputs please check again !';
   static const String somethingWentWrong = 'Something went wrong';
+  static const String showMore = 'Show more';
+  static const String showLess = 'Show less';
 
   //response
   static const String badRequestError = "bad_request_error";

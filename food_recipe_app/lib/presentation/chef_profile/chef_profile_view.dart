@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_description.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_introduction.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_social_status.dart';
+import 'package:get_it/get_it.dart';
 
 import '../resources/assets_management.dart';
 import '../resources/color_management.dart';
@@ -15,7 +21,9 @@ import '../resources/style_management.dart';
 import '../resources/value_manament.dart';
 
 class ChefProfileView extends StatefulWidget {
-  const ChefProfileView({super.key});
+  const ChefProfileView({super.key, required this.chefId});
+
+  final String chefId;
 
   @override
   _ChefProfileViewState createState() {
@@ -24,9 +32,12 @@ class ChefProfileView extends StatefulWidget {
 }
 
 class _ChefProfileViewState extends State<ChefProfileView> {
+  ChefInfoBloc chefInfoBloc = GetIt.instance<ChefInfoBloc>();
+
   @override
   void initState() {
     super.initState();
+    chefInfoBloc.add(LoadChefInfoById(widget.chefId));
   }
 
   @override
@@ -56,52 +67,87 @@ class _ChefProfileViewState extends State<ChefProfileView> {
         ),
       ),
       body: SafeArea(
-        child: Container(
-          margin: const EdgeInsets.all(AppMargin.m8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const UserIntroduction(),
-              const UserDescription(),
-              const UserSocialStatus(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                        side: const BorderSide(style: BorderStyle.none),
-                        backgroundColor: ColorManager.secondaryColor),
-                    child: Text(AppStrings.addRecipe,
-                        style: getBoldStyle(
-                            color: Colors.white, fontSize: FontSize.s16)),
-                  ),
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: OutlinedButton.styleFrom(
-                        side: const BorderSide(
-                            color: ColorManager.blueColor,
-                            style: BorderStyle.solid,
-                            width: 2)),
-                    child: Text(AppStrings.requestRecipe,
-                        style: getBoldStyle(
-                            color: ColorManager.blueColor,
-                            fontSize: FontSize.s16)),
-                  ),
-                ],
-              ),
-              const Divider(
-                color: Colors.black26,
-              ),
-              Expanded(
-                  child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Container();
-                  /*return RecipeItem(isUser: false);*/
-                },
-              ))
-            ],
+        child: SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.all(AppMargin.m8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BlocConsumer<ChefInfoBloc, ChefInfoState>(
+                  bloc: chefInfoBloc,
+                  listener: (context, state) {
+                    if (state is ChefInfoErrorState) {
+                      showAnimatedDialog1(context,
+                          AppErrorDialog(content: state.failure.message));
+                    }
+                    if (state is ChefInfoLoadedState) {
+                      chefInfoBloc
+                          .add(LoadChefRecipes(state.chefEntity!.recipeIds));
+                    }
+                  },
+                  buildWhen: (previous, current) => current is ChefProfileState,
+                  listenWhen: (previous, current) =>
+                      current is ChefProfileState,
+                  builder: (context, state) {
+                    if (state is ChefInfoLoadingState) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (state is ChefInfoLoadedState) {
+                      return Column(
+                        children: [
+                          UserIntroduction(
+                            entity: state.chefEntity!,
+                          ),
+                          UserDescription(
+                            entity: state.chefEntity!,
+                          ),
+                          UserSocialStatus(
+                            entity: state.chefEntity!,
+                          ),
+                          const Divider(
+                            color: Colors.black26,
+                          ),
+                        ],
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+                BlocBuilder<ChefInfoBloc, ChefInfoState>(
+                  bloc: chefInfoBloc,
+                  buildWhen: (previous, current) => current is ChefRecipeState,
+                  builder: (context, state) {
+                    if (state is ChefRecipeLoadedState) {
+                      return SizedBox(
+                          height: 400,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: state.recipeList.length,
+                            itemBuilder: (context, index) {
+                              return RecipeItem(
+                                isUser: false,
+                                recipe: state.recipeList[index],
+                              );
+                            },
+                          ));
+                    }
+                    if (state is ChefRecipeErrorState) {
+                      return Center(
+                        child: Text(state.failure.toString()),
+                      );
+                    }
+                    return const Center(
+                      child: LoadingWidget(),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 8,
+                )
+              ],
+            ),
           ),
         ),
       ),

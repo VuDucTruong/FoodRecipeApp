@@ -32,18 +32,18 @@ class UserFoodTitle extends StatelessWidget {
                   bottomRight: Radius.circular(AppRadius.r20),
                   bottomLeft: Radius.circular(AppRadius.r6),
                   topLeft: Radius.circular(AppRadius.r6))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 4),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
                 child: Text(
                   foodName,
                   style:
                       getBoldStyle(color: Colors.white, fontSize: FontSize.s20),
                 ),
               ),
-            ],
+            ),
           ),
         ),
         Container(

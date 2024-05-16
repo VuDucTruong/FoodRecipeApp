@@ -77,8 +77,11 @@ class RouteGenerator {
           builder: (context) => const LoginView(),
         );
       case Routes.chefProfileRoute:
+        initChefProfileModule();
         return MaterialPageRoute(
-          builder: (context) => const ChefProfileView(),
+          builder: (context) => ChefProfileView(
+            chefId: routeSettings.arguments as String,
+          ),
         );
       case Routes.detailFoodRoute:
         initDetailFoodModule();

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
@@ -6,8 +7,8 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
 class UserSocialStatus extends StatelessWidget {
-  const UserSocialStatus({Key? key}) : super(key: key);
-
+  const UserSocialStatus({Key? key, required this.entity}) : super(key: key);
+  final ChefEntity entity;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -19,7 +20,7 @@ class UserSocialStatus extends StatelessWidget {
           Column(
             children: [
               Text(
-                '5',
+                entity.recipeIds.length.toString(),
                 style:
                     getBoldStyle(color: Colors.black, fontSize: FontSize.s16),
               ),
@@ -35,7 +36,7 @@ class UserSocialStatus extends StatelessWidget {
           ),
           Column(
             children: [
-              Text('2.8k',
+              Text(entity.followerCount.toString(),
                   style: getBoldStyle(
                       color: Colors.black, fontSize: FontSize.s16)),
               Text(
@@ -47,7 +48,7 @@ class UserSocialStatus extends StatelessWidget {
           ),
           Column(
             children: [
-              Text('321',
+              Text(entity.followingCount.toString(),
                   style: getBoldStyle(
                       color: Colors.black, fontSize: FontSize.s16)),
               Text(

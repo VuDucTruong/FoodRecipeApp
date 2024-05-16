@@ -42,7 +42,8 @@ class ChefList extends StatelessWidget {
                   margin: const EdgeInsets.only(right: AppMargin.m8),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, Routes.chefProfileRoute);
+                      Navigator.pushNamed(context, Routes.chefProfileRoute,
+                          arguments: entity.id);
                     },
                     child: Column(
                       children: [

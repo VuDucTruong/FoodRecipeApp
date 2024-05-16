@@ -8,3 +8,9 @@ class LoadChefInfoById extends ChefInfoEvent {
 
   LoadChefInfoById(this.id);
 }
+
+class LoadChefRecipes extends ChefInfoEvent {
+  List<String> recipeIdList;
+
+  LoadChefRecipes(this.recipeIdList);
+}

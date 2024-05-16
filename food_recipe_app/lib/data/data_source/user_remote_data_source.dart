@@ -51,13 +51,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<BaseResponse<ChefResponse>> getChefInfo(String id) async {
     final response = await _dio.get('$userEndpoint/$id');
-
-    return BaseResponse(
-        data: response.data,
-        statusCode: response.statusCode,
-        statusMessage: response.statusMessage);
+    return BaseResponse.fromJson(response, ChefResponse.fromJsonMap);
   }
 
+  @override
   Future<BaseResponse<ChefResponse>> getProfileById(String id) async {
     final response = await _dio.get('$userEndpoint/$id');
     return BaseResponse.fromJson(response, ChefResponse.fromJsonMap);
