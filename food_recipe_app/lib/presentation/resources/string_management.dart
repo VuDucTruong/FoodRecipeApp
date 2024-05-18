@@ -115,6 +115,7 @@ class AppStrings {
   static const String missingAvatar = 'Your avatar is empty !';
   static const String duplicatedUserError = 'Your email have already existed !';
   static const String enterBio = 'Describe a bit about yourself !';
+  static const String recipesByCategory = 'Recipes By Category';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 

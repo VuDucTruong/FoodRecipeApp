@@ -11,6 +11,7 @@ import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/login/login_view.dart';
 import 'package:food_recipe_app/presentation/main/main_view.dart';
+import 'package:food_recipe_app/presentation/recipes_by_category/recipes_by_category_page.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/create_profile_view.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/setting_food_type_view.dart';
@@ -29,6 +30,7 @@ class Routes {
   static const String settingKitchenRoute = '/settingKitchen';
   static const String createProfileRoute = '/createProfile';
   static const String foodTypeRoute = '/foodType';
+  static const String recipesByCategoryRoute = '/recipesByCategory';
 }
 
 class InitialRoute {
@@ -98,6 +100,10 @@ class RouteGenerator {
       case Routes.editProfileRoute:
         return MaterialPageRoute(
           builder: (context) => const EditProfileView(),
+        );
+      case Routes.recipesByCategoryRoute:
+        return MaterialPageRoute(
+          builder: (context) => const RecipesByCategoryPage(),
         );
       case Routes.createProfileRoute:
         initCreateProfileModule();

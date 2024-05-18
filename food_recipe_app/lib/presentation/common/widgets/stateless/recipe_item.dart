@@ -28,9 +28,12 @@ class RecipeItem extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                        recipe.attachmentUrls[recipe.representIndex])),
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                      recipe.attachmentUrls[recipe.representIndex]),
+                  onError: (exception, stackTrace) =>
+                      const AssetImage(PicturePath.errorImagePath),
+                ),
                 borderRadius: BorderRadius.circular(AppRadius.r20)),
           ),
           Positioned(

@@ -8,3 +8,9 @@ class CategorySelected extends RecipesByCategoryEvent {
 
   CategorySelected(this.category);
 }
+
+class ConinueLoadingRecipes extends RecipesByCategoryEvent {
+  GetRecipesByCategoryInput input;
+
+  ConinueLoadingRecipes(this.input);
+}

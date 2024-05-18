@@ -16,14 +16,22 @@ class RecipesByCategoryBloc
   RecipesByCategoryBloc(this.getRecipesByCategory)
       : super(RecipesByCategoryInitial()) {
     on<CategorySelected>(_onCategorySelected);
+    on<ConinueLoadingRecipes>(_onContinueLoading);
   }
 
   Future<FutureOr<void>> _onCategorySelected(
       CategorySelected event, Emitter<RecipesByCategoryState> emit) async {
     emit(RecipesByCategoryLoadingState());
-    (await getRecipesByCategory
-            .execute(GetRecipesByCategoryInput(categories: [event.category],page: 0)))
+    (await getRecipesByCategory.execute(
+            GetRecipesByCategoryInput(categories: [event.category], page: 0)))
         .fold((l) => emit(RecipesByCategoryErrorState(l)),
             (r) => emit(RecipesByCategoryLoadedState(r)));
+  }
+
+  Future<FutureOr<void>> _onContinueLoading(
+      ConinueLoadingRecipes event, Emitter<RecipesByCategoryState> emit) async {
+    (await getRecipesByCategory.execute(event.input)).fold(
+        (l) => emit(RecipesByCategoryErrorState(l)),
+        (r) => emit(RecipesByCategoryLoadedState(r)));
   }
 }

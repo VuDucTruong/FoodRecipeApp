@@ -85,19 +85,21 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: AppSize.s20,
                 ),
-                _getHeadingHome(AppStrings.trendingToday),
+                _getHeadingHome(AppStrings.trendingToday, false, null),
                 HomeCarouselSlider(
                   bloc: trendingBloc,
                   reload: reloadPage,
                 ),
-                _getHeadingHome(AppStrings.categories),
+                _getHeadingHome(AppStrings.categories, true, () {
+                  Navigator.pushNamed(context, Routes.recipesByCategoryRoute);
+                }),
                 FoodTypeOptions(
                   selectedItem: selectedCateogry,
                   bloc: recipesByCategoryBloc,
                 ),
                 RecipeListByCategoy(
                     recipesByCategoryBloc: recipesByCategoryBloc),
-                _getHeadingHome(AppStrings.verifiedChefs),
+                _getHeadingHome(AppStrings.verifiedChefs, true, null),
                 ChefList(verifiedChefsBloc: verifiedChefsBloc),
                 const SizedBox(
                   height: AppSize.s8,
@@ -133,7 +135,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _getHeadingHome(String content) {
+  Widget _getHeadingHome(String content, bool isSeeAll, Function? action) {
     return Row(
       children: [
         Text(
@@ -141,11 +143,18 @@ class _HomePageState extends State<HomePage> {
           style: getBoldStyle(color: Colors.black, fontSize: FontSize.s18),
         ),
         const Spacer(),
-        Text(
-          AppStrings.seeAll,
-          style: getRegularStyleWithUnderline(
-              color: Colors.grey, fontSize: FontSize.s15),
-        ),
+        isSeeAll
+            ? InkWell(
+                onTap: () {
+                  action?.call();
+                },
+                child: Text(
+                  AppStrings.seeAll,
+                  style: getRegularStyleWithUnderline(
+                      color: Colors.grey, fontSize: FontSize.s15),
+                ),
+              )
+            : Container(),
       ],
     );
   }

@@ -13,6 +13,8 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_wi
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
+import '../../../resources/route_management.dart';
+
 class HomeCarouselSlider extends StatelessWidget {
   HomeCarouselSlider({super.key, required this.bloc, required this.reload});
   TrendingBloc bloc;
@@ -42,38 +44,45 @@ class HomeCarouselSlider extends StatelessWidget {
                 autoPlay: true,
               ),
               items: state.trendingList.map((i) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(
-                                      i.attachmentUrls[i.representIndex]),
-                                  onError: (exception, stackTrace) =>
-                                      const AssetImage(
-                                          PicturePath.errorImagePath),
-                                )),
-                          ),
-                          Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: CommonFoodTitle(
-                                isVegan: i.isVegan,
-                                title: i.title,
-                                fontSize: 16,
-                                height: 150 * 0.2,
-                                width: MediaQuery.of(context).size.width * 0.65,
-                              ))
-                        ],
-                      ),
-                    );
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.detailFoodRoute,
+                        arguments: i);
                   },
+                  child: Builder(
+                    builder: (BuildContext context) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Stack(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        i.attachmentUrls[i.representIndex]),
+                                    onError: (exception, stackTrace) =>
+                                        const AssetImage(
+                                            PicturePath.errorImagePath),
+                                  )),
+                            ),
+                            Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: CommonFoodTitle(
+                                  isVegan: i.isVegan,
+                                  title: i.title,
+                                  fontSize: 16,
+                                  height: 150 * 0.2,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.65,
+                                ))
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 );
               }).toList(),
             ),
