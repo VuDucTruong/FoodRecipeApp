@@ -15,6 +15,9 @@ UserResponse _$UserResponseFromJson(Map<String, dynamic> json) => UserResponse(
           json['profileInfo'] as Map<String, dynamic>),
       recipeIds:
           (json['recipeIds'] as List<dynamic>).map((e) => e as String).toList(),
+      likedRecipeIds: (json['likedRecipeIds'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
       savedRecipeIds: (json['savedRecipeIds'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -37,6 +40,7 @@ Map<String, dynamic> _$UserResponseToJson(UserResponse instance) =>
       'authenticationInfo': instance.authenticationInfo.toJson(),
       'profileInfo': instance.profileInfo.toJson(),
       'recipeIds': instance.recipeIds,
+      'likedRecipeIds': instance.likedRecipeIds,
       'savedRecipeIds': instance.savedRecipeIds,
       'followingIds': instance.followingIds,
       'followerIds': instance.followerIds,

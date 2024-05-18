@@ -12,6 +12,7 @@ class UserResponse {
   final UserAuthenticationInfoResponse authenticationInfo;
   final UserProfileInfoResponse profileInfo;
   final List<String> recipeIds;
+  final List<String> likedRecipeIds;
   final List<String> savedRecipeIds;
   final List<String> followingIds;
   final List<String> followerIds;
@@ -24,6 +25,7 @@ class UserResponse {
     required this.createdAt,
     required this.profileInfo,
     required this.recipeIds,
+    required this.likedRecipeIds,
     required this.savedRecipeIds,
     required this.followingIds,
     required this.followerIds,
@@ -34,6 +36,7 @@ class UserResponse {
     required this.authenticationInfo,
     required this.profileInfo,
     this.recipeIds = const [],
+    this.likedRecipeIds= const[],
     this.savedRecipeIds = const [],
     this.followingIds = const [],
     this.followerIds = const [],

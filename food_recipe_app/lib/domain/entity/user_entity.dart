@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class UserEntity {
   String id;
   DateTime createdAt;
   AuthenticationInformation authenticationInfo;
   ProfileInformation profileInfo;
   List<String> recipeIds;
+  List<String> likedRecipeIds;
   List<String> savedRecipeIds;
   List<String> followingIds;
   List<String> followerIds;
@@ -17,6 +20,7 @@ class UserEntity {
       this.authenticationInfo,
       this.profileInfo,
       this.recipeIds,
+      this.likedRecipeIds,
       this.savedRecipeIds,
       this.followingIds,
       this.followerIds,
@@ -32,6 +36,7 @@ class BackgroundUser {
   DateTime createdAt;
   ProfileInformation profileInfo;
   List<String> recipeIds;
+  List<String> likedRecipeIds;
   List<String> savedRecipeIds;
   List<String> followingIds;
   List<String> followerIds;
@@ -42,6 +47,7 @@ class BackgroundUser {
       required this.createdAt,
       required this.profileInfo,
       required this.recipeIds,
+      required this.likedRecipeIds,
       required this.savedRecipeIds,
       required this.followingIds,
       required this.followerIds,
@@ -53,6 +59,7 @@ class BackgroundUser {
         createdAt = userEntity.createdAt,
         profileInfo = userEntity.profileInfo,
         recipeIds = userEntity.recipeIds,
+        likedRecipeIds = userEntity.likedRecipeIds,
         savedRecipeIds = userEntity.savedRecipeIds,
         followingIds = userEntity.followingIds,
         followerIds = userEntity.followerIds,
@@ -78,19 +85,33 @@ class BackgroundUser {
             json['profileInfo']['bio'],
             json['profileInfo']['categories'],
             json['profileInfo']['hungryHeads']),
+        likedRecipeIds: json['likedRecipeIds'].cast<String>(),
         recipeIds: json['recipeIds'].cast<String>(),
         savedRecipeIds: json['savedRecipeIds'].cast<String>(),
         followingIds: json['followingIds'].cast<String>(),
         followerIds: json['followerIds'].cast<String>(),
         loginTickets: loginTickets);
   }
+  Map<String,dynamic> toJson(){
+    return {
+      'id': id,
+      'createdAt': createdAt.toIso8601String(),
+      'profileInfo': profileInfo.toJson(),
+      'recipeIds': recipeIds,
+      'likedRecipeIds': likedRecipeIds,
+      'savedRecipeIds': savedRecipeIds,
+      'followingIds': followingIds,
+      'followerIds': followerIds,
+      'loginTickets': loginTickets.map((e) => e.toJson()).toList()
+    };
+  }
 
   @override
   String toString() {
-    return jsonEncode(this);
+    return jsonEncode(toJson());
   }
 
-  BackgroundUser decode(String jsonstr) {
+  static BackgroundUser decode(String jsonstr) {
     return BackgroundUser.fromJson(jsonDecode(jsonstr));
   }
 }
@@ -105,6 +126,17 @@ class ProfileInformation {
 
   ProfileInformation(this.fullName, this.avatarUrl, this.isVegan, this.bio,
       this.categories, this.hungryHeads);
+
+  Map<String,dynamic> toJson(){
+    return {
+      'fullName': fullName,
+      'avatarUrl': avatarUrl,
+      'isVegan': isVegan,
+      'bio': bio,
+      'categories': categories,
+      'hungryHeads': hungryHeads
+    };
+  }
 }
 
 class AuthenticationInformation {
@@ -124,4 +156,14 @@ class LoginTicket {
 
   LoginTicket(this.refreshToken, this.deviceInfo, this.deviceId,
       this.createTime, this.expireTime);
+
+  Map<String,dynamic> toJson(){
+    return {
+      'refreshToken': refreshToken,
+      'deviceId': deviceId,
+      'deviceInfo': deviceInfo,
+      'createTime': createTime.toIso8601String(),
+      'expireTime': expireTime.toIso8601String()
+    };
+  }
 }

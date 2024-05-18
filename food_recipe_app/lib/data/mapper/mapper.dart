@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:food_recipe_app/data/responses/chef_response.dart';
 import 'package:food_recipe_app/data/responses/notification_response.dart';
 import 'package:food_recipe_app/data/responses/user_response.dart';
@@ -76,24 +77,39 @@ extension UserDomainResponseMapper on UserResponse {
             e.deviceInfo ?? "", e.createTime, e.expireTime))
         .toList();
     return UserEntity(id, createdAt, myAuthenticationInfo, myProfile, recipeIds,
-        savedRecipeIds, followingIds, followerIds, myLoginTickets);
+        likedRecipeIds, savedRecipeIds, followingIds, followerIds, myLoginTickets);
   }
   BackgroundUser toBackgroundUser(){
-    var myProfile = ProfileInformation(
-        profileInfo.fullName,
-        profileInfo.avatarUrl,
-        profileInfo.isVegan,
-        profileInfo.bio,
-        profileInfo.categories,
-        profileInfo.hungryHeads);
-    var myLoginTickets = loginTickets
-        .map((e) => LoginTicket(e.refreshToken ?? "", e.deviceId ?? "",
-        e.deviceInfo ?? "", e.createTime, e.expireTime))
-        .toList();
-    return BackgroundUser( id:id,createdAt:createdAt, profileInfo:myProfile,
-        followerIds:followerIds,followingIds:followingIds,
-        loginTickets:myLoginTickets, savedRecipeIds:savedRecipeIds,
-        recipeIds:recipeIds);
+
+    try{
+      var myProfile = ProfileInformation(
+          profileInfo.fullName,
+          profileInfo.avatarUrl,
+          profileInfo.isVegan,
+          profileInfo.bio,
+          profileInfo.categories,
+          profileInfo.hungryHeads);
+      var myLoginTickets = loginTickets
+          .map((e) => LoginTicket(e.refreshToken ?? "", e.deviceId ?? "",
+          e.deviceInfo ?? "", e.createTime, e.expireTime))
+          .toList();
+      return BackgroundUser( id:id,createdAt:createdAt, profileInfo:myProfile,
+          followerIds:followerIds,followingIds:followingIds,
+          likedRecipeIds: likedRecipeIds,
+          loginTickets:myLoginTickets, savedRecipeIds:savedRecipeIds,
+          recipeIds:recipeIds);
+    }
+    catch(error){
+      debugPrint('mapper error: $error');
+      return BackgroundUser(id:id,createdAt:createdAt, profileInfo:ProfileInformation("","",true,"",[],0),
+          followerIds:[],followingIds:[],
+          likedRecipeIds: [],
+          loginTickets:[],
+          savedRecipeIds:[],
+          recipeIds:[]);
+    }
+
+
   }
 }
 extension UserProfileInfoResponseMapper on UserProfileInfoResponse {

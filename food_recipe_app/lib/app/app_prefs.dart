@@ -7,6 +7,7 @@ const String PREFS_KEY_ONBOARDING_SCREEN = "PREFS_KEY_ONBOARDING_SCREEN";
 const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String PREFS_KEY_TOKEN = "PREFS_KEY_TOKEN";
 const String PREFS_KEY_REFRESH =  "PREFS_KEY_REFRESH";
+const String PREFS_KEY_BACKGROUND_USER = "PREFS_KEY_BACKGROUND_USER";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
@@ -61,6 +62,10 @@ class AppPreferences {
   Future<void> setUserRefreshToken(String token) async {
     _sharedPreferences.setString(PREFS_KEY_REFRESH, token);
   }
+  Future<void> setBackgroundUser(String backgroundUserJsonStr) async{
+    debugPrint("backgroundUserJsonStr: $backgroundUserJsonStr");
+    _sharedPreferences.setString(PREFS_KEY_BACKGROUND_USER, backgroundUserJsonStr);
+  }
 
   Future<String> getUserToken() async {
     return _sharedPreferences.getString(PREFS_KEY_TOKEN) ?? "";
@@ -68,6 +73,9 @@ class AppPreferences {
 
   Future<String> getUserRefreshToken() async {
     return _sharedPreferences.getString(PREFS_KEY_REFRESH)??"";
+  }
+  Future<String> getBackgroundUser() async{
+    return _sharedPreferences.getString(PREFS_KEY_BACKGROUND_USER)??"";
   }
 
   Future<void> setIsUserLoggedIn() async {
@@ -82,5 +90,6 @@ class AppPreferences {
     _sharedPreferences.remove(PREFS_KEY_IS_USER_LOGGED_IN);
     _sharedPreferences.remove(PREFS_KEY_TOKEN);
     _sharedPreferences.remove(PREFS_KEY_REFRESH);
+    _sharedPreferences.remove(PREFS_KEY_BACKGROUND_USER);
   }
 }
