@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
@@ -78,97 +79,107 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     recipeList = [];
-    return SingleChildScrollView(
-      controller: scrollController,
-      child: Column(
+    return Scaffold(
+      floatingActionButton: SpeedDial(
+        child: Icon(Icons.plumbing),
         children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
-            child: Row(
-              children: [
-                Text(
-                  AppStrings.savedRecipes,
-                  style: getBoldStyle(
-                      color: ColorManager.secondaryColor,
-                      fontSize: FontSize.s20),
-                ),
-                const Spacer(),
-                SvgPicture.asset(
-                  PicturePath.logoSVGPath,
-                  width: AppSize.s50,
-                  height: AppSize.s50,
-                  fit: BoxFit.contain,
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: AppSize.s10,
-          ),
-          FoodTypeOptions(
-            selectedItem: selectedItem,
-            bloc: savedRecipesBloc,
-            resetData: resetData,
-          ),
-          const SizedBox(
-            height: AppSize.s10,
-          ),
-          BlocConsumer<SavedRecipesBloc, SavedRecipesState>(
-            bloc: savedRecipesBloc,
-            listener: (context, state) {
-              if (state is SavedRecipesErrorState) {
-                showAnimatedDialog2(
-                    context, NoConnectionDialog(reload: reload));
-              }
-            },
-            builder: (context, state) {
-              if (state is SavedRecipesLoadedState) {
-                recipeList.addAll(state.savedRecipeList);
-                return ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: recipeList.length + 1,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      if (index >= recipeList.length) {
-                        if (state.isLastPage) {
-                          return const NoItemWidget();
-                        } else {
-                          return const LoadingWidget();
-                        }
-                      }
-                      return Center(
-                          child: RecipeItem(
-                        isUser: true,
-                        recipe: recipeList[index],
-                      ));
-                    });
-                /*return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: recipeList.length,
-                    itemBuilder: (context, index) {
-                      print(recipeList);
-                      return ListTile(
-                        subtitle: SizedBox(
-                          height: 200,
-                        ),
-                        title: Text('$index'),
-                      );
-                    });*/
-              }
-              if (state is SavedRecipesLoadingState) {
-                return const LoadingWidget();
-              }
-              if (state is SavedRecipesErrorState) {
-                return ErrorText(failure: state.failure);
-              }
-              return Container();
-            },
-          ),
-          const SizedBox(
-            height: 30,
-          )
+          SpeedDialChild(child: Icon(Icons.abc)),
+          SpeedDialChild(child: Icon(Icons.abc)),
+          SpeedDialChild(child: Icon(Icons.abc)),
         ],
+      ),
+      body: SingleChildScrollView(
+        controller: scrollController,
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
+              child: Row(
+                children: [
+                  Text(
+                    AppStrings.savedRecipes,
+                    style: getBoldStyle(
+                        color: ColorManager.secondaryColor,
+                        fontSize: FontSize.s20),
+                  ),
+                  const Spacer(),
+                  SvgPicture.asset(
+                    PicturePath.logoSVGPath,
+                    width: AppSize.s50,
+                    height: AppSize.s50,
+                    fit: BoxFit.contain,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: AppSize.s10,
+            ),
+            FoodTypeOptions(
+              selectedItem: selectedItem,
+              bloc: savedRecipesBloc,
+              resetData: resetData,
+            ),
+            const SizedBox(
+              height: AppSize.s10,
+            ),
+            BlocConsumer<SavedRecipesBloc, SavedRecipesState>(
+              bloc: savedRecipesBloc,
+              listener: (context, state) {
+                if (state is SavedRecipesErrorState) {
+                  showAnimatedDialog2(
+                      context, NoConnectionDialog(reload: reload));
+                }
+              },
+              builder: (context, state) {
+                if (state is SavedRecipesLoadedState) {
+                  recipeList.addAll(state.savedRecipeList);
+                  return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: recipeList.length + 1,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        if (index >= recipeList.length) {
+                          if (state.isLastPage) {
+                            return const NoItemWidget();
+                          } else {
+                            return const LoadingWidget();
+                          }
+                        }
+                        return Center(
+                            child: RecipeItem(
+                          isUser: true,
+                          recipe: recipeList[index],
+                        ));
+                      });
+                  /*return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: recipeList.length,
+                      itemBuilder: (context, index) {
+                        print(recipeList);
+                        return ListTile(
+                          subtitle: SizedBox(
+                            height: 200,
+                          ),
+                          title: Text('$index'),
+                        );
+                      });*/
+                }
+                if (state is SavedRecipesLoadingState) {
+                  return const LoadingWidget();
+                }
+                if (state is SavedRecipesErrorState) {
+                  return ErrorText(failure: state.failure);
+                }
+                return Container();
+              },
+            ),
+            const SizedBox(
+              height: 30,
+            )
+          ],
+        ),
       ),
     );
   }

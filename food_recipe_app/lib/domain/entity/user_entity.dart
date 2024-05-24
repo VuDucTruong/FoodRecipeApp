@@ -31,91 +31,6 @@ class UserEntity {
   }
 }
 
-class BackgroundUser {
-  String id;
-  DateTime createdAt;
-  ProfileInformation profileInfo;
-  List<String> recipeIds;
-  List<String> likedRecipeIds;
-  List<String> savedRecipeIds;
-  List<String> followingIds;
-  List<String> followerIds;
-  List<LoginTicket> loginTickets;
-
-  BackgroundUser(
-      {required this.id,
-      required this.createdAt,
-      required this.profileInfo,
-      required this.recipeIds,
-      required this.likedRecipeIds,
-      required this.savedRecipeIds,
-      required this.followingIds,
-      required this.followerIds,
-      required this.loginTickets});
-
-  BackgroundUser.fromUserEntity({
-    required UserEntity userEntity,
-  })  : id = userEntity.id,
-        createdAt = userEntity.createdAt,
-        profileInfo = userEntity.profileInfo,
-        recipeIds = userEntity.recipeIds,
-        likedRecipeIds = userEntity.likedRecipeIds,
-        savedRecipeIds = userEntity.savedRecipeIds,
-        followingIds = userEntity.followingIds,
-        followerIds = userEntity.followerIds,
-        loginTickets = userEntity.loginTickets;
-
-  factory BackgroundUser.fromJson(Map<String, dynamic> json) {
-    List<LoginTicket> loginTickets = [];
-    for (var ticket in json['loginTickets']) {
-      loginTickets.add(LoginTicket(
-          ticket['refreshToken'],
-          ticket['deviceId'],
-          ticket['deviceInfo'],
-          DateTime.parse(ticket['createTime']),
-          DateTime.parse(ticket['expireTime'])));
-    }
-    return BackgroundUser(
-        id: json['id'],
-        createdAt: DateTime.parse(json['createdAt']),
-        profileInfo: ProfileInformation(
-            json['profileInfo']['fullName'],
-            json['profileInfo']['avatarUrl'],
-            json['profileInfo']['isVegan'],
-            json['profileInfo']['bio'],
-            json['profileInfo']['categories'],
-            json['profileInfo']['hungryHeads']),
-        likedRecipeIds: json['likedRecipeIds'].cast<String>(),
-        recipeIds: json['recipeIds'].cast<String>(),
-        savedRecipeIds: json['savedRecipeIds'].cast<String>(),
-        followingIds: json['followingIds'].cast<String>(),
-        followerIds: json['followerIds'].cast<String>(),
-        loginTickets: loginTickets);
-  }
-  Map<String,dynamic> toJson(){
-    return {
-      'id': id,
-      'createdAt': createdAt.toIso8601String(),
-      'profileInfo': profileInfo.toJson(),
-      'recipeIds': recipeIds,
-      'likedRecipeIds': likedRecipeIds,
-      'savedRecipeIds': savedRecipeIds,
-      'followingIds': followingIds,
-      'followerIds': followerIds,
-      'loginTickets': loginTickets.map((e) => e.toJson()).toList()
-    };
-  }
-
-  @override
-  String toString() {
-    return jsonEncode(toJson());
-  }
-
-  static BackgroundUser decode(String jsonstr) {
-    return BackgroundUser.fromJson(jsonDecode(jsonstr));
-  }
-}
-
 class ProfileInformation {
   String fullName;
   String avatarUrl;
@@ -127,7 +42,7 @@ class ProfileInformation {
   ProfileInformation(this.fullName, this.avatarUrl, this.isVegan, this.bio,
       this.categories, this.hungryHeads);
 
-  Map<String,dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'fullName': fullName,
       'avatarUrl': avatarUrl,
@@ -157,7 +72,7 @@ class LoginTicket {
   LoginTicket(this.refreshToken, this.deviceInfo, this.deviceId,
       this.createTime, this.expireTime);
 
-  Map<String,dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'refreshToken': refreshToken,
       'deviceId': deviceId,

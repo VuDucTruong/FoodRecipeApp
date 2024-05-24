@@ -21,42 +21,51 @@ class _UserDescriptionState extends State<UserDescription> {
     // TODO: implement build
     return Container(
         margin: const EdgeInsets.symmetric(vertical: AppMargin.m4),
-        child: Column(
-          children: [
-            SizedBox(
-              child: Text(
-                maxLines: isExpanded ? 100 : 4,
-                widget.entity.profileInfo.bio,
-                style: getRegularStyle(color: Colors.black),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  isExpanded = !isExpanded;
-                });
-              },
-              child: Row(
+        child: widget.entity.profileInfo.bio.isNotEmpty
+            ? Column(
                 children: [
-                  Text(
-                    !isExpanded
-                        ? '${AppStrings.showMore} '
-                        : '${AppStrings.showLess} ',
-                    style: getSemiBoldStyle(color: ColorManager.blueColor),
+                  SizedBox(
+                    child: Text(
+                      maxLines: isExpanded ? 100 : 4,
+                      widget.entity.profileInfo.bio,
+                      style: getRegularStyle(color: Colors.black),
+                    ),
                   ),
-                  !isExpanded
-                      ? const Icon(
-                          Icons.arrow_drop_down_rounded,
-                          color: ColorManager.blueColor,
-                        )
-                      : const Icon(
-                          Icons.arrow_drop_up_rounded,
-                          color: ColorManager.blueColor,
-                        )
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        isExpanded = !isExpanded;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          !isExpanded
+                              ? '${AppStrings.showMore} '
+                              : '${AppStrings.showLess} ',
+                          style:
+                              getSemiBoldStyle(color: ColorManager.blueColor),
+                        ),
+                        !isExpanded
+                            ? const Icon(
+                                Icons.arrow_drop_down_rounded,
+                                color: ColorManager.blueColor,
+                              )
+                            : const Icon(
+                                Icons.arrow_drop_up_rounded,
+                                color: ColorManager.blueColor,
+                              )
+                      ],
+                    ),
+                  )
                 ],
-              ),
-            )
-          ],
-        ));
+              )
+            : Center(
+                child: Text(
+                  AppStrings.noBioInfor,
+                  style:
+                      getRegularStyle().copyWith(fontStyle: FontStyle.italic),
+                ),
+              ));
   }
 }

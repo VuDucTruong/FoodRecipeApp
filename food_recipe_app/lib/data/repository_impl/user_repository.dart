@@ -14,13 +14,17 @@ import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
 
+import '../../domain/entity/background_user.dart';
+import '../background_data/background_data_manager.dart';
+
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource userRemoteDataSource;
   final NetworkInfo _networkInfo;
   final AppPreferences _appPreferences;
+  final BackgroundDataManager _backgroundDataManager;
 
-  UserRepositoryImpl(
-      this.userRemoteDataSource, this._networkInfo, this._appPreferences);
+  UserRepositoryImpl(this.userRemoteDataSource, this._networkInfo,
+      this._appPreferences, this._backgroundDataManager);
 
   @override
   Future<Either<Failure, BackgroundUser>> getUserInfo() async {
@@ -29,11 +33,11 @@ class UserRepositoryImpl implements UserRepository {
         final response = await userRemoteDataSource.getSelfInfo();
         if (response.statusCode == ResponseCode.SUCCESS) {
           if (response.data != null) {
-            await _appPreferences.setBackgroundUser(
-                response.data!.toBackgroundUser().toString());
-            return Right(response.data!.toBackgroundUser());
+            BackgroundUser user = response.data!.toBackgroundUser();
+            _backgroundDataManager.setBackgroundUser(user);
+            return Right(user);
           }
-            return Left(Failure.dataNotFound('Profile information'));
+          return Left(Failure.dataNotFound('Profile information'));
         } else {
           return Left(Failure.internalServerError());
         }
@@ -166,20 +170,12 @@ class UserRepositoryImpl implements UserRepository {
             .updateFollow(targetChefId, option)
             .then((response) async {
           if (response.statusCode == ResponseCode.SUCCESS) {
-            if(response.data != null) {
-              BackgroundUser user = BackgroundUser.decode(
-                  await _appPreferences.getBackgroundUser());
-              if (option) {
-                user.followingIds.add(targetChefId);
-              } else {
-                user.followerIds.remove(targetChefId);
-              }
-              await _appPreferences.setBackgroundUser(user.toString());
+            if (response.data != null) {
+              _backgroundDataManager.updateFollow(targetChefId, option);
               return const Right(true);
             } else {
               return Left(Failure.actionFailed("Follow user"));
             }
-
           } else {
             return Left(Failure.internalServerError());
           }
@@ -200,11 +196,10 @@ class UserRepositoryImpl implements UserRepository {
             .updatePassword(password)
             .then((response) async {
           if (response.statusCode == ResponseCode.SUCCESS) {
-            if(response.data!=null)
-              {
-                _appPreferences.logout();
-                const Right(true);
-              }
+            if (response.data != null) {
+              _appPreferences.logout();
+              const Right(true);
+            }
             return Left(Failure.actionFailed("Update password"));
           } else {
             return Left(Failure.internalServerError());
@@ -229,15 +224,12 @@ class UserRepositoryImpl implements UserRepository {
             .updateProfile(updateRequest)
             .then((response) async {
           if (response.statusCode == ResponseCode.SUCCESS) {
-            if(response.data != null)
-              {
-                BackgroundUser backgroundUser = BackgroundUser.decode(
-                    await _appPreferences.getBackgroundUser());
-                ProfileInformation profileInformation = response.data!.toProfileInformation();
-                backgroundUser.profileInfo = profileInformation;
-                await _appPreferences.setBackgroundUser(backgroundUser.toString());
-                return Right(profileInformation);
-              }
+            if (response.data != null) {
+              ProfileInformation profileInformation =
+                  response.data!.toProfileInformation();
+              _backgroundDataManager.updateProfile(profileInformation);
+              return Right(profileInformation);
+            }
             return Left(Failure.actionFailed("Update profile"));
           } else {
             return Left(Failure.internalServerError());

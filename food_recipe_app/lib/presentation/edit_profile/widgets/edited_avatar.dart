@@ -10,8 +10,9 @@ import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
 class EditedAvatar extends StatefulWidget {
-  const EditedAvatar({super.key});
-
+  EditedAvatar({super.key, required this.avatarUrl, this.selectedImage});
+  final String avatarUrl;
+  File? selectedImage;
   @override
   _EditedAvatarState createState() {
     return _EditedAvatarState();
@@ -29,26 +30,33 @@ class _EditedAvatarState extends State<EditedAvatar> {
     super.dispose();
   }
 
-  File? selectedImage;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return InkWell(
       splashColor: Colors.transparent,
       onTap: () async {
-        selectedImage = await selectImageFromGalery();
+        widget.selectedImage = await selectImageFromGalery();
         setState(() {});
       },
       child: Column(
         children: [
           Stack(
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.white,
-                radius: 133 / 2 + 4,
-                backgroundImage: (selectedImage == null
-                    ? const AssetImage(PicturePath.emptyAvatarPngPath)
-                    : FileImage(selectedImage!)) as ImageProvider,
+              ClipOval(
+                child: Container(
+                    width: 135,
+                    height: 135,
+                    color: Colors.white,
+                    child: widget.selectedImage == null
+                        ? Image.network(
+                            widget.avatarUrl,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                  PicturePath.emptyAvatarPngPath);
+                            },
+                          )
+                        : Image.file(widget.selectedImage!)),
               ),
               Positioned(
                   bottom: 0,

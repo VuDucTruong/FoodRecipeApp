@@ -66,7 +66,7 @@ class AppStrings {
   static const String country = 'Country';
   static const String instagram = 'Instagram';
   static const String gmail = 'G-mail';
-  static const String deleteProfile = 'Delete Your Profile';
+  static const String deleteAccount = 'Delete Account';
   static const String bio = 'Bio'; //Describe yourself
   static const String yes = 'Yes';
   static const String no = 'No';
@@ -116,6 +116,16 @@ class AppStrings {
   static const String duplicatedUserError = 'Your email have already existed !';
   static const String enterBio = 'Describe a bit about yourself !';
   static const String recipesByCategory = 'Recipes By Category';
+  static const String noBioInfor = 'There is no information about bio here !';
+  static const String seeAllFollowers = 'Your Followers';
+  static const String signOut = 'Sign Out';
+  static const String changePass = 'Change Password';
+  static const String editPrefs = 'Edit Preferences';
+  static const String saveProfileInfo = 'Save';
+  static const String oldPassword = 'Current Password';
+  static const String hintOldPassword = 'Type your current password';
+  static const String hintNewPassword = 'Type your new password';
+  static const String newPassword = 'New Password';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 
@@ -124,7 +134,7 @@ class AppStrings {
   static const String emailRequiredError = 'Email is required';
   static const String passRequiredError = 'Password is required';
   static const String passValidationError =
-      'Password must have more than 8 letters';
+      'Password must have more than 5 letters';
   static const String nameRequiredError = 'Full name is required';
   static const String phoneRequiredError = 'Phone number is required';
   static const String phoneValidationError =

@@ -4,9 +4,11 @@ import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
+import 'package:food_recipe_app/presentation/change_password/change_password_page.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
 import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
 import 'package:food_recipe_app/presentation/edit_profile/edit_profile_view.dart';
+import 'package:food_recipe_app/presentation/list_chef_page/list_chef_page.dart';
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/login/login_view.dart';
@@ -31,6 +33,8 @@ class Routes {
   static const String createProfileRoute = '/createProfile';
   static const String foodTypeRoute = '/foodType';
   static const String recipesByCategoryRoute = '/recipesByCategory';
+  static const String listChefPageRoute = '/listChefPage';
+  static const String changePassRoute = '/changePass';
 }
 
 class InitialRoute {
@@ -104,6 +108,14 @@ class RouteGenerator {
       case Routes.recipesByCategoryRoute:
         return MaterialPageRoute(
           builder: (context) => const RecipesByCategoryPage(),
+        );
+      case Routes.listChefPageRoute:
+        return MaterialPageRoute(
+          builder: (context) => const ListChefPage(),
+        );
+      case Routes.changePassRoute:
+        return MaterialPageRoute(
+          builder: (context) => ChangePasswordPage(),
         );
       case Routes.createProfileRoute:
         initCreateProfileModule();

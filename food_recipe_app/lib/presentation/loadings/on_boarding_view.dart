@@ -167,7 +167,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
         ),
         Positioned(
           bottom: MediaQuery.of(context).size.height * 0.2,
-          width: MediaQuery.of(context).size.width-5,
+          width: MediaQuery.of(context).size.width - 5,
           child: RichText(
             softWrap: true,
             maxLines: 3,

@@ -1,14 +1,25 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
+import 'package:food_recipe_app/presentation/edit_profile/widgets/bio_text_field.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/edited_avatar.dart';
+import 'package:food_recipe_app/presentation/edit_profile/widgets/icon_text_field.dart';
+import 'package:food_recipe_app/presentation/edit_profile/widgets/name_text_field.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../domain/entity/background_user.dart';
 import '../resources/assets_management.dart';
 import '../resources/color_management.dart';
 import '../resources/font_manager.dart';
+import '../resources/route_management.dart';
 import '../resources/string_management.dart';
 import '../resources/style_management.dart';
 
@@ -23,13 +34,23 @@ class EditProfileView extends StatefulWidget {
 
 class _EditProfileViewState extends State<EditProfileView> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController bioController = TextEditingController();
-  TextEditingController instagramController = TextEditingController();
-  TextEditingController gmailController = TextEditingController();
+  late TextEditingController nameController;
+  late TextEditingController bioController;
+  late TextEditingController instagramController;
+  late TextEditingController gmailController;
+  late BackgroundUser currentUser;
+  File? selectedAvatar;
   @override
   void initState() {
     super.initState();
+    currentUser = GetIt.instance<BackgroundDataManager>().getBackgroundUser();
+    nameController =
+        TextEditingController(text: currentUser.profileInfo.fullName);
+    bioController = TextEditingController(text: currentUser.profileInfo.bio);
+    instagramController =
+        TextEditingController(text: currentUser.profileInfo.fullName);
+    gmailController =
+        TextEditingController(text: currentUser.profileInfo.fullName);
   }
 
   @override
@@ -45,184 +66,67 @@ class _EditProfileViewState extends State<EditProfileView> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: _buildAppBar(context),
+      appBar: const CustomAppBar(
+        title: AppStrings.editProfile,
+      ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const EditedAvatar(),
+              EditedAvatar(
+                avatarUrl: currentUser.profileInfo.avatarUrl,
+                selectedImage: selectedAvatar,
+              ),
               Form(
                   key: _formKey,
-                  child: Column(
-                    children: [
-                      _getNameEditField(),
-                    ],
+                  child: NameTextField(
+                    controller: nameController,
+                    initialValue: currentUser.profileInfo.fullName,
                   )),
-              _getBioEditField(),
-              _getIconEditField(
+              BioTextField(
+                  controller: bioController,
+                  initialValue: currentUser.profileInfo.bio),
+              IconTextField(
                   iconPath: PicturePath.instagramPath,
                   content: AppStrings.instagram,
                   controller: instagramController),
-              _getIconEditField(
+              IconTextField(
                   iconPath: PicturePath.gmailPath,
                   content: AppStrings.gmail,
                   controller: gmailController),
               const SizedBox(
                 height: AppSize.s16,
               ),
+              FilledButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      /////////zzzz
+                    }
+                  },
+                  child: const Text(AppStrings.saveProfileInfo))
             ],
           ),
         ),
       ),
-      floatingActionButton: buildDeleteButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-
-  Padding buildDeleteButton() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: OutlinedButton(
-        onPressed: () {
-          ////zzzzzz
-        },
-        style: OutlinedButton.styleFrom(
-            side: const BorderSide(
-                color: ColorManager.blueColor,
-                style: BorderStyle.solid,
-                width: 2)),
-        child: Text(AppStrings.deleteProfile,
-            style: getBoldStyle(color: ColorManager.blueColor)),
-      ),
-    );
-  }
-
-  AppBar _buildAppBar(BuildContext context) {
-    return AppBar(
-      title: Text(
-        AppStrings.editProfile,
-        style: getBoldStyle(
-            color: ColorManager.secondaryColor, fontSize: FontSize.s20),
-      ),
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      leading: IconButton(
-        onPressed: () {
-          if (!_formKey.currentState!.validate()) return;
-          Navigator.pop(context);
-        },
-        icon: SvgPicture.asset(
-          PicturePath.backArrowPath,
-        ),
-      ),
-    );
-  }
-
-  InputDecoration inputDecoration() {
-    return const InputDecoration(
-      isDense: true,
-      errorStyle: TextStyle(fontSize: FontSize.s12),
-      contentPadding: EdgeInsets.zero,
-      enabledBorder: UnderlineInputBorder(),
-      // focused border
-      focusedBorder: UnderlineInputBorder(),
-
-      // error border
-      errorBorder: UnderlineInputBorder(),
-      // focused error border
-      focusedErrorBorder: UnderlineInputBorder(),
-    );
-  }
-
-  Widget _getBioEditField() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      floatingActionButton: SpeedDial(
+        icon: Icons.add,
+        gradientBoxShape: BoxShape.circle,
+        activeBackgroundColor: Colors.red,
+        gradient: ColorManager.linearGradientWhiteOrange,
         children: [
-          Text(
-            AppStrings.bio,
-            style: getBoldStyle(
-                color: ColorManager.secondaryColor, fontSize: FontSize.s16),
-          ),
-          const SizedBox(
-            height: AppSize.s4,
-          ),
-          TextFormField(
-              controller: bioController,
-              maxLines: null,
-              minLines: 1,
-              maxLength: 500,
-              style: getLightStyle(color: Colors.black, fontSize: FontSize.s16),
-              decoration: inputDecoration()),
-        ],
-      ),
-    );
-  }
-
-  Widget _getNameEditField() {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppStrings.fullName,
-            style: getBoldStyle(
-                color: ColorManager.secondaryColor, fontSize: FontSize.s16),
-          ),
-          const SizedBox(
-            height: AppSize.s4,
-          ),
-          TextFormField(
-              controller: nameController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: validateEmpty,
-              maxLines: null,
-              minLines: 1,
-              maxLength: 50,
-              style: getLightStyle(color: Colors.black, fontSize: FontSize.s16),
-              decoration: inputDecoration()),
-        ],
-      ),
-    );
-  }
-
-  Widget _getIconEditField(
-      {required String iconPath,
-      required String content,
-      required TextEditingController controller}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: AppMargin.m12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-              width: 100,
-              child: Row(
-                children: [
-                  SvgPicture.asset(iconPath),
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  Text(content,
-                      style: getBoldStyle(
-                          color: Colors.black, fontSize: FontSize.s14)),
-                ],
-              )),
-          const SizedBox(
-            width: AppSize.s8,
-          ),
-          Expanded(
-            child: TextFormField(
-                controller: controller,
-                style:
-                    getLightStyle(color: Colors.black, fontSize: FontSize.s16),
-                maxLines: null,
-                minLines: 1,
-                decoration: inputDecoration()),
-          ),
+          SpeedDialChild(
+              child: const Icon(Icons.delete_forever),
+              label: AppStrings.deleteAccount),
+          SpeedDialChild(
+              child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.changePassRoute);
+                  },
+                  child: const Icon(Icons.password)),
+              label: AppStrings.changePass),
+          SpeedDialChild(
+              child: const Icon(Icons.favorite), label: AppStrings.editPrefs),
         ],
       ),
     );

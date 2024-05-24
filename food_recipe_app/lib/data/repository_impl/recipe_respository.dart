@@ -14,12 +14,15 @@ import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/presentation/common/helper/create_recipe_object.dart';
 
+import '../background_data/background_data_manager.dart';
+
 class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeRemoteDataSource _recipeDataSource;
   final NetworkInfo _networkInfo;
   final AppPreferences _appPreferences;
+  final BackgroundDataManager _backgroundDataManager;
 
-  RecipeRepositoryImpl(this._recipeDataSource, this._networkInfo,this._appPreferences);
+  RecipeRepositoryImpl(this._recipeDataSource, this._networkInfo,this._appPreferences , this._backgroundDataManager);
 
   @override
   Future<Either<Failure, List<RecipeEntity>>> getRecipesFromLikes() async {
@@ -54,9 +57,9 @@ class RecipeRepositoryImpl implements RecipeRepository {
           if(response.data!=null)
             {
               final recipeEntity = response.data!.toEntity();
-              BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
+              /*BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
               user.recipeIds.add(recipeEntity.id);
-              await _appPreferences.setBackgroundUser(user.toString());
+              await _appPreferences.setBackgroundUser(user.toString());*/
               return Right(recipeEntity);
             }
           return Left(Failure.internalServerError());
@@ -165,9 +168,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
         final response = await _recipeDataSource.updateLikeRecipe(recipeId, option);
         if(response.statusCode == ApiInternalStatus.SUCCESS){
           if(response.data!=null) {
-            BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
-            user.likedRecipeIds.add(recipeId);
-            await _appPreferences.setBackgroundUser(user.toString());
+            _backgroundDataManager.updateLikeRecipe(recipeId , option);
             return Right(response.data!);
           }
           return response.data!=null
@@ -214,9 +215,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
         final response = await _recipeDataSource.updateSaveRecipe(recipeId, option);
         if(response.statusCode == ApiInternalStatus.SUCCESS){
           if(response.data!=null) {
-            BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
-            user.savedRecipeIds.add(recipeId);
-            await _appPreferences.setBackgroundUser(user.toString());
+            _backgroundDataManager.updateSavedRecipe(recipeId, option);
             return Right(response.data!);
           }
           return Left(Failure.actionFailed("Save Recipe"));
@@ -240,9 +239,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
         if(response.statusCode == ApiInternalStatus.SUCCESS){
           if(response.data!=null)
             {
-              BackgroundUser user = BackgroundUser.decode(await _appPreferences.getBackgroundUser());
-              user.recipeIds.remove(recipeId);
-              await _appPreferences.setBackgroundUser(user.toString());
+              _backgroundDataManager.deleteSelfRecipe(recipeId);
               return Right(response.data!);
             }
           return Left(Failure.actionFailed("Delete Recipe"));

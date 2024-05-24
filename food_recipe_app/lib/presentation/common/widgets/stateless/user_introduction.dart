@@ -18,15 +18,24 @@ class UserIntroduction extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 144,
-            width: 144,
-            margin: const EdgeInsets.symmetric(vertical: AppMargin.m4),
-            decoration: BoxDecoration(
-                border: Border.all(color: ColorManager.darkBlueColor),
-                image: DecorationImage(
-                    image: NetworkImage(entity.profileInfo.avatarUrl)),
-                borderRadius: BorderRadius.circular(AppRadius.r20)),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              height: 144,
+              width: 144,
+              margin: const EdgeInsets.symmetric(vertical: AppMargin.m4),
+              decoration: BoxDecoration(
+                  border: Border.all(color: ColorManager.darkBlueColor),
+                  borderRadius: BorderRadius.circular(AppRadius.r20)),
+              child: Image.network(
+                entity.profileInfo.avatarUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Image.asset(
+                  PicturePath.emptyAvatarPngPath,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
           Container(
             margin: const EdgeInsets.all(AppMargin.m8),

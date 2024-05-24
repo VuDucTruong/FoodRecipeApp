@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
+import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
 import 'package:food_recipe_app/data/background_data/device_info.dart';
 import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
 import 'package:food_recipe_app/data/data_source/recipe_remote_data_source.dart';
@@ -9,6 +10,7 @@ import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/repository_impl/login_repository.dart';
 import 'package:food_recipe_app/data/repository_impl/recipe_respository.dart';
 import 'package:food_recipe_app/data/repository_impl/user_repository.dart';
+import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
@@ -23,6 +25,7 @@ import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_verify_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_password_usecase.dart';
 
 import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
 
@@ -36,6 +39,8 @@ import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.d
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
+import 'package:food_recipe_app/presentation/blocs/user_profile/user_profile_bloc.dart';
+import 'package:food_recipe_app/presentation/blocs/user_recipes/user_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
@@ -53,6 +58,9 @@ Future<void> initAppModule() async {
   final sharedPrefs = await SharedPreferences.getInstance();
   // shared prefs instance
   instance.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
+  //register background data manager
+  instance.registerLazySingleton<BackgroundDataManager>(
+      () => BackgroundDataManager());
   // app prefs instance
   instance
       .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
@@ -92,12 +100,12 @@ Future<void> initAppModule() async {
 }
 
 void initRepository() {
-  instance.registerLazySingleton<RecipeRepository>(
-      () => RecipeRepositoryImpl(instance(), instance(),instance()));
+  instance.registerLazySingleton<RecipeRepository>(() =>
+      RecipeRepositoryImpl(instance(), instance(), instance(), instance()));
   instance.registerLazySingleton<LoginRepository>(
       () => LoginRepositoryImpl(instance(), instance(), instance()));
   instance.registerLazySingleton<UserRepository>(
-      () => UserRepositoryImpl(instance(), instance(), instance()));
+      () => UserRepositoryImpl(instance(), instance(), instance(), instance()));
 }
 
 initHomeModule() {
@@ -122,6 +130,14 @@ initHomeModule() {
   }
   if (!instance.isRegistered<VerifiedChefsBloc>()) {
     instance.registerLazySingleton(() => VerifiedChefsBloc(instance()));
+  }
+  if (!instance.isRegistered<UserRecipesBloc>()) {
+    instance.registerLazySingleton<UserRecipesBloc>(
+        () => UserRecipesBloc(instance()));
+  }
+  if (!instance.isRegistered<GetRecipesFromIdsUseCase>()) {
+    instance.registerLazySingleton<GetRecipesFromIdsUseCase>(
+        () => GetRecipesFromIdsUseCase(instance()));
   }
 }
 
@@ -223,5 +239,18 @@ initDeviceInfo(TargetPlatform targetPlatform) {
   if (!instance.isRegistered<DeviceInfo>()) {
     instance.registerLazySingleton(
         () => DeviceInfo(targetPlatform: targetPlatform));
+  }
+}
+
+initUserProfileModule() {
+  if (!instance.isRegistered<UpdatePasswordUseCase>()) {
+    instance.registerLazySingleton<UpdatePasswordUseCase>(
+      () => UpdatePasswordUseCase(instance()),
+    );
+  }
+  if (!instance.isRegistered<UserProfileBloc>()) {
+    instance.registerLazySingleton(
+      () => UserProfileBloc(instance()),
+    );
   }
 }

@@ -62,10 +62,6 @@ class AppPreferences {
   Future<void> setUserRefreshToken(String token) async {
     _sharedPreferences.setString(PREFS_KEY_REFRESH, token);
   }
-  Future<void> setBackgroundUser(String backgroundUserJsonStr) async{
-    debugPrint("backgroundUserJsonStr: $backgroundUserJsonStr");
-    _sharedPreferences.setString(PREFS_KEY_BACKGROUND_USER, backgroundUserJsonStr);
-  }
 
   Future<String> getUserToken() async {
     return _sharedPreferences.getString(PREFS_KEY_TOKEN) ?? "";
@@ -74,9 +70,7 @@ class AppPreferences {
   Future<String> getUserRefreshToken() async {
     return _sharedPreferences.getString(PREFS_KEY_REFRESH)??"";
   }
-  Future<String> getBackgroundUser() async{
-    return _sharedPreferences.getString(PREFS_KEY_BACKGROUND_USER)??"";
-  }
+
 
   Future<void> setIsUserLoggedIn() async {
     _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, true);

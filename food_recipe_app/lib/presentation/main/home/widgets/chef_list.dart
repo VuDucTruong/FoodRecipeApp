@@ -5,6 +5,7 @@ import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
+import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
@@ -47,21 +48,23 @@ class ChefList extends StatelessWidget {
                     },
                     child: Column(
                       children: [
-                        Container(
-                          height: AppSize.s80,
-                          width: AppSize.s80,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image:
-                                    NetworkImage(entity.profileInfo.avatarUrl),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(AppRadius.r20),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                                gradient: ColorManager.linearGradientPink),
+                            height: AppSize.s80,
+                            width: AppSize.s80,
+                            child: Image.network(
+                              entity.profileInfo.avatarUrl,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                PicturePath.errorImagePath,
                                 fit: BoxFit.cover,
-                                onError: (exception, stackTrace) =>
-                                    const AssetImage(
-                                        PicturePath.errorImagePath),
                               ),
-                              borderRadius:
-                                  BorderRadius.circular(AppRadius.r20),
-                              color: Colors.amber),
+                            ),
+                          ),
                         ),
                         Container(
                           width: 80,

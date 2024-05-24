@@ -75,6 +75,7 @@ class _MainViewState extends State<MainView> {
               case 3:
                 break;
               case 4:
+                initUserProfileModule();
                 break;
             }
             return pages[index];

@@ -92,15 +92,11 @@ class _SettingPageState extends State<SettingPage> {
         const SizedBox(
           height: AppSize.s30,
         ),
-        SizedBox(
-            width: 200,
-            child: FilledButton(
-                onPressed: () {},
-                child: Center(
-                  child: Text(AppStrings.saveChanges,
-                      style: getMediumStyle(
-                          color: Colors.white, fontSize: FontSize.s20)),
-                )))
+        FilledButton(
+            onPressed: () {},
+            child: Text(AppStrings.signOut,
+                style: getMediumStyle(
+                    color: Colors.white, fontSize: FontSize.s20)))
       ],
     );
   }

@@ -53,11 +53,12 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
         if (recipesByCategoryBloc.state.isLastPage) {
           return;
         }
+        print(recipesByCategoryBloc.state.isLastPage);
         //await Future.delayed(Duration(seconds: 1));
         recipesByCategoryBloc.add(ConinueLoadingRecipes(
             GetRecipesByCategoryInput(
                 categories: [selectedItem.value],
-                page: (recipeList.length ~/ 10) + 1)));
+                page: (recipeList.length ~/ 2) + 1)));
       }
     });
   }

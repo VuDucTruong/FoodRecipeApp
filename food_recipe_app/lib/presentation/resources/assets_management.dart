@@ -40,6 +40,7 @@ class PicturePath {
   static const String recipeCategoryPath = '$_picturePath/recipe_category.svg';
   static const String eyeSolidPath = '$_picturePath/eye-solid.svg';
   static const String eyeSlashSolidPath = '$_picturePath/eye-slash-solid.svg';
+  static const String changePassPath = '$_picturePath/change_password.png';
 }
 
 class LottiePath {
@@ -49,4 +50,5 @@ class LottiePath {
   static const String noConnectionPath = '$_jsonLottiePath/no_connection.json';
   static const String loadingPath = '$_jsonLottiePath/loading.json';
   static const String emptyPath = '$_jsonLottiePath/empty_list.json';
+  static const String changePassSuccessPath = '$_jsonLottiePath/change_password_success.json';
 }

@@ -9,7 +9,7 @@ final class SavedRecipesInitial extends SavedRecipesState {}
 
 class SavedRecipesLoadingState extends SavedRecipesState {
   SavedRecipesLoadingState() {
-    isLastPage = false;
+    super.isLastPage = false;
   }
 }
 
@@ -18,7 +18,7 @@ class SavedRecipesLoadedState extends SavedRecipesState {
 
   SavedRecipesLoadedState(this.savedRecipeList) {
     if (savedRecipeList.isEmpty) {
-      isLastPage = true;
+      super.isLastPage = true;
     }
   }
 }

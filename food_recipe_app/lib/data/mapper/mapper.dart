@@ -8,6 +8,8 @@ import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 
+import '../../domain/entity/background_user.dart';
+
 extension RecipeResponseMapper on RecipeResponse {
   RecipeEntity toEntity() {
     return RecipeEntity(
@@ -76,12 +78,21 @@ extension UserDomainResponseMapper on UserResponse {
         .map((e) => LoginTicket(e.refreshToken ?? "", e.deviceId ?? "",
             e.deviceInfo ?? "", e.createTime, e.expireTime))
         .toList();
-    return UserEntity(id, createdAt, myAuthenticationInfo, myProfile, recipeIds,
-        likedRecipeIds, savedRecipeIds, followingIds, followerIds, myLoginTickets);
+    return UserEntity(
+        id,
+        createdAt,
+        myAuthenticationInfo,
+        myProfile,
+        recipeIds,
+        likedRecipeIds,
+        savedRecipeIds,
+        followingIds,
+        followerIds,
+        myLoginTickets);
   }
-  BackgroundUser toBackgroundUser(){
 
-    try{
+  BackgroundUser toBackgroundUser() {
+    try {
       var myProfile = ProfileInformation(
           profileInfo.fullName,
           profileInfo.avatarUrl,
@@ -91,30 +102,37 @@ extension UserDomainResponseMapper on UserResponse {
           profileInfo.hungryHeads);
       var myLoginTickets = loginTickets
           .map((e) => LoginTicket(e.refreshToken ?? "", e.deviceId ?? "",
-          e.deviceInfo ?? "", e.createTime, e.expireTime))
+              e.deviceInfo ?? "", e.createTime, e.expireTime))
           .toList();
-      return BackgroundUser( id:id,createdAt:createdAt, profileInfo:myProfile,
-          followerIds:followerIds,followingIds:followingIds,
+      return BackgroundUser(
+          id: id,
+          createdAt: createdAt,
+          profileInfo: myProfile,
+          followerIds: followerIds,
+          followingIds: followingIds,
           likedRecipeIds: likedRecipeIds,
-          loginTickets:myLoginTickets, savedRecipeIds:savedRecipeIds,
-          recipeIds:recipeIds);
-    }
-    catch(error){
+          loginTickets: myLoginTickets,
+          savedRecipeIds: savedRecipeIds,
+          recipeIds: recipeIds);
+    } catch (error) {
       debugPrint('mapper error: $error');
-      return BackgroundUser(id:id,createdAt:createdAt, profileInfo:ProfileInformation("","",true,"",[],0),
-          followerIds:[],followingIds:[],
+      return BackgroundUser(
+          id: id,
+          createdAt: createdAt,
+          profileInfo: ProfileInformation("", "", true, "", [], 0),
+          followerIds: [],
+          followingIds: [],
           likedRecipeIds: [],
-          loginTickets:[],
-          savedRecipeIds:[],
-          recipeIds:[]);
+          loginTickets: [],
+          savedRecipeIds: [],
+          recipeIds: []);
     }
-
-
   }
 }
+
 extension UserProfileInfoResponseMapper on UserProfileInfoResponse {
   ProfileInformation toProfileInformation() {
-    return ProfileInformation(fullName, avatarUrl, isVegan, bio, categories,
-        hungryHeads);
+    return ProfileInformation(
+        fullName, avatarUrl, isVegan, bio, categories, hungryHeads);
   }
 }
