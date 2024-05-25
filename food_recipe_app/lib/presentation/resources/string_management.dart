@@ -126,6 +126,7 @@ class AppStrings {
   static const String hintOldPassword = 'Type your current password';
   static const String hintNewPassword = 'Type your new password';
   static const String newPassword = 'New Password';
+  static const String notMatchPass = 'Password does not match !';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 

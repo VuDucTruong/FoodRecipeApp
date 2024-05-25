@@ -47,77 +47,79 @@ class _UserProfilePageState extends State<UserProfilePage> {
     // TODO: implement build
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppStrings.yourProfile,
-            style: getBoldStyle(
-                color: ColorManager.secondaryColor, fontSize: FontSize.s20),
-          ),
-          UserIntroduction(
-            entity: currentUser,
-          ),
-          UserDescription(
-            entity: currentUser,
-          ),
-          UserSocialStatus(
-            entity: currentUser,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              FilledButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.editProfileRoute);
-                  },
-                  child: const Text(AppStrings.editProfile)),
-              FilledButton(
-                  style: FilledButton.styleFrom(
-                      backgroundColor: ColorManager.blueColor),
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.listChefPageRoute);
-                  },
-                  child: const Text(AppStrings.seeAllFollowers)),
-            ],
-          ),
-          const Divider(
-            color: Colors.black26,
-          ),
-          BlocBuilder<UserRecipesBloc, UserRecipesState>(
-            bloc: _userRecipesBloc,
-            builder: (context, state) {
-              if (state is UserRecipesLoadingState) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (state is UserRecipesLoadedState) {
-                return SizedBox(
-                    height: 400,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.recipeList.length,
-                      itemBuilder: (context, index) {
-                        return RecipeItem(
-                          isUser: true,
-                          recipe: state.recipeList[index],
-                        );
-                      },
-                    ));
-              }
-              if (state is UserRecipesErrorState) {
-                return Center(
-                  child: Text(state.failure.toString()),
-                );
-              }
-              return Container();
-            },
-          ),
-          const SizedBox(
-            height: 8,
-          )
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              AppStrings.yourProfile,
+              style: getBoldStyle(
+                  color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+            ),
+            UserIntroduction(
+              entity: currentUser,
+            ),
+            UserDescription(
+              entity: currentUser,
+            ),
+            UserSocialStatus(
+              entity: currentUser,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                FilledButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.editProfileRoute);
+                    },
+                    child: const Text(AppStrings.editProfile)),
+                FilledButton(
+                    style: FilledButton.styleFrom(
+                        backgroundColor: ColorManager.blueColor),
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.listChefPageRoute);
+                    },
+                    child: const Text(AppStrings.seeAllFollowers)),
+              ],
+            ),
+            const Divider(
+              color: Colors.black26,
+            ),
+            BlocBuilder<UserRecipesBloc, UserRecipesState>(
+              bloc: _userRecipesBloc,
+              builder: (context, state) {
+                if (state is UserRecipesLoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is UserRecipesLoadedState) {
+                  return SizedBox(
+                      height: 400,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: state.recipeList.length,
+                        itemBuilder: (context, index) {
+                          return RecipeItem(
+                            isUser: true,
+                            recipe: state.recipeList[index],
+                          );
+                        },
+                      ));
+                }
+                if (state is UserRecipesErrorState) {
+                  return Center(
+                    child: Text(state.failure.toString()),
+                  );
+                }
+                return Container();
+              },
+            ),
+            const SizedBox(
+              height: 8,
+            )
+          ],
+        ),
       ),
     );
   }

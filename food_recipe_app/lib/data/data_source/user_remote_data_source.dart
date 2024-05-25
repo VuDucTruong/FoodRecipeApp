@@ -79,7 +79,10 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<BaseResponse<bool>> updatePassword(String password) async {
     final response =
-        await _dio.put('$userEndpoint/update-password', data: password);
+        await _dio.put('$userEndpoint/update-password',
+            data: password,
+          options: Options(contentType: Headers.textPlainContentType)
+        );
     return BaseResponse<bool>.fromJson(response, (data) => data as bool);
   }
 
@@ -87,7 +90,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<BaseResponse<UserProfileInfoResponse>> updateProfile(
       UserUpdateRequest request) async {
     final response = await _dio.put('$userEndpoint/update-profile',
-        data: request.toJson(),
+        data: FormData.fromMap(request.toJson()),
         options: Options(contentType: Headers.multipartFormDataContentType));
     return BaseResponse<UserProfileInfoResponse>.fromJson(
         response, (value) => UserProfileInfoResponse.fromJson(value));

@@ -35,12 +35,14 @@ extension RecipeResponseMapper on RecipeResponse {
 extension ChefResponseMapper on ChefResponse {
   ChefEntity toEntity() {
     var chefProfile = ProfileInformation(
-        profileInfo.fullName,
-        profileInfo.avatarUrl,
-        profileInfo.isVegan,
-        profileInfo.bio,
-        profileInfo.categories,
-        profileInfo.hungryHeads);
+        fullName: profileInfo.fullName,
+        avatarUrl: profileInfo.avatarUrl,
+        isVegan: profileInfo.isVegan,
+        bio: profileInfo.bio,
+        categories: profileInfo.categories,
+        facebookLink: profileInfo.facebookLink,
+        googleLink: profileInfo.googleLink,
+        hungryHeads: profileInfo.hungryHeads);
     return ChefEntity(
         id, createdAt, chefProfile, recipeIds, followingCount, followerCount);
   }
@@ -62,12 +64,14 @@ extension NotificationDomainResponseMapper on NotificationResponse {
 extension UserDomainResponseMapper on UserResponse {
   UserEntity toEntity() {
     var myProfile = ProfileInformation(
-        profileInfo.fullName,
-        profileInfo.avatarUrl,
-        profileInfo.isVegan,
-        profileInfo.bio,
-        profileInfo.categories,
-        profileInfo.hungryHeads);
+        fullName: profileInfo.fullName,
+        avatarUrl: profileInfo.avatarUrl,
+        isVegan: profileInfo.isVegan,
+        bio: profileInfo.bio,
+        categories: profileInfo.categories,
+        facebookLink: profileInfo.facebookLink,
+        googleLink: profileInfo.googleLink,
+        hungryHeads: profileInfo.hungryHeads);
 
     var myAuthenticationInfo = AuthenticationInformation(
         authenticationInfo.loginId,
@@ -94,12 +98,15 @@ extension UserDomainResponseMapper on UserResponse {
   BackgroundUser toBackgroundUser() {
     try {
       var myProfile = ProfileInformation(
-          profileInfo.fullName,
-          profileInfo.avatarUrl,
-          profileInfo.isVegan,
-          profileInfo.bio,
-          profileInfo.categories,
-          profileInfo.hungryHeads);
+          fullName: profileInfo.fullName,
+          avatarUrl: profileInfo.avatarUrl,
+          isVegan: profileInfo.isVegan,
+          bio: profileInfo.bio,
+          categories: profileInfo.categories,
+          facebookLink: profileInfo.facebookLink,
+          googleLink: profileInfo.googleLink,
+          hungryHeads: profileInfo.hungryHeads);
+
       var myLoginTickets = loginTickets
           .map((e) => LoginTicket(e.refreshToken ?? "", e.deviceId ?? "",
               e.deviceInfo ?? "", e.createTime, e.expireTime))
@@ -119,7 +126,16 @@ extension UserDomainResponseMapper on UserResponse {
       return BackgroundUser(
           id: id,
           createdAt: createdAt,
-          profileInfo: ProfileInformation("", "", true, "", [], 0),
+          profileInfo: ProfileInformation(
+              fullName: "",
+              avatarUrl: "",
+              isVegan: false,
+              facebookLink: null,
+              googleLink: null,
+              bio: "",
+              categories: [],
+              hungryHeads: 1
+          ),
           followerIds: [],
           followingIds: [],
           likedRecipeIds: [],
@@ -133,6 +149,13 @@ extension UserDomainResponseMapper on UserResponse {
 extension UserProfileInfoResponseMapper on UserProfileInfoResponse {
   ProfileInformation toProfileInformation() {
     return ProfileInformation(
-        fullName, avatarUrl, isVegan, bio, categories, hungryHeads);
+        fullName: fullName,
+        avatarUrl: avatarUrl,
+        isVegan: isVegan,
+        bio: bio,
+        categories: categories,
+        facebookLink: facebookLink,
+        googleLink: googleLink,
+        hungryHeads: hungryHeads);
   }
 }

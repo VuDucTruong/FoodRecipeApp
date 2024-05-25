@@ -10,11 +10,11 @@ import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/repository_impl/login_repository.dart';
 import 'package:food_recipe_app/data/repository_impl/recipe_respository.dart';
 import 'package:food_recipe_app/data/repository_impl/user_repository.dart';
-import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
 import 'package:food_recipe_app/domain/usecase/create_recipe_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/delete_user_profile_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chef_info_by_id_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_ids_usecase.dart';
@@ -26,6 +26,8 @@ import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_verify_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_password_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_user_password_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_user_profile_usecase.dart';
 
 import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
 
@@ -42,6 +44,8 @@ import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_blo
 import 'package:food_recipe_app/presentation/blocs/user_profile/user_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/user_recipes/user_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
+import 'package:food_recipe_app/presentation/change_password/bloc/change_password_bloc.dart';
+import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
 
@@ -251,6 +255,50 @@ initUserProfileModule() {
   if (!instance.isRegistered<UserProfileBloc>()) {
     instance.registerLazySingleton(
       () => UserProfileBloc(instance()),
+    );
+  }
+}
+
+initEditProfileModule() {
+  if (!instance.isRegistered<UpdatePasswordUseCase>()) {
+    instance.registerLazySingleton<UpdatePasswordUseCase>(
+      () => UpdatePasswordUseCase(instance()),
+    );
+  }
+  if(!instance.isRegistered<UpdateUserProfileUseCase>()){
+    instance.registerLazySingleton<UpdateUserProfileUseCase>(
+      () => UpdateUserProfileUseCase(instance()),
+    );
+  }
+
+  if(!instance.isRegistered<DeleteUserProfileUseCase>()) {
+    instance.registerLazySingleton<DeleteUserProfileUseCase>(
+      () => DeleteUserProfileUseCase(instance()),
+    );
+  }
+
+  if (!instance.isRegistered<EditProfileBloc>()) {
+    instance.registerLazySingleton(
+      () => EditProfileBloc(
+        backgroundDataManager: instance(),
+        updateUserProfileUseCase: instance(),
+        deleteUserProfileUseCase: instance()
+      ),
+    );
+  }
+}
+
+void initChangePasswordModule(){
+  if (!instance.isRegistered<UpdateUserPasswordUseCase>()) {
+    instance.registerLazySingleton<UpdateUserPasswordUseCase>(
+      () => UpdateUserPasswordUseCase(instance()),
+    );
+  }
+  if (!instance.isRegistered<ChangePasswordBloc>()) {
+    instance.registerLazySingleton(
+      () => ChangePasswordBloc(
+        updateUserPasswordUseCase: instance(),
+      ),
     );
   }
 }

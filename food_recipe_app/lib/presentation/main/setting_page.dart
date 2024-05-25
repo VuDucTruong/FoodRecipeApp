@@ -6,6 +6,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_swit
 
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
+import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 
 import '../resources/assets_management.dart';
@@ -93,7 +94,11 @@ class _SettingPageState extends State<SettingPage> {
           height: AppSize.s30,
         ),
         FilledButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  Routes.mainRoute,
+                  ModalRoute.withName(Routes.createProfileRoute));
+            },
             child: Text(AppStrings.signOut,
                 style: getMediumStyle(
                     color: Colors.white, fontSize: FontSize.s20)))

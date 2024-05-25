@@ -31,6 +31,8 @@ class UserUpdateRequestDto {
   final String? avatarUrl;
   final MultipartFile? avatarImg;
   final bool isVegan;
+  final String? googleLink;
+  final String? facebookLink;
   final String bio;
   final List<String> categories;
   final int hungryHeads;
@@ -42,5 +44,19 @@ class UserUpdateRequestDto {
     required this.bio,
     required this.categories,
     required this.hungryHeads,
+    required this.googleLink,
+    required this.facebookLink,
   });
+
+  UserUpdateRequestDto.fromProfileInformation(ProfileInformation profileInfo, this.avatarImg)
+      : fullName = profileInfo.fullName,
+        avatarUrl = profileInfo.avatarUrl,
+        isVegan = profileInfo.isVegan,
+        bio = profileInfo.bio,
+        googleLink = profileInfo.googleLink,
+        facebookLink = profileInfo.facebookLink,
+        categories = profileInfo.categories,
+        hungryHeads = profileInfo.hungryHeads;
+
+
 }

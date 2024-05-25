@@ -58,6 +58,8 @@ UserProfileInfoResponse _$UserProfileInfoResponseFromJson(
           .map((e) => e as String)
           .toList(),
       hungryHeads: (json['hungryHeads'] as num).toInt(),
+          facebookLink: json['facebookLink'] as String?,
+          googleLink: json['googleLink'] as String?,
     );
 
 Map<String, dynamic> _$UserProfileInfoResponseToJson(
@@ -69,6 +71,8 @@ Map<String, dynamic> _$UserProfileInfoResponseToJson(
       'bio': instance.bio,
       'categories': instance.categories,
       'hungryHeads': instance.hungryHeads,
+      'facebookLink': instance.facebookLink,
+      'googleLink': instance.googleLink,
     };
 
 UserAuthenticationInfoResponse _$UserAuthenticationInfoResponseFromJson(
