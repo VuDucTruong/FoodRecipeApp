@@ -70,7 +70,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
               children: [
                 FilledButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, Routes.editProfileRoute);
+                      Navigator.pushReplacementNamed(
+                          context, Routes.editProfileRoute);
                     },
                     child: const Text(AppStrings.editProfile)),
                 FilledButton(

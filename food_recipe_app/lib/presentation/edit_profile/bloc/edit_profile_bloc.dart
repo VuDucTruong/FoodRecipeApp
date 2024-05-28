@@ -14,56 +14,34 @@ part 'edit_profile_event.dart';
 part 'edit_profile_state.dart';
 
 class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
-
   final UpdateUserProfileUseCase _updateUserProfileUseCase;
   final DeleteUserProfileUseCase _deleteUserProfileUseCase;
   final BackgroundDataManager _backgroundDataManager;
-
 
   EditProfileBloc({
     required UpdateUserProfileUseCase updateUserProfileUseCase,
     required DeleteUserProfileUseCase deleteUserProfileUseCase,
     required BackgroundDataManager backgroundDataManager,
-  }) : _updateUserProfileUseCase = updateUserProfileUseCase,
+  })  : _updateUserProfileUseCase = updateUserProfileUseCase,
         _deleteUserProfileUseCase = deleteUserProfileUseCase,
         _backgroundDataManager = backgroundDataManager,
         super(EditProfileInitial()) {
-    on<EditProfileInitialLoadEvent>(_onEditProfileInitialLoad);
     on<EditProfileSubmitEvent>(_onEditProfileSubmit);
     on<EditProfileDeleteEvent>(_onEditProfileDelete);
-  }
-
-  FutureOr<void> _onEditProfileInitialLoad(
-      EditProfileInitialLoadEvent event, Emitter<EditProfileState> emit) async {
-    emit(EditProfileLoading());
-    try {
-      final result = _backgroundDataManager.getBackgroundUser();
-      emit(EditProfileInitialLoadSuccess(result.profileInfo));
-    } catch (e) {
-      emit(EditProfileInitialLoadFailed(Failure.actionFailed('Load profile failed')));
-    }
   }
 
   FutureOr<void> _onEditProfileSubmit(
       EditProfileSubmitEvent event, Emitter<EditProfileState> emit) async {
     emit(EditProfileLoading());
 
-    try{
-
-      if(event.avatar != null){
-        debugPrint('avatar is not null IN BLOC');
-      }
-      else
-        debugPrint('avatar is null IN BLOC');
-
+    try {
       final result = await _updateUserProfileUseCase.execute(
           UpdateProfileUseCaseInput(event.profileInformation, event.avatar));
-      result.fold(
-              (failure) => emit(EditProfileSubmitFailed(failure)),
-              (success) => emit(EditProfileSubmitSuccess(success))
-      );
+      result.fold((failure) => emit(EditProfileSubmitFailed(failure)),
+          (success) => emit(EditProfileSubmitSuccess(success)));
     } catch (e) {
-      emit(EditProfileSubmitFailed(Failure.actionFailed('Update profile failed')));
+      emit(EditProfileSubmitFailed(
+          Failure.actionFailed('Update profile failed')));
     }
   }
 
@@ -71,14 +49,13 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       EditProfileDeleteEvent event, Emitter<EditProfileState> emit) async {
     emit(EditProfileLoading());
 
-    try{
+    try {
       final result = await _deleteUserProfileUseCase.execute(null);
-      result.fold(
-              (failure) => emit(EditProfileDeleteFailed(failure)),
-              (success) => emit(EditProfileDeleteSuccess())
-      );
+      result.fold((failure) => emit(EditProfileDeleteFailed(failure)),
+          (success) => emit(EditProfileDeleteSuccess()));
     } catch (e) {
-      emit(EditProfileDeleteFailed(Failure.actionFailed('Delete profile failed')));
+      emit(EditProfileDeleteFailed(
+          Failure.actionFailed('Delete profile failed')));
     }
   }
 }

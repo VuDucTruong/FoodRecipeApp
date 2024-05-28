@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
+import 'package:food_recipe_app/domain/entity/background_user.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
@@ -19,16 +21,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final GoogleLoginUseCase _googleLoginUseCase;
   final GoogleSignIn _googleSignIn;
   final NetworkInfo _networkInfo;
-
-  LoginBloc({
-    required LoginUseCase loginUseCase,
-    required GoogleLoginUseCase googleLoginUseCase,
-    required GoogleSignIn googleSignIn,
-    required NetworkInfo networkInfo,
-  })  : _loginUseCase = loginUseCase,
+  final BackgroundDataManager _backgroundDataManager;
+  LoginBloc(
+      {required LoginUseCase loginUseCase,
+      required GoogleLoginUseCase googleLoginUseCase,
+      required GoogleSignIn googleSignIn,
+      required NetworkInfo networkInfo,
+      required BackgroundDataManager backgroundDataManager})
+      : _loginUseCase = loginUseCase,
         _googleLoginUseCase = googleLoginUseCase,
         _googleSignIn = googleSignIn,
         _networkInfo = networkInfo,
+        _backgroundDataManager = backgroundDataManager,
         super(LoginInitial()) {
     on<LoginButtonPressed>(_loginPressed);
     on<LoginWithGooglePressed>(_loginWithGooglePressed);
@@ -40,25 +44,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     var password = loginButtonPressed.password;
     // Show loading state
     emit(LoginLoading());
-    if (email.isNotEmpty && password.isNotEmpty) {
-      if (await _networkInfo.isConnected) {
-        try {
-          final result = await _loginUseCase.execute(LoginUseCaseInput(
-            email: email,
-            password: password,
-          ));
-          result.fold(
-              (failure) => emit(LoginFailure(failure: failure)),
-              (userEntity) => emit(LoginSuccess(userEntity)));
-        } catch (e) {
-          // Error occurred during login
-          emit(LoginFailure(failure: Failure(ResponseCode.DEFAULT, AppStrings.loginError)));
-        }
-      } else {
-        emit(LoginFailure(failure: Failure.noInternet()));
+    if (await _networkInfo.isConnected) {
+      try {
+        final result = await _loginUseCase.execute(LoginUseCaseInput(
+          email: email,
+          password: password,
+        ));
+        result.fold((failure) => emit(LoginFailure(failure: failure)),
+            (userEntity) {
+          _backgroundDataManager.setBackgroundUser(
+              BackgroundUser.fromUserEntity(userEntity: userEntity));
+          emit(LoginSuccess(userEntity));
+        });
+      } catch (e) {
+        // Error occurred during login
+        emit(LoginFailure(
+            failure: Failure(ResponseCode.DEFAULT, AppStrings.loginError)));
       }
     } else {
-      emit(LoginFailure(failure: Failure(ResponseCode.DEFAULT, AppStrings.loginError)));
+      emit(LoginFailure(failure: Failure.noInternet()));
     }
   }
 
@@ -75,12 +79,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           emit(LoginFailure(failure: Failure.dataNotFound("Google Account")));
           return;
         }
-        final request = GoogleLoginUseCaseInput(loginId: googleSignInAccount.id);
+        final request =
+            GoogleLoginUseCaseInput(loginId: googleSignInAccount.id);
         final result = await _googleLoginUseCase.execute(request);
         result.fold(
-            (failure) => emit(LoginWithGoogleFailure(failure: failure,
-                googleSignInAccount: ThirdPartySignInAccount.fromGoogleSignInAccount(googleSignInAccount))),
-            (userEntity) => emit(LoginSuccess(userEntity)));
+            (failure) => emit(LoginWithGoogleFailure(
+                failure: failure,
+                googleSignInAccount:
+                    ThirdPartySignInAccount.fromGoogleSignInAccount(
+                        googleSignInAccount))), (userEntity) {
+          _backgroundDataManager.setBackgroundUser(
+              BackgroundUser.fromUserEntity(userEntity: userEntity));
+          emit(LoginSuccess(userEntity));
+        });
       } catch (e) {
         // Error occurred during login
         emit(LoginFailure(failure: Failure.notFound()));

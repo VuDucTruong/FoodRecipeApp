@@ -75,8 +75,8 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
                 showAnimatedDialog2(context, CongratulationDialog())
                     .then((value) {
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                      Routes.mainRoute,
-                      ModalRoute.withName(Routes.createProfileRoute));
+                      Routes.loginRoute,
+                      ModalRoute.withName(Routes.loginRoute));
                 });
               }
             },

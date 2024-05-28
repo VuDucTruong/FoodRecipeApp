@@ -1,3 +1,4 @@
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,6 +24,8 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/widgets/avatar_selection.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../data/background_data/background_data_manager.dart';
+import '../../domain/entity/background_user.dart';
 import '../resources/assets_management.dart';
 import '../resources/string_management.dart';
 
@@ -41,19 +44,24 @@ class _EditProfileViewState extends State<EditProfileView> {
   late TextEditingController bioController;
   late TextEditingController facebookController;
   late TextEditingController gmailController;
-  late ProfileInformation profileInformation;
   late EditProfileBloc _editProfileBloc;
+  late ProfileInformation profileInformation;
+  late BackgroundUser currentUser;
+  File? selectedAvatar;
   MutableVariable<MultipartFile?> avatarImage = MutableVariable(null);
   @override
   void initState() {
     super.initState();
     _editProfileBloc = GetIt.instance<EditProfileBloc>();
-    nameController = TextEditingController();
-    bioController = TextEditingController();
-    facebookController = TextEditingController();
-    gmailController = TextEditingController();
-    profileInformation = ProfileInformation.defaultValues();
-    _editProfileBloc.add(EditProfileInitialLoadEvent());
+    currentUser = GetIt.instance<BackgroundDataManager>().getBackgroundUser();
+    nameController =
+        TextEditingController(text: currentUser.profileInfo.fullName);
+    bioController = TextEditingController(text: currentUser.profileInfo.bio);
+    facebookController =
+        TextEditingController(text: currentUser.profileInfo.facebookLink);
+    gmailController =
+        TextEditingController(text: currentUser.profileInfo.googleLink);
+    profileInformation = currentUser.profileInfo;
   }
 
   @override
@@ -74,64 +82,43 @@ class _EditProfileViewState extends State<EditProfileView> {
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
-        child: BlocConsumer(
-          bloc: _editProfileBloc,
-          listener: (context, state) {
-            Navigator.popUntil(context, (route) => route is! DialogRoute);
-            debugPrint("ran here aslkdjfklajsdklfjalksdjf");
-            if (state is EditProfileSuccess) {
-              if(state is EditProfileInitialLoadSuccess){
-                profileInformation = state.profileInformation;
-                debugPrint("ProfileInformation: ${state.profileInformation.toJson()}");
-                setState(() {
-                  nameController.text = state.profileInformation.fullName;
-                  bioController.text = state.profileInformation.bio;
-                  facebookController.text = state.profileInformation.facebookLink??"";
-                  gmailController.text = state.profileInformation.googleLink??"";
-                });
+        child: BlocListener(
+            bloc: _editProfileBloc,
+            listener: (context, state) {
+              Navigator.popUntil(context, (route) => route is! DialogRoute);
+              if (state is EditProfileSubmitSuccess) {
+                showDialog(
+                    context: context,
+                    builder: (context) => CongratulationDialog(
+                          content: "Profile updated",
+                        ));
+              } else if (state is EditProfileDeleteSuccess) {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    Routes.mainRoute, ModalRoute.withName(Routes.loginRoute));
               }
-                else if(state is EditProfileSubmitSuccess){
-                showDialog(context: context,
-                    builder: (context)=> CongratulationDialog(content: "Profile updated",));
-                profileInformation = state.profileInformation;
-                setState(() {
-                    nameController.text = state.profileInformation.fullName;
-                    bioController.text = state.profileInformation.bio;
-                    facebookController.text = state.profileInformation.facebookLink??"";
-                    gmailController.text = state.profileInformation.googleLink??"";
-                  });
-                }
-                else if(state is EditProfileDeleteSuccess){
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                  Routes.mainRoute,
-                  ModalRoute.withName(Routes.loginRoute));
-                }
-            }
-            else if(state is EditProfileFailed){
-              Failure failure = state.failure;
-              handleBlocFailures(context, failure, (){});
-            }
-          },
-          builder: (context, state) {
-            return SingleChildScrollView(
+              if (state is EditProfileFailed) {
+                Failure failure = state.failure;
+                handleBlocFailures(context, failure, () {});
+              }
+            },
+            child: SingleChildScrollView(
               child: Column(
                 children: [
                   AvatarSelection(
                     imageUrl: profileInformation.avatarUrl,
                     selectedImage: avatarImage,
                   ),
-              if(state is EditProfileLoading)
-                const CircularProgressIndicator(),
                   Form(
                       key: _formKey,
                       child: NameTextField(
                         controller: nameController,
                       )),
                   BioTextField(
-                      controller: bioController,),
+                    controller: bioController,
+                  ),
                   IconTextField(
-                      iconPath: PicturePath.instagramPath,
-                      content: AppStrings.instagram,
+                      iconPath: PicturePath.facebookPath,
+                      content: AppStrings.facebook,
                       controller: facebookController),
                   IconTextField(
                       iconPath: PicturePath.gmailPath,
@@ -140,39 +127,23 @@ class _EditProfileViewState extends State<EditProfileView> {
                   const SizedBox(
                     height: AppSize.s16,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      FilledButton(
-                          onPressed: ()  {
-                            debugPrint("pressed");
-                            if (_formKey.currentState!.validate()) {
-                              if(avatarImage.value==null)
-                              {debugPrint("selectedAvatar is null");}
-                              _editProfileBloc.add(
-                                  EditProfileSubmitEvent(_gatherProfileInformation(), avatarImage.value ));
-                            }
-                          },
-                          child: const Text(AppStrings.saveProfileInfo)),
-                      FilledButton(
-                          onPressed: ()  {
-                            showDialog(context: context, builder: (context)
-                            => AppAlertDialog(content: AppStrings.deleteAccount,
-                              onYes: () {
-                                _editProfileBloc.add(EditProfileDeleteEvent());
-                              },
-                            ));
-                          },
-                          child: const Text(AppStrings.deleteAccount)),
-                    ],
-                  )
-
+                  FilledButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          if (avatarImage.value == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(AppStrings.missingAvatar)));
+                          }
+                          _editProfileBloc.add(EditProfileSubmitEvent(
+                              _gatherProfileInformation(), avatarImage.value));
+                        }
+                      },
+                      child: const Text(AppStrings.saveProfileInfo))
                 ],
-
               ),
-            );
-            },// done Builder
-        ),
+            ) // done Builder
+            ),
       ),
       floatingActionButton: SpeedDial(
         icon: Icons.add,
@@ -181,14 +152,23 @@ class _EditProfileViewState extends State<EditProfileView> {
         gradient: ColorManager.linearGradientWhiteOrange,
         children: [
           SpeedDialChild(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => AppAlertDialog(
+                          content: AppStrings.deleteAccount,
+                          onYes: () {
+                            _editProfileBloc.add(EditProfileDeleteEvent());
+                          },
+                        ));
+              },
               child: const Icon(Icons.delete_forever),
               label: AppStrings.deleteAccount),
           SpeedDialChild(
-              child: InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.changePassRoute);
-                  },
-                  child: const Icon(Icons.password)),
+              onTap: () {
+                Navigator.pushNamed(context, Routes.changePassRoute);
+              },
+              child: const Icon(Icons.password),
               label: AppStrings.changePass),
           SpeedDialChild(
               child: const Icon(Icons.favorite), label: AppStrings.editPrefs),
@@ -199,18 +179,17 @@ class _EditProfileViewState extends State<EditProfileView> {
 
   ProfileInformation _gatherProfileInformation() {
     return ProfileInformation(
-      fullName: nameController.text,
-      bio: bioController.text,
-      facebookLink: facebookController.text,
-      googleLink: gmailController.text,
-      avatarUrl: profileInformation.avatarUrl,
-      categories: profileInformation.categories,
-      hungryHeads: profileInformation.hungryHeads,
-      isVegan: profileInformation.isVegan
-    );
-  }
-  bool _preCheckInputs(){
-    return nameController.text.isEmpty;
+        fullName: nameController.text,
+        bio: bioController.text,
+        facebookLink: facebookController.text,
+        googleLink: gmailController.text,
+        avatarUrl: profileInformation.avatarUrl,
+        categories: profileInformation.categories,
+        hungryHeads: profileInformation.hungryHeads,
+        isVegan: profileInformation.isVegan);
   }
 
+  bool _preCheckInputs() {
+    return nameController.text.isEmpty;
+  }
 }

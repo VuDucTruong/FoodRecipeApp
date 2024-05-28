@@ -183,6 +183,7 @@ initLoginModule() {
   //register login bloc
   if (!instance.isRegistered<LoginBloc>()) {
     instance.registerLazySingleton(() => LoginBloc(
+          backgroundDataManager: instance(),
           googleSignIn: instance(),
           loginUseCase: instance(),
           googleLoginUseCase: instance(),
@@ -201,8 +202,8 @@ initCreateProfileModule() {
         () => LoginVerifyUseCase(instance()));
   }
   if (!instance.isRegistered<CreateProfileBloc>()) {
-    instance.registerLazySingleton<CreateProfileBloc>(() => CreateProfileBloc(
-        networkInfo: instance(), loginVerifyUseCase: instance()));
+    instance.registerLazySingleton<CreateProfileBloc>(
+        () => CreateProfileBloc(loginVerifyUseCase: instance()));
   }
 }
 
@@ -217,9 +218,9 @@ initFoodTypeModule() {
   }
   if (!instance.isRegistered<FoodTypeBloc>()) {
     instance.registerLazySingleton(() => FoodTypeBloc(
-        networkInfo: instance(),
-        signupWithLoginIdUseCase: instance(),
-        signupUseCase: instance()));
+          networkInfo: instance(),
+          signupWithLoginIdUseCase: instance(),
+        ));
   }
 }
 
@@ -265,13 +266,13 @@ initEditProfileModule() {
       () => UpdatePasswordUseCase(instance()),
     );
   }
-  if(!instance.isRegistered<UpdateUserProfileUseCase>()){
+  if (!instance.isRegistered<UpdateUserProfileUseCase>()) {
     instance.registerLazySingleton<UpdateUserProfileUseCase>(
       () => UpdateUserProfileUseCase(instance()),
     );
   }
 
-  if(!instance.isRegistered<DeleteUserProfileUseCase>()) {
+  if (!instance.isRegistered<DeleteUserProfileUseCase>()) {
     instance.registerLazySingleton<DeleteUserProfileUseCase>(
       () => DeleteUserProfileUseCase(instance()),
     );
@@ -280,15 +281,14 @@ initEditProfileModule() {
   if (!instance.isRegistered<EditProfileBloc>()) {
     instance.registerLazySingleton(
       () => EditProfileBloc(
-        backgroundDataManager: instance(),
-        updateUserProfileUseCase: instance(),
-        deleteUserProfileUseCase: instance()
-      ),
+          backgroundDataManager: instance(),
+          updateUserProfileUseCase: instance(),
+          deleteUserProfileUseCase: instance()),
     );
   }
 }
 
-void initChangePasswordModule(){
+void initChangePasswordModule() {
   if (!instance.isRegistered<UpdateUserPasswordUseCase>()) {
     instance.registerLazySingleton<UpdateUserPasswordUseCase>(
       () => UpdateUserPasswordUseCase(instance()),

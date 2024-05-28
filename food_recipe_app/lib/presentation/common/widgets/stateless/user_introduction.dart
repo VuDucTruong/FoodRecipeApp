@@ -55,11 +55,11 @@ class UserIntroduction extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(PicturePath.instagramPath),
+                      SvgPicture.asset(PicturePath.facebookPath),
                       const SizedBox(
                         width: AppSize.s8,
                       ),
-                      Text(entity.profileInfo.fullName,
+                      Text(entity.profileInfo.facebookLink ?? "",
                           style: getRegularStyle(
                               color: Colors.black, fontSize: FontSize.s18))
                     ],
@@ -74,7 +74,7 @@ class UserIntroduction extends StatelessWidget {
                       const SizedBox(
                         width: AppSize.s8,
                       ),
-                      Text(entity.profileInfo.fullName,
+                      Text(entity.profileInfo.googleLink ?? '',
                           style: getRegularStyle(
                               color: Colors.black, fontSize: FontSize.s18))
                     ],

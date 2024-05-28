@@ -35,6 +35,7 @@ class UserRepositoryImpl implements UserRepository {
           if (response.data != null) {
             BackgroundUser user = response.data!.toBackgroundUser();
             _backgroundDataManager.setBackgroundUser(user);
+            print("SET CURRENT USER : $user");
             return Right(user);
           }
           return Left(Failure.dataNotFound('Profile information'));

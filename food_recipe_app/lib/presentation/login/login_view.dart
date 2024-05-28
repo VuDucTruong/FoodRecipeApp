@@ -158,9 +158,7 @@ class LoginViewState extends State<LoginView> {
       child: FilledButton(
         onPressed: () {
           if (_formKey.currentState != null) {
-            if (_formKey.currentState!.validate() &&
-                emailController.text.isNotEmpty &&
-                passwordController.text.isNotEmpty) {
+            if (_formKey.currentState!.validate()) {
               _loginBloc.add(LoginButtonPressed(
                   email: emailController.text,
                   password: passwordController.text));

@@ -7,7 +7,6 @@ class PicturePath {
   static const String onBoarding3Path = '$_picturePath/onboarding_3.png';
   static const String logoPath = '$_picturePath/logo.png';
   static const String logoSVGPath = '$_picturePath/logo.svg';
-  static const String fbPath = '$_picturePath/Facebook.png';
   static const String ggPath = '$_picturePath/Google.png';
   static const String homePath = '$_picturePath/home_ic.svg';
   static const String createPath = '$_picturePath/create_ic.svg';
@@ -41,6 +40,7 @@ class PicturePath {
   static const String eyeSolidPath = '$_picturePath/eye-solid.svg';
   static const String eyeSlashSolidPath = '$_picturePath/eye-slash-solid.svg';
   static const String changePassPath = '$_picturePath/change_password.png';
+  static const String facebookPath = '$_picturePath/facebook.svg';
 }
 
 class LottiePath {
@@ -50,5 +50,6 @@ class LottiePath {
   static const String noConnectionPath = '$_jsonLottiePath/no_connection.json';
   static const String loadingPath = '$_jsonLottiePath/loading.json';
   static const String emptyPath = '$_jsonLottiePath/empty_list.json';
-  static const String changePassSuccessPath = '$_jsonLottiePath/change_password_success.json';
+  static const String changePassSuccessPath =
+      '$_jsonLottiePath/change_password_success.json';
 }
