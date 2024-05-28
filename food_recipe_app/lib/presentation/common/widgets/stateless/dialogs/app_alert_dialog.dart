@@ -8,7 +8,9 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:lottie/lottie.dart';
 
 class AppAlertDialog extends StatelessWidget {
-  AppAlertDialog({Key? key, required this.content}) : super(key: key);
+  final void Function()? onYes;
+  final void Function()? onNo;
+  AppAlertDialog({Key? key, required this.content,this.onYes,this.onNo}) : super(key: key);
   String content;
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,10 @@ class AppAlertDialog extends StatelessWidget {
               children: [
                 FilledButton(
                     onPressed: () {
+                      if(onYes!=null)
+                        {
+                          onYes!();
+                        }
                       Navigator.pop(context, true);
                     },
                     child: Text(
@@ -54,6 +60,10 @@ class AppAlertDialog extends StatelessWidget {
                     )),
                 OutlinedButton(
                     onPressed: () {
+                      if(onYes!=null)
+                      {
+                        onNo!();
+                      }
                       Navigator.pop(context, false);
                     },
                     child: Text(

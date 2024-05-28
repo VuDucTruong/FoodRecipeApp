@@ -7,6 +7,8 @@ class UserUpdateRequest {
   final String? avatarUrl;
   final MultipartFile? avatarImg;
   final bool isVegan;
+  final String? googleLink;
+  final String? facebookLink;
   final String bio;
   final List<String> categories;
   final int hungryHeads;
@@ -18,6 +20,8 @@ class UserUpdateRequest {
     required this.bio,
     required this.categories,
     required this.hungryHeads,
+    required this.googleLink,
+    required this.facebookLink,
   });
   UserUpdateRequest.fromUserUpdateRequestDto(UserUpdateRequestDto request)
       : fullName = request.fullName,
@@ -26,6 +30,8 @@ class UserUpdateRequest {
         isVegan = request.isVegan,
         bio = request.bio,
         categories = request.categories,
+        googleLink = request.googleLink,
+        facebookLink = request.facebookLink,
         hungryHeads = request.hungryHeads;
 
   Map<String, dynamic> toJson() {
@@ -36,6 +42,8 @@ class UserUpdateRequest {
       'isVegan': isVegan,
       'bio': bio,
       'categories': categories,
+      'googleLink': googleLink,
+      'facebookLink': facebookLink,
       'hungryHeads': hungryHeads,
     };
   }

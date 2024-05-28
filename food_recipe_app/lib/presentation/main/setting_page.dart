@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
 
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
+import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
+import 'package:get_it/get_it.dart';
 
 import '../resources/assets_management.dart';
 import '../resources/string_management.dart';
@@ -93,7 +96,11 @@ class _SettingPageState extends State<SettingPage> {
           height: AppSize.s30,
         ),
         FilledButton(
-            onPressed: () {},
+            onPressed: () {
+              GetIt.instance<AppPreferences>().logout();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  Routes.loginRoute, ModalRoute.withName(Routes.loginRoute));
+            },
             child: Text(AppStrings.signOut,
                 style: getMediumStyle(
                     color: Colors.white, fontSize: FontSize.s20)))

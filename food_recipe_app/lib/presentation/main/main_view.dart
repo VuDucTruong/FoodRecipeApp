@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/app/di.dart';
+
 import 'package:food_recipe_app/presentation/main/create_recipe/create_recipe_page.dart';
 import 'package:food_recipe_app/presentation/main/home/home_page.dart';
 import 'package:food_recipe_app/presentation/main/saved_recipe_page.dart';
@@ -39,6 +41,7 @@ class _MainViewState extends State<MainView> {
     const SettingPage(),
     const UserProfilePage()
   ];
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

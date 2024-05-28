@@ -102,6 +102,7 @@ class RouteGenerator {
           builder: (context) => const MainView(),
         );
       case Routes.editProfileRoute:
+        initEditProfileModule();
         return MaterialPageRoute(
           builder: (context) => const EditProfileView(),
         );
@@ -114,6 +115,7 @@ class RouteGenerator {
           builder: (context) => const ListChefPage(),
         );
       case Routes.changePassRoute:
+        initChangePasswordModule();
         return MaterialPageRoute(
           builder: (context) => ChangePasswordPage(),
         );

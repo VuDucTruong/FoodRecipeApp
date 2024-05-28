@@ -14,12 +14,9 @@ part 'create_profile_state.dart';
 
 class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
   final LoginVerifyUseCase _loginVerifyUseCase;
-  final NetworkInfo _networkInfo;
   CreateProfileBloc({
     required LoginVerifyUseCase loginVerifyUseCase,
-    required NetworkInfo networkInfo})
-      : _loginVerifyUseCase = loginVerifyUseCase,
-        _networkInfo = networkInfo,
+  })  : _loginVerifyUseCase = loginVerifyUseCase,
         super(CreateProfileInitial()) {
     on<CreateProfileOnContinuePressed>(_onCreateProfileOnContinuePressed);
   }
@@ -28,18 +25,11 @@ class CreateProfileBloc extends Bloc<CreateProfileEvent, CreateProfileState> {
       CreateProfileOnContinuePressed event,
       Emitter<CreateProfileState> emit) async {
     emit(CreateProfileLoading());
-    if(await _networkInfo.isConnected)
-      {
-        final email = event.email;
-        final result = await _loginVerifyUseCase.execute(email);
-        result.fold(
-              (failure) => emit(CreateProfileSubmitFailed(failure: failure)),
-              (value) => emit(CreateProfileSubmitSuccess()),
-        );
-      }
-    else
-      {
-        emit(CreateProfileSubmitFailed(failure: Failure.noInternet()));
-      }
+    final email = event.email;
+    final result = await _loginVerifyUseCase.execute(email);
+    result.fold(
+      (failure) => emit(CreateProfileSubmitFailed(failure: failure)),
+      (value) => emit(CreateProfileSubmitSuccess()),
+    );
   }
 }

@@ -59,6 +59,8 @@ class UserProfileInfoResponse {
   final String avatarUrl;
   final bool isVegan;
   final String bio;
+  final String? facebookLink;
+  final String? googleLink;
   final List<String> categories;
   @Int8Converter()
   final int hungryHeads;
@@ -70,6 +72,8 @@ class UserProfileInfoResponse {
     required this.bio,
     required this.categories,
     required this.hungryHeads,
+    required this.facebookLink,
+    required this.googleLink,
   });
 
   UserProfileInfoResponse.defaultValues({
@@ -78,6 +82,8 @@ class UserProfileInfoResponse {
     this.isVegan = false,
     this.bio = '',
     this.categories = const [],
+    this.facebookLink = '',
+    this.googleLink = '',
   }) : hungryHeads = 1;
 
   factory UserProfileInfoResponse.fromJson(Map<String, dynamic> json) =>

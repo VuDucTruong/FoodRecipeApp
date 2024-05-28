@@ -92,6 +92,13 @@ String? validatePassword(String? value) {
   return null;
 }
 
+String? validateMatch(String? value1, String? value2) {
+  if (value1 != value2) {
+    return AppStrings.notMatchPass;
+  }
+  return null;
+}
+
 Future<File?> selectImageFromGalery() async {
   final ImagePicker picker = ImagePicker();
 // Pick an image.

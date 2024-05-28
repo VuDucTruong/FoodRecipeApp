@@ -36,11 +36,26 @@ class ProfileInformation {
   String avatarUrl;
   bool isVegan;
   String bio;
+  String? facebookLink;
+  String? googleLink;
   List<String> categories;
   int hungryHeads;
 
-  ProfileInformation(this.fullName, this.avatarUrl, this.isVegan, this.bio,
-      this.categories, this.hungryHeads);
+  ProfileInformation({
+    required this.fullName,required this.avatarUrl,required this.isVegan,required this.bio,
+    required this.categories,required this.hungryHeads,
+    required this.facebookLink,required this.googleLink
+});
+  ProfileInformation.defaultValues({
+    this.fullName = '',
+    this.avatarUrl = '',
+    this.isVegan = false,
+    this.bio = '',
+    this.categories = const [],
+    this.hungryHeads = 0,
+    this.facebookLink = '',
+    this.googleLink = ''
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -49,7 +64,9 @@ class ProfileInformation {
       'isVegan': isVegan,
       'bio': bio,
       'categories': categories,
-      'hungryHeads': hungryHeads
+      'hungryHeads': hungryHeads,
+      'facebookLink': facebookLink ?? '',
+      'gmailLink': googleLink ?? ''
     };
   }
 }

@@ -84,6 +84,5 @@ class AppPreferences {
     _sharedPreferences.remove(PREFS_KEY_IS_USER_LOGGED_IN);
     _sharedPreferences.remove(PREFS_KEY_TOKEN);
     _sharedPreferences.remove(PREFS_KEY_REFRESH);
-    _sharedPreferences.remove(PREFS_KEY_BACKGROUND_USER);
   }
 }
