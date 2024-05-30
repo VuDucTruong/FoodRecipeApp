@@ -50,6 +50,7 @@ class InitialRoute {
       if (value) {
         debugPrint('value is $value');
         final backgroundUser = await _getUserInfoUseCase.execute(null);
+        print(backgroundUser);
         final isSuccess = backgroundUser.isRight();
         if (isSuccess) {
           initialRoute = Routes.mainRoute;

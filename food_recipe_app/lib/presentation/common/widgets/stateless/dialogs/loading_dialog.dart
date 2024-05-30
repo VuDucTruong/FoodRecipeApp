@@ -20,7 +20,7 @@ class LoadingDialog extends StatelessWidget {
           Lottie.asset(LottiePath.loadingPath,
               width: 60, height: 60, fit: BoxFit.cover),
           Text(AppStrings.loading,
-              style: getBoldStyle(color: Colors.white, fontSize: FontSize.s18)),
+              style: getBoldStyle(color: Colors.black, fontSize: FontSize.s18)),
           const SizedBox(
             height: AppSize.s12,
           ),

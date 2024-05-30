@@ -7,20 +7,26 @@ final class DetailRecipeInitial extends DetailRecipeState {}
 
 class DetailRecipeActionState extends DetailRecipeState {}
 
-class DetailRecipeLoadingState extends DetailRecipeState {}
+class RecipeLikeFailState extends DetailRecipeActionState {
+  Failure failure;
 
-class DetailRecipeLoadedState extends DetailRecipeState {}
+  RecipeLikeFailState(this.failure);
+}
 
-class DetailRecipeErrorState extends DetailRecipeState {}
+class RecipeLikeSuccessState extends DetailRecipeActionState {
+  bool isLike;
 
-class DetailRecipeLikeState extends DetailRecipeActionState {}
+  RecipeLikeSuccessState(this.isLike);
+}
 
-class RecipeLikeSuccessState extends DetailRecipeLikeState {}
+class RecipeSaveFailState extends DetailRecipeActionState {
+  Failure failure;
 
-class RecipeLikeFailState extends DetailRecipeLikeState {}
+  RecipeSaveFailState(this.failure);
+}
 
-class DetailRecipeSaveState extends DetailRecipeActionState {}
+class RecipeSaveSuccessState extends DetailRecipeActionState {
+  bool isSave;
 
-class RecipeSaveSuccessState extends DetailRecipeSaveState {}
-
-class RecipeSaveFailState extends DetailRecipeSaveState {}
+  RecipeSaveSuccessState(this.isSave);
+}

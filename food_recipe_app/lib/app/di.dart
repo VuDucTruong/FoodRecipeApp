@@ -25,7 +25,9 @@ import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_verify_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_like_recipe_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_password_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_saved_recipe_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_user_profile_usecase.dart';
 
 import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
@@ -44,6 +46,7 @@ import 'package:food_recipe_app/presentation/blocs/user_profile/user_profile_blo
 import 'package:food_recipe_app/presentation/blocs/user_recipes/user_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
 import 'package:food_recipe_app/presentation/change_password/bloc/change_password_bloc.dart';
+import 'package:food_recipe_app/presentation/detail_recipe/bloc/detail_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
@@ -144,16 +147,21 @@ initHomeModule() {
   }
 }
 
-/*initSavedRecipeModule() {
+initSavedRecipeModule() {
   if (!instance.isRegistered<GetSavedRecipesUseCase>()) {
     instance.registerLazySingleton<GetSavedRecipesUseCase>(
         () => GetSavedRecipesUseCase(instance()));
   }
+  if (!instance.isRegistered<UpdateSavedRecipeUseCase>()) {
+    instance.registerLazySingleton(
+      () => UpdateSavedRecipeUseCase(instance()),
+    );
+  }
   if (!instance.isRegistered<SavedRecipesBloc>()) {
     instance.registerLazySingleton<SavedRecipesBloc>(
-        () => SavedRecipesBloc(instance()));
+        () => SavedRecipesBloc(instance(), instance()));
   }
-}*/
+}
 
 initCreateRecipeModule() {
   if (!instance.isRegistered<CreateRecipeBloc>()) {
@@ -193,6 +201,21 @@ initLoginModule() {
 
 initDetailFoodModule() {
   initChefProfileModule();
+  if (!instance.isRegistered<UpdateSavedRecipeUseCase>()) {
+    instance.registerLazySingleton<UpdateSavedRecipeUseCase>(
+      () => UpdateSavedRecipeUseCase(instance()),
+    );
+  }
+  if (!instance.isRegistered<UpdateLikeRecipeUseCase>()) {
+    instance.registerLazySingleton<UpdateLikeRecipeUseCase>(
+      () => UpdateLikeRecipeUseCase(instance()),
+    );
+  }
+  if (!instance.isRegistered<DetailRecipeBloc>()) {
+    instance.registerLazySingleton<DetailRecipeBloc>(
+      () => DetailRecipeBloc(instance(), instance()),
+    );
+  }
 }
 
 initCreateProfileModule() {

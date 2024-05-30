@@ -46,6 +46,7 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
     super.initState();
     savedRecipesBloc.add(SavedRecipesCategorySelected(GetSavedRecipesObject(
         categories: [selectedItem.value], searchTerm: '')));
+
     scrollController.addListener(() async {
       if (scrollController.offset >=
           scrollController.position.maxScrollExtent) {
@@ -148,23 +149,10 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
                         }
                         return Center(
                             child: RecipeItem(
-                          isUser: true,
+                          isUser: false,
                           recipe: recipeList[index],
                         ));
                       });
-                  /*return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: recipeList.length,
-                      itemBuilder: (context, index) {
-                        print(recipeList);
-                        return ListTile(
-                          subtitle: SizedBox(
-                            height: 200,
-                          ),
-                          title: Text('$index'),
-                        );
-                      });*/
                 }
                 if (state is SavedRecipesLoadingState) {
                   return const LoadingWidget();

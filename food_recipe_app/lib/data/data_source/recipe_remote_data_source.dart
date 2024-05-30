@@ -24,8 +24,8 @@ abstract class RecipeRemoteDataSource {
       CreateRecipeRequest createRecipeRequest);
   Future<BaseResponse<bool>> deleteRecipe(String recipeId);
 
-  Future<BaseResponse<bool>> updateSaveRecipe(String recipeId, bool option);
-  Future<BaseResponse<bool>> updateLikeRecipe(String recipeId, bool option);
+  Future<BaseResponse<void>> updateSaveRecipe(String recipeId, bool option);
+  Future<BaseResponse<void>> updateLikeRecipe(String recipeId, bool option);
   Future<BaseResponse<bool>> updateRecipe(RecipeUpdateRequest request);
 }
 
@@ -92,19 +92,25 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
   }
 
   @override
-  Future<BaseResponse<bool>> updateLikeRecipe(
+  Future<BaseResponse<void>> updateLikeRecipe(
       String recipeId, bool option) async {
     Response response = await _dio.put('$recipeEndpoint/like-recipe/$recipeId',
         queryParameters: {'option': option});
-    return BaseResponse.fromJson(response, (data) => data as bool);
+    return BaseResponse.fromJson(
+      response,
+      (p0) {},
+    );
   }
 
   @override
-  Future<BaseResponse<bool>> updateSaveRecipe(
+  Future<BaseResponse<void>> updateSaveRecipe(
       String recipeId, bool option) async {
     Response response = await _dio.put('$recipeEndpoint/save-recipe/$recipeId',
         queryParameters: {'option': option});
-    return BaseResponse.fromJson(response, (data) => data as bool);
+    return BaseResponse.fromJson(
+      response,
+      (p0) {},
+    );
   }
 
   @override

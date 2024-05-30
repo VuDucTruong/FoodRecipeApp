@@ -70,7 +70,7 @@ class _MainViewState extends State<MainView> {
                 initCreateRecipeModule();
                 break;
               case 1:
-                //initSavedRecipeModule();
+                initSavedRecipeModule();
                 break;
               case 2:
                 initHomeModule();

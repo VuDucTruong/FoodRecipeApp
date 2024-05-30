@@ -22,6 +22,11 @@ class BackgroundUser {
       required this.followerIds,
       required this.loginTickets});
 
+  @override
+  String toString() {
+    return 'BackgroundUser{id: $id, createdAt: $createdAt, profileInfo: $profileInfo, recipeIds: $recipeIds, likedRecipeIds: $likedRecipeIds, savedRecipeIds: $savedRecipeIds, followingIds: $followingIds, followerIds: $followerIds, loginTickets: $loginTickets}';
+  }
+
   BackgroundUser.fromUserEntity({
     required UserEntity userEntity,
   })  : id = userEntity.id,

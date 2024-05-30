@@ -14,9 +14,3 @@ class SavedRecipesConinueLoading extends SavedRecipesEvent {
 
   SavedRecipesConinueLoading(this.getSavedRecipesObject);
 }
-
-class UpdateSavedRecipeStatus extends SavedRecipesEvent {
-  StatusRecipeObject object;
-
-  UpdateSavedRecipeStatus(this.object);
-}

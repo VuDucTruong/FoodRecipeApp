@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/background_user.dart';
+import 'package:food_recipe_app/domain/object/status_recipe_object.dart';
+import 'package:food_recipe_app/presentation/detail_recipe/bloc/detail_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:get_it/get_it.dart';
@@ -20,6 +22,7 @@ class _ChefBackgroundState extends State<ChefBackground> {
   BackgroundUser backgroundUser =
       GetIt.instance<BackgroundDataManager>().getBackgroundUser();
   late bool isLike, isSave;
+  final DetailRecipeBloc detailRecipeBloc = GetIt.instance<DetailRecipeBloc>();
   @override
   void initState() {
     // TODO: implement initState
@@ -29,6 +32,8 @@ class _ChefBackgroundState extends State<ChefBackground> {
   }
 
   void updateLikeStatus() {
+    detailRecipeBloc
+        .add(UpdateLikeStatus(StatusRecipeObject(widget.recipeId, !isLike)));
     setState(() {
       if (isLike) {
         backgroundUser.likedRecipeIds.remove(widget.recipeId);
@@ -41,6 +46,8 @@ class _ChefBackgroundState extends State<ChefBackground> {
   }
 
   void updateSaveStatus() {
+    detailRecipeBloc
+        .add(UpdateSaveStatus(StatusRecipeObject(widget.recipeId, !isSave)));
     setState(() {
       if (isSave) {
         backgroundUser.savedRecipeIds.remove(widget.recipeId);

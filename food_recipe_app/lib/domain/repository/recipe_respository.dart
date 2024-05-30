@@ -18,8 +18,8 @@ abstract class RecipeRepository {
   Future<Either<Failure, RecipeEntity>> createRecipe(
       CreateRecipeObject createRecipeObject);
   Future<Either<Failure, bool>> deleteRecipe(String recipeId);
-  Future<Either<Failure, bool>> updateSaveRecipe(String recipeId, bool option);
-  Future<Either<Failure, bool>> updateLikeRecipe(String recipeId, bool option);
+  Future<Either<Failure, void>> updateSaveRecipe(String recipeId, bool option);
+  Future<Either<Failure, void>> updateLikeRecipe(String recipeId, bool option);
   Future<Either<Failure, bool>> updateRecipe(UpdateRecipeRequestDto request);
 }
 

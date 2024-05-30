@@ -170,20 +170,16 @@ class RecipeRepositoryImpl implements RecipeRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> updateLikeRecipe(
+  Future<Either<Failure, void>> updateLikeRecipe(
       String recipeId, bool option) async {
     if (await _networkInfo.isConnected) {
       try {
         final response =
             await _recipeDataSource.updateLikeRecipe(recipeId, option);
+
         if (response.statusCode == ApiInternalStatus.SUCCESS) {
-          if (response.data != null) {
-            _backgroundDataManager.updateLikeRecipe(recipeId, option);
-            return Right(response.data!);
-          }
-          return response.data != null
-              ? Right(response.data!)
-              : Left(Failure.actionFailed("Like Recipe"));
+          _backgroundDataManager.updateLikeRecipe(recipeId, option);
+          return const Right(null);
         } else {
           return Left(Failure.internalServerError());
         }
@@ -219,18 +215,15 @@ class RecipeRepositoryImpl implements RecipeRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> updateSaveRecipe(
+  Future<Either<Failure, void>> updateSaveRecipe(
       String recipeId, bool option) async {
     if (await _networkInfo.isConnected) {
       try {
         final response =
             await _recipeDataSource.updateSaveRecipe(recipeId, option);
         if (response.statusCode == ApiInternalStatus.SUCCESS) {
-          if (response.data != null) {
-            _backgroundDataManager.updateSavedRecipe(recipeId, option);
-            return Right(response.data!);
-          }
-          return Left(Failure.actionFailed("Save Recipe"));
+          _backgroundDataManager.updateSavedRecipe(recipeId, option);
+          return const Right(null);
         } else {
           return Left(Failure.internalServerError());
         }

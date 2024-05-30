@@ -9,8 +9,6 @@ final class SavedRecipesInitial extends SavedRecipesState {}
 
 class UserSavedRecipesState extends SavedRecipesState {}
 
-class UserSavedRecipeActionState extends SavedRecipesState{}
-
 class SavedRecipesLoadingState extends UserSavedRecipesState {
   SavedRecipesLoadingState() {
     super.isLastPage = false;
@@ -30,20 +28,4 @@ class SavedRecipesLoadedState extends UserSavedRecipesState {
 class SavedRecipesErrorState extends UserSavedRecipesState {
   Failure failure;
   SavedRecipesErrorState(this.failure);
-}
-
-
-class SavedRecipeUpdatingState extends UserSavedRecipeActionState {
-
-}
-
-class SavedRecipeUpdatedState extends UserSavedRecipeActionState {
-  bool isSuccess;
-
-  SavedRecipeUpdatedState(this.isSuccess);
-}
-class SavedRecipeUpdateErrorState extends UserSavedRecipeActionState {
-  Failure failure;
-
-  SavedRecipeUpdateErrorState(this.failure);
 }
