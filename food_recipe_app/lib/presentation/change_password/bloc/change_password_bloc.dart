@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
-import 'package:food_recipe_app/domain/usecase/update_user_password_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_password_usecase.dart';
 import 'package:meta/meta.dart';
 
 part 'change_password_event.dart';
@@ -10,10 +10,9 @@ part 'change_password_state.dart';
 
 class ChangePasswordBloc extends Bloc<ChangePasswordEvent, ChangePasswordState> {
 
-  UpdateUserPasswordUseCase _updateUserPasswordUseCase;
+  UpdatePasswordUseCase updatePasswordUseCase;
 
-  ChangePasswordBloc({required UpdateUserPasswordUseCase updateUserPasswordUseCase}) :
-        _updateUserPasswordUseCase = updateUserPasswordUseCase,
+  ChangePasswordBloc(this.updatePasswordUseCase) :
         super(ChangePasswordInitial()) {
     on<ChangePasswordSubmitEvent>(_onChangePasswordSubmitEvent);
   }
@@ -25,7 +24,7 @@ class ChangePasswordBloc extends Bloc<ChangePasswordEvent, ChangePasswordState> 
       if(event.newPassword.isEmpty){
         emit(ChangePasswordFailure(Failure.actionFailed("Update Password")));
       } else {
-        _updateUserPasswordUseCase.execute(event.newPassword);
+        updatePasswordUseCase.execute(event.newPassword);
         emit(ChangePasswordSuccess());
       }
     }

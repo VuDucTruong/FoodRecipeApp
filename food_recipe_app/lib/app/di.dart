@@ -26,7 +26,6 @@ import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_verify_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_password_usecase.dart';
-import 'package:food_recipe_app/domain/usecase/update_user_password_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_user_profile_usecase.dart';
 
 import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
@@ -289,15 +288,11 @@ initEditProfileModule() {
 }
 
 void initChangePasswordModule() {
-  if (!instance.isRegistered<UpdateUserPasswordUseCase>()) {
-    instance.registerLazySingleton<UpdateUserPasswordUseCase>(
-      () => UpdateUserPasswordUseCase(instance()),
-    );
-  }
+
   if (!instance.isRegistered<ChangePasswordBloc>()) {
     instance.registerLazySingleton(
       () => ChangePasswordBloc(
-        updateUserPasswordUseCase: instance(),
+        instance(),
       ),
     );
   }

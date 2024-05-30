@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_saved_recipe_usecase.dart';
 import 'package:food_recipe_app/presentation/common/helper/get_saved_recipes_object.dart';
 import 'package:meta/meta.dart';
 
@@ -12,11 +13,12 @@ part 'saved_recipes_state.dart';
 
 class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
   GetSavedRecipesUseCase getSavedRecipesUseCase;
+  UpdateSavedRecipeUseCase updateSavedRecipeUseCase;
 
-  SavedRecipesBloc(this.getSavedRecipesUseCase) : super(SavedRecipesInitial()) {
+  SavedRecipesBloc(this.getSavedRecipesUseCase , this.updateSavedRecipeUseCase) : super(SavedRecipesInitial()) {
     on<SavedRecipesCategorySelected>(_onSavedRecipesLoad);
     on<SavedRecipesConinueLoading>(_onSavedRecipesContinueLoading);
-    on<UnSaveRecipe>(_onUnSavedRecipe);
+    on<UpdateSavedRecipeStatus>(_onUpdateSaveStatus);
   }
 
   Future<FutureOr<void>> _onSavedRecipesLoad(SavedRecipesCategorySelected event,
@@ -34,6 +36,10 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
         (r) => emit(SavedRecipesLoadedState(r)));
   }
 
-  FutureOr<void> _onUnSavedRecipe(
-      UnSaveRecipe event, Emitter<SavedRecipesState> emit) {}
+
+
+  Future<FutureOr<void>> _onUpdateSaveStatus(UpdateSavedRecipeStatus event, Emitter<SavedRecipesState> emit) async {
+    emit(SavedRecipeUpdatingState());
+    (await updateSavedRecipeUseCase.execute(event.object)).fold((l) => emit(SavedRecipeUpdateErrorState(l)), (r) => emit(SavedRecipeUpdatedState(r)),);
+  }
 }
