@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
+import 'package:food_recipe_app/domain/object/get_saved_recipes_object.dart';
+import 'package:food_recipe_app/domain/object/status_recipe_object.dart';
 import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_saved_recipe_usecase.dart';
-import 'package:food_recipe_app/presentation/common/helper/get_saved_recipes_object.dart';
 import 'package:meta/meta.dart';
 
 part 'saved_recipes_event.dart';
@@ -15,7 +16,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
   GetSavedRecipesUseCase getSavedRecipesUseCase;
   UpdateSavedRecipeUseCase updateSavedRecipeUseCase;
 
-  SavedRecipesBloc(this.getSavedRecipesUseCase , this.updateSavedRecipeUseCase) : super(SavedRecipesInitial()) {
+  SavedRecipesBloc(this.getSavedRecipesUseCase, this.updateSavedRecipeUseCase)
+      : super(SavedRecipesInitial()) {
     on<SavedRecipesCategorySelected>(_onSavedRecipesLoad);
     on<SavedRecipesConinueLoading>(_onSavedRecipesContinueLoading);
     on<UpdateSavedRecipeStatus>(_onUpdateSaveStatus);
@@ -36,10 +38,12 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
         (r) => emit(SavedRecipesLoadedState(r)));
   }
 
-
-
-  Future<FutureOr<void>> _onUpdateSaveStatus(UpdateSavedRecipeStatus event, Emitter<SavedRecipesState> emit) async {
+  Future<FutureOr<void>> _onUpdateSaveStatus(
+      UpdateSavedRecipeStatus event, Emitter<SavedRecipesState> emit) async {
     emit(SavedRecipeUpdatingState());
-    (await updateSavedRecipeUseCase.execute(event.object)).fold((l) => emit(SavedRecipeUpdateErrorState(l)), (r) => emit(SavedRecipeUpdatedState(r)),);
+    (await updateSavedRecipeUseCase.execute(event.object)).fold(
+      (l) => emit(SavedRecipeUpdateErrorState(l)),
+      (r) => emit(SavedRecipeUpdatedState(r)),
+    );
   }
 }

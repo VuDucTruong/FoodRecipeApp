@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:food_recipe_app/presentation/common/helper/create_recipe_object.dart';
+import 'package:food_recipe_app/domain/object/create_recipe_object.dart';
 
 class CreateRecipeRequest {
   String title;

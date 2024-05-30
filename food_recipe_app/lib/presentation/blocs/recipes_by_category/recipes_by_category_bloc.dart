@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
+import 'package:food_recipe_app/domain/object/get_recipes_by_category_object.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:meta/meta.dart';
 
@@ -23,7 +24,7 @@ class RecipesByCategoryBloc
       CategorySelected event, Emitter<RecipesByCategoryState> emit) async {
     emit(RecipesByCategoryLoadingState());
     (await getRecipesByCategory.execute(
-            GetRecipesByCategoryInput(categories: [event.category], page: 0)))
+            GetRecipesByCategoryObject(categories: [event.category], page: 0)))
         .fold((l) => emit(RecipesByCategoryErrorState(l)),
             (r) => emit(RecipesByCategoryLoadedState(r)));
   }

@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
@@ -20,6 +19,7 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/widgets/avatar_selection.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../resources/assets_management.dart';

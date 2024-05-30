@@ -121,6 +121,10 @@ initHomeModule() {
     instance.registerLazySingleton<GetRecipesByCategoryUseCase>(
         () => GetRecipesByCategoryUseCase(instance()));
   }
+  if (!instance.isRegistered<GetRecipesFromIdsUseCase>()) {
+    instance.registerLazySingleton<GetRecipesFromIdsUseCase>(
+        () => GetRecipesFromIdsUseCase(instance()));
+  }
   if (!instance.isRegistered<GetChefsFromRankUseCase>()) {
     instance.registerLazySingleton<GetChefsFromRankUseCase>(
         () => GetChefsFromRankUseCase(instance()));
@@ -138,13 +142,9 @@ initHomeModule() {
     instance.registerLazySingleton<UserRecipesBloc>(
         () => UserRecipesBloc(instance()));
   }
-  if (!instance.isRegistered<GetRecipesFromIdsUseCase>()) {
-    instance.registerLazySingleton<GetRecipesFromIdsUseCase>(
-        () => GetRecipesFromIdsUseCase(instance()));
-  }
 }
 
-initSavedRecipeModule() {
+/*initSavedRecipeModule() {
   if (!instance.isRegistered<GetSavedRecipesUseCase>()) {
     instance.registerLazySingleton<GetSavedRecipesUseCase>(
         () => GetSavedRecipesUseCase(instance()));
@@ -153,7 +153,7 @@ initSavedRecipeModule() {
     instance.registerLazySingleton<SavedRecipesBloc>(
         () => SavedRecipesBloc(instance()));
   }
-}
+}*/
 
 initCreateRecipeModule() {
   if (!instance.isRegistered<CreateRecipeBloc>()) {
@@ -288,7 +288,6 @@ initEditProfileModule() {
 }
 
 void initChangePasswordModule() {
-
   if (!instance.isRegistered<ChangePasswordBloc>()) {
     instance.registerLazySingleton(
       () => ChangePasswordBloc(

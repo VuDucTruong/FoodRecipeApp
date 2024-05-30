@@ -4,10 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 
 class SelectionFoodImage extends StatefulWidget {
   SelectionFoodImage({super.key, required this.isVeg, required this.fileList});

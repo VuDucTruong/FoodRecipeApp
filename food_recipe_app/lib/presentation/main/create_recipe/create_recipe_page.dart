@@ -6,8 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/blocs/create_recipe/create_recipe_bloc.dart';
-import 'package:food_recipe_app/presentation/common/helper/create_recipe_object.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
+import 'package:food_recipe_app/domain/object/create_recipe_object.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/default_heads.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_alert_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
@@ -24,6 +23,7 @@ import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 class CreateRecipePage extends StatefulWidget {

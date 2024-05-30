@@ -11,7 +11,6 @@ import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_options.dart';
@@ -26,6 +25,7 @@ import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 class HomePage extends StatefulWidget {

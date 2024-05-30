@@ -6,7 +6,7 @@ import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/change_password/change_password_page.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
-import 'package:food_recipe_app/presentation/detail_food/detail_food_view.dart';
+import 'package:food_recipe_app/presentation/detail_recipe/detail_recipe_view.dart';
 import 'package:food_recipe_app/presentation/edit_profile/edit_profile_view.dart';
 import 'package:food_recipe_app/presentation/list_chef_page/list_chef_page.dart';
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
@@ -92,7 +92,7 @@ class RouteGenerator {
       case Routes.detailFoodRoute:
         initDetailFoodModule();
         return MaterialPageRoute(
-          builder: (context) => DetailFoodView(
+          builder: (context) => DetailRecipeView(
             recipeEntity: routeSettings.arguments as RecipeEntity,
           ),
         );

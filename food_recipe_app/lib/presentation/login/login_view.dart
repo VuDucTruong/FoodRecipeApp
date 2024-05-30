@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/remember_check_box.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
@@ -16,6 +15,7 @@ import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 class LoginView extends StatefulWidget {

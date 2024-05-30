@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
+import 'package:food_recipe_app/domain/entity/background_user.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:get_it/get_it.dart';
 
 import '../../resources/assets_management.dart';
 
@@ -14,11 +17,39 @@ class ChefBackground extends StatefulWidget {
 }
 
 class _ChefBackgroundState extends State<ChefBackground> {
-  bool isLike = false, isSaved = false;
+  BackgroundUser backgroundUser =
+      GetIt.instance<BackgroundDataManager>().getBackgroundUser();
+  late bool isLike, isSave;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    isLike = backgroundUser.likedRecipeIds.contains(widget.recipeId);
+    isSave = backgroundUser.savedRecipeIds.contains(widget.recipeId);
+  }
+
+  void updateLikeStatus() {
+    setState(() {
+      if (isLike) {
+        backgroundUser.likedRecipeIds.remove(widget.recipeId);
+        isLike = false;
+      } else {
+        backgroundUser.likedRecipeIds.add(widget.recipeId);
+        isLike = true;
+      }
+    });
+  }
+
+  void updateSaveStatus() {
+    setState(() {
+      if (isSave) {
+        backgroundUser.savedRecipeIds.remove(widget.recipeId);
+        isSave = false;
+      } else {
+        backgroundUser.savedRecipeIds.add(widget.recipeId);
+        isSave = true;
+      }
+    });
   }
 
   @override
@@ -36,9 +67,7 @@ class _ChefBackgroundState extends State<ChefBackground> {
         children: [
           InkWell(
             onTap: () {
-              setState(() {
-                isLike = !isLike;
-              });
+              updateLikeStatus();
             },
             child: isLike
                 ? SvgPicture.asset(PicturePath.likedPath)
@@ -46,11 +75,9 @@ class _ChefBackgroundState extends State<ChefBackground> {
           ),
           InkWell(
               onTap: () {
-                setState(() {
-                  isSaved = !isSaved;
-                });
+                updateSaveStatus();
               },
-              child: isSaved
+              child: isSave
                   ? SvgPicture.asset(PicturePath.savedPath)
                   : SvgPicture.asset(PicturePath.unsavedPath)),
         ],

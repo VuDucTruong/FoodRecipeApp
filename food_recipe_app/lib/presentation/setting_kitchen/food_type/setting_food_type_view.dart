@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
@@ -22,6 +21,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateful/default_hea
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/create_profile_view.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/widgets/food_item.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 class SettingFoodTypeView extends StatefulWidget {

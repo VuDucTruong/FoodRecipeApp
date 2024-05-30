@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 
 class OnOffSwitch extends StatefulWidget {
   OnOffSwitch({Key? key, required this.isOn}) : super(key: key);

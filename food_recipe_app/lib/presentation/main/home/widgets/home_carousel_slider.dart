@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 
 import 'package:food_recipe_app/presentation/common/widgets/stateless/common_food_title.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';

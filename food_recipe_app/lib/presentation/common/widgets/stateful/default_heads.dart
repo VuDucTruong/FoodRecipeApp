@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 
 class DefaultHeads extends StatefulWidget {
   DefaultHeads({super.key, required this.headNumber});

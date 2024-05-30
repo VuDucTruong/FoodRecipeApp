@@ -10,7 +10,7 @@ class CategorySelected extends RecipesByCategoryEvent {
 }
 
 class ConinueLoadingRecipes extends RecipesByCategoryEvent {
-  GetRecipesByCategoryInput input;
+  GetRecipesByCategoryObject input;
 
   ConinueLoadingRecipes(this.input);
 }

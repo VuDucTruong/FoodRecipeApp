@@ -9,7 +9,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_alert_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
@@ -22,6 +21,7 @@ import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/widgets/avatar_selection.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../data/background_data/background_data_manager.dart';

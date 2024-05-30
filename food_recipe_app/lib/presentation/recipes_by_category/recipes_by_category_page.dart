@@ -7,11 +7,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
+import 'package:food_recipe_app/domain/object/get_recipes_by_category_object.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
-import 'package:food_recipe_app/presentation/common/helper/get_saved_recipes_object.dart';
-import 'package:food_recipe_app/presentation/common/helper/mutable_variable.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_options.dart';
@@ -19,6 +18,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_wi
 import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
+import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 import '../resources/assets_management.dart';
@@ -56,7 +56,7 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
         print(recipesByCategoryBloc.state.isLastPage);
         //await Future.delayed(Duration(seconds: 1));
         recipesByCategoryBloc.add(ConinueLoadingRecipes(
-            GetRecipesByCategoryInput(
+            GetRecipesByCategoryObject(
                 categories: [selectedItem.value],
                 page: (recipeList.length ~/ 2) + 1)));
       }
