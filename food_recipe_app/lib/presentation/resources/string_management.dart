@@ -129,6 +129,7 @@ class AppStrings {
   static const String notMatchPass = 'Password does not match !';
   static const String saveSucccess = 'Saved recipe successfully';
   static const String unSaveSuccess = 'Unsaved recipe successfully';
+  static const String myRecipes = 'My Recipes';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 

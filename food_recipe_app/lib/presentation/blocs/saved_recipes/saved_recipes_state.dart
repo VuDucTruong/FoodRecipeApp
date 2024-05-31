@@ -19,7 +19,7 @@ class SavedRecipesLoadedState extends UserSavedRecipesState {
   List<RecipeEntity> savedRecipeList = [];
 
   SavedRecipesLoadedState(this.savedRecipeList) {
-    if (savedRecipeList.isEmpty) {
+    if (savedRecipeList.length < 10) {
       super.isLastPage = true;
     }
   }
@@ -28,4 +28,12 @@ class SavedRecipesLoadedState extends UserSavedRecipesState {
 class SavedRecipesErrorState extends UserSavedRecipesState {
   Failure failure;
   SavedRecipesErrorState(this.failure);
+}
+
+class SavedRecipeActionState extends UserSavedRecipesState {}
+
+class SavedRecipesDeteledState extends SavedRecipeActionState {
+  RecipeEntity deletedRecipe;
+
+  SavedRecipesDeteledState(this.deletedRecipe);
 }

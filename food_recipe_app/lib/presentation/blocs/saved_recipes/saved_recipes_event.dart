@@ -4,13 +4,31 @@ part of 'saved_recipes_bloc.dart';
 sealed class SavedRecipesEvent {}
 
 class SavedRecipesCategorySelected extends SavedRecipesEvent {
-  GetSavedRecipesObject getSavedRecipesObject;
+  RecipeSearchObject object;
 
-  SavedRecipesCategorySelected(this.getSavedRecipesObject);
+  SavedRecipesCategorySelected(this.object);
 }
 
 class SavedRecipesConinueLoading extends SavedRecipesEvent {
-  GetSavedRecipesObject getSavedRecipesObject;
+  RecipeSearchObject object;
 
-  SavedRecipesConinueLoading(this.getSavedRecipesObject);
+  SavedRecipesConinueLoading(this.object);
+}
+
+class LoadMyRecipes extends SavedRecipesEvent {
+  RecipeSearchObject object;
+
+  LoadMyRecipes({required this.object});
+}
+
+class MyRecipesContinueLoading extends SavedRecipesEvent {
+  RecipeSearchObject object;
+
+  MyRecipesContinueLoading(this.object);
+}
+
+class DeleteUserRecipe extends SavedRecipesEvent {
+  RecipeEntity recipeEntity;
+
+  DeleteUserRecipe(this.recipeEntity);
 }

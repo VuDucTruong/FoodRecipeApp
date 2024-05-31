@@ -15,8 +15,10 @@ import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
 import 'package:food_recipe_app/domain/usecase/create_recipe_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/delete_user_profile_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/delete_user_recipe_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chef_info_by_id_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_my_recipes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_ids_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
@@ -157,9 +159,19 @@ initSavedRecipeModule() {
       () => UpdateSavedRecipeUseCase(instance()),
     );
   }
+  if (!instance.isRegistered<GetMyRecipesUseCase>()) {
+    instance.registerLazySingleton(
+      () => GetMyRecipesUseCase(instance()),
+    );
+  }
+  if (!instance.isRegistered<DeleteUserRecipeUseCase>()) {
+    instance.registerLazySingleton(
+      () => DeleteUserRecipeUseCase(instance()),
+    );
+  }
   if (!instance.isRegistered<SavedRecipesBloc>()) {
     instance.registerLazySingleton<SavedRecipesBloc>(
-        () => SavedRecipesBloc(instance(), instance()));
+        () => SavedRecipesBloc(instance(), instance(), instance(), instance()));
   }
 }
 

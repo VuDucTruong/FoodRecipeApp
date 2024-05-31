@@ -6,10 +6,12 @@ import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
+import 'package:food_recipe_app/data/requests/get_my_recipes_request.dart';
 import 'package:food_recipe_app/data/requests/get_recipes_search_request.dart';
 import 'package:food_recipe_app/data/requests/recipe_update_request.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
+import 'package:food_recipe_app/domain/object/search_object.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/object/create_recipe_object.dart';
 
@@ -246,6 +248,30 @@ class RecipeRepositoryImpl implements RecipeRepository {
             return Right(response.data!);
           }
           return Left(Failure.actionFailed("Delete Recipe"));
+        } else {
+          return Left(Failure.internalServerError());
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<RecipeEntity>>> getMyRecipes(
+      RecipeSearchObject obj) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        final response = await _recipeDataSource.getMyRecipes(
+            GetMyRecipesRequest(obj.categories, obj.searchTerm, obj.page));
+        if (response.statusCode == ApiInternalStatus.SUCCESS) {
+          return Right(response.data!
+              .map(
+                (e) => e.toEntity(),
+              )
+              .toList());
         } else {
           return Left(Failure.internalServerError());
         }

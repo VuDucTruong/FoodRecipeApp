@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/object/create_recipe_object.dart';
+import 'package:food_recipe_app/domain/object/search_object.dart';
 
 abstract class RecipeRepository {
   Future<Either<Failure, List<RecipeEntity>>> getRecipesFromLikes();
@@ -21,6 +22,8 @@ abstract class RecipeRepository {
   Future<Either<Failure, void>> updateSaveRecipe(String recipeId, bool option);
   Future<Either<Failure, void>> updateLikeRecipe(String recipeId, bool option);
   Future<Either<Failure, bool>> updateRecipe(UpdateRecipeRequestDto request);
+  Future<Either<Failure, List<RecipeEntity>>> getMyRecipes(
+      RecipeSearchObject obj);
 }
 
 class GetRecipesSearchRequestDto {

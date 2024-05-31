@@ -6,6 +6,8 @@ import 'package:food_recipe_app/data/requests/recipe_update_request.dart';
 import 'package:food_recipe_app/data/responses/base_response.dart';
 import 'package:food_recipe_app/data/responses/recipe_response.dart';
 
+import '../requests/get_my_recipes_request.dart';
+
 abstract class RecipeRemoteDataSource {
   Future<BaseResponse<List<RecipeResponse>>> getRecipesFromLikes();
   Future<BaseResponse<List<RecipeResponse>>> getRecipesFromIds(
@@ -27,6 +29,8 @@ abstract class RecipeRemoteDataSource {
   Future<BaseResponse<void>> updateSaveRecipe(String recipeId, bool option);
   Future<BaseResponse<void>> updateLikeRecipe(String recipeId, bool option);
   Future<BaseResponse<bool>> updateRecipe(RecipeUpdateRequest request);
+  Future<BaseResponse<List<RecipeResponse>>> getMyRecipes(
+      GetMyRecipesRequest request);
 }
 
 class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
@@ -125,5 +129,13 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
   Future<BaseResponse<bool>> deleteRecipe(String recipeId) async {
     Response response = await _dio.delete('$recipeEndpoint/$recipeId');
     return BaseResponse.fromJson(response, (data) => data as bool);
+  }
+
+  @override
+  Future<BaseResponse<List<RecipeResponse>>> getMyRecipes(
+      GetMyRecipesRequest request) async {
+    Response response = await _dio.get('$recipeEndpoint/get-owned-recipes',
+        queryParameters: request.toJson());
+    return BaseResponse.fromJson(response, RecipeResponse.fromJsonList);
   }
 }
