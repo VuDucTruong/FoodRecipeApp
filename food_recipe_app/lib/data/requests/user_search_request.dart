@@ -4,7 +4,7 @@ class UserSearchRequest {
   String search;
   int page;
 
-  UserSearchRequest({required this.search, this.page = 1});
+  UserSearchRequest({required this.search, this.page = 0});
 
   UserSearchRequest.fromUserSearchRequestDto(UserSearchRequestDto request)
       : search = request.search,

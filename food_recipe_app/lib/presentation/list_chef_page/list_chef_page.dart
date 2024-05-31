@@ -6,17 +6,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
+import 'package:food_recipe_app/data/network/failure.dart';
+import 'package:food_recipe_app/domain/entity/background_user.dart';
+import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/object/get_recipes_by_category_object.dart';
+import 'package:food_recipe_app/domain/object/search_object.dart';
+import 'package:food_recipe_app/domain/object/update_follow_object.dart';
+import 'package:food_recipe_app/domain/object/user_search_object.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
+import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateful/comon_follow_button.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_options.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
+import 'package:food_recipe_app/presentation/list_chef_page/chef_item.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
@@ -37,27 +47,25 @@ class ListChefPage extends StatefulWidget {
 }
 
 class _ListChefPageState extends State<ListChefPage> {
-  RecipesByCategoryBloc recipesByCategoryBloc =
-      GetIt.instance<RecipesByCategoryBloc>();
-  MutableVariable<String> selectedItem = MutableVariable(Constant.typeList[0]);
   ScrollController scrollController = ScrollController();
-  MutableVariable<int> pageIndex = MutableVariable(0);
-  List<RecipeEntity> recipeList = [];
+  VerifiedChefsBloc verifiedChefsBloc = GetIt.instance<VerifiedChefsBloc>();
+  List<ChefEntity> chefList = [];
+  BackgroundUser backgroundUser =
+      GetIt.instance<BackgroundDataManager>().getBackgroundUser();
   @override
   void initState() {
     super.initState();
-    recipesByCategoryBloc.add(CategorySelected(selectedItem.value));
+    verifiedChefsBloc.add(SearchChefs(UserSearchObject('')));
+
     scrollController.addListener(() async {
       if (scrollController.offset >=
           scrollController.position.maxScrollExtent) {
-        if (recipesByCategoryBloc.state.isLastPage) {
+        if (verifiedChefsBloc.state.isLastPage) {
           return;
         }
         //await Future.delayed(Duration(seconds: 1));
-        recipesByCategoryBloc.add(ConinueLoadingRecipes(
-            GetRecipesByCategoryObject(
-                categories: [selectedItem.value],
-                page: (recipeList.length ~/ 10) + 1)));
+        verifiedChefsBloc.add(SearchChefs(
+            UserSearchObject('', page: (chefList.length ~/ 10) + 1)));
       }
     });
   }
@@ -68,21 +76,22 @@ class _ListChefPageState extends State<ListChefPage> {
   }
 
   void reload() {
-    recipesByCategoryBloc.add(CategorySelected(selectedItem.value));
+    resetData();
+    verifiedChefsBloc.add(SearchChefs(UserSearchObject('')));
   }
 
   void resetData() {
-    recipeList.clear();
+    chefList.clear();
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    recipeList = [];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppStrings.recipesByCategory,
+          AppStrings.verifiedChefs,
           style: getBoldStyle(
               color: ColorManager.secondaryColor, fontSize: FontSize.s20),
         ),
@@ -101,74 +110,41 @@ class _ListChefPageState extends State<ListChefPage> {
         controller: scrollController,
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
-              child: Row(
-                children: [
-                  Text(
-                    AppStrings.savedRecipes,
-                    style: getBoldStyle(
-                        color: ColorManager.secondaryColor,
-                        fontSize: FontSize.s20),
-                  ),
-                  const Spacer(),
-                  SvgPicture.asset(
-                    PicturePath.logoSVGPath,
-                    width: AppSize.s50,
-                    height: AppSize.s50,
-                    fit: BoxFit.contain,
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: AppSize.s10,
-            ),
-            FoodTypeOptions(
-              selectedItem: selectedItem,
-              bloc: recipesByCategoryBloc,
-              resetData: resetData,
-            ),
-            const SizedBox(
-              height: AppSize.s10,
-            ),
-            BlocConsumer<RecipesByCategoryBloc, RecipesByCategoryState>(
-              bloc: recipesByCategoryBloc,
+            BlocConsumer<VerifiedChefsBloc, VerifiedChefsState>(
+              bloc: verifiedChefsBloc,
               listener: (context, state) {
-                if (state is SavedRecipesErrorState) {
-                  showAnimatedDialog2(
-                      context, NoConnectionDialog(reload: reload));
+                if (state is VerifiedChefsLoadedState) {
+                  chefList.addAll(state.verifiedChefList);
+                }
+                if (state is VerifiedChefsErrorState) {
+                  handleBlocFailures(context, state.failure, reload);
                 }
               },
+              buildWhen: (previous, current) =>
+                  current is! VerifiedChefsActionState,
               builder: (context, state) {
-                if (state is RecipesByCategoryLoadedState) {
-                  recipeList.addAll(state.recipesByCategory);
-                  return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: recipeList.length + 1,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        if (index >= recipeList.length) {
-                          if (state.isLastPage) {
-                            return const NoItemWidget();
-                          } else {
-                            return const LoadingWidget();
-                          }
-                        }
-                        return Center(
-                            child: RecipeItem(
-                          isUser: true,
-                          recipe: recipeList[index],
-                        ));
-                      });
+                if (state is VerifiedChefsLoadingState) {
+                  return const Center(child: LoadingWidget());
                 }
-                if (state is RecipesByCategoryLoadingState) {
-                  return const LoadingWidget();
-                }
-                if (state is RecipesByCategoryErrorState) {
-                  return ErrorText(failure: state.failure);
-                }
-                return Container();
+                return ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: chefList.length + 1,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    if (chefList.length == index) {
+                      if (state.isLastPage) {
+                        return const NoItemWidget();
+                      } else {
+                        return const LoadingWidget();
+                      }
+                    }
+                    ChefEntity chef = chefList[index];
+                    return ChefItem(
+                      chefEntity: chef,
+                      isFollowed: backgroundUser.followingIds.contains(chef.id),
+                    );
+                  },
+                );
               },
             ),
             const SizedBox(

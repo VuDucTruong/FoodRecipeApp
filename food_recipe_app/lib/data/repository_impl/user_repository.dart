@@ -12,6 +12,8 @@ import 'package:food_recipe_app/data/requests/user_update_request.dart';
 
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
+import 'package:food_recipe_app/domain/object/update_follow_object.dart';
+import 'package:food_recipe_app/domain/object/user_search_object.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
 
 import '../../domain/entity/background_user.dart';
@@ -137,46 +139,15 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<Failure, List<ChefEntity>>> getProfileSearch(
-      UserSearchRequestDto request) async {
-    if (await _networkInfo.isConnected) {
-      try {
-        UserSearchRequest searchRequest =
-            UserSearchRequest.fromUserSearchRequestDto(request);
-        return await userRemoteDataSource
-            .getProfileSearch(searchRequest)
-            .then((response) {
-          if (response.statusCode == ResponseCode.SUCCESS) {
-            return response.data != null
-                ? Right(response.data!.map((e) => e.toEntity()).toList())
-                : Left(Failure.dataNotFound("Chefs"));
-          } else {
-            return Left(Failure.internalServerError());
-          }
-        });
-      } catch (error) {
-        return Left(ErrorHandler.handle(error).failure);
-      }
-    } else {
-      return Left(Failure.noInternet());
-    }
-  }
-
-  @override
-  Future<Either<Failure, bool>> updateFollow(
-      String targetChefId, bool option) async {
+  Future<Either<Failure, void>> updateFollow(UpdateFollowObject obj) async {
     if (await _networkInfo.isConnected) {
       try {
         return await userRemoteDataSource
-            .updateFollow(targetChefId, option)
+            .updateFollow(obj.chefId, obj.option)
             .then((response) async {
           if (response.statusCode == ResponseCode.SUCCESS) {
-            if (response.data != null) {
-              _backgroundDataManager.updateFollow(targetChefId, option);
-              return const Right(true);
-            } else {
-              return Left(Failure.actionFailed("Follow user"));
-            }
+            _backgroundDataManager.updateFollow(obj.chefId, obj.option);
+            return const Right(null);
           } else {
             return Left(Failure.internalServerError());
           }
@@ -232,6 +203,33 @@ class UserRepositoryImpl implements UserRepository {
               return Right(profileInformation);
             }
             return Left(Failure.actionFailed("Update profile"));
+          } else {
+            return Left(Failure.internalServerError());
+          }
+        });
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ChefEntity>>> getSearchChefs(
+      UserSearchObject obj) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        return await userRemoteDataSource
+            .getSearchChefs(
+                UserSearchRequest(search: obj.searchTerm, page: obj.page))
+            .then((response) async {
+          if (response.statusCode == ResponseCode.SUCCESS) {
+            return Right(response.data!
+                .map(
+                  (e) => e.toEntity(),
+                )
+                .toList());
           } else {
             return Left(Failure.internalServerError());
           }

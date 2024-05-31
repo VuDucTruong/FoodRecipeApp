@@ -15,11 +15,15 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:get_it/get_it.dart';
 
 class RecipeItem extends StatelessWidget {
-  RecipeItem({Key? key, required this.isUser, required this.recipe})
+  RecipeItem(
+      {Key? key,
+      required this.isUser,
+      required this.recipe,
+      this.deleteRecipeFunc})
       : super(key: key);
   bool isUser;
   RecipeEntity recipe;
-
+  Function? deleteRecipeFunc;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -64,8 +68,7 @@ class RecipeItem extends StatelessWidget {
                             AppAlertDialog(
                               content: AppStrings.deleteRecipeWarning,
                               onYes: () {
-                                GetIt.instance<SavedRecipesBloc>()
-                                    .add(DeleteUserRecipe(recipe));
+                                deleteRecipeFunc?.call();
                               },
                             ));
                       },

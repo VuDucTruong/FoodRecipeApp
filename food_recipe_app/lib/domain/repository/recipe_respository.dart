@@ -15,7 +15,7 @@ abstract class RecipeRepository {
   Future<Either<Failure, List<RecipeEntity>>> getLikedRecipesSearch(
       GetRecipesSearchRequestDto request);
   Future<Either<Failure, List<RecipeEntity>>> getRecipesSearch(
-      GetRecipesSearchRequestDto request);
+      RecipeSearchObject object);
   Future<Either<Failure, RecipeEntity>> createRecipe(
       CreateRecipeObject createRecipeObject);
   Future<Either<Failure, bool>> deleteRecipe(String recipeId);

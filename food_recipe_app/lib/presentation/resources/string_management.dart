@@ -49,7 +49,7 @@ class AppStrings {
   static const String seeAll = 'see all';
   static const String trendingToday = 'Trending Today';
   static const String categories = 'Categories';
-  static const String verifiedChefs = 'Verified Chefs';
+  static const String verifiedChefs = 'Popular Chefs';
   static const String ingredients = 'Ingredients';
   static const String instructions = 'Instructions';
   static const String recipes = 'Recipes';
@@ -130,6 +130,8 @@ class AppStrings {
   static const String saveSucccess = 'Saved recipe successfully';
   static const String unSaveSuccess = 'Unsaved recipe successfully';
   static const String myRecipes = 'My Recipes';
+  static const String follow = 'Follow';
+  static const String unfollow = 'Unfollow';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 

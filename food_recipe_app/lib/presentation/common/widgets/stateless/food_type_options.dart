@@ -50,7 +50,9 @@ class _FoodTypeOptionsState extends State<FoodTypeOptions> {
             onTap: () {
               setState(() {
                 if (widget.bloc is RecipesByCategoryBloc) {
-                  widget.bloc.add(CategorySelected(typeList[index]));
+                  widget.resetData!();
+                  widget.bloc.add(CategorySelected(
+                      RecipeSearchObject([typeList[index]], '')));
                 } else {
                   widget.resetData!();
                   widget.bloc.add(SavedRecipesCategorySelected(

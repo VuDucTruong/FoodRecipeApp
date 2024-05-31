@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
+import 'package:food_recipe_app/domain/entity/background_user.dart';
+import 'package:food_recipe_app/domain/object/update_follow_object.dart';
 import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateful/comon_follow_button.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
@@ -33,6 +37,8 @@ class ChefProfileView extends StatefulWidget {
 
 class _ChefProfileViewState extends State<ChefProfileView> {
   ChefInfoBloc chefInfoBloc = GetIt.instance<ChefInfoBloc>();
+  BackgroundUser backgroundUser =
+      GetIt.instance<BackgroundDataManager>().getBackgroundUser();
 
   @override
   void initState() {
@@ -95,6 +101,8 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                       );
                     }
                     if (state is ChefInfoLoadedState) {
+                      bool isFollowed = backgroundUser.followingIds
+                          .contains(state.chefEntity!.id);
                       return Column(
                         children: [
                           UserIntroduction(
@@ -105,6 +113,15 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                           ),
                           UserSocialStatus(
                             entity: state.chefEntity!,
+                          ),
+                          CommonFollowButton(
+                            onPressed: () {
+                              chefInfoBloc.add(UpdateFollowChef(
+                                  UpdateFollowObject(
+                                      state.chefEntity!.id, isFollowed),
+                                  state.chefEntity!));
+                            },
+                            chefEntity: state.chefEntity!,
                           ),
                           const Divider(
                             color: Colors.black26,
@@ -120,18 +137,17 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                   buildWhen: (previous, current) => current is ChefRecipeState,
                   builder: (context, state) {
                     if (state is ChefRecipeLoadedState) {
-                      return SizedBox(
-                          height: 400,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: state.recipeList.length,
-                            itemBuilder: (context, index) {
-                              return RecipeItem(
-                                isUser: false,
-                                recipe: state.recipeList[index],
-                              );
-                            },
-                          ));
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.recipeList.length,
+                        itemBuilder: (context, index) {
+                          return RecipeItem(
+                            isUser: false,
+                            recipe: state.recipeList[index],
+                          );
+                        },
+                      );
                     }
                     if (state is ChefRecipeErrorState) {
                       return Center(

@@ -86,36 +86,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
             const Divider(
               color: Colors.black26,
             ),
-            BlocBuilder<UserRecipesBloc, UserRecipesState>(
-              bloc: _userRecipesBloc,
-              builder: (context, state) {
-                if (state is UserRecipesLoadingState) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (state is UserRecipesLoadedState) {
-                  return SizedBox(
-                      height: 400,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: state.recipeList.length,
-                        itemBuilder: (context, index) {
-                          return RecipeItem(
-                            isUser: true,
-                            recipe: state.recipeList[index],
-                          );
-                        },
-                      ));
-                }
-                if (state is UserRecipesErrorState) {
-                  return Center(
-                    child: Text(state.failure.toString()),
-                  );
-                }
-                return Container();
-              },
-            ),
             const SizedBox(
               height: 8,
             )

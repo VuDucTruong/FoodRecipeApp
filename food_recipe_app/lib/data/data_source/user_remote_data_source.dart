@@ -12,13 +12,13 @@ abstract class UserRemoteDataSource {
   Future<BaseResponse<List<ChefResponse>>> getVerifiedChefs();
   Future<BaseResponse<UserResponse>> getSelfInfo();
   Future<BaseResponse<ChefResponse>> getProfileById(String id);
-  Future<BaseResponse<List<ChefResponse>>> getProfileSearch(
-      UserSearchRequest request);
   Future<BaseResponse<UserProfileInfoResponse>> updateProfile(
       UserUpdateRequest request);
   Future<BaseResponse<bool>> deleteProfile();
   Future<BaseResponse<bool>> updatePassword(String password);
-  Future<BaseResponse<bool>> updateFollow(String targetChefId, bool option);
+  Future<BaseResponse<void>> updateFollow(String targetChefId, bool option);
+  Future<BaseResponse<List<ChefResponse>>> getSearchChefs(
+      UserSearchRequest request);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -61,28 +61,21 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<BaseResponse<List<ChefResponse>>> getProfileSearch(
-      UserSearchRequest request) async {
-    final response = await _dio.get('$userEndpoint/search',
-        queryParameters: request.toJson());
-    return BaseResponse.fromJson(response, ChefResponse.fromJsonList);
-  }
-
-  @override
-  Future<BaseResponse<bool>> updateFollow(
+  Future<BaseResponse<void>> updateFollow(
       String targetChefId, bool option) async {
     final response = await _dio.put('$userEndpoint/follow/$targetChefId',
         queryParameters: {'option': option});
-    return BaseResponse.fromJson(response, (data) => data);
+    return BaseResponse.fromJson(
+      response,
+      (p0) {},
+    );
   }
 
   @override
   Future<BaseResponse<bool>> updatePassword(String password) async {
-    final response =
-        await _dio.put('$userEndpoint/update-password',
-            data: password,
-          options: Options(contentType: Headers.textPlainContentType)
-        );
+    final response = await _dio.put('$userEndpoint/update-password',
+        data: password,
+        options: Options(contentType: Headers.textPlainContentType));
     return BaseResponse<bool>.fromJson(response, (data) => data as bool);
   }
 
@@ -94,5 +87,15 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         options: Options(contentType: Headers.multipartFormDataContentType));
     return BaseResponse<UserProfileInfoResponse>.fromJson(
         response, (value) => UserProfileInfoResponse.fromJson(value));
+  }
+
+  @override
+  Future<BaseResponse<List<ChefResponse>>> getSearchChefs(
+      UserSearchRequest request) async {
+    final response = await _dio.get(
+      '$userEndpoint/search',
+      queryParameters: request.toJson(),
+    );
+    return BaseResponse.fromJson(response, ChefResponse.fromJsonList);
   }
 }

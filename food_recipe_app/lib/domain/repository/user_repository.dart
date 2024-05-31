@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
+import 'package:food_recipe_app/domain/object/update_follow_object.dart';
+import 'package:food_recipe_app/domain/object/user_search_object.dart';
 
 import '../entity/background_user.dart';
 
@@ -11,13 +13,13 @@ abstract class UserRepository {
   Future<Either<Failure, List<ChefEntity>>> getVerifiedChefs();
   Future<Either<Failure, ChefEntity>> getChefInfo(String id);
   Future<Either<Failure, ChefEntity>> getProfileById(String id);
-  Future<Either<Failure, List<ChefEntity>>> getProfileSearch(
-      UserSearchRequestDto searchRequest);
   Future<Either<Failure, ProfileInformation>> updateProfile(
       UserUpdateRequestDto updateRequest);
   Future<Either<Failure, bool>> deleteProfile();
   Future<Either<Failure, bool>> updatePassword(String password);
-  Future<Either<Failure, bool>> updateFollow(String targetChefId, bool option);
+  Future<Either<Failure, void>> updateFollow(UpdateFollowObject obj);
+  Future<Either<Failure, List<ChefEntity>>> getSearchChefs(
+      UserSearchObject obj);
 }
 
 class UserSearchRequestDto {
@@ -48,7 +50,8 @@ class UserUpdateRequestDto {
     required this.facebookLink,
   });
 
-  UserUpdateRequestDto.fromProfileInformation(ProfileInformation profileInfo, this.avatarImg)
+  UserUpdateRequestDto.fromProfileInformation(
+      ProfileInformation profileInfo, this.avatarImg)
       : fullName = profileInfo.fullName,
         avatarUrl = profileInfo.avatarUrl,
         isVegan = profileInfo.isVegan,
@@ -57,6 +60,4 @@ class UserUpdateRequestDto {
         facebookLink = profileInfo.facebookLink,
         categories = profileInfo.categories,
         hungryHeads = profileInfo.hungryHeads;
-
-
 }

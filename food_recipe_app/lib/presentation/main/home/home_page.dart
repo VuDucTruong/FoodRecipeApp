@@ -8,6 +8,8 @@ import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
+import 'package:food_recipe_app/domain/object/search_object.dart';
+import 'package:food_recipe_app/domain/object/user_search_object.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
@@ -49,16 +51,22 @@ class _HomePageState extends State<HomePage> {
     selectedCateogry = MutableVariable(Constant.typeList[0]);
     trendingBloc = GetIt.instance<TrendingBloc>();
     verifiedChefsBloc = GetIt.instance<VerifiedChefsBloc>();
-    verifiedChefsBloc.add(VerifiedChefsLoad());
+    verifiedChefsBloc.add(SearchChefs(UserSearchObject('')));
     recipesByCategoryBloc = GetIt.instance<RecipesByCategoryBloc>();
     trendingBloc.add(TrendingLoad());
-    recipesByCategoryBloc.add(CategorySelected(selectedCateogry.value));
+    recipesByCategoryBloc.add(CategorySelected(RecipeSearchObject(
+      [selectedCateogry.value],
+      '',
+    )));
   }
 
   void reloadPage() {
-    verifiedChefsBloc.add(VerifiedChefsLoad());
+    verifiedChefsBloc.add(SearchChefs(UserSearchObject('')));
     trendingBloc.add(TrendingLoad());
-    recipesByCategoryBloc.add(CategorySelected(selectedCateogry.value));
+    recipesByCategoryBloc.add(CategorySelected(RecipeSearchObject(
+      [selectedCateogry.value],
+      '',
+    )));
   }
 
   @override
@@ -99,7 +107,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 RecipeListByCategoy(
                     recipesByCategoryBloc: recipesByCategoryBloc),
-                _getHeadingHome(AppStrings.verifiedChefs, true, null),
+                _getHeadingHome(AppStrings.verifiedChefs, true, () {
+                  Navigator.pushNamed(context, Routes.listChefPageRoute);
+                }),
                 ChefList(verifiedChefsBloc: verifiedChefsBloc),
                 const SizedBox(
                   height: AppSize.s8,

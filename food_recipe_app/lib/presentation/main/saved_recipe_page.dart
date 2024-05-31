@@ -222,6 +222,10 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
                             child: RecipeItem(
                           isUser: _recipeView == RecipeView.MyRecipes,
                           recipe: recipeList[index],
+                          deleteRecipeFunc: () {
+                            savedRecipesBloc
+                                .add(DeleteUserRecipe(recipeList[index]));
+                          },
                         ));
                       });
                 }

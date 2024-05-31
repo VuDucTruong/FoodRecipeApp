@@ -22,6 +22,7 @@ import 'package:food_recipe_app/domain/usecase/get_my_recipes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_ids_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_likes_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_saved_recipes_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_search_chefs_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/google_login_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/login_usecase.dart';
@@ -30,6 +31,7 @@ import 'package:food_recipe_app/domain/usecase/refresh_access_token_usecase.dart
 import 'package:food_recipe_app/domain/usecase/update_like_recipe_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_password_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_saved_recipe_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_user_follow_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_user_profile_usecase.dart';
 
 import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
@@ -130,9 +132,13 @@ initHomeModule() {
     instance.registerLazySingleton<GetRecipesFromIdsUseCase>(
         () => GetRecipesFromIdsUseCase(instance()));
   }
-  if (!instance.isRegistered<GetChefsFromRankUseCase>()) {
-    instance.registerLazySingleton<GetChefsFromRankUseCase>(
-        () => GetChefsFromRankUseCase(instance()));
+  if (!instance.isRegistered<GetSearchChefsUseCase>()) {
+    instance.registerLazySingleton<GetSearchChefsUseCase>(
+        () => GetSearchChefsUseCase(instance()));
+  }
+  if (!instance.isRegistered<UpdateUserFollowUseCase>()) {
+    instance.registerLazySingleton<UpdateUserFollowUseCase>(
+        () => UpdateUserFollowUseCase(instance()));
   }
   if (!instance.isRegistered<RecipesByCategoryBloc>()) {
     instance.registerLazySingleton(() => RecipesByCategoryBloc(instance()));
@@ -141,7 +147,8 @@ initHomeModule() {
     instance.registerLazySingleton(() => TrendingBloc(instance()));
   }
   if (!instance.isRegistered<VerifiedChefsBloc>()) {
-    instance.registerLazySingleton(() => VerifiedChefsBloc(instance()));
+    instance
+        .registerLazySingleton(() => VerifiedChefsBloc(instance(), instance()));
   }
   if (!instance.isRegistered<UserRecipesBloc>()) {
     instance.registerLazySingleton<UserRecipesBloc>(
@@ -269,7 +276,7 @@ initChefProfileModule() {
   }
   if (!instance.isRegistered<ChefInfoBloc>()) {
     instance.registerLazySingleton<ChefInfoBloc>(
-        () => ChefInfoBloc(instance(), instance()));
+        () => ChefInfoBloc(instance(), instance(), instance()));
   }
 }
 

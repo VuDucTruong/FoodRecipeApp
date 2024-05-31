@@ -14,3 +14,12 @@ class LoadChefRecipes extends ChefInfoEvent {
 
   LoadChefRecipes(this.recipeIdList);
 }
+
+class UpdateFollowChef extends ChefInfoEvent {
+  ChefEntity chefEntity;
+  UpdateFollowObject object;
+
+  UpdateFollowChef(this.object, this.chefEntity) {
+    chefEntity.followerCount += object.option ? 1 : -1;
+  }
+}

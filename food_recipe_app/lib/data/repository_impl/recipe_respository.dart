@@ -148,13 +148,14 @@ class RecipeRepositoryImpl implements RecipeRepository {
 
   @override
   Future<Either<Failure, List<RecipeEntity>>> getRecipesSearch(
-      GetRecipesSearchRequestDto request) async {
+      RecipeSearchObject object) async {
     if (await _networkInfo.isConnected) {
       try {
-        GetRecipesSearchRequest searchRequest =
-            GetRecipesSearchRequest.fromGetRecipesSearchRequestDto(request);
-        final response =
-            await _recipeDataSource.getRecipesSearch(searchRequest);
+        final response = await _recipeDataSource.getRecipesSearch(
+            GetRecipesSearchRequest(
+                categories: object.categories,
+                searchTerm: object.searchTerm,
+                page: object.page));
         if (response.statusCode == ApiInternalStatus.SUCCESS) {
           return response.data != null
               ? Right(response.data!.map((e) => e.toEntity()).toList())

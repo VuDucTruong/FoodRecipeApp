@@ -8,6 +8,7 @@ import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/object/get_recipes_by_category_object.dart';
+import 'package:food_recipe_app/domain/object/search_object.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
@@ -46,19 +47,20 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
   @override
   void initState() {
     super.initState();
-    recipesByCategoryBloc.add(CategorySelected(selectedItem.value));
+    recipesByCategoryBloc.add(CategorySelected(RecipeSearchObject(
+      [selectedItem.value],
+      '',
+    )));
     scrollController.addListener(() async {
       if (scrollController.offset >=
           scrollController.position.maxScrollExtent) {
         if (recipesByCategoryBloc.state.isLastPage) {
           return;
         }
-        print(recipesByCategoryBloc.state.isLastPage);
         //await Future.delayed(Duration(seconds: 1));
-        recipesByCategoryBloc.add(ConinueLoadingRecipes(
-            GetRecipesByCategoryObject(
-                categories: [selectedItem.value],
-                page: (recipeList.length ~/ 2) + 1)));
+        recipesByCategoryBloc.add(ConinueLoadingRecipes(RecipeSearchObject(
+            [selectedItem.value], '',
+            page: (recipeList.length ~/ 10) + 1)));
       }
     });
   }
@@ -69,7 +71,10 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
   }
 
   void reload() {
-    recipesByCategoryBloc.add(CategorySelected(selectedItem.value));
+    recipesByCategoryBloc.add(CategorySelected(RecipeSearchObject(
+      [selectedItem.value],
+      '',
+    )));
   }
 
   void resetData() {

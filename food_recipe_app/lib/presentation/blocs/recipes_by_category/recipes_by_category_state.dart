@@ -17,7 +17,7 @@ class RecipesByCategoryLoadedState extends RecipesByCategoryState {
   List<RecipeEntity> recipesByCategory = [];
 
   RecipesByCategoryLoadedState(this.recipesByCategory) {
-    if (recipesByCategory.isEmpty) {
+    if (recipesByCategory.length < 10) {
       isLastPage = true;
     }
   }

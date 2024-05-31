@@ -4,13 +4,13 @@ part of 'recipes_by_category_bloc.dart';
 sealed class RecipesByCategoryEvent {}
 
 class CategorySelected extends RecipesByCategoryEvent {
-  String category;
+  RecipeSearchObject object;
 
-  CategorySelected(this.category);
+  CategorySelected(this.object);
 }
 
 class ConinueLoadingRecipes extends RecipesByCategoryEvent {
-  GetRecipesByCategoryObject input;
+  RecipeSearchObject object;
 
-  ConinueLoadingRecipes(this.input);
+  ConinueLoadingRecipes(this.object);
 }

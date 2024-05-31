@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/object/get_recipes_by_category_object.dart';
+import 'package:food_recipe_app/domain/object/search_object.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:meta/meta.dart';
 
@@ -23,15 +24,14 @@ class RecipesByCategoryBloc
   Future<FutureOr<void>> _onCategorySelected(
       CategorySelected event, Emitter<RecipesByCategoryState> emit) async {
     emit(RecipesByCategoryLoadingState());
-    (await getRecipesByCategory.execute(
-            GetRecipesByCategoryObject(categories: [event.category], page: 0)))
-        .fold((l) => emit(RecipesByCategoryErrorState(l)),
-            (r) => emit(RecipesByCategoryLoadedState(r)));
+    (await getRecipesByCategory.execute(event.object)).fold(
+        (l) => emit(RecipesByCategoryErrorState(l)),
+        (r) => emit(RecipesByCategoryLoadedState(r)));
   }
 
   Future<FutureOr<void>> _onContinueLoading(
       ConinueLoadingRecipes event, Emitter<RecipesByCategoryState> emit) async {
-    (await getRecipesByCategory.execute(event.input)).fold(
+    (await getRecipesByCategory.execute(event.object)).fold(
         (l) => emit(RecipesByCategoryErrorState(l)),
         (r) => emit(RecipesByCategoryLoadedState(r)));
   }

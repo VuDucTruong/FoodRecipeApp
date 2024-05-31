@@ -38,3 +38,11 @@ class ChefRecipeErrorState extends ChefRecipeState {
 
   ChefRecipeErrorState(this.failure);
 }
+
+class VerifiedChefsActionState extends ChefRecipeState {}
+
+class FollowSuccessState extends VerifiedChefsActionState {
+  UpdateFollowObject object;
+
+  FollowSuccessState(this.object);
+}
