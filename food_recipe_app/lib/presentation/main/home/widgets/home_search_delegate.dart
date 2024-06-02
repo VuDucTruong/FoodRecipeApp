@@ -9,6 +9,7 @@ import 'package:food_recipe_app/domain/object/user_search_object.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_search_chefs_usecase.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -50,38 +51,35 @@ class HomeSearchDelegate extends SearchDelegate {
   }
 
   void _onQueryChanged(String query, BuildContext context) {
-    if (_debounce?.isActive ?? false) _debounce!.cancel();
-    _debounce = Timer(const Duration(milliseconds: 300), () {
-      if (query.isNotEmpty) {
-        _fetchSuggestions(query).then((_) {
-          _isLoading = false;
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(
+      const Duration(milliseconds: 200),
+      () {
+        if (query.isNotEmpty) {
+          _fetchSuggestions(query).then((_) {
+            showSuggestions(context);
+            _isLoading = false;
+          });
+          _isLoading = true;
+        } else {
+          clearSuggestions();
           showSuggestions(context);
-        });
-        _isLoading = true;
-      } else {
-        clearSuggestions();
-        showSuggestions(context);
-      }
-    });
+        }
+      },
+    );
   }
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
-      if (_isLoading)
-        const Padding(
-          padding: EdgeInsets.all(16.0),
-          child: CircularProgressIndicator(),
-        )
-      else
-        IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () {
-            query = '';
-            clearSuggestions();
-            showSuggestions(context);
-          },
-        ),
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+          clearSuggestions();
+          showSuggestions(context);
+        },
+      ),
     ];
   }
 
@@ -107,67 +105,71 @@ class HomeSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     _onQueryChanged(query, context);
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Visibility(
-            visible: searchRecipes.isNotEmpty,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppStrings.recipes,
-                style: getMediumStyle(fontSize: 16),
-              ),
+    return _isLoading
+        ? const LoadingWidget()
+        : SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Visibility(
+                  visible: searchRecipes.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      AppStrings.recipes,
+                      style: getMediumStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: searchRecipes.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(searchRecipes[index].title),
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.detailFoodRoute,
+                            arguments: searchRecipes[index]);
+                      },
+                    );
+                  },
+                ),
+                Visibility(
+                  visible: searchChefs.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      AppStrings.chefs,
+                      style: getMediumStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: searchChefs.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(searchChefs[index].profileInfo.fullName),
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, Routes.chefProfileRoute,
+                            arguments: searchChefs[index].id);
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
-          ),
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: searchRecipes.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(searchRecipes[index].title),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, Routes.detailFoodRoute,
-                      arguments: searchRecipes[index]);
-                },
-              );
-            },
-          ),
-          Visibility(
-            visible: searchChefs.isNotEmpty,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                AppStrings.chefs,
-                style: getMediumStyle(fontSize: 16),
-              ),
-            ),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: searchChefs.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(searchChefs[index].profileInfo.fullName),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, Routes.chefProfileRoute,
-                      arguments: searchChefs[index].id);
-                },
-              );
-            },
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   @override
   Widget buildResults(BuildContext context) {
+    _onQueryChanged(query, context);
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

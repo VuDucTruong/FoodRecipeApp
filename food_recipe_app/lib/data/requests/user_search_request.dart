@@ -12,7 +12,7 @@ class UserSearchRequest {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['search'] = search;
+    data['searchTerm'] = search;
     data['page'] = page;
     return data;
   }

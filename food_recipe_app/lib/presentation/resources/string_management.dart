@@ -47,7 +47,7 @@ class AppStrings {
   static const String congratulationBtnMessage = 'Let\'s Get Cooking';
   static const String homeTitle = 'Hungry? Choose a dish...';
   static const String homeSearch = 'What\'s cooking in your mind...?';
-  static const String seeAll = 'see all';
+  static const String seeAll = 'See All';
   static const String trendingToday = 'Trending Today';
   static const String categories = 'Categories';
   static const String verifiedChefs = 'Popular Chefs';
