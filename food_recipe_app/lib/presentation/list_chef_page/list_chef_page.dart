@@ -38,8 +38,8 @@ import '../resources/string_management.dart';
 import '../resources/style_management.dart';
 
 class ListChefPage extends StatefulWidget {
-  const ListChefPage({super.key});
-
+  const ListChefPage({super.key, this.search = ''});
+  final String search;
   @override
   _ListChefPageState createState() {
     return _ListChefPageState();
@@ -55,7 +55,7 @@ class _ListChefPageState extends State<ListChefPage> {
   @override
   void initState() {
     super.initState();
-    verifiedChefsBloc.add(SearchChefs(UserSearchObject('')));
+    verifiedChefsBloc.add(SearchChefs(UserSearchObject(widget.search)));
 
     scrollController.addListener(() async {
       if (scrollController.offset >=
@@ -64,8 +64,8 @@ class _ListChefPageState extends State<ListChefPage> {
           return;
         }
         //await Future.delayed(Duration(seconds: 1));
-        verifiedChefsBloc.add(SearchChefs(
-            UserSearchObject('', page: (chefList.length ~/ 10) + 1)));
+        verifiedChefsBloc.add(SearchChefs(UserSearchObject(widget.search,
+            page: (chefList.length ~/ 10) + 1)));
       }
     });
   }
@@ -77,7 +77,7 @@ class _ListChefPageState extends State<ListChefPage> {
 
   void reload() {
     resetData();
-    verifiedChefsBloc.add(SearchChefs(UserSearchObject('')));
+    verifiedChefsBloc.add(SearchChefs(UserSearchObject(widget.search)));
   }
 
   void resetData() {

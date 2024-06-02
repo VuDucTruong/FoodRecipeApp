@@ -29,8 +29,8 @@ import '../resources/string_management.dart';
 import '../resources/style_management.dart';
 
 class RecipesByCategoryPage extends StatefulWidget {
-  const RecipesByCategoryPage({super.key});
-
+  const RecipesByCategoryPage({super.key, this.search = ''});
+  final String search;
   @override
   _RecipesByCategoryPageState createState() {
     return _RecipesByCategoryPageState();
@@ -49,7 +49,7 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
     super.initState();
     recipesByCategoryBloc.add(CategorySelected(RecipeSearchObject(
       [selectedItem.value],
-      '',
+      widget.search,
     )));
     scrollController.addListener(() async {
       if (scrollController.offset >=
@@ -59,7 +59,7 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
         }
         //await Future.delayed(Duration(seconds: 1));
         recipesByCategoryBloc.add(ConinueLoadingRecipes(RecipeSearchObject(
-            [selectedItem.value], '',
+            [selectedItem.value], widget.search,
             page: (recipeList.length ~/ 10) + 1)));
       }
     });
@@ -73,7 +73,7 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
   void reload() {
     recipesByCategoryBloc.add(CategorySelected(RecipeSearchObject(
       [selectedItem.value],
-      '',
+      widget.search,
     )));
   }
 

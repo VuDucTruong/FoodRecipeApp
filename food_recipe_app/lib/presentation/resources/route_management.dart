@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
+import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:food_recipe_app/presentation/list_chef_page/list_chef_page.dart'
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/login/login_view.dart';
+import 'package:food_recipe_app/presentation/main/home/widgets/result_search_page.dart';
 import 'package:food_recipe_app/presentation/main/main_view.dart';
 import 'package:food_recipe_app/presentation/recipes_by_category/recipes_by_category_page.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
@@ -35,6 +37,7 @@ class Routes {
   static const String recipesByCategoryRoute = '/recipesByCategory';
   static const String listChefPageRoute = '/listChefPage';
   static const String changePassRoute = '/changePass';
+  static const String resultSearchRoute = '/resultSearch';
 }
 
 class InitialRoute {
@@ -90,6 +93,15 @@ class RouteGenerator {
             chefId: routeSettings.arguments as String,
           ),
         );
+      case Routes.resultSearchRoute:
+        List<dynamic> data = routeSettings.arguments as List<dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => ResultSearchPage(
+            chefList: data[0],
+            recipeList: data[1],
+            search: data[2],
+          ),
+        );
       case Routes.detailFoodRoute:
         initDetailFoodModule();
         return MaterialPageRoute(
@@ -109,16 +121,20 @@ class RouteGenerator {
         );
       case Routes.recipesByCategoryRoute:
         return MaterialPageRoute(
-          builder: (context) => const RecipesByCategoryPage(),
+          builder: (context) => RecipesByCategoryPage(
+            search: (routeSettings.arguments ?? '') as String,
+          ),
         );
       case Routes.listChefPageRoute:
         return MaterialPageRoute(
-          builder: (context) => const ListChefPage(),
+          builder: (context) => ListChefPage(
+            search: (routeSettings.arguments ?? '') as String,
+          ),
         );
       case Routes.changePassRoute:
         initChangePasswordModule();
         return MaterialPageRoute(
-          builder: (context) => ChangePasswordPage(),
+          builder: (context) => const ChangePasswordPage(),
         );
       case Routes.createProfileRoute:
         initCreateProfileModule();

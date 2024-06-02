@@ -57,7 +57,7 @@ class _ChefProfileViewState extends State<ChefProfileView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppStrings.verifiedChefs,
+          AppStrings.chefProfile,
           style: getBoldStyle(
               color: ColorManager.secondaryColor, fontSize: FontSize.s20),
         ),

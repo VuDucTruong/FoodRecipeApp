@@ -19,6 +19,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_
 import 'package:food_recipe_app/presentation/main/home/widgets/chef_list.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/home_carousel_slider.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/home_food_item.dart';
+import 'package:food_recipe_app/presentation/main/home/widgets/home_search_delegate.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/recipe_list_by_category.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -178,12 +179,15 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(AppRadius.r15),
           child: Form(
             child: TextFormField(
+                onTap: () {
+                  showSearch(context: context, delegate: HomeSearchDelegate());
+                },
                 decoration: InputDecoration(
-              suffixIcon: SvgPicture.asset(
-                PicturePath.searchPath,
-                fit: BoxFit.none,
-              ),
-            )),
+                  suffixIcon: SvgPicture.asset(
+                    PicturePath.searchPath,
+                    fit: BoxFit.none,
+                  ),
+                )),
           )),
     );
   }

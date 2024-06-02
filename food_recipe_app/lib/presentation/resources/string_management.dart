@@ -9,6 +9,7 @@ class AppStrings {
   static const String login = 'Login';
   static const String signUp = 'Sign up';
   static const String home = 'Home';
+  static const String chefProfile = 'Chef Profile';
   static const String forgotPass = 'Forgot password ?';
   static const String cancel = 'Cancel';
   static const String continueWith = 'Continue with';
@@ -86,6 +87,7 @@ class AppStrings {
   static const String privacy = 'Privacy';
   static const String notifications = 'Notifications';
   static const String help = 'Help';
+  static const String searchResult = 'Search result';
   static const String about = 'About';
   static const String theme = 'Theme';
   static const String saveChanges = 'Save Changes';
@@ -132,6 +134,7 @@ class AppStrings {
   static const String myRecipes = 'My Recipes';
   static const String follow = 'Follow';
   static const String unfollow = 'Unfollow';
+  static const String chefs = 'Chefs';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 
