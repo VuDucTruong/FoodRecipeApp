@@ -50,6 +50,7 @@ class LottiePath {
   static const String noConnectionPath = '$_jsonLottiePath/no_connection.json';
   static const String loadingPath = '$_jsonLottiePath/loading.json';
   static const String emptyPath = '$_jsonLottiePath/empty_list.json';
+  static const String sendOTPPath = '$_jsonLottiePath/send_otp.json';
   static const String changePassSuccessPath =
       '$_jsonLottiePath/change_password_success.json';
 }

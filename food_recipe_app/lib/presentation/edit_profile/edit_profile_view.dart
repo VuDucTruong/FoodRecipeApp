@@ -166,7 +166,10 @@ class _EditProfileViewState extends State<EditProfileView> {
               label: AppStrings.deleteAccount),
           SpeedDialChild(
               onTap: () {
-                Navigator.pushNamed(context, Routes.changePassRoute);
+                Navigator.pushNamed(context, Routes.otpRoute , arguments: [currentUser.email , (){
+                  Navigator.pushReplacementNamed(context, Routes.changePassRoute);
+                }]);
+
               },
               child: const Icon(Icons.password),
               label: AppStrings.changePass),

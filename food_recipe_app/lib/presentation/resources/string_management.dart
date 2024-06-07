@@ -135,6 +135,7 @@ class AppStrings {
   static const String follow = 'Follow';
   static const String unfollow = 'Unfollow';
   static const String chefs = 'Chefs';
+  static const String otpVerifying = 'OTP Verifying';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 

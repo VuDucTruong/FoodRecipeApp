@@ -15,6 +15,7 @@ import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/login/login_view.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/result_search_page.dart';
 import 'package:food_recipe_app/presentation/main/main_view.dart';
+import 'package:food_recipe_app/presentation/otp_verifying_page/otp_verifying_page.dart';
 import 'package:food_recipe_app/presentation/recipes_by_category/recipes_by_category_page.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/create_profile_view.dart';
@@ -38,6 +39,7 @@ class Routes {
   static const String listChefPageRoute = '/listChefPage';
   static const String changePassRoute = '/changePass';
   static const String resultSearchRoute = '/resultSearch';
+  static const String otpRoute = '/otp';
 }
 
 class InitialRoute {
@@ -80,6 +82,13 @@ class RouteGenerator {
       case Routes.loadingRoute:
         return MaterialPageRoute(
           builder: (context) => const LoadingScreen(),
+        );
+      case Routes.otpRoute:
+        return MaterialPageRoute(
+          builder: (context) => OTPVerifyingPage(
+            email: (routeSettings.arguments as List<dynamic>)[0],
+            navigateFunction: (routeSettings.arguments as List<dynamic>)[1],
+          ),
         );
       case Routes.loginRoute:
         initLoginModule();

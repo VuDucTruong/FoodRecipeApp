@@ -11,7 +11,7 @@ import '../../app/di.dart';
 ThemeData getAppTheme() {
   return ThemeData(
       checkboxTheme: const CheckboxThemeData(
-          fillColor: MaterialStatePropertyAll(ColorManager.secondaryColor)),
+          fillColor: WidgetStatePropertyAll(ColorManager.secondaryColor)),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           type: BottomNavigationBarType.fixed,
           backgroundColor: ColorManager.secondaryColor,

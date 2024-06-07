@@ -85,8 +85,14 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                       builder: (context) => const LoadingDialog());
                 } else if (state is CreateProfileSubmitSuccess) {
                   final registerProfileBasic = gatherProfileSubmit();
-                  Navigator.of(context).pushNamed(Routes.foodTypeRoute,
-                      arguments: registerProfileBasic);
+                  Navigator.pushNamed(context, Routes.otpRoute, arguments: [
+                    registerProfileBasic.email,
+                    () {
+                      Navigator.of(context).pushReplacementNamed(
+                          Routes.foodTypeRoute,
+                          arguments: registerProfileBasic);
+                    }
+                  ]);
                 } else if (state is CreateProfileSubmitFailed) {
                   final failure = state.failure;
                   handleBlocFailures(
@@ -103,9 +109,7 @@ class _CreateProfileViewState extends State<CreateProfileView> {
                     _getInputForm(),
                     FilledButton(
                         onPressed: () {
-                          if (_formKey.currentState!.validate() &&
-                              emailController.text.isNotEmpty &&
-                              passwordController.text.isNotEmpty) {
+                          if (_formKey.currentState!.validate()) {
                             _createProfileBloc.add(
                                 CreateProfileOnContinuePressed(
                                     email: emailController.text));

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateful/remember_check_box.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/compulsory_text_field.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
@@ -15,7 +14,6 @@ import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
-import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 class LoginView extends StatefulWidget {
@@ -29,7 +27,6 @@ class LoginViewState extends State<LoginView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  MutableVariable<bool> isRememberMe = MutableVariable(false);
   late LoginBloc _loginBloc;
   @override
   void initState() {
@@ -86,7 +83,7 @@ class LoginViewState extends State<LoginView> {
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 4),
               _buildFormInput(),
-              RememberCheckBox(isChecked: isRememberMe),
+              /*RememberCheckBox(isChecked: isRememberMe),*/
               const SizedBox(height: 8),
               BlocListener(
                 bloc: _loginBloc,

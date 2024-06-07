@@ -3,6 +3,7 @@ import 'package:food_recipe_app/domain/entity/user_entity.dart';
 class BackgroundUser {
   String id;
   DateTime createdAt;
+  String email;
   ProfileInformation profileInfo;
   List<String> recipeIds;
   List<String> likedRecipeIds;
@@ -14,6 +15,7 @@ class BackgroundUser {
   BackgroundUser(
       {required this.id,
       required this.createdAt,
+        required this.email,
       required this.profileInfo,
       required this.recipeIds,
       required this.likedRecipeIds,
@@ -24,13 +26,14 @@ class BackgroundUser {
 
   @override
   String toString() {
-    return 'BackgroundUser{id: $id, createdAt: $createdAt, profileInfo: $profileInfo, recipeIds: $recipeIds, likedRecipeIds: $likedRecipeIds, savedRecipeIds: $savedRecipeIds, followingIds: $followingIds, followerIds: $followerIds, loginTickets: $loginTickets}';
+    return 'BackgroundUser{id: $id, createdAt: $createdAt, email: $email, profileInfo: $profileInfo, recipeIds: $recipeIds, likedRecipeIds: $likedRecipeIds, savedRecipeIds: $savedRecipeIds, followingIds: $followingIds, followerIds: $followerIds, loginTickets: $loginTickets}';
   }
 
   BackgroundUser.fromUserEntity({
     required UserEntity userEntity,
   })  : id = userEntity.id,
         createdAt = userEntity.createdAt,
+        email = userEntity.authenticationInfo.email!,
         profileInfo = userEntity.profileInfo,
         recipeIds = userEntity.recipeIds,
         likedRecipeIds = userEntity.likedRecipeIds,

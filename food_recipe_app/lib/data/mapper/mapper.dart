@@ -113,6 +113,7 @@ extension UserDomainResponseMapper on UserResponse {
           .toList();
       return BackgroundUser(
           id: id,
+          email: authenticationInfo.email!,
           createdAt: createdAt,
           profileInfo: myProfile,
           followerIds: followerIds,
@@ -125,6 +126,7 @@ extension UserDomainResponseMapper on UserResponse {
       debugPrint('mapper error: $error');
       return BackgroundUser(
           id: id,
+          email: authenticationInfo.email!,
           createdAt: createdAt,
           profileInfo: ProfileInformation(
               fullName: "",
