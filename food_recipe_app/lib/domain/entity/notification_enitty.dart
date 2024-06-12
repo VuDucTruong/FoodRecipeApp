@@ -17,4 +17,9 @@ class NotificationEntity{
     required this.isRead,
     required this.redirectPath,
   });
+
+  @override
+  String toString() {
+    return 'NotificationEntity{offSet: $offSet, createdAt: $createdAt, imageUrl: $imageUrl, title: $title, content: $content, isRead: $isRead, redirectPath: $redirectPath}';
+  }
 }

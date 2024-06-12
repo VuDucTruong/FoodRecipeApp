@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:food_recipe_app/data/background_data/device_info.dart';
+import 'package:food_recipe_app/presentation/utils/device_info.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/domain/usecase/base_usecase.dart';

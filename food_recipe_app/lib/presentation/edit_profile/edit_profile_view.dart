@@ -24,7 +24,7 @@ import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/widg
 import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../data/background_data/background_data_manager.dart';
+import '../utils/background_data_manager.dart';
 import '../../domain/entity/background_user.dart';
 import '../resources/assets_management.dart';
 import '../resources/string_management.dart';

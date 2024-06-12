@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/domain/entity/background_user.dart';
+import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
+import 'package:food_recipe_app/presentation/blocs/user_notification/user_notification_bloc.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
 
-import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
+import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 
 import 'package:food_recipe_app/presentation/blocs/user_recipes/user_recipes_bloc.dart';
@@ -29,16 +37,34 @@ class UserProfilePage extends StatefulWidget {
 
 class _UserProfilePageState extends State<UserProfilePage> {
   late ChefEntity currentUser;
-  final UserRecipesBloc _userRecipesBloc = GetIt.instance<UserRecipesBloc>();
 
+  final UserNotificationBloc _userNotificationBloc =
+      GetIt.instance<UserNotificationBloc>();
+  List<NotificationEntity> notificationList = [];
+  ScrollController scrollController = ScrollController();
+  int page = 0;
   @override
   void initState() {
     super.initState();
     currentUser = GetIt.instance<BackgroundDataManager>().convertToChefEntity();
+    _userNotificationBloc.add(LoadUserNotification(0));
+    scrollController.addListener(continueLoading);
+  }
+
+  void continueLoading() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent) {
+      if (_userNotificationBloc.state.isLastPage) {
+        return;
+      }
+      //await Future.delayed(Duration(seconds: 1));
+      _userNotificationBloc
+          .add(LoadUserNotification((notificationList.length ~/ 10) + 1));
+    }
   }
 
   @override
   void dispose() {
+    scrollController.removeListener(continueLoading);
     super.dispose();
   }
 
@@ -87,7 +113,59 @@ class _UserProfilePageState extends State<UserProfilePage> {
             ),
             const SizedBox(
               height: 8,
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                AppStrings.myNotifications,
+                style: getSemiBoldStyle(fontSize: 16),
+              ),
+            ),
+            BlocConsumer<UserNotificationBloc, UserNotificationState>(
+              bloc: _userNotificationBloc,
+              listener: (context, state) {
+                if (state is UserNotificationErrorState) {
+                  showAnimatedDialog1(context,
+                      AppErrorDialog(content: state.failure.toString()));
+                }
+              },
+              builder: (context, state) {
+                if (state is UserNotificationLoadingState) {
+                  return const LoadingWidget();
+                }
+                if (state is UserNotificationLoadedState) {
+                  notificationList.addAll(state.notificationList);
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    controller: scrollController,
+                    itemCount: notificationList.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index >= notificationList.length) {
+                        if (state.isLastPage) {
+                          return const NoItemWidget();
+                        } else {
+                          return const LoadingWidget();
+                        }
+                      }
+                      return ListTile(
+                        title: Text(notificationList[index].title),
+                      );
+                    },
+                  );
+                }
+                if (state is UserNotificationErrorState) {
+                  return Center(
+                    child: ErrorText(
+                      failure: state.failure,
+                    ),
+                  );
+                }
+                return const NoItemWidget();
+              },
+            ),
+            const SizedBox(
+              height: 8,
+            ),
           ],
         ),
       ),

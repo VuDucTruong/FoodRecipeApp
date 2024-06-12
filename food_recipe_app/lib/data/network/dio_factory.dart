@@ -19,16 +19,8 @@ class DioFactory {
       onRequest: (options, handler) async {
         Logger().i(
             'Request: ${options.uri} - Data: ${options.data} - params: ${options.queryParameters}');
-        String token = await _appPreferences.getUserToken();
-        _appPreferences
-            .getUserToken()
-            .then((value) => options.headers[AUTHORIZATION] = 'Bearer $value')
-            // TODO: implement where even fail finding the token
-            .catchError((e) {
-          Logger().w(
-              'Request: ${options.uri} - Data: ${options.data}: token not yet found');
-          return e;
-        });
+        String token = _appPreferences.getUserToken();
+        options.headers[AUTHORIZATION] = 'Bearer $token';
         return handler.next(options);
       },
       onResponse: (response, handler) {

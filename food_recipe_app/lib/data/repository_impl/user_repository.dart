@@ -17,7 +17,7 @@ import 'package:food_recipe_app/domain/object/user_search_object.dart';
 import 'package:food_recipe_app/domain/repository/user_repository.dart';
 
 import '../../domain/entity/background_user.dart';
-import '../background_data/background_data_manager.dart';
+import '../../presentation/utils/background_data_manager.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource userRemoteDataSource;

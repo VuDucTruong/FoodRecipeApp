@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_alert_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
+import 'package:food_recipe_app/presentation/utils/notification_helper.dart';
+import 'package:get_it/get_it.dart';
 
 class OnOffSwitch extends StatefulWidget {
   OnOffSwitch({Key? key, required this.isOn}) : super(key: key);
@@ -26,6 +31,7 @@ class _OnOffSwitchState extends State<OnOffSwitch> {
     super.dispose();
   }
 
+  int times = 0;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -76,10 +82,25 @@ class _OnOffSwitchState extends State<OnOffSwitch> {
           curve: Curves.decelerate,
           left: widget.isOn.value ? 50 : 0,
           child: InkWell(
-            onTap: () {
-              setState(() {
-                widget.isOn.value = !widget.isOn.value;
-              });
+            onTap: () async {
+              bool isNotifcation = await GetIt.instance<NotificationHelper>()
+                  .requestNotificationPermission();
+              if (isNotifcation != widget.isOn.value) {
+                setState(() {
+                  widget.isOn.value = !widget.isOn.value;
+                });
+              } else {
+                times++;
+                if (times >= 2) {
+                  if (context.mounted) {
+                    showAnimatedDialog1(
+                        context,
+                        AppErrorDialog(
+                            content:
+                                "Notification permisstion is disabled \n Please enable it in application settings"));
+                  }
+                }
+              }
             },
             child: Container(
               height: AppSize.s30,

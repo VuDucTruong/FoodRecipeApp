@@ -8,13 +8,14 @@ const String PREFS_KEY_IS_USER_LOGGED_IN = "PREFS_KEY_IS_USER_LOGGED_IN";
 const String PREFS_KEY_TOKEN = "PREFS_KEY_TOKEN";
 const String PREFS_KEY_REFRESH =  "PREFS_KEY_REFRESH";
 const String PREFS_KEY_BACKGROUND_USER = "PREFS_KEY_BACKGROUND_USER";
+const String PREFS_KEY_NOTIFICATION = "PREFS_KEY_NOTIFICATION";
 
 class AppPreferences {
   final SharedPreferences _sharedPreferences;
 
   AppPreferences(this._sharedPreferences);
 
-  Future<String> getAppLanguage() async {
+  String getAppLanguage()  {
     String? language = _sharedPreferences.getString(PREFS_KEY_LANG);
 
     if (language != null && language.isNotEmpty) {
@@ -25,20 +26,20 @@ class AppPreferences {
   }
 
   Future<void> setLanguageChanged() async {
-    String currentLanguage = await getAppLanguage();
+    String currentLanguage = getAppLanguage();
     if (currentLanguage == LanguageType.Vietnamese.getValue()) {
       // save prefs with english lang
-      _sharedPreferences.setString(
+      await  _sharedPreferences.setString(
           PREFS_KEY_LANG, LanguageType.English.getValue());
     } else {
       // save prefs with arabic lang
-      _sharedPreferences.setString(
+      await _sharedPreferences.setString(
           PREFS_KEY_LANG, LanguageType.Vietnamese.getValue());
     }
   }
 
-  Future<Locale> getLocal() async {
-    String currentLanguage = await getAppLanguage();
+  Locale getLocal()  {
+    String currentLanguage = getAppLanguage();
     if (currentLanguage == LanguageType.Vietnamese.getValue()) {
       // return arabic local
       return VN_LOCAL;
@@ -48,41 +49,49 @@ class AppPreferences {
     }
   }
 
-  Future<void> setOnBoardingScreenViewed() async {
-    _sharedPreferences.setBool(PREFS_KEY_ONBOARDING_SCREEN, true);
+  bool getIsNotification() {
+    return _sharedPreferences.getBool(PREFS_KEY_NOTIFICATION) ?? false;
   }
 
-  Future<bool> getOnBoardingScreenViewed() async {
+  Future<void> setIsNotification(bool value) async {
+    await _sharedPreferences.setBool(PREFS_KEY_NOTIFICATION, value);
+  }
+
+  Future<void> setOnBoardingScreenViewed() async {
+    await _sharedPreferences.setBool(PREFS_KEY_ONBOARDING_SCREEN, true);
+  }
+
+  bool getOnBoardingScreenViewed() {
     return _sharedPreferences.getBool(PREFS_KEY_ONBOARDING_SCREEN) ?? false;
   }
 
   Future<void> setUserToken(String token) async {
-    _sharedPreferences.setString(PREFS_KEY_TOKEN, token);
+    await _sharedPreferences.setString(PREFS_KEY_TOKEN, token);
   }
   Future<void> setUserRefreshToken(String token) async {
-    _sharedPreferences.setString(PREFS_KEY_REFRESH, token);
+    await _sharedPreferences.setString(PREFS_KEY_REFRESH, token);
   }
 
-  Future<String> getUserToken() async {
+  String getUserToken() {
     return _sharedPreferences.getString(PREFS_KEY_TOKEN) ?? "";
   }
 
-  Future<String> getUserRefreshToken() async {
+  String getUserRefreshToken() {
     return _sharedPreferences.getString(PREFS_KEY_REFRESH)??"";
   }
 
 
   Future<void> setIsUserLoggedIn() async {
-    _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, true);
+    await _sharedPreferences.setBool(PREFS_KEY_IS_USER_LOGGED_IN, true);
   }
 
-  Future<bool> isUserLoggedIn() async {
+  bool isUserLoggedIn() {
     return _sharedPreferences.getBool(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
   }
 
   Future<void> logout() async {
-    _sharedPreferences.remove(PREFS_KEY_IS_USER_LOGGED_IN);
-    _sharedPreferences.remove(PREFS_KEY_TOKEN);
-    _sharedPreferences.remove(PREFS_KEY_REFRESH);
+    await _sharedPreferences.remove(PREFS_KEY_IS_USER_LOGGED_IN);
+    await _sharedPreferences.remove(PREFS_KEY_TOKEN);
+    await _sharedPreferences.remove(PREFS_KEY_REFRESH);
   }
 }

@@ -6,9 +6,9 @@ part of 'notification_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NotificationResponse _$NotificationResponseFromJson(
+AppNotificationResponse _$NotificationResponseFromJson(
         Map<String, dynamic> json) =>
-    NotificationResponse(
+    AppNotificationResponse(
       offSet: (json['offSet'] as num).toInt(),
       createdAt: DateTime.parse(json['createdAt'] as String),
       imageUrl: json['imageUrl'] as String?,
@@ -19,7 +19,7 @@ NotificationResponse _$NotificationResponseFromJson(
     );
 
 Map<String, dynamic> _$NotificationResponseToJson(
-        NotificationResponse instance) =>
+        AppNotificationResponse instance) =>
     <String, dynamic>{
       'offSet': instance.offSet,
       'createdAt': instance.createdAt.toIso8601String(),

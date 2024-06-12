@@ -25,9 +25,12 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  final AppPreferences _appPreferences = GetIt.instance<AppPreferences>();
+
   @override
   void initState() {
     super.initState();
+    isNotification.value = _appPreferences.getIsNotification();
   }
 
   @override
@@ -35,76 +38,82 @@ class _SettingPageState extends State<SettingPage> {
     super.dispose();
   }
 
+  MutableVariable<bool> isNotification = MutableVariable(false);
+
   MutableVariable<bool> isLightTheme = MutableVariable(true);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: [
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Text(
-              AppStrings.settings,
-              style: getBoldStyle(
-                  color: ColorManager.secondaryColor, fontSize: FontSize.s20),
-            ),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                AppStrings.settings,
+                style: getBoldStyle(
+                    color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+              ),
+              const Spacer(),
+              SvgPicture.asset(
+                PicturePath.logoSVGPath,
+                width: 50,
+                height: 50,
+                fit: BoxFit.contain,
+              )
+            ],
+          ),
+          _getIconText(
+              AppStrings.privacy, SvgPicture.asset(PicturePath.privacyPath)),
+          Row(children: [
+            _getIconText(AppStrings.notifications,
+                SvgPicture.asset(PicturePath.notificationPath)),
             const Spacer(),
-            SvgPicture.asset(
-              PicturePath.logoSVGPath,
-              width: 50,
-              height: 50,
-              fit: BoxFit.contain,
+            OnOffSwitch(
+              isOn: isNotification,
             )
-          ],
-        ),
-        _getIconText(
-            AppStrings.privacy, SvgPicture.asset(PicturePath.privacyPath)),
-        Row(children: [
-          _getIconText(AppStrings.notifications,
-              SvgPicture.asset(PicturePath.notificationPath)),
-          const Spacer(),
-          OnOffSwitch(
-            isOn: isLightTheme,
-          )
-        ]),
-        _getIconText(
-            AppStrings.help, SvgPicture.asset(PicturePath.messagesPath)),
-        _getIconText(AppStrings.about, SvgPicture.asset(PicturePath.aboutPath)),
-        const SizedBox(
-          height: AppSize.s20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              AppStrings.theme,
-              style:
-                  getRegularStyle(color: Colors.black, fontSize: FontSize.s17),
-            ),
-            LongSwitch(
-              onContent: AppStrings.light,
-              offContent: AppStrings.dark,
-              onColor: ColorManager.linearGradientLightTheme,
-              offColor: ColorManager.linearGradientDarkTheme,
-              width: 180,
-              height: 30,
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: AppSize.s30,
-        ),
-        FilledButton(
-            onPressed: () {
-              GetIt.instance<AppPreferences>().logout();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  Routes.loginRoute, ModalRoute.withName(Routes.loginRoute));
-            },
-            child: Text(AppStrings.signOut,
-                style: getMediumStyle(
-                    color: Colors.white, fontSize: FontSize.s20)))
-      ],
+          ]),
+          _getIconText(
+              AppStrings.help, SvgPicture.asset(PicturePath.messagesPath)),
+          _getIconText(
+              AppStrings.about, SvgPicture.asset(PicturePath.aboutPath)),
+          const SizedBox(
+            height: AppSize.s20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                AppStrings.theme,
+                style: getRegularStyle(
+                    color: Colors.black, fontSize: FontSize.s17),
+              ),
+              LongSwitch(
+                onContent: AppStrings.light,
+                offContent: AppStrings.dark,
+                onColor: ColorManager.linearGradientLightTheme,
+                offColor: ColorManager.linearGradientDarkTheme,
+                width: 180,
+                height: 30,
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: AppSize.s30,
+          ),
+          FilledButton(
+              onPressed: () {
+                GetIt.instance<AppPreferences>().logout();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    Routes.loginRoute, ModalRoute.withName(Routes.loginRoute));
+              },
+              child: Text(AppStrings.signOut,
+                  style: getMediumStyle(
+                      color: Colors.white, fontSize: FontSize.s20)))
+        ],
+      ),
     );
   }
 

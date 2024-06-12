@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
-import 'package:food_recipe_app/data/background_data/background_data_manager.dart';
-import 'package:food_recipe_app/data/background_data/device_info.dart';
+import 'package:food_recipe_app/data/data_source/notification_remote_datasource.dart';
+import 'package:food_recipe_app/domain/repository/notification_repository.dart';
+import 'package:food_recipe_app/domain/usecase/get_user_notification_usecase.dart';
+import 'package:food_recipe_app/presentation/blocs/user_notification/user_notification_bloc.dart';
+import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
+import 'package:food_recipe_app/presentation/utils/device_info.dart';
 import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
 import 'package:food_recipe_app/data/data_source/recipe_remote_data_source.dart';
 import 'package:food_recipe_app/data/data_source/user_remote_data_source.dart';
@@ -54,12 +58,14 @@ import 'package:food_recipe_app/presentation/detail_recipe/bloc/detail_recipe_bl
 import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/bloc/create_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/setting_kitchen/food_type/bloc/food_type_bloc.dart';
+import 'package:food_recipe_app/presentation/utils/notification_helper.dart';
 
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../data/repository_impl/notification_repository_impl.dart';
 import '../presentation/resources/route_management.dart';
 
 final instance = GetIt.instance;
@@ -71,10 +77,14 @@ Future<void> initAppModule() async {
   //register background data manager
   instance.registerLazySingleton<BackgroundDataManager>(
       () => BackgroundDataManager());
+
   // app prefs instance
   instance
       .registerLazySingleton<AppPreferences>(() => AppPreferences(instance()));
-
+// Local notification
+  instance.registerLazySingleton<NotificationHelper>(
+      () => NotificationHelper(instance()));
+  await instance<NotificationHelper>().setUpLocalNotification();
   // network info
   instance.registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(InternetConnectionChecker()));
@@ -91,6 +101,8 @@ Future<void> initAppModule() async {
       () => UserRemoteDataSourceImpl(dio, instance()));
   instance.registerLazySingleton<RecipeRemoteDataSource>(
       () => RecipeRemoteDataSourceImpl(dio));
+  instance.registerLazySingleton<NotificationRemoteDataSource>(
+      () => NotificationRemoteDataSourceImpl(dio));
   //Repository
   initRepository();
 
@@ -116,6 +128,8 @@ void initRepository() {
       () => LoginRepositoryImpl(instance(), instance(), instance()));
   instance.registerLazySingleton<UserRepository>(
       () => UserRepositoryImpl(instance(), instance(), instance(), instance()));
+  instance.registerLazySingleton<NotificationRepository>(
+      () => NotificationRepositoryImpl(instance(), instance()));
 }
 
 initHomeModule() {
@@ -297,6 +311,16 @@ initUserProfileModule() {
   if (!instance.isRegistered<UserProfileBloc>()) {
     instance.registerLazySingleton(
       () => UserProfileBloc(instance()),
+    );
+  }
+  if (!instance.isRegistered<GetUserNotificationUseCase>()) {
+    instance.registerLazySingleton(
+      () => GetUserNotificationUseCase(instance()),
+    );
+  }
+  if (!instance.isRegistered<UserNotificationBloc>()) {
+    instance.registerLazySingleton(
+      () => UserNotificationBloc(instance()),
     );
   }
 }

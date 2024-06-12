@@ -48,7 +48,7 @@ extension ChefResponseMapper on ChefResponse {
   }
 }
 
-extension NotificationDomainResponseMapper on NotificationResponse {
+extension AppNotificationResponseMapper on AppNotificationResponse {
   NotificationEntity toEntity() {
     return NotificationEntity(
         offSet: offSet,
@@ -136,8 +136,7 @@ extension UserDomainResponseMapper on UserResponse {
               googleLink: null,
               bio: "",
               categories: [],
-              hungryHeads: 1
-          ),
+              hungryHeads: 1),
           followerIds: [],
           followingIds: [],
           likedRecipeIds: [],

@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
-import 'package:food_recipe_app/data/background_data/device_info.dart';
+import 'package:food_recipe_app/presentation/utils/device_info.dart';
 import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
 import 'package:food_recipe_app/data/mapper/mapper.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';

@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'notification_response.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class NotificationResponse{
+class AppNotificationResponse {
   final int offSet;
   final DateTime createdAt;
   final String? imageUrl;
@@ -13,7 +13,7 @@ class NotificationResponse{
   final String content;
   final bool isRead;
   final String? redirectPath;
-  NotificationResponse({
+  AppNotificationResponse({
     required this.offSet,
     required this.createdAt,
     required this.imageUrl,
@@ -22,9 +22,16 @@ class NotificationResponse{
     required this.isRead,
     required this.redirectPath,
   });
-  factory NotificationResponse.fromJson(Map<String,dynamic> json)
-  => _$NotificationResponseFromJson(json);
-  Map<String,dynamic> toJson() => _$NotificationResponseToJson(this);
+  factory AppNotificationResponse.fromJson(Map<String, dynamic> json) =>
+      _$NotificationResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$NotificationResponseToJson(this);
+
+  static List<AppNotificationResponse> fromJsonList(dynamic list) {
+    return (list as List)
+        .map((e) => AppNotificationResponse.fromJson(e))
+        .toList();
+  }
+
   @override
   String toString() {
     return 'NotificationDomainResponse{offSet: $offSet, createdAt: $createdAt, imageUrl: $imageUrl, title: $title, content: $content, isRead: $isRead, redirectPath: $redirectPath}';

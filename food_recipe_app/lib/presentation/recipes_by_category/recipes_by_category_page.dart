@@ -51,22 +51,24 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
       [selectedItem.value],
       widget.search,
     )));
-    scrollController.addListener(() async {
-      if (scrollController.offset >=
-          scrollController.position.maxScrollExtent) {
-        if (recipesByCategoryBloc.state.isLastPage) {
-          return;
-        }
-        //await Future.delayed(Duration(seconds: 1));
-        recipesByCategoryBloc.add(ConinueLoadingRecipes(RecipeSearchObject(
-            [selectedItem.value], widget.search,
-            page: (recipeList.length ~/ 10) + 1)));
+    scrollController.addListener(continueLoading);
+  }
+
+  void continueLoading() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent) {
+      if (recipesByCategoryBloc.state.isLastPage) {
+        return;
       }
-    });
+      //await Future.delayed(Duration(seconds: 1));
+      recipesByCategoryBloc.add(ConinueLoadingRecipes(RecipeSearchObject(
+          [selectedItem.value], widget.search,
+          page: (recipeList.length ~/ 10) + 1)));
+    }
   }
 
   @override
   void dispose() {
+    scrollController.removeListener(continueLoading);
     super.dispose();
   }
 

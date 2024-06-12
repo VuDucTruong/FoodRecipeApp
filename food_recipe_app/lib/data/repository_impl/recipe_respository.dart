@@ -15,7 +15,7 @@ import 'package:food_recipe_app/domain/object/search_object.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/object/create_recipe_object.dart';
 
-import '../background_data/background_data_manager.dart';
+import '../../presentation/utils/background_data_manager.dart';
 
 class RecipeRepositoryImpl implements RecipeRepository {
   final RecipeRemoteDataSource _recipeDataSource;
