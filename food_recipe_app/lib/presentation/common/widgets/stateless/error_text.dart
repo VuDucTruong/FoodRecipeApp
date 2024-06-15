@@ -16,7 +16,8 @@ class ErrorText extends StatelessWidget {
       child: Center(
           child: Column(
         children: [
-          Lottie.asset(LottiePath.exclamationPath, width: 100, height: 100),
+          Lottie.asset(LottiePath.exclamationPath,
+              width: 100, height: 100, fit: BoxFit.cover),
           Text(
             '${failure.code} - ${failure.message}',
             style: getSemiBoldStyle(color: Colors.red, fontSize: 14),

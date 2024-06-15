@@ -8,3 +8,15 @@ class LoadUserNotification extends UserNotificationEvent {
 
   LoadUserNotification(this.page);
 }
+
+class UpdateNotificationStatus extends UserNotificationEvent {
+  NotificationEntity notificationEntity;
+
+  UpdateNotificationStatus(this.notificationEntity);
+}
+
+class DeleteNotification extends UserNotificationEvent {
+  NotificationEntity notificationEntity;
+
+  DeleteNotification(this.notificationEntity);
+}

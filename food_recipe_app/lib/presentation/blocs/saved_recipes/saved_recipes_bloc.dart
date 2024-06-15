@@ -26,7 +26,7 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
       this.getMyRecipesUseCase, this.deleteUserRecipeUseCase)
       : super(SavedRecipesInitial()) {
     on<SavedRecipesCategorySelected>(_onSavedRecipesLoad);
-    on<SavedRecipesConinueLoading>(_onSavedRecipesContinueLoading);
+    on<SavedRecipesContinueLoading>(_onSavedRecipesContinueLoading);
     on<LoadMyRecipes>(_onLoadMyRecipes);
     on<MyRecipesContinueLoading>(_onMyRecipesContinueLoading);
     on<DeleteUserRecipe>(_onDeleteRecipe);
@@ -41,7 +41,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
   }
 
   Future<FutureOr<void>> _onSavedRecipesContinueLoading(
-      SavedRecipesConinueLoading event, Emitter<SavedRecipesState> emit) async {
+      SavedRecipesContinueLoading event,
+      Emitter<SavedRecipesState> emit) async {
     (await getSavedRecipesUseCase.execute(event.object)).fold(
         (l) => emit(SavedRecipesErrorState(l)),
         (r) => emit(SavedRecipesLoadedState(r)));

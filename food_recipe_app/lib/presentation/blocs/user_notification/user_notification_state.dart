@@ -13,7 +13,7 @@ class UserNotificationLoadedState extends UserNotificationState {
   List<NotificationEntity> notificationList;
 
   UserNotificationLoadedState(this.notificationList) {
-    if (notificationList.length < 10) {
+    if (notificationList.isEmpty) {
       isLastPage = true;
     }
   }
@@ -25,4 +25,24 @@ class UserNotificationErrorState extends UserNotificationState {
   UserNotificationErrorState(this.failure) {
     isLastPage = true;
   }
+}
+
+class UserNotificationActionState extends UserNotificationState {}
+
+class UserNotificationActionFailState extends UserNotificationActionState {
+  Failure failure;
+
+  UserNotificationActionFailState(this.failure);
+}
+
+class UserNotificationDeleteSuccess extends UserNotificationActionState {
+  NotificationEntity notification;
+
+  UserNotificationDeleteSuccess(this.notification);
+}
+
+class UserNotificationUpdateSuccess extends UserNotificationActionState {
+  NotificationEntity notification;
+
+  UserNotificationUpdateSuccess(this.notification);
 }

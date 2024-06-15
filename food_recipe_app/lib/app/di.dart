@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/data_source/notification_remote_datasource.dart';
 import 'package:food_recipe_app/domain/repository/notification_repository.dart';
+import 'package:food_recipe_app/domain/usecase/delete_notification_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_notification_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_is_read_by_offset_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/ai_recipe/ai_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/user_notification/user_notification_bloc.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
@@ -120,7 +122,6 @@ Future<void> initAppModule() async {
     instance.registerLazySingleton(() => InitialRoute(instance(), instance()));
   }
   instance<DioFactory>().initializeInterceptor(dio, instance());
-  initAIRecipeModule();
 }
 
 void initRepository() {
@@ -320,9 +321,19 @@ initUserProfileModule() {
       () => GetUserNotificationUseCase(instance()),
     );
   }
+  if (!instance.isRegistered<DeleteNotificationUseCase>()) {
+    instance.registerLazySingleton(
+      () => DeleteNotificationUseCase(instance()),
+    );
+  }
+  if (!instance.isRegistered<UpdateIsReadByOffsetUseCase>()) {
+    instance.registerLazySingleton(
+      () => UpdateIsReadByOffsetUseCase(instance()),
+    );
+  }
   if (!instance.isRegistered<UserNotificationBloc>()) {
     instance.registerLazySingleton(
-      () => UserNotificationBloc(instance()),
+      () => UserNotificationBloc(instance(), instance(), instance()),
     );
   }
 }
@@ -354,11 +365,15 @@ initEditProfileModule() {
     );
   }
 }
+
 initAIRecipeModule() {
-  if(!instance.isRegistered<AIRecipeBloc>()) {
-    instance.registerLazySingleton(() => AIRecipeBloc(),);
+  if (!instance.isRegistered<AIRecipeBloc>()) {
+    instance.registerLazySingleton(
+      () => AIRecipeBloc(),
+    );
   }
 }
+
 void initChangePasswordModule() {
   if (!instance.isRegistered<ChangePasswordBloc>()) {
     instance.registerLazySingleton(

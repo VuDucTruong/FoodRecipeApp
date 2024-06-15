@@ -86,6 +86,7 @@ class AppStrings {
   static const String settings = 'Settings';
   static const String privacy = 'Privacy';
   static const String notifications = 'Notifications';
+  static const String notification = 'Notification';
   static const String help = 'Help';
   static const String searchResult = 'Search result';
   static const String about = 'About';
@@ -139,6 +140,9 @@ class AppStrings {
   static const String myNotifications = 'My Notifications';
   static const String wait30s = 'Please wait for about 30s....';
   static const String save = 'Save';
+  static const String createdAt = 'Created at';
+  static const String content = 'Content';
+  static const String title = 'Title';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 

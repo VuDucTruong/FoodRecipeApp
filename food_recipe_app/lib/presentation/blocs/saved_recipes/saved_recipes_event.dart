@@ -9,10 +9,10 @@ class SavedRecipesCategorySelected extends SavedRecipesEvent {
   SavedRecipesCategorySelected(this.object);
 }
 
-class SavedRecipesConinueLoading extends SavedRecipesEvent {
+class SavedRecipesContinueLoading extends SavedRecipesEvent {
   RecipeSearchObject object;
 
-  SavedRecipesConinueLoading(this.object);
+  SavedRecipesContinueLoading(this.object);
 }
 
 class LoadMyRecipes extends SavedRecipesEvent {

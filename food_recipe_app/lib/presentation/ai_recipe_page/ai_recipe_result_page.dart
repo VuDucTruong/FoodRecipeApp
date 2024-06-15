@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/blocs/ai_recipe/ai_recipe_bloc.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/common_heading.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
@@ -65,7 +66,7 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                     ),
                     Row(
                       children: [
-                        _buildHeading("${AppStrings.veg}: "),
+                        const CommonHeading(content: "${AppStrings.veg}: "),
                         Text(
                           recipeEntity.isVegan ? AppStrings.yes : AppStrings.no,
                           style: getSemiBoldStyle(
@@ -78,22 +79,23 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                     ),
                     Row(
                       children: [
-                        _buildHeading("${AppStrings.serves}: "),
+                        const CommonHeading(content: "${AppStrings.serves}: "),
                         Text(recipeEntity.serves.toString())
                       ],
                     ),
                     Row(
                       children: [
-                        _buildHeading("${AppStrings.cookTime}: "),
+                        const CommonHeading(
+                            content: "${AppStrings.cookTime}: "),
                         Text("${recipeEntity.cookTime} ${AppStrings.minutes}")
                       ],
                     ),
-                    _buildHeading(AppStrings.description),
+                    const CommonHeading(content: AppStrings.description),
                     Text(recipeEntity.description),
                     const Divider(),
-                    _buildHeading(AppStrings.categories),
+                    const CommonHeading(content: AppStrings.categories),
                     Text(recipeEntity.categories),
-                    _buildHeading(AppStrings.ingredients),
+                    const CommonHeading(content: AppStrings.ingredients),
                     ListView(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -106,7 +108,7 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                         )
                       ],
                     ),
-                    _buildHeading(AppStrings.instructions),
+                    const CommonHeading(content: AppStrings.instructions),
                     Text(recipeEntity.instruction),
                     Center(
                       child: Padding(
@@ -136,17 +138,6 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
           }
           return Center(child: Text(state.runtimeType.toString()));
         },
-      ),
-    );
-  }
-
-  Widget _buildHeading(String content) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Text(
-        content,
-        style:
-            getSemiBoldStyle(fontSize: 16, color: ColorManager.darkBlueColor),
       ),
     );
   }

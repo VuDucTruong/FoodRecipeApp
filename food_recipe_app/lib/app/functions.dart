@@ -10,6 +10,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no
 import 'package:food_recipe_app/presentation/utils/gemini_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:email_otp/email_otp.dart';
+import 'package:intl/intl.dart';
 
 import '../presentation/resources/string_management.dart';
 
@@ -232,3 +233,8 @@ categories should be of type String and should be in $language and if there is m
 isVegan should be of type boolean 
 cookTime should be of type Integer and the number is in minutes.
 ''';
+
+String formatDateTime(DateTime date) {
+  DateFormat dateFormat = DateFormat('HH:mm dd/MM/yyyy');
+  return dateFormat.format(date);
+}

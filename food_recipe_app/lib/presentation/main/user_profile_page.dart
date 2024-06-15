@@ -8,6 +8,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/ap
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/notification_item.dart';
 
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
@@ -47,7 +48,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   void initState() {
     super.initState();
     currentUser = GetIt.instance<BackgroundDataManager>().convertToChefEntity();
-    _userNotificationBloc.add(LoadUserNotification(0));
+    _userNotificationBloc.add(LoadUserNotification(page));
     scrollController.addListener(continueLoading);
   }
 
@@ -57,8 +58,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         return;
       }
       //await Future.delayed(Duration(seconds: 1));
-      _userNotificationBloc
-          .add(LoadUserNotification((notificationList.length ~/ 10) + 1));
+      _userNotificationBloc.add(LoadUserNotification(++page));
     }
   }
 
@@ -74,6 +74,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: SingleChildScrollView(
+        controller: scrollController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -133,11 +134,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 if (state is UserNotificationLoadingState) {
                   return const LoadingWidget();
                 }
-                if (state is UserNotificationLoadedState) {
-                  notificationList.addAll(state.notificationList);
+                if (state is UserNotificationUpdateSuccess) {
+                  int index = notificationList.indexOf(state.notification);
+                  if (index != -1) {
+                    notificationList[index] = state.notification..isRead = true;
+                  }
                   return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    controller: scrollController,
                     itemCount: notificationList.length + 1,
                     itemBuilder: (context, index) {
                       if (index >= notificationList.length) {
@@ -147,9 +151,46 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           return const LoadingWidget();
                         }
                       }
-                      return ListTile(
-                        title: Text(notificationList[index].title),
-                      );
+                      return NotificationItem(
+                          notification: notificationList[index]);
+                    },
+                  );
+                }
+                if (state is UserNotificationDeleteSuccess) {
+                  notificationList.remove(state.notification);
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: notificationList.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index >= notificationList.length) {
+                        if (state.isLastPage) {
+                          return const NoItemWidget();
+                        } else {
+                          return const LoadingWidget();
+                        }
+                      }
+                      return NotificationItem(
+                          notification: notificationList[index]);
+                    },
+                  );
+                }
+                if (state is UserNotificationLoadedState) {
+                  notificationList.addAll(state.notificationList);
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: notificationList.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index >= notificationList.length) {
+                        if (state.isLastPage) {
+                          return const NoItemWidget();
+                        } else {
+                          return const LoadingWidget();
+                        }
+                      }
+                      return NotificationItem(
+                          notification: notificationList[index]);
                     },
                   );
                 }

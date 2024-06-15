@@ -1,13 +1,13 @@
 import 'dart:ffi';
 
-class NotificationEntity{
-  final int offSet;
-  final DateTime createdAt;
-  final String imageUrl;
-  final String title;
-  final String content;
-  final bool isRead;
-  final String redirectPath;
+class NotificationEntity {
+  int offSet;
+  DateTime createdAt;
+  String imageUrl;
+  String title;
+  String content;
+  bool isRead;
+  String redirectPath;
   NotificationEntity({
     required this.offSet,
     required this.createdAt,

@@ -81,11 +81,18 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement build
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        shape: const CircleBorder(),
         onPressed: () {
           initAIRecipeModule();
           Navigator.pushNamed(context, Routes.aiRecipeRoute);
         },
-        child: SvgPicture.asset(PicturePath.iconAIPath),
+        child: SvgPicture.asset(
+          PicturePath.iconAIPath,
+          width: 32,
+          height: 32,
+          colorFilter: const ColorFilter.mode(
+              ColorManager.darkBlueColor, BlendMode.srcIn),
+        ),
       ),
       body: SafeArea(
         child: RefreshIndicator(

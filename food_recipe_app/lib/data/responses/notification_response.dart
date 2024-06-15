@@ -27,9 +27,13 @@ class AppNotificationResponse {
   Map<String, dynamic> toJson() => _$NotificationResponseToJson(this);
 
   static List<AppNotificationResponse> fromJsonList(dynamic list) {
-    return (list as List)
-        .map((e) => AppNotificationResponse.fromJson(e))
-        .toList();
+    List<AppNotificationResponse> notificationList = [];
+    for (int i = 0; i < (list as List).length; i++) {
+      if (list[i] != null) {
+        notificationList.add(AppNotificationResponse.fromJson(list[i]));
+      }
+    }
+    return notificationList;
   }
 
   @override

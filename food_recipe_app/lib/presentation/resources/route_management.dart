@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
+import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
 import 'package:food_recipe_app/presentation/ai_recipe_page/ai_recipe_page.dart';
@@ -17,6 +18,7 @@ import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/login/login_view.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/result_search_page.dart';
 import 'package:food_recipe_app/presentation/main/main_view.dart';
+import 'package:food_recipe_app/presentation/notification_detail/notification_detail_page.dart';
 import 'package:food_recipe_app/presentation/otp_verifying_page/otp_verifying_page.dart';
 import 'package:food_recipe_app/presentation/recipes_by_category/recipes_by_category_page.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
@@ -44,6 +46,7 @@ class Routes {
   static const String otpRoute = '/otp';
   static const String aiRecipeRoute = '/aiRecipe';
   static const String aiRecipeResultRoute = '/aiRecipeResult';
+  static const String notificationDetailRoute = '/notificationDetail';
 }
 
 class InitialRoute {
@@ -55,7 +58,7 @@ class InitialRoute {
 
   Future<void> getInitialRoute() async {
     try {
-      bool value = await _appPreferences.getOnBoardingScreenViewed();
+      bool value = _appPreferences.getOnBoardingScreenViewed();
       if (value) {
         debugPrint('value is $value');
         final backgroundUser = await _getUserInfoUseCase.execute(null);
@@ -82,6 +85,12 @@ class RouteGenerator {
       case Routes.onBoardingRoute:
         return MaterialPageRoute(
           builder: (context) => const OnBoardingView(),
+        );
+      case Routes.notificationDetailRoute:
+        return MaterialPageRoute(
+          builder: (context) => NotificationDetailPage(
+            notification: routeSettings.arguments as NotificationEntity,
+          ),
         );
       case Routes.loadingRoute:
         return MaterialPageRoute(

@@ -63,7 +63,7 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
         }
         //await Future.delayed(Duration(seconds: 1));
         if (_recipeView == RecipeView.SavedRecipes) {
-          savedRecipesBloc.add(SavedRecipesConinueLoading(RecipeSearchObject(
+          savedRecipesBloc.add(SavedRecipesContinueLoading(RecipeSearchObject(
               [selectedItem.value], '',
               page: (recipeList.length ~/ 10) + 1)));
         } else {

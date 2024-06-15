@@ -38,4 +38,32 @@ class NotificationRepositoryImpl implements NotificationRepository {
       return Left(Failure.noInternet());
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteNotificationByOffset(int offset) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        await notificationRemoteDataSource.deleteNotificationByOffset(offset);
+        return const Right(null);
+      } catch (error) {
+        return (Left(ErrorHandler.handle(error).failure));
+      }
+    } else {
+      return Left(Failure.noInternet());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateIsReadByOffset(int offset) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        await notificationRemoteDataSource.updateIsReadByOffset(offset);
+        return const Right(null);
+      } catch (error) {
+        return (Left(ErrorHandler.handle(error).failure));
+      }
+    } else {
+      return Left(Failure.noInternet());
+    }
+  }
 }
