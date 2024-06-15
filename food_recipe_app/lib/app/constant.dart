@@ -8,6 +8,7 @@ class Constant {
   static const String userEndpoint = '/User';
   static const String commentEndpoint = '/Comment';
   static const String notificationHub = "/NotificationHub";
+  static const List<String> languageList = ["Vietnamese", "English", "Chinese"];
   static const List<String> typeList = [
     "Healthy",
     "Fast Food",

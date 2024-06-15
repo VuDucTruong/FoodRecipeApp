@@ -3,6 +3,7 @@ import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/data_source/notification_remote_datasource.dart';
 import 'package:food_recipe_app/domain/repository/notification_repository.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_notification_usecase.dart';
+import 'package:food_recipe_app/presentation/blocs/ai_recipe/ai_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/user_notification/user_notification_bloc.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/presentation/utils/device_info.dart';
@@ -119,6 +120,7 @@ Future<void> initAppModule() async {
     instance.registerLazySingleton(() => InitialRoute(instance(), instance()));
   }
   instance<DioFactory>().initializeInterceptor(dio, instance());
+  initAIRecipeModule();
 }
 
 void initRepository() {
@@ -352,7 +354,11 @@ initEditProfileModule() {
     );
   }
 }
-
+initAIRecipeModule() {
+  if(!instance.isRegistered<AIRecipeBloc>()) {
+    instance.registerLazySingleton(() => AIRecipeBloc(),);
+  }
+}
 void initChangePasswordModule() {
   if (!instance.isRegistered<ChangePasswordBloc>()) {
     instance.registerLazySingleton(

@@ -4,6 +4,8 @@ import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
+import 'package:food_recipe_app/presentation/ai_recipe_page/ai_recipe_page.dart';
+import 'package:food_recipe_app/presentation/ai_recipe_page/ai_recipe_result_page.dart';
 import 'package:food_recipe_app/presentation/blocs/login/login_bloc.dart';
 import 'package:food_recipe_app/presentation/change_password/change_password_page.dart';
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
@@ -40,6 +42,8 @@ class Routes {
   static const String changePassRoute = '/changePass';
   static const String resultSearchRoute = '/resultSearch';
   static const String otpRoute = '/otp';
+  static const String aiRecipeRoute = '/aiRecipe';
+  static const String aiRecipeResultRoute = '/aiRecipeResult';
 }
 
 class InitialRoute {
@@ -82,6 +86,14 @@ class RouteGenerator {
       case Routes.loadingRoute:
         return MaterialPageRoute(
           builder: (context) => const LoadingScreen(),
+        );
+      case Routes.aiRecipeRoute:
+        return MaterialPageRoute(
+          builder: (context) => const AIRecipePage(),
+        );
+      case Routes.aiRecipeResultRoute:
+        return MaterialPageRoute(
+          builder: (context) => const AIRecipeResultPage(),
         );
       case Routes.otpRoute:
         return MaterialPageRoute(

@@ -137,6 +137,8 @@ class AppStrings {
   static const String chefs = 'Chefs';
   static const String otpVerifying = 'OTP Verifying';
   static const String myNotifications = 'My Notifications';
+  static const String wait30s = 'Please wait for about 30s....';
+  static const String save = 'Save';
   static const String choosePreferencesWarning =
       'Please choose up to 3 preferences !';
 

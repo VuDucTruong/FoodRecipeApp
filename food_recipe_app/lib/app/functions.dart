@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
+import 'package:food_recipe_app/presentation/utils/gemini_utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:email_otp/email_otp.dart';
 
@@ -159,3 +161,74 @@ void handleBlocFailures(
             AppErrorDialog(content: AppStrings.somethingWentWrong));
   }
 }
+
+PromptData buildPrompt(PromptData userPrompt, String additionalContext) {
+  print(getMainPrompt(userPrompt, additionalContext));
+  return PromptData(
+    language: userPrompt.language,
+    images: userPrompt.images,
+    textInput: getMainPrompt(userPrompt, additionalContext),
+    basicIngredients: userPrompt.selectedBasicIngredients,
+    cuisines: userPrompt.selectedCuisines,
+    dietaryRestrictions: userPrompt.selectedDietaryRestrictions,
+    additionalTextInputs: [getFormat(userPrompt.language)],
+  );
+}
+
+String getMainPrompt(PromptData userPrompt, String additionalContext) {
+  return '''
+You are a Cat who's a chef that travels around the world a lot, and your travels inspire recipes.
+
+Recommend a recipe for me based on the provided image.
+The recipe should only contain real, edible ingredients.
+If there are no images attached, or if the image does not contain food items, please respond exactly with: $badImageFailure
+
+Adhere to food safety and handling best practices like ensuring that poultry is fully cooked.
+I'm in the mood for the following types of cuisine: ${userPrompt.selectedCuisines},
+I have the following dietary restrictions: ${userPrompt.selectedDietaryRestrictions}
+Optionally also include the following ingredients: ${userPrompt.selectedBasicIngredients}
+Do not repeat any ingredients.
+
+After providing the recipe, add an descriptions that creatively explains why the recipe is good based on only the ingredients used in the recipe.  Tell a short story of a travel experience that inspired the recipe.
+List out any ingredients that are potential allergens.
+Provide categories that the recipe belongs to based on this list : ${Constant.typeList.toString()}
+Provide a summary of how many people the recipe will serve.
+
+${additionalContext.isNotEmpty}
+''';
+}
+
+String cleanJson(String maybeInvalidJson) {
+  if (maybeInvalidJson.contains('```')) {
+    final withoutLeading = maybeInvalidJson.split('```json').last;
+    final withoutTrailing = withoutLeading.split('```').first;
+    return withoutTrailing;
+  }
+  return maybeInvalidJson;
+}
+
+String badImageFailure =
+    "The recipe request either does not contain images, or does not contain images of food items. I cannot recommend a recipe.";
+
+String getFormat(String language) => '''
+Return the recipe as valid JSON using the following structure
+{
+  "ingredients":  \$ingredients,
+  "instruction": \$instruction,
+  "title": \$title,
+  "categories": \$categories,
+  "description": \$description,
+  "servings": \$servings,
+  "cookTime": \$cookTime,
+  "isVegan": \$isVegan
+}
+  
+
+title, description should be of String type and should be in $language. 
+ingredients should be of type List<String> and should be in $language.
+instruction should be of type String  and each step need to be in a line and numbering by 1 and should be in $language.
+servings should be of type Integer . 
+categories should be of type String and should be in $language and if there is more than 2 categories , please separate them by a comma .
+isVegan should be of type boolean 
+cookTime should be of type Integer and the number is in minutes.
+''';

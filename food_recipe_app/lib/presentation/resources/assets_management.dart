@@ -41,6 +41,7 @@ class PicturePath {
   static const String eyeSlashSolidPath = '$_picturePath/eye-slash-solid.svg';
   static const String changePassPath = '$_picturePath/change_password.png';
   static const String facebookPath = '$_picturePath/facebook.svg';
+  static const String iconAIPath = '$_picturePath/ai_icon.svg';
 }
 
 class LottiePath {

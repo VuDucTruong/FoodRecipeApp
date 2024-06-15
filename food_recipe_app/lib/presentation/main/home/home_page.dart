@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/constant.dart';
+import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
@@ -78,44 +79,53 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return SafeArea(
-      child: RefreshIndicator(
-        backgroundColor: ColorManager.secondaryColor,
-        color: ColorManager.primaryColor,
-        onRefresh: () => Future.delayed(Duration.zero, reloadPage),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _getSlogan(),
-                _getSearchBar(),
-                const SizedBox(
-                  height: AppSize.s20,
-                ),
-                _getHeadingHome(AppStrings.trendingToday, false, null),
-                HomeCarouselSlider(
-                  bloc: trendingBloc,
-                  reload: reloadPage,
-                ),
-                _getHeadingHome(AppStrings.categories, true, () {
-                  Navigator.pushNamed(context, Routes.recipesByCategoryRoute);
-                }),
-                FoodTypeOptions(
-                  selectedItem: selectedCateogry,
-                  bloc: recipesByCategoryBloc,
-                ),
-                RecipeListByCategoy(
-                    recipesByCategoryBloc: recipesByCategoryBloc),
-                _getHeadingHome(AppStrings.verifiedChefs, true, () {
-                  Navigator.pushNamed(context, Routes.listChefPageRoute);
-                }),
-                ChefList(verifiedChefsBloc: verifiedChefsBloc),
-                const SizedBox(
-                  height: AppSize.s8,
-                )
-              ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          initAIRecipeModule();
+          Navigator.pushNamed(context, Routes.aiRecipeRoute);
+        },
+        child: SvgPicture.asset(PicturePath.iconAIPath),
+      ),
+      body: SafeArea(
+        child: RefreshIndicator(
+          backgroundColor: ColorManager.secondaryColor,
+          color: ColorManager.primaryColor,
+          onRefresh: () => Future.delayed(Duration.zero, reloadPage),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _getSlogan(),
+                  _getSearchBar(),
+                  const SizedBox(
+                    height: AppSize.s20,
+                  ),
+                  _getHeadingHome(AppStrings.trendingToday, false, null),
+                  HomeCarouselSlider(
+                    bloc: trendingBloc,
+                    reload: reloadPage,
+                  ),
+                  _getHeadingHome(AppStrings.categories, true, () {
+                    Navigator.pushNamed(context, Routes.recipesByCategoryRoute);
+                  }),
+                  FoodTypeOptions(
+                    selectedItem: selectedCateogry,
+                    bloc: recipesByCategoryBloc,
+                  ),
+                  RecipeListByCategoy(
+                      recipesByCategoryBloc: recipesByCategoryBloc),
+                  _getHeadingHome(AppStrings.verifiedChefs, true, () {
+                    Navigator.pushNamed(context, Routes.listChefPageRoute);
+                  }),
+                  ChefList(verifiedChefsBloc: verifiedChefsBloc),
+                  const SizedBox(
+                    height: AppSize.s8,
+                  )
+                ],
+              ),
             ),
           ),
         ),

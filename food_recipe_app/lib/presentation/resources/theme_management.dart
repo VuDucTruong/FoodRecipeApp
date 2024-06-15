@@ -10,6 +10,9 @@ import '../../app/di.dart';
 
 ThemeData getAppTheme() {
   return ThemeData(
+      radioTheme: const RadioThemeData(
+          fillColor:
+              WidgetStatePropertyAll<Color>(ColorManager.secondaryColor)),
       checkboxTheme: const CheckboxThemeData(
           fillColor: WidgetStatePropertyAll(ColorManager.secondaryColor)),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
