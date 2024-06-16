@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +92,7 @@ class _ListChefPageState extends State<ListChefPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppStrings.verifiedChefs,
+          AppStrings.verifiedChefs.tr(),
           style: getBoldStyle(
               color: ColorManager.secondaryColor, fontSize: FontSize.s20),
         ),

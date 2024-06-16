@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
@@ -33,7 +34,7 @@ class ResultSearchPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          title: Text("${AppStrings.searchResult} \"$search\""),
+          title: Text("${AppStrings.searchResult.tr()} \"$search\""),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context);
@@ -56,7 +57,7 @@ class ResultSearchPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        AppStrings.recipes,
+                        AppStrings.recipes.tr(),
                         style: getSemiBoldStyle(fontSize: 18),
                       ),
                     ),
@@ -73,7 +74,7 @@ class ResultSearchPage extends StatelessWidget {
                                           Routes.recipesByCategoryRoute,
                                           arguments: search);
                                     },
-                                    child: const Text(AppStrings.seeAll));
+                                    child: Text(AppStrings.seeAll.tr()));
                               }
                               RecipeEntity recipe = recipeList[index];
                               return RecipeItem(
@@ -100,7 +101,7 @@ class ResultSearchPage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        AppStrings.chefs,
+                        AppStrings.chefs.tr(),
                         style: getSemiBoldStyle(fontSize: 18),
                       ),
                     ),
@@ -117,7 +118,7 @@ class ResultSearchPage extends StatelessWidget {
                                           context, Routes.listChefPageRoute,
                                           arguments: search);
                                     },
-                                    child: const Text(AppStrings.seeAll));
+                                    child: Text(AppStrings.seeAll.tr()));
                               }
                               ChefEntity chef = chefList[index];
                               return ChefItem(

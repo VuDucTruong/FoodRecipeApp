@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -30,7 +31,7 @@ class AppAlertDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
                 text: TextSpan(children: [
                   TextSpan(
-                      text: AppStrings.warningMessage,
+                      text: AppStrings.warningMessage.tr(),
                       style: getBoldStyle(
                           color: Colors.white, fontSize: FontSize.s18)),
                   TextSpan(

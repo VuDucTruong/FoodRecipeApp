@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_alert_dialog.dart';
@@ -36,7 +37,6 @@ class _OnOffSwitchState extends State<OnOffSwitch> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Stack(
-      textDirection: TextDirection.ltr,
       alignment: AlignmentDirectional.centerStart,
       children: [
         Container(
@@ -60,7 +60,7 @@ class _OnOffSwitchState extends State<OnOffSwitch> {
           child: AnimatedOpacity(
             opacity: widget.isOn.value ? 1 : 0,
             duration: Durations.medium2,
-            child: Text(AppStrings.on,
+            child: Text(AppStrings.on.tr(),
                 style: getRegularStyle(
                     color: Colors.black, fontSize: FontSize.s20)),
           ),

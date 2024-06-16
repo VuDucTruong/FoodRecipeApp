@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/presentation/utils/device_info.dart';
@@ -149,7 +150,8 @@ class LoginRepositoryImpl implements LoginRepository {
       ));
       if (response.statusCode == ResponseCode.SUCCESS) {
         if (response.data == null) {
-          return Left(Failure(ResponseCode.DEFAULT, AppStrings.loginError));
+          return Left(
+              Failure(ResponseCode.DEFAULT, AppStrings.loginError.tr()));
         }
         assert(response.data != null);
         await _appPreferences.setUserToken(response.data!.accessToken);
@@ -183,7 +185,7 @@ class LoginRepositoryImpl implements LoginRepository {
       }
       return Left(Failure.internalServerError());
     } catch (ex) {
-      return Left(Failure(ResponseCode.DEFAULT, AppStrings.loginError));
+      return Left(Failure(ResponseCode.DEFAULT, AppStrings.loginError.tr()));
     }
   }
 

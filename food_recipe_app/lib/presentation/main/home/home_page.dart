@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,6 +12,7 @@ import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/object/search_object.dart';
 import 'package:food_recipe_app/domain/object/user_search_object.dart';
+import 'package:food_recipe_app/presentation/blocs/language/language_cubit.dart';
 import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
@@ -25,6 +27,7 @@ import 'package:food_recipe_app/presentation/main/home/widgets/recipe_list_by_ca
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
+import 'package:food_recipe_app/presentation/resources/language_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -45,19 +48,19 @@ class _HomePageState extends State<HomePage> {
   late TrendingBloc trendingBloc;
   late RecipesByCategoryBloc recipesByCategoryBloc;
   late VerifiedChefsBloc verifiedChefsBloc;
-  late MutableVariable<String> selectedCateogry;
+  late MutableVariable<String> selectedCategory;
 
   @override
   void initState() {
     super.initState();
-    selectedCateogry = MutableVariable(Constant.typeList[0]);
+    selectedCategory = MutableVariable(Constant.typeList[0]);
     trendingBloc = GetIt.instance<TrendingBloc>();
     verifiedChefsBloc = GetIt.instance<VerifiedChefsBloc>();
     verifiedChefsBloc.add(SearchChefs(UserSearchObject('')));
     recipesByCategoryBloc = GetIt.instance<RecipesByCategoryBloc>();
     trendingBloc.add(TrendingLoad());
     recipesByCategoryBloc.add(CategorySelected(RecipeSearchObject(
-      [selectedCateogry.value],
+      [selectedCategory.value],
       '',
     )));
   }
@@ -66,7 +69,7 @@ class _HomePageState extends State<HomePage> {
     verifiedChefsBloc.add(SearchChefs(UserSearchObject('')));
     trendingBloc.add(TrendingLoad());
     recipesByCategoryBloc.add(CategorySelected(RecipeSearchObject(
-      [selectedCateogry.value],
+      [selectedCategory.value],
       '',
     )));
   }
@@ -82,7 +85,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
-        onPressed: () {
+        onPressed: () async {
           initAIRecipeModule();
           Navigator.pushNamed(context, Routes.aiRecipeRoute);
         },
@@ -110,21 +113,21 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(
                     height: AppSize.s20,
                   ),
-                  _getHeadingHome(AppStrings.trendingToday, false, null),
+                  _getHeadingHome(AppStrings.trendingToday.tr(), false, null),
                   HomeCarouselSlider(
                     bloc: trendingBloc,
                     reload: reloadPage,
                   ),
-                  _getHeadingHome(AppStrings.categories, true, () {
+                  _getHeadingHome(AppStrings.categories.tr(), true, () {
                     Navigator.pushNamed(context, Routes.recipesByCategoryRoute);
                   }),
                   FoodTypeOptions(
-                    selectedItem: selectedCateogry,
+                    selectedItem: selectedCategory,
                     bloc: recipesByCategoryBloc,
                   ),
                   RecipeListByCategoy(
                       recipesByCategoryBloc: recipesByCategoryBloc),
-                  _getHeadingHome(AppStrings.verifiedChefs, true, () {
+                  _getHeadingHome(AppStrings.verifiedChefs.tr(), true, () {
                     Navigator.pushNamed(context, Routes.listChefPageRoute);
                   }),
                   ChefList(verifiedChefsBloc: verifiedChefsBloc),
@@ -147,10 +150,13 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            AppStrings.homeTitle,
-            style: getBoldStyle(
-                color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+          Expanded(
+            child: Text(
+              AppStrings.homeTitle.tr(),
+              maxLines: 2,
+              style: getBoldStyle(
+                  color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+            ),
           ),
           SvgPicture.asset(
             PicturePath.logoSVGPath,
@@ -169,7 +175,7 @@ class _HomePageState extends State<HomePage> {
         Text(
           content,
           style: getBoldStyle(color: Colors.black, fontSize: FontSize.s18),
-        ),
+        ).tr(),
         const Spacer(),
         isSeeAll
             ? InkWell(
@@ -177,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                   action?.call();
                 },
                 child: Text(
-                  AppStrings.seeAll,
+                  AppStrings.seeAll.tr(),
                   style: getRegularStyleWithUnderline(
                       color: Colors.grey, fontSize: FontSize.s15),
                 ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
@@ -57,7 +58,7 @@ class HomeFoodItem extends StatelessWidget {
                           const SizedBox(
                             width: AppSize.s4,
                           ),
-                          Text('${item.cookTime} ${AppStrings.inMinutes}',
+                          Text('${item.cookTime} ${AppStrings.inMinutes.tr()}',
                               style: getRegularStyle(
                                   color: Colors.black, fontSize: fontSize))
                         ],
@@ -68,7 +69,7 @@ class HomeFoodItem extends StatelessWidget {
                           const SizedBox(
                             width: 4,
                           ),
-                          Text('${item.serves} ${AppStrings.people}',
+                          Text('${item.serves} ${AppStrings.people.tr()}',
                               style: getRegularStyle(
                                   color: Colors.black, fontSize: fontSize))
                         ],

@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -33,17 +34,17 @@ class OnBoardingViewState extends State<OnBoardingView> {
       OnBoardingObject(
         imageProvider: const AssetImage(PicturePath.onBoarding1Path),
         title: AppStrings.onBoardingTitle1,
-        description: AppStrings.onBoardingDescription1,
+        description: AppStrings.onBoardingDescription1.tr(),
       ),
       OnBoardingObject(
         imageProvider: const AssetImage(PicturePath.onBoarding2Path),
-        title: AppStrings.onBoardingTitle2,
-        description: AppStrings.onBoardingDescription2,
+        title: AppStrings.onBoardingTitle2.tr(),
+        description: AppStrings.onBoardingDescription2.tr(),
       ),
       OnBoardingObject(
         imageProvider: const AssetImage(PicturePath.onBoarding3Path),
-        title: AppStrings.onBoardingTitle3,
-        description: AppStrings.onBoardingDescription3,
+        title: AppStrings.onBoardingTitle3.tr(),
+        description: AppStrings.onBoardingDescription3.tr(),
       ),
     ];
     _appPreferences = GetIt.instance<AppPreferences>();
@@ -90,7 +91,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
                     _appPreferences.setOnBoardingScreenViewed();
                   },
                   child: Text(
-                    AppStrings.skip,
+                    AppStrings.skip.tr(),
                     style: getSemiBoldStyle(
                             color: Colors.white, fontSize: FontSize.s16)
                         .copyWith(decoration: TextDecoration.underline),
@@ -119,7 +120,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
         }
       },
       child: Text(
-        text,
+        text.tr(),
         style: getMediumStyle(
             color: ColorManager.darkBlueColor, fontSize: FontSize.s20),
       ),
@@ -175,7 +176,7 @@ class OnBoardingViewState extends State<OnBoardingView> {
             text: TextSpan(
               children: [
                 TextSpan(
-                    text: "${item.title} \n",
+                    text: "${item.title.tr()} \n",
                     style: getMediumStyle(
                         color: Colors.white, fontSize: FontSize.s38)),
                 TextSpan(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/presentation/main/create_recipe/widgets/category_list_view.dart';
@@ -48,7 +49,7 @@ class _RecipeCategorySectionState extends State<RecipeCategorySection> {
               width: AppSize.s12,
             ),
             Text(
-              AppStrings.foodCategory,
+              AppStrings.foodCategory.tr(),
               style: getBoldStyle(color: Colors.black, fontSize: FontSize.s17),
             ),
             const Spacer(),
@@ -62,13 +63,13 @@ class _RecipeCategorySectionState extends State<RecipeCategorySection> {
                       ));
                   setState(() {});
                 },
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.add),
-                    SizedBox(
+                    const Icon(Icons.add),
+                    const SizedBox(
                       width: 4,
                     ),
-                    Text(AppStrings.addCategories)
+                    Text(AppStrings.addCategories.tr())
                   ],
                 ))
           ],

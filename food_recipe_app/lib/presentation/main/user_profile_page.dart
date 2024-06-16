@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/functions.dart';
@@ -79,7 +80,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppStrings.yourProfile,
+              AppStrings.yourProfile.tr(),
               style: getBoldStyle(
                   color: ColorManager.secondaryColor, fontSize: FontSize.s20),
             ),
@@ -92,22 +93,25 @@ class _UserProfilePageState extends State<UserProfilePage> {
             UserSocialStatus(
               entity: currentUser,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                FilledButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.editProfileRoute);
-                    },
-                    child: const Text(AppStrings.editProfile)),
-                FilledButton(
-                    style: FilledButton.styleFrom(
-                        backgroundColor: ColorManager.blueColor),
-                    onPressed: () {
-                      Navigator.pushNamed(context, Routes.listChefPageRoute);
-                    },
-                    child: const Text(AppStrings.seeAllFollowers)),
-              ],
+            Center(
+              child: Wrap(
+                spacing: 8,
+                alignment: WrapAlignment.center,
+                children: [
+                  FilledButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.editProfileRoute);
+                      },
+                      child: Text(AppStrings.editProfile.tr())),
+                  FilledButton(
+                      style: FilledButton.styleFrom(
+                          backgroundColor: ColorManager.blueColor),
+                      onPressed: () {
+                        Navigator.pushNamed(context, Routes.listChefPageRoute);
+                      },
+                      child: Text(AppStrings.seeAllFollowers.tr())),
+                ],
+              ),
             ),
             const Divider(
               color: Colors.black26,
@@ -118,7 +122,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                AppStrings.myNotifications,
+                AppStrings.myNotifications.tr(),
                 style: getSemiBoldStyle(fontSize: 16),
               ),
             ),

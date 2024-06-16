@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -14,13 +15,14 @@ class LoadingDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Dialog(
+      backgroundColor: Colors.transparent,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Lottie.asset(LottiePath.loadingPath,
               width: 60, height: 60, fit: BoxFit.cover),
-          Text(AppStrings.loading,
-              style: getBoldStyle(color: Colors.black, fontSize: FontSize.s18)),
+          Text(AppStrings.loading.tr(),
+              style: getMediumStyle(color: ColorManager.darkBlueColor, fontSize: FontSize.s18)),
           const SizedBox(
             height: AppSize.s12,
           ),

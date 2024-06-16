@@ -150,6 +150,7 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
         offColor: ColorManager.linearGradientNonVeg,
         width: appWidth * 0.65,
         height: 40,
+        onChange: () {},
       ),
     );
   }

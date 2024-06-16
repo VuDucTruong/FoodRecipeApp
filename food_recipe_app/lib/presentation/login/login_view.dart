@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -59,7 +60,7 @@ class LoginViewState extends State<LoginView> {
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 28),
-              Text(AppStrings.continueWith,
+              Text(AppStrings.continueWith.tr(),
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 16),
@@ -67,7 +68,7 @@ class LoginViewState extends State<LoginView> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   _getIconTextButton(
-                    text: AppStrings.google,
+                    text: AppStrings.google.tr(),
                     iconPath: PicturePath.ggPath,
                     onPressed: () {
                       _loginBloc.add(LoginWithGooglePressed());
@@ -75,10 +76,10 @@ class LoginViewState extends State<LoginView> {
                   ),
                 ],
               ),
-              Text(AppStrings.or,
+              Text(AppStrings.or.tr(),
                   style: getSemiBoldStyle(
                       color: ColorManager.greyColor, fontSize: FontSize.s22)),
-              Text(AppStrings.loginAccount,
+              Text(AppStrings.loginAccount.tr(),
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 4),
@@ -88,8 +89,7 @@ class LoginViewState extends State<LoginView> {
               BlocListener(
                 bloc: _loginBloc,
                 listener: (context, state) {
-                  Navigator.popUntil(
-                      context, (route) => !(route is DialogRoute));
+                  Navigator.popUntil(context, (route) => route is! DialogRoute);
                   if (state is LoginSuccess) {
                     Navigator.of(context).pushNamed(Routes.mainRoute);
                   } else if (state is LoginFailure) {
@@ -118,8 +118,8 @@ class LoginViewState extends State<LoginView> {
               _buildLoginButton(),
               const SizedBox(height: 16),
               _buildFooterText(
-                prefix: AppStrings.notHaveAccount,
-                suffix: AppStrings.signUp,
+                prefix: AppStrings.notHaveAccount.tr(),
+                suffix: AppStrings.signUp.tr(),
                 context: context,
               ),
             ]),
@@ -164,7 +164,7 @@ class LoginViewState extends State<LoginView> {
         },
         style: FilledButton.styleFrom(backgroundColor: ColorManager.blueColor),
         child: Center(
-          child: Text(AppStrings.login,
+          child: Text(AppStrings.login.tr(),
               style: getMediumStyle(
                   color: ColorManager.darkBlueColor, fontSize: FontSize.s20)),
         ),

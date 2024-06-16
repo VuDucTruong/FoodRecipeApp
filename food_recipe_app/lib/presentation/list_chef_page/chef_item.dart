@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
@@ -64,7 +65,7 @@ class ChefItem extends StatelessWidget {
                     link: chefEntity.profileInfo.googleLink ?? ''),
                 Row(
                   children: [
-                    const Text("${AppStrings.followers} : "),
+                    Text("${AppStrings.followers.tr()} : "),
                     Text(
                       chefEntity.followerCount.toString(),
                       style: getMediumStyle(

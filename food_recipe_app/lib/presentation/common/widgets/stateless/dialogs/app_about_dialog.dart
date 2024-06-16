@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -8,9 +9,8 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:lottie/lottie.dart';
 
-class NoConnectionDialog extends StatelessWidget {
-  NoConnectionDialog({Key? key, required this.reload}) : super(key: key);
-  Function reload;
+class AppAboutDialog extends StatelessWidget {
+  const AppAboutDialog({super.key});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -23,27 +23,34 @@ class NoConnectionDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Lottie.asset(LottiePath.noConnectionPath,
-                width: 100, height: 100, fit: BoxFit.cover),
-            Text(
-              textAlign: TextAlign.center,
-              AppStrings.noInternet,
-              style: getBoldStyle(
-                  color: ColorManager.darkBlueColor, fontSize: FontSize.s20),
+            SvgPicture.asset(
+              PicturePath.logoSVGPath,
+              width: 70,
+              height: 70,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                AppStrings.about.tr(),
+                style: getBoldStyle(fontSize: 18),
+              ),
             ),
             const SizedBox(
               height: AppSize.s12,
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                AppStrings.aboutContent.tr(),
+                maxLines: 6,
+                style: getRegularStyle(fontSize: 14),
+              ),
+            ),
             FilledButton(
                 onPressed: () {
-                  reload();
                   Navigator.pop(context);
                 },
-                child: Text(
-                  AppStrings.tryAgain.tr(),
-                  style: getMediumStyle(
-                      color: Colors.white, fontSize: FontSize.s20),
-                ))
+                child: Text(AppStrings.ok.tr()))
           ],
         ),
       ),

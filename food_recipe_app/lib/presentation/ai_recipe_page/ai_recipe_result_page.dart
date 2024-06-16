@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/functions.dart';
@@ -66,9 +67,11 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                     ),
                     Row(
                       children: [
-                        const CommonHeading(content: "${AppStrings.veg}: "),
+                        CommonHeading(content: "${AppStrings.veg.tr()}: "),
                         Text(
-                          recipeEntity.isVegan ? AppStrings.yes : AppStrings.no,
+                          recipeEntity.isVegan
+                              ? AppStrings.yes.tr()
+                              : AppStrings.no.tr(),
                           style: getSemiBoldStyle(
                               fontSize: 14,
                               color: recipeEntity.isVegan
@@ -79,23 +82,23 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                     ),
                     Row(
                       children: [
-                        const CommonHeading(content: "${AppStrings.serves}: "),
+                        CommonHeading(content: "${AppStrings.serves.tr()}: "),
                         Text(recipeEntity.serves.toString())
                       ],
                     ),
                     Row(
                       children: [
-                        const CommonHeading(
-                            content: "${AppStrings.cookTime}: "),
-                        Text("${recipeEntity.cookTime} ${AppStrings.minutes}")
+                        CommonHeading(content: "${AppStrings.cookTime.tr()}: "),
+                        Text(
+                            "${recipeEntity.cookTime} ${AppStrings.minutes.tr()}")
                       ],
                     ),
-                    const CommonHeading(content: AppStrings.description),
+                    CommonHeading(content: AppStrings.description.tr()),
                     Text(recipeEntity.description),
                     const Divider(),
-                    const CommonHeading(content: AppStrings.categories),
+                    CommonHeading(content: AppStrings.categories.tr()),
                     Text(recipeEntity.categories),
-                    const CommonHeading(content: AppStrings.ingredients),
+                    CommonHeading(content: AppStrings.ingredients.tr()),
                     ListView(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
@@ -108,14 +111,14 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                         )
                       ],
                     ),
-                    const CommonHeading(content: AppStrings.instructions),
+                    CommonHeading(content: AppStrings.instructions.tr()),
                     Text(recipeEntity.instruction),
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FilledButton(
                             onPressed: () {},
-                            child: const Text(AppStrings.save)),
+                            child: Text(AppStrings.save.tr())),
                       ),
                     )
                   ],
@@ -129,7 +132,7 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
               children: [
                 const LoadingWidget(),
                 Text(
-                  AppStrings.wait30s,
+                  AppStrings.wait30s.tr(),
                   style: getRegularStyle(color: ColorManager.greyColor)
                       .copyWith(fontStyle: FontStyle.italic),
                 )

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -36,7 +37,7 @@ class _RememberCheckBoxState extends State<RememberCheckBox> {
           checkColor: Colors.white,
           side: const BorderSide(color: ColorManager.blueColor, width: 2),
         ),
-        Text(AppStrings.rememberMe,
+        Text(AppStrings.rememberMe.tr(),
             style: getSemiBoldStyle(
                 color: ColorManager.blueColor, fontSize: FontSize.s14)),
       ],

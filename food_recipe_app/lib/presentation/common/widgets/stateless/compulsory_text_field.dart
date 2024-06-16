@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/custom_text_form_field.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
@@ -35,7 +36,7 @@ class CompulsoryTextField extends StatelessWidget {
                 style: getSemiBoldStyle(
                     color: Colors.black, fontSize: FontSize.s16),
                 children: [
-                  TextSpan(text: content),
+                  TextSpan(text: content.tr()),
                   if (isCompulsory)
                     TextSpan(
                       text: " *",
@@ -49,7 +50,7 @@ class CompulsoryTextField extends StatelessWidget {
         CustomTextFormField(
           controller: controller,
           validator: validator,
-          hint: hint,
+          hint: hint.tr(),
           isPassword: isPassword,
           icon: icon,
           maxLines: maxLines,

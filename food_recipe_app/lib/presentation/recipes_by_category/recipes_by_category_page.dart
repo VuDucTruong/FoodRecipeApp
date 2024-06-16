@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -109,7 +110,7 @@ class _RecipesByCategoryPageState extends State<RecipesByCategoryPage> {
               child: Row(
                 children: [
                   Text(
-                    AppStrings.recipesByCategory,
+                    AppStrings.recipesByCategory.tr(),
                     style: getBoldStyle(
                         color: ColorManager.secondaryColor,
                         fontSize: FontSize.s20),

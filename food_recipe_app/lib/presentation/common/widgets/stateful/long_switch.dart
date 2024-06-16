@@ -13,13 +13,16 @@ class LongSwitch extends StatefulWidget {
       required this.onColor,
       required this.offColor,
       required this.width,
-      required this.height})
+      required this.height,
+      required this.onChange,
+      this.initialValue})
       : super(key: key);
 
   String onContent, offContent;
   Gradient onColor, offColor;
   double width, height;
-
+  Function onChange;
+  bool? initialValue;
   @override
   _LongSwitchState createState() {
     return _LongSwitchState();
@@ -30,6 +33,9 @@ class _LongSwitchState extends State<LongSwitch> {
   @override
   void initState() {
     super.initState();
+    if (widget.initialValue != null) {
+      isOn = widget.initialValue!;
+    }
   }
 
   @override
@@ -101,6 +107,7 @@ class _LongSwitchState extends State<LongSwitch> {
           child: InkWell(
             onTap: () {
               setState(() {
+                widget.onChange.call();
                 isOn = !isOn;
               });
             },

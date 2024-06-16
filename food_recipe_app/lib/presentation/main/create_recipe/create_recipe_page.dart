@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,7 +97,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
             showAnimatedDialog2(
                 context,
                 CongratulationDialog(
-                  content: AppStrings.createSuccess,
+                  content: AppStrings.createSuccess.tr(),
                 ));
           }
           if (state is CreateRecipeLoadingState) {
@@ -115,7 +116,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: AppPadding.p8),
                   child: Text(
-                    AppStrings.createRecipe,
+                    AppStrings.createRecipe.tr(),
                     style: getBoldStyle(
                         color: ColorManager.secondaryColor,
                         fontSize: FontSize.s20),
@@ -143,7 +144,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                       RecipeCategorySection(
                           selectedCategoryList: selectedCategoryList),
                       Text(
-                        AppStrings.ingredients,
+                        AppStrings.ingredients.tr(),
                         style: getBoldStyle(
                             color: ColorManager.secondaryColor,
                             fontSize: FontSize.s20),
@@ -163,8 +164,10 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                   FilledButton(
                       onPressed: () async {
                         if (multipartFiles.isEmpty) {
-                          showAnimatedDialog2(context,
-                              AppErrorDialog(content: AppStrings.noImageError));
+                          showAnimatedDialog2(
+                              context,
+                              AppErrorDialog(
+                                  content: AppStrings.noImageError.tr()));
                           return;
                         }
                         if (formKey.currentState!.validate()) {
@@ -185,20 +188,21 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
                               .add(CreateRecipeButtonPressed(object));
                         }
                       },
-                      child: const Text(AppStrings.create)),
+                      child: Text(AppStrings.create.tr())),
                   FilledButton(
                       style: FilledButton.styleFrom(
                           backgroundColor: ColorManager.darkBlueColor),
                       onPressed: () async {
                         bool isAccept = await showAnimatedDialog2(
-                            context,
-                            AppAlertDialog(
-                                content: AppStrings.deleteContent)) as bool;
+                                context,
+                                AppAlertDialog(
+                                    content: AppStrings.deleteContent.tr()))
+                            as bool;
                         if (isAccept) {
                           clearContent();
                         }
                       },
-                      child: const Text(AppStrings.delete)),
+                      child: Text(AppStrings.delete.tr())),
                 ],
               ),
               const SizedBox(
@@ -235,7 +239,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppStrings.instructions,
+          AppStrings.instructions.tr(),
           style: getBoldStyle(
               color: ColorManager.secondaryColor, fontSize: FontSize.s20),
         ),
@@ -263,7 +267,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
           width: AppSize.s12,
         ),
         Text(
-          AppStrings.cookTime,
+          AppStrings.cookTime.tr(),
           style: getBoldStyle(color: Colors.black, fontSize: FontSize.s17),
         ),
         const Spacer(),
@@ -276,7 +280,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             style: getSemiBoldStyle(color: Colors.black),
-            decoration: inputDecoration(hint: AppStrings.inMinutes),
+            decoration: inputDecoration(hint: AppStrings.inMinutes.tr()),
           ),
         )
       ],
@@ -293,7 +297,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
             width: AppSize.s12,
           ),
           Text(
-            AppStrings.serves,
+            AppStrings.serves.tr(),
             style: getBoldStyle(color: Colors.black, fontSize: FontSize.s17),
           ),
           const Spacer(),
@@ -310,7 +314,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
         validator: validateEmpty,
         controller: dishController,
         style: getSemiBoldStyle(color: Colors.black),
-        decoration: inputDecoration(hint: AppStrings.nameDish),
+        decoration: inputDecoration(hint: AppStrings.nameDish.tr()),
       ),
     );
   }
@@ -320,7 +324,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppStrings.description,
+          AppStrings.description.tr(),
           style: getBoldStyle(color: Colors.black, fontSize: FontSize.s17),
         ),
         Container(
@@ -331,7 +335,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
             minLines: 2,
             controller: descriptionController,
             style: getSemiBoldStyle(color: Colors.black),
-            decoration: inputDecoration(hint: AppStrings.descriptionHint),
+            decoration: inputDecoration(hint: AppStrings.descriptionHint.tr()),
           ),
         ),
       ],

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -41,7 +42,7 @@ class ChangePasswordSuccessDialog extends StatelessWidget {
                   Navigator.pop(context, true);
                 },
                 child: Text(
-                  AppStrings.congratulationBtnMessage,
+                  AppStrings.congratulationBtnMessage.tr(),
                   style: getMediumStyle(
                       color: Colors.white, fontSize: FontSize.s20),
                 ))

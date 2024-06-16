@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -41,8 +42,8 @@ class _UserDescriptionState extends State<UserDescription> {
                       children: [
                         Text(
                           !isExpanded
-                              ? '${AppStrings.showMore} '
-                              : '${AppStrings.showLess} ',
+                              ? '${AppStrings.showMore.tr()} '
+                              : '${AppStrings.showLess.tr()} ',
                           style:
                               getSemiBoldStyle(color: ColorManager.blueColor),
                         ),
@@ -62,7 +63,7 @@ class _UserDescriptionState extends State<UserDescription> {
               )
             : Center(
                 child: Text(
-                  AppStrings.noBioInfor,
+                  AppStrings.noBioInfor.tr(),
                   style:
                       getRegularStyle().copyWith(fontStyle: FontStyle.italic),
                 ),

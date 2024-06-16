@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
@@ -59,7 +60,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         // Error occurred during login
         emit(LoginFailure(
-            failure: Failure(ResponseCode.DEFAULT, AppStrings.loginError)));
+            failure:
+                Failure(ResponseCode.DEFAULT, AppStrings.loginError.tr())));
       }
     } else {
       emit(LoginFailure(failure: Failure.noInternet()));

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -16,7 +17,7 @@ class NoItemWidget extends StatelessWidget {
         children: [
           Lottie.asset(LottiePath.emptyPath, width: 60, height: 60),
           Text(
-            AppStrings.noItem,
+            AppStrings.noItem.tr(),
             style: getLightStyle(color: ColorManager.darkBlueColor)
                 .copyWith(fontStyle: FontStyle.italic),
           )

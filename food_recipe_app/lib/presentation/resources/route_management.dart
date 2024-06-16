@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
@@ -140,7 +141,6 @@ class RouteGenerator {
           ),
         );
       case Routes.mainRoute:
-        initHomeModule();
         return MaterialPageRoute(
           builder: (context) => const MainView(),
         );
@@ -200,8 +200,8 @@ class RouteGenerator {
 
 Route<dynamic> undefinedRoute() {
   return MaterialPageRoute(
-    builder: (context) => const Scaffold(
-      body: Center(child: Text(AppStrings.notFoundRoute)),
+    builder: (context) => Scaffold(
+      body: Center(child: Text(AppStrings.notFoundRoute.tr())),
     ),
   );
 }

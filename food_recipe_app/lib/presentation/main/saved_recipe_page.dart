@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -105,14 +106,14 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
         children: [
           SpeedDialChild(
               child: const Icon(Icons.save),
-              label: "Saved Recipes",
+              label: AppStrings.savedRecipes.tr(),
               onTap: () {
                 _recipeView = RecipeView.SavedRecipes;
                 reloadSavedRecipes();
               }),
           SpeedDialChild(
               child: const Icon(Icons.fastfood_rounded),
-              label: "My Recipes",
+              label: AppStrings.myRecipes.tr(),
               onTap: () {
                 _recipeView = RecipeView.MyRecipes;
                 reloadMyRecipes();
@@ -134,15 +135,15 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
                       if (state is SavedRecipesLoadedState) {
                         return Text(
                           _recipeView == RecipeView.SavedRecipes
-                              ? AppStrings.savedRecipes
-                              : AppStrings.myRecipes,
+                              ? AppStrings.savedRecipes.tr()
+                              : AppStrings.myRecipes.tr(),
                           style: getBoldStyle(
                               color: ColorManager.secondaryColor,
                               fontSize: FontSize.s20),
                         );
                       }
                       return Text(
-                        AppStrings.savedRecipes,
+                        AppStrings.savedRecipes.tr(),
                         style: getBoldStyle(
                             color: ColorManager.secondaryColor,
                             fontSize: FontSize.s20),

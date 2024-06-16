@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
@@ -46,9 +47,9 @@ class _IngredientListViewState extends State<IngredientListView> {
               widget.ingredients.add('');
             });
           },
-          child: const Row(
+          child: Row(
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(vertical: AppPadding.p4),
                 child: Icon(
                   Icons.add,
@@ -57,8 +58,8 @@ class _IngredientListViewState extends State<IngredientListView> {
                 ),
               ),
               Text(
-                AppStrings.addMoreIngredients,
-                style: TextStyle(color: Colors.grey),
+                AppStrings.addMoreIngredients.tr(),
+                style: const TextStyle(color: Colors.grey),
               )
             ],
           ),
@@ -77,7 +78,7 @@ class _IngredientListViewState extends State<IngredientListView> {
             child: TextFormField(
               initialValue: widget.ingredients[index],
               style: getSemiBoldStyle(color: Colors.black),
-              decoration: inputDecoration(hint: AppStrings.item),
+              decoration: inputDecoration(hint: AppStrings.item.tr()),
             ),
           ),
         ),

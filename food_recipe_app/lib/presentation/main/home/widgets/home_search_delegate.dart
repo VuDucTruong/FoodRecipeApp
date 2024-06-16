@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
@@ -116,7 +117,7 @@ class HomeSearchDelegate extends SearchDelegate {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      AppStrings.recipes,
+                      AppStrings.recipes.tr(),
                       style: getMediumStyle(fontSize: 16),
                     ),
                   ),
@@ -141,7 +142,7 @@ class HomeSearchDelegate extends SearchDelegate {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      AppStrings.chefs,
+                      AppStrings.chefs.tr(),
                       style: getMediumStyle(fontSize: 16),
                     ),
                   ),
@@ -179,7 +180,7 @@ class HomeSearchDelegate extends SearchDelegate {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                AppStrings.recipes,
+                AppStrings.recipes.tr(),
                 style: getMediumStyle(fontSize: 16),
               ),
             ),
@@ -204,7 +205,7 @@ class HomeSearchDelegate extends SearchDelegate {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                AppStrings.chefs,
+                AppStrings.chefs.tr(),
                 style: getMediumStyle(fontSize: 16),
               ),
             ),

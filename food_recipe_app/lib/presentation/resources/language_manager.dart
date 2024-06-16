@@ -5,8 +5,8 @@ enum LanguageType { English, Vietnamese }
 const String VIETNAMESE = "vi";
 const String ENGLISH = "en";
 const String ASSETS_PATH_LOCALISATIONS = "assets/translations";
-const Locale VN_LOCAL = Locale("vi", "VN");
-const Locale ENGLISH_LOCAL = Locale("en", "US");
+const Locale VN_LOCAL = Locale("vi");
+const Locale ENGLISH_LOCAL = Locale("en");
 
 extension LanguageTypeExtension on LanguageType {
   String getValue() {

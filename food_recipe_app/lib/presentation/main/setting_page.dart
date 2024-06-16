@@ -1,11 +1,17 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
+import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/blocs/language/language_cubit.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_about_dialog.dart';
 
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/font_manager.dart';
+import 'package:food_recipe_app/presentation/resources/language_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
@@ -52,7 +58,7 @@ class _SettingPageState extends State<SettingPage> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Text(
-                AppStrings.settings,
+                AppStrings.settings.tr(),
                 style: getBoldStyle(
                     color: ColorManager.secondaryColor, fontSize: FontSize.s20),
               ),
@@ -65,20 +71,31 @@ class _SettingPageState extends State<SettingPage> {
               )
             ],
           ),
-          _getIconText(
-              AppStrings.privacy, SvgPicture.asset(PicturePath.privacyPath)),
+          const SizedBox(
+            height: 24,
+          ),
           Row(children: [
-            _getIconText(AppStrings.notifications,
+            _getIconText(AppStrings.notifications.tr(),
                 SvgPicture.asset(PicturePath.notificationPath)),
             const Spacer(),
             OnOffSwitch(
               isOn: isNotification,
             )
           ]),
-          _getIconText(
-              AppStrings.help, SvgPicture.asset(PicturePath.messagesPath)),
-          _getIconText(
-              AppStrings.about, SvgPicture.asset(PicturePath.aboutPath)),
+          InkWell(
+            onTap: () async {
+              await giveFeedback();
+            },
+            child: _getIconText(AppStrings.help.tr(),
+                SvgPicture.asset(PicturePath.messagesPath)),
+          ),
+          InkWell(
+            onTap: () {
+              showAnimatedDialog2(context, const AppAboutDialog());
+            },
+            child: _getIconText(
+                AppStrings.about.tr(), SvgPicture.asset(PicturePath.aboutPath)),
+          ),
           const SizedBox(
             height: AppSize.s20,
           ),
@@ -86,13 +103,19 @@ class _SettingPageState extends State<SettingPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                AppStrings.theme,
+                AppStrings.language.tr(),
                 style: getRegularStyle(
                     color: Colors.black, fontSize: FontSize.s17),
               ),
               LongSwitch(
-                onContent: AppStrings.light,
-                offContent: AppStrings.dark,
+                onChange: () {
+                  context.read<LanguageCubit>().changeLanguage(context);
+                },
+                initialValue:
+                    GetIt.instance<AppPreferences>().getAppLanguage() ==
+                        LanguageType.Vietnamese.getValue(),
+                onContent: AppStrings.vietnamese.tr(),
+                offContent: AppStrings.english.tr(),
                 onColor: ColorManager.linearGradientLightTheme,
                 offColor: ColorManager.linearGradientDarkTheme,
                 width: 180,
@@ -109,7 +132,7 @@ class _SettingPageState extends State<SettingPage> {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     Routes.loginRoute, ModalRoute.withName(Routes.loginRoute));
               },
-              child: Text(AppStrings.signOut,
+              child: Text(AppStrings.signOut.tr(),
                   style: getMediumStyle(
                       color: Colors.white, fontSize: FontSize.s20)))
         ],
@@ -129,7 +152,7 @@ class _SettingPageState extends State<SettingPage> {
             width: AppSize.s8,
           ),
           Text(
-            text,
+            text.tr(),
             style: getRegularStyle(color: Colors.black, fontSize: FontSize.s17),
           )
         ],

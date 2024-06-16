@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
@@ -61,44 +63,44 @@ final _emailRegex = RegExp(r'^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$');
 final _phoneRegex = RegExp(r'^[0-9]{10,11}$');
 String? validateEmail(String? value) {
   if (value == null || value.isEmpty) {
-    return AppStrings.emailRequiredError;
+    return AppStrings.emailRequiredError.tr();
   }
   if (!_emailRegex.hasMatch(value)) {
-    return AppStrings.emailFormatError;
+    return AppStrings.emailFormatError.tr();
   }
   return null;
 }
 
 String? validateEmpty(String? value) {
   if (value == null || value.isEmpty) {
-    return AppStrings.emptyError;
+    return AppStrings.emptyError.tr();
   }
   return null;
 }
 
 String? validatePhoneNumber(String? value) {
   if (value == null || value.isEmpty) {
-    return AppStrings.phoneRequiredError;
+    return AppStrings.phoneRequiredError.tr();
   }
   if (!_phoneRegex.hasMatch(value)) {
-    return AppStrings.phoneValidationError;
+    return AppStrings.phoneValidationError.tr();
   }
   return null;
 }
 
 String? validatePassword(String? value) {
   if (value == null || value.isEmpty) {
-    return AppStrings.passRequiredError;
+    return AppStrings.passRequiredError.tr();
   }
   if (value.length < 6) {
-    return AppStrings.passValidationError;
+    return AppStrings.passValidationError.tr();
   }
   return null;
 }
 
 String? validateMatch(String? value1, String? value2) {
   if (value1 != value2) {
-    return AppStrings.notMatchPass;
+    return AppStrings.notMatchPass.tr();
   }
   return null;
 }
@@ -140,26 +142,28 @@ void handleBlocFailures(
   } else if (failure.code == ResponseCode.BAD_REQUEST) {
     showDialog(
         context: context,
-        builder: (context) => AppErrorDialog(content: AppStrings.invalidInput));
+        builder: (context) =>
+            AppErrorDialog(content: AppStrings.invalidInput.tr()));
   } else if (failure.code == ResponseCode.UNAUTHORISED) {
     showDialog(
         context: context,
         builder: (context) =>
-            AppErrorDialog(content: AppStrings.unauthorizedError));
+            AppErrorDialog(content: AppStrings.unauthorizedError.tr()));
   } else if (failure.code == ResponseCode.INTERNAL_SERVER_ERROR) {
     showDialog(
         context: context,
         builder: (context) =>
-            AppErrorDialog(content: AppStrings.internalServerError));
+            AppErrorDialog(content: AppStrings.internalServerError.tr()));
   } else if (failure.code == ResponseCode.CONNECT_TIMEOUT) {
     showDialog(
         context: context,
-        builder: (context) => AppErrorDialog(content: AppStrings.timeoutError));
+        builder: (context) =>
+            AppErrorDialog(content: AppStrings.timeoutError.tr()));
   } else {
     showDialog(
         context: context,
         builder: (context) =>
-            AppErrorDialog(content: AppStrings.somethingWentWrong));
+            AppErrorDialog(content: AppStrings.somethingWentWrong.tr()));
   }
 }
 
@@ -237,4 +241,14 @@ cookTime should be of type Integer and the number is in minutes.
 String formatDateTime(DateTime date) {
   DateFormat dateFormat = DateFormat('HH:mm dd/MM/yyyy');
   return dateFormat.format(date);
+}
+
+Future<void> giveFeedback() async {
+  final Email email = Email(
+    body: '',
+    subject: 'App Feedback',
+    recipients: ['cookit998@gmail.com'],
+    isHTML: false,
+  );
+  await FlutterEmailSender.send(email);
 }

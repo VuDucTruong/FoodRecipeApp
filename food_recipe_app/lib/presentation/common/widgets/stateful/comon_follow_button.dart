@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/background_user.dart';
@@ -53,11 +54,11 @@ class _CommonFollowButtonState extends State<CommonFollowButton> {
           },
           child: isFollowed
               ? Text(
-                  AppStrings.unfollow,
+                  AppStrings.unfollow.tr(),
                   style: getMediumStyle(color: Colors.white, fontSize: 14),
                 )
               : Text(
-                  AppStrings.follow,
+                  AppStrings.follow.tr(),
                   style: getMediumStyle(color: Colors.white, fontSize: 14),
                 )),
     );

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -30,7 +31,7 @@ class _CategoryListViewState extends State<CategoryListView> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.foodCategory),
+        title: Text(AppStrings.foodCategory.tr()),
       ),
       body: ListView.builder(
         itemCount: categoryList.length,

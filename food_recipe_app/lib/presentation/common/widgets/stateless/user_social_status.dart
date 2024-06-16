@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
@@ -14,8 +15,9 @@ class UserSocialStatus extends StatelessWidget {
     // TODO: implement build
     return Container(
       margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 12,
         children: [
           Column(
             children: [
@@ -28,7 +30,7 @@ class UserSocialStatus extends StatelessWidget {
                 height: AppSize.s4,
               ),
               Text(
-                AppStrings.recipes,
+                AppStrings.recipes.tr(),
                 style: getBoldStyle(
                     color: ColorManager.secondaryColor, fontSize: FontSize.s16),
               )
@@ -40,7 +42,7 @@ class UserSocialStatus extends StatelessWidget {
                   style: getBoldStyle(
                       color: Colors.black, fontSize: FontSize.s16)),
               Text(
-                AppStrings.followers,
+                AppStrings.followers.tr(),
                 style: getBoldStyle(
                     color: ColorManager.secondaryColor, fontSize: FontSize.s16),
               )
@@ -52,7 +54,7 @@ class UserSocialStatus extends StatelessWidget {
                   style: getBoldStyle(
                       color: Colors.black, fontSize: FontSize.s16)),
               Text(
-                AppStrings.following,
+                AppStrings.following.tr(),
                 style: getBoldStyle(
                     color: ColorManager.secondaryColor, fontSize: FontSize.s16),
               )
