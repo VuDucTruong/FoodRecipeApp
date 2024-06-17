@@ -48,6 +48,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   void initState() {
     super.initState();
+    print("Touch ${page} ${notificationList.length}");
+    notificationList = [];
     currentUser = GetIt.instance<BackgroundDataManager>().convertToChefEntity();
     _userNotificationBloc.add(LoadUserNotification(page));
     scrollController.addListener(continueLoading);
@@ -107,7 +109,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       style: FilledButton.styleFrom(
                           backgroundColor: ColorManager.blueColor),
                       onPressed: () {
-                        Navigator.pushNamed(context, Routes.listChefPageRoute);
+                        Navigator.pushNamed(context, Routes.followerListRoute);
                       },
                       child: Text(AppStrings.seeAllFollowers.tr())),
                 ],

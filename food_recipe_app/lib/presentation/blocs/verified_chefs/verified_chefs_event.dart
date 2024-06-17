@@ -20,3 +20,9 @@ class UpdateFollowChef extends VerifiedChefsEvent {
 
   UpdateFollowChef(this.object);
 }
+
+class GetChefsByIds extends VerifiedChefsEvent {
+  List<String> ids;
+
+  GetChefsByIds(this.ids);
+}

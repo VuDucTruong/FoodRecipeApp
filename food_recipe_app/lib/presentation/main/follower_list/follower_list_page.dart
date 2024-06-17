@@ -5,49 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/resources/assets_management.dart';
+import 'package:food_recipe_app/presentation/resources/color_management.dart';
+import 'package:food_recipe_app/presentation/resources/string_management.dart';
+import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
-import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/background_user.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
-import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
-import 'package:food_recipe_app/domain/object/get_recipes_by_category_object.dart';
-import 'package:food_recipe_app/domain/object/search_object.dart';
-import 'package:food_recipe_app/domain/object/update_follow_object.dart';
-import 'package:food_recipe_app/domain/object/user_search_object.dart';
-import 'package:food_recipe_app/domain/usecase/get_recipes_by_category_usecase.dart';
-import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_by_category_bloc.dart';
-import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateful/comon_follow_button.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/food_type_options.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
 import 'package:food_recipe_app/presentation/list_chef_page/chef_item.dart';
-import 'package:food_recipe_app/presentation/resources/value_manament.dart';
-import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
-import '../resources/assets_management.dart';
-import '../resources/color_management.dart';
-import '../resources/font_manager.dart';
-import '../resources/string_management.dart';
-import '../resources/style_management.dart';
-
-class ListChefPage extends StatefulWidget {
-  const ListChefPage({super.key, this.search = ''});
-  final String search;
+class FollowerListPage extends StatefulWidget {
+  const FollowerListPage({super.key});
   @override
-  _ListChefPageState createState() {
-    return _ListChefPageState();
+  _FollowerListPageState createState() {
+    return _FollowerListPageState();
   }
 }
 
-class _ListChefPageState extends State<ListChefPage> {
+class _FollowerListPageState extends State<FollowerListPage> {
   ScrollController scrollController = ScrollController();
   VerifiedChefsBloc verifiedChefsBloc = GetIt.instance<VerifiedChefsBloc>();
   List<ChefEntity> chefList = [];
@@ -56,18 +36,8 @@ class _ListChefPageState extends State<ListChefPage> {
   @override
   void initState() {
     super.initState();
-    verifiedChefsBloc.add(SearchChefs(UserSearchObject(widget.search)));
-    scrollController.addListener(() async {
-      if (scrollController.offset >=
-          scrollController.position.maxScrollExtent) {
-        if (verifiedChefsBloc.state.isLastPage) {
-          return;
-        }
-        //await Future.delayed(Duration(seconds: 1));
-        verifiedChefsBloc.add(SearchChefs(UserSearchObject(widget.search,
-            page: (chefList.length ~/ 10) + 1)));
-      }
-    });
+    print(backgroundUser.followingIds);
+    verifiedChefsBloc.add(GetChefsByIds(backgroundUser.followingIds));
   }
 
   @override
@@ -77,7 +47,7 @@ class _ListChefPageState extends State<ListChefPage> {
 
   void reload() {
     resetData();
-    verifiedChefsBloc.add(SearchChefs(UserSearchObject(widget.search)));
+    verifiedChefsBloc.add(GetChefsByIds(backgroundUser.followingIds));
   }
 
   void resetData() {
@@ -91,9 +61,8 @@ class _ListChefPageState extends State<ListChefPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppStrings.verifiedChefs.tr(),
-          style: getBoldStyle(
-              color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+          AppStrings.followers.tr(),
+          style: getBoldStyle(color: ColorManager.secondaryColor, fontSize: 20),
         ),
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -141,7 +110,7 @@ class _ListChefPageState extends State<ListChefPage> {
                     ChefEntity chef = chefList[index];
                     return ChefItem(
                       chefEntity: chef,
-                      isFollowed: backgroundUser.followingIds.contains(chef.id),
+                      isFollowed: true,
                     );
                   },
                 );

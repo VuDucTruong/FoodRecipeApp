@@ -241,4 +241,30 @@ class UserRepositoryImpl implements UserRepository {
       return Left(Failure.noInternet());
     }
   }
+
+  @override
+  Future<Either<Failure, List<ChefEntity>>> getChefsByIds(
+      List<String> ids) async {
+    if (await _networkInfo.isConnected) {
+      try {
+        return await userRemoteDataSource
+            .getChefsByIds(ids)
+            .then((response) async {
+          if (response.statusCode == ResponseCode.SUCCESS) {
+            return Right(response.data!
+                .map(
+                  (e) => e.toEntity(),
+                )
+                .toList());
+          } else {
+            return Left(Failure.internalServerError());
+          }
+        });
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(Failure.noInternet());
+    }
+  }
 }

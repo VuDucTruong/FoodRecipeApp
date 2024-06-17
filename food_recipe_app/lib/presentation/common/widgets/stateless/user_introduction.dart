@@ -37,50 +37,53 @@ class UserIntroduction extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.all(AppMargin.m8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    margin: const EdgeInsets.all(AppMargin.m4),
-                    child: Text(
-                      entity.profileInfo.fullName,
-                      style: getBoldStyle(
-                          color: Colors.black, fontSize: FontSize.s18),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.all(AppPadding.p4),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(PicturePath.facebookPath),
-                      const SizedBox(
-                        width: AppSize.s8,
-                      ),
-                      Text(entity.profileInfo.facebookLink ?? "",
-                          style: getRegularStyle(
-                              color: Colors.black, fontSize: FontSize.s18))
-                    ],
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(AppMargin.m8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.all(AppMargin.m4),
+                      child: Text(
+                        entity.profileInfo.fullName,
+                        maxLines: 3,
+                        style: getBoldStyle(
+                            color: Colors.black, fontSize: FontSize.s18),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(AppPadding.p4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(PicturePath.facebookPath),
+                        const SizedBox(
+                          width: AppSize.s8,
+                        ),
+                        Text(entity.profileInfo.facebookLink ?? "",
+                            style: getRegularStyle(
+                                color: Colors.black, fontSize: FontSize.s18))
+                      ],
+                    ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(AppPadding.p4),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(PicturePath.gmailPath),
-                      const SizedBox(
-                        width: AppSize.s8,
-                      ),
-                      Text(entity.profileInfo.googleLink ?? '',
-                          style: getRegularStyle(
-                              color: Colors.black, fontSize: FontSize.s18))
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(AppPadding.p4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(PicturePath.gmailPath),
+                        const SizedBox(
+                          width: AppSize.s8,
+                        ),
+                        Text(entity.profileInfo.googleLink ?? '',
+                            style: getRegularStyle(
+                                color: Colors.black, fontSize: FontSize.s18))
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

@@ -19,6 +19,7 @@ abstract class UserRemoteDataSource {
   Future<BaseResponse<void>> updateFollow(String targetChefId, bool option);
   Future<BaseResponse<List<ChefResponse>>> getSearchChefs(
       UserSearchRequest request);
+  Future<BaseResponse<List<ChefResponse>>> getChefsByIds(List<String> ids);
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -95,6 +96,16 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     final response = await _dio.get(
       '$userEndpoint/search',
       queryParameters: request.toJson(),
+    );
+    return BaseResponse.fromJson(response, ChefResponse.fromJsonList);
+  }
+
+  @override
+  Future<BaseResponse<List<ChefResponse>>> getChefsByIds(
+      List<String> ids) async {
+    final response = await _dio.get(
+      '$userEndpoint/get-by-ids',
+      queryParameters: {'ids': ids},
     );
     return BaseResponse.fromJson(response, ChefResponse.fromJsonList);
   }

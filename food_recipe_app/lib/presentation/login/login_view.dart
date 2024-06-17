@@ -80,6 +80,8 @@ class LoginViewState extends State<LoginView> {
                   style: getSemiBoldStyle(
                       color: ColorManager.greyColor, fontSize: FontSize.s22)),
               Text(AppStrings.loginAccount.tr(),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
                   style: getSemiBoldStyle(
                       color: Colors.black, fontSize: FontSize.s22)),
               const SizedBox(height: 4),

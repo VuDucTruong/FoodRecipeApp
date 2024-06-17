@@ -27,9 +27,9 @@ class BackgroundDataManager {
 
   void updateFollow(String chefId, bool option) {
     if (option) {
-      currentUser!.followerIds.add(chefId);
+      currentUser!.followingIds.add(chefId);
     } else {
-      currentUser!.followerIds.remove(chefId);
+      currentUser!.followingIds.remove(chefId);
     }
   }
 

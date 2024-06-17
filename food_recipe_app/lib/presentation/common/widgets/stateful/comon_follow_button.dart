@@ -29,7 +29,7 @@ class _CommonFollowButtonState extends State<CommonFollowButton> {
   @override
   void initState() {
     super.initState();
-    isFollowed = backgroundUser.followingIds.contains(widget.chefEntity);
+    isFollowed = backgroundUser.followingIds.contains(widget.chefEntity.id);
     isUser = backgroundUser.id == widget.chefEntity.id;
   }
 
@@ -45,7 +45,8 @@ class _CommonFollowButtonState extends State<CommonFollowButton> {
       visible: !isUser,
       child: FilledButton(
           style: FilledButton.styleFrom(
-              backgroundColor: isFollowed ? null : ColorManager.vegColor),
+            backgroundColor: isFollowed ? null : ColorManager.vegColor,
+          ),
           onPressed: () {
             setState(() {
               isFollowed = !isFollowed;

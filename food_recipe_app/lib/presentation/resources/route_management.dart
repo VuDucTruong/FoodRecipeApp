@@ -17,6 +17,7 @@ import 'package:food_recipe_app/presentation/list_chef_page/list_chef_page.dart'
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
 import 'package:food_recipe_app/presentation/login/login_view.dart';
+import 'package:food_recipe_app/presentation/main/follower_list/follower_list_page.dart';
 import 'package:food_recipe_app/presentation/main/home/widgets/result_search_page.dart';
 import 'package:food_recipe_app/presentation/main/main_view.dart';
 import 'package:food_recipe_app/presentation/notification_detail/notification_detail_page.dart';
@@ -48,6 +49,7 @@ class Routes {
   static const String aiRecipeRoute = '/aiRecipe';
   static const String aiRecipeResultRoute = '/aiRecipeResult';
   static const String notificationDetailRoute = '/notificationDetail';
+  static const String followerListRoute = '/followerList';
 }
 
 class InitialRoute {
@@ -92,6 +94,10 @@ class RouteGenerator {
           builder: (context) => NotificationDetailPage(
             notification: routeSettings.arguments as NotificationEntity,
           ),
+        );
+      case Routes.followerListRoute:
+        return MaterialPageRoute(
+          builder: (context) => const FollowerListPage(),
         );
       case Routes.loadingRoute:
         return MaterialPageRoute(

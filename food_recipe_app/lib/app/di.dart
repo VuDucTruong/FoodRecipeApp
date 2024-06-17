@@ -3,6 +3,7 @@ import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/data/data_source/notification_remote_datasource.dart';
 import 'package:food_recipe_app/domain/repository/notification_repository.dart';
 import 'package:food_recipe_app/domain/usecase/delete_notification_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/get_chefs_by_ids_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_notification_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_is_read_by_offset_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/ai_recipe/ai_recipe_bloc.dart';
@@ -163,9 +164,12 @@ initHomeModule() {
   if (!instance.isRegistered<TrendingBloc>()) {
     instance.registerLazySingleton(() => TrendingBloc(instance()));
   }
+  if (!instance.isRegistered<GetChefsByIdsUseCase>()) {
+    instance.registerLazySingleton(() => GetChefsByIdsUseCase(instance()));
+  }
   if (!instance.isRegistered<VerifiedChefsBloc>()) {
-    instance
-        .registerLazySingleton(() => VerifiedChefsBloc(instance(), instance()));
+    instance.registerLazySingleton(
+        () => VerifiedChefsBloc(instance(), instance(), instance()));
   }
   if (!instance.isRegistered<UserRecipesBloc>()) {
     instance.registerLazySingleton<UserRecipesBloc>(

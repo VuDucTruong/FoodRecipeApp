@@ -20,6 +20,7 @@ abstract class UserRepository {
   Future<Either<Failure, void>> updateFollow(UpdateFollowObject obj);
   Future<Either<Failure, List<ChefEntity>>> getSearchChefs(
       UserSearchObject obj);
+  Future<Either<Failure, List<ChefEntity>>> getChefsByIds(List<String> ids);
 }
 
 class UserSearchRequestDto {
