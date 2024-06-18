@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/constant.dart';
@@ -12,6 +13,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
+import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/utils/gemini_utils.dart';
 import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
@@ -69,8 +71,8 @@ class _AIRecipePageState extends State<AIRecipePage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: "Generate AI Recipe",
+      appBar: CustomAppBar(
+        title: AppStrings.aiRecipeTitle.tr(),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -88,7 +90,7 @@ class _AIRecipePageState extends State<AIRecipePage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Text(
-                        "Images of ingredient",
+                        AppStrings.imageOfIngredients.tr(),
                         style: getBoldStyle(fontSize: 20),
                       ),
                     ),
@@ -113,7 +115,7 @@ class _AIRecipePageState extends State<AIRecipePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Additional Information",
+                      AppStrings.additionalInformation.tr(),
                       style: getSemiBoldStyle(
                           fontSize: 20, color: ColorManager.darkBlueColor),
                       maxLines: 2,
@@ -122,30 +124,27 @@ class _AIRecipePageState extends State<AIRecipePage> {
                       height: 8,
                     ),
                     AITextField(
-                      title: "1. I also have these staple ingredients:",
-                      helperText:
-                          "Oil, butter, pepper, salt, sugar, milk, vinegar,...",
+                      title: "1. ${AppStrings.stapleIngredients.tr()}",
+                      helperText: AppStrings.stapleIngredientsHint.tr(),
                       textEditingController: basicIngredientController,
                     ),
                     AITextField(
-                      title: "2. I'm in the mood for:",
-                      helperText:
-                          "Italian, Vietnamese, Chinese, Greek, French,...",
+                      title: "2. ${AppStrings.inMood.tr()}",
+                      helperText: AppStrings.inMoodHint.tr(),
                       textEditingController: cuisineController,
                     ),
                     AITextField(
-                      title: "3. I have the following dietary restrictions:",
-                      helperText:
-                          "vegan, dairy free, wheat allergy, soy allergy, nut allergy,...",
+                      title: "3. ${AppStrings.restrictions.tr()}",
+                      helperText: AppStrings.restrictionsHint.tr(),
                       textEditingController: allergyController,
                     ),
                     AITextField(
-                      title: "4. Additional context:",
-                      helperText: "Type what you want to make your dish...",
+                      title: "4. ${AppStrings.additionalContext.tr()}",
+                      helperText: AppStrings.additionalContextHint.tr(),
                       textEditingController: additionalContextController,
                     ),
                     Text(
-                      "5. Language:",
+                      "5. ${AppStrings.language.tr()}:",
                       maxLines: 3,
                       style: getMediumStyle(
                           fontSize: 16, color: ColorManager.secondaryColor),
@@ -178,7 +177,7 @@ class _AIRecipePageState extends State<AIRecipePage> {
                       },
                       style: FilledButton.styleFrom(
                           backgroundColor: ColorManager.vegColor),
-                      child: const Text("Submit")),
+                      child: Text(AppStrings.submit.tr())),
                   OutlinedButton(
                       style: OutlinedButton.styleFrom(
                           textStyle: getSemiBoldStyle(
@@ -188,7 +187,7 @@ class _AIRecipePageState extends State<AIRecipePage> {
                           resetPrompt();
                         });
                       },
-                      child: const Text("Reset")),
+                      child: Text(AppStrings.reset.tr())),
                 ],
               )
             ],

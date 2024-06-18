@@ -148,6 +148,21 @@ class AppStrings {
   static const String language = 'language';
   static const String aboutContent = 'aboutContent';
 
+  static const String aiRecipeTitle = "aiRecipeTitle";
+  static const String imageOfIngredients = "imageOfIngredients";
+  static const String additionalInformation = "additionalInformation";
+  static const String stapleIngredients = "stapleIngredients";
+  static const String stapleIngredientsHint = "stapleIngredientsHint";
+  static const String inMood = "inMood";
+  static const String inMoodHint = "inMoodHint";
+  static const String restrictions = "restrictions";
+  static const String restrictionsHint = "restrictionsHint";
+  static const String additionalContext = "additionalContext";
+  static const String additionalContextHint = "additionalContextHint";
+  static const String submit = "submit";
+  static const String reset = "reset";
+  static const String aiResultRecipeTitle = "aiResultRecipeTitle";
+
 // Validate message
   static const String emailFormatError = 'emailFormatError';
   static const String emailRequiredError = 'emailRequiredError';

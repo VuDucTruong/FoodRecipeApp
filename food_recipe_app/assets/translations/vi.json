@@ -178,5 +178,19 @@
   "vietnamese": "Việt",
   "english": "Anh",
   "language" : "Ngôn ngữ",
-  "aboutContent": "Ứng dụng này được tạo ra nhằm giúp cho mọi người có thể chia sẻ công thức nấu ăn của họ"
+  "aboutContent": "Ứng dụng này được tạo ra nhằm giúp cho mọi người có thể chia sẻ công thức nấu ăn của họ",
+  "aiRecipeTitle": "Công Thức AI",
+  "imageOfIngredients": "Hình Ảnh Nguyên Liệu",
+  "additionalInformation": "Thông Tin Bổ Sung",
+  "stapleIngredients": "Tôi cũng có những nguyên liệu chính này:",
+  "stapleIngredientsHint": "Dầu, bơ, tiêu, muối, đường, sữa, giấm,...",
+  "inMood": "Tôi đang thèm:",
+  "inMoodHint": "Ý, Việt Nam, Trung Quốc, Hy Lạp, Pháp,...",
+  "restrictions": "Tôi có những hạn chế ăn kiêng sau:",
+  "restrictionsHint": "thuần chay, không sữa, dị ứng lúa mì, dị ứng đậu nành, dị ứng hạt,...",
+  "additionalContext": "Ngữ cảnh bổ sung:",
+  "additionalContextHint": "Nhập những gì bạn muốn làm cho món ăn của bạn...",
+  "submit": "Gửi",
+  "reset": "Đặt Lại",
+  "aiResultRecipeTitle": "Công Thức Kết Quả AI"
 }

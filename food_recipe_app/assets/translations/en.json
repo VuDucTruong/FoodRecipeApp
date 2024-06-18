@@ -178,5 +178,19 @@
   "vietnamese": "Vietnamese",
   "english": "English",
   "language" : "Language",
-  "aboutContent": "This app was created to help people share their recipes to other people around the world"
+  "aboutContent": "This app was created to help people share their recipes to other people around the world",
+  "aiRecipeTitle": "AI Recipe",
+  "imageOfIngredients": "Images of Ingredients",
+  "additionalInformation": "Additional information",
+  "stapleIngredients": "I also have these staple ingredients:",
+  "stapleIngredientsHint": "Oil, butter, pepper, salt, sugar, milk, vinegar,...",
+  "inMood": "I'm in the mood for:",
+  "inMoodHint": "Italian, Vietnamese, Chinese, Greek, French,...",
+  "restrictions": "I have the following dietary restrictions:",
+  "restrictionsHint": "vegan, dairy free, wheat allergy, soy allergy, nut allergy,...",
+  "additionalContext": "Additional context:",
+  "additionalContextHint": "Type what you want to make your dish...",
+  "submit": "Submit",
+  "reset": "Reset",
+  "aiResultRecipeTitle": "AI Result Recipe"
 }

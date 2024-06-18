@@ -39,7 +39,7 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: const CustomAppBar(title: "AI Result Recipe"),
+      appBar: CustomAppBar(title: AppStrings.aiResultRecipeTitle.tr()),
       body: BlocConsumer<AIRecipeBloc, AIRecipeState>(
         bloc: aiRecipeBloc,
         listener: (context, state) {

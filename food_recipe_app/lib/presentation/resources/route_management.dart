@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
+import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
@@ -207,6 +209,11 @@ class RouteGenerator {
 Route<dynamic> undefinedRoute() {
   return MaterialPageRoute(
     builder: (context) => Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          giveFeedback();
+        },
+      ),
       body: Center(child: Text(AppStrings.notFoundRoute.tr())),
     ),
   );

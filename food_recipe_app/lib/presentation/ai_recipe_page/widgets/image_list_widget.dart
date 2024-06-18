@@ -65,7 +65,7 @@ class _ImageListWidgetState extends State<ImageListWidget> {
                           .removeWhere((el) => el.path == e.path);
                     });
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.highlight_remove_rounded,
                     size: 24,
                   ),
