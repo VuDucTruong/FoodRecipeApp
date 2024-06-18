@@ -113,14 +113,14 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                     ),
                     CommonHeading(content: AppStrings.instructions.tr()),
                     Text(recipeEntity.instruction),
-                    Center(
+                    /*Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: FilledButton(
                             onPressed: () {},
                             child: Text(AppStrings.save.tr())),
                       ),
-                    )
+                    )*/
                   ],
                 ),
               ),
