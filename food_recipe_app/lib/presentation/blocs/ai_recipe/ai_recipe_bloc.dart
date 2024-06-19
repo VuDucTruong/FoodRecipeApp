@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:food_recipe_app/app/functions.dart';
@@ -13,7 +14,6 @@ part 'ai_recipe_event.dart';
 part 'ai_recipe_state.dart';
 
 class AIRecipeBloc extends Bloc<AIRecipeEvent, AIRecipeState> {
-  late GenerativeModel geminiVisionProModel;
   late GenerativeModel geminiProModel;
   AIRecipeBloc() : super(AIRecipeInitial()) {
     initGeminiModel();
@@ -27,23 +27,8 @@ class AIRecipeBloc extends Bloc<AIRecipeEvent, AIRecipeState> {
       );
     }
 
-    geminiVisionProModel = GenerativeModel(
-      model: 'gemini-pro-vision',
-      apiKey: apiKey,
-      generationConfig: GenerationConfig(
-        temperature: 0.4,
-        topK: 32,
-        topP: 1,
-        maxOutputTokens: 4096,
-      ),
-      safetySettings: [
-        SafetySetting(HarmCategory.harassment, HarmBlockThreshold.high),
-        SafetySetting(HarmCategory.hateSpeech, HarmBlockThreshold.high),
-      ],
-    );
-
     geminiProModel = GenerativeModel(
-      model: 'gemini-pro',
+      model: 'gemini-1.5-pro',
       apiKey: apiKey,
       generationConfig: GenerationConfig(
         temperature: 0.4,
@@ -60,12 +45,13 @@ class AIRecipeBloc extends Bloc<AIRecipeEvent, AIRecipeState> {
 
   Future<FutureOr<void>> _onSubmitPrompt(
       SubmitPrompt event, Emitter<AIRecipeState> emit) async {
-    var model =
-        event.userPrompt.images.isEmpty ? geminiProModel : geminiVisionProModel;
+    var model = geminiProModel;
+
     final prompt = buildPrompt(event.userPrompt, event.additionalContext);
     try {
       emit(AIRecipeLoadingState());
       final content = await GeminiUtils.generateContent(model, prompt);
+      log(content.text ?? '');
       // handle no image or image of not-food
       if (content.text != null && content.text!.contains(badImageFailure)) {
         emit(AIRecipeErrorState(Failure.actionFailed(badImageFailure)));

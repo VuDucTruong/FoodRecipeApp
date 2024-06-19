@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -168,7 +169,7 @@ void handleBlocFailures(
 }
 
 PromptData buildPrompt(PromptData userPrompt, String additionalContext) {
-  print(getMainPrompt(userPrompt, additionalContext));
+  log(getMainPrompt(userPrompt, additionalContext));
   return PromptData(
     language: userPrompt.language,
     images: userPrompt.images,
@@ -186,15 +187,14 @@ You are a Cat who's a chef that travels around the world a lot, and your travels
 
 Recommend a recipe for me based on the provided image.
 The recipe should only contain real, edible ingredients.
-If there are no images attached, or if the image does not contain food items, please respond exactly with: $badImageFailure
+If If there are no images attached, continue generating recipe and ${getFormat(userPrompt.language)}
+But if there is the image and the image is not a food , please respond exactly with: $badImageFailure
 
 Adhere to food safety and handling best practices like ensuring that poultry is fully cooked.
 I'm in the mood for the following types of cuisine: ${userPrompt.selectedCuisines},
 I have the following dietary restrictions: ${userPrompt.selectedDietaryRestrictions}
 Optionally also include the following ingredients: ${userPrompt.selectedBasicIngredients}
 Do not repeat any ingredients.
-
-After providing the recipe, add an descriptions that creatively explains why the recipe is good based on only the ingredients used in the recipe.  Tell a short story of a travel experience that inspired the recipe.
 List out any ingredients that are potential allergens.
 Provide categories that the recipe belongs to based on this list : ${Constant.typeList.toString()}
 Provide a summary of how many people the recipe will serve.
@@ -216,7 +216,7 @@ String badImageFailure =
     "The recipe request either does not contain images, or does not contain images of food items. I cannot recommend a recipe.";
 
 String getFormat(String language) => '''
-Return the recipe as valid JSON using the following structure
+Return the recipe as valid JSON using the following structure strictly
 {
   "ingredients":  \$ingredients,
   "instruction": \$instruction,
@@ -228,7 +228,6 @@ Return the recipe as valid JSON using the following structure
   "isVegan": \$isVegan
 }
   
-
 title, description should be of String type and should be in $language. 
 ingredients should be of type List<String> and should be in $language.
 instruction should be of type String  and each step need to be in a line and numbering by 1 and should be in $language.

@@ -59,6 +59,7 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                   children: [
                     Text(
                       recipeEntity.title,
+                      maxLines: 3,
                       style: getBoldStyle(
                           fontSize: 30, color: ColorManager.secondaryColor),
                     ),
