@@ -58,7 +58,7 @@ class DioFactory {
   }
 
   DioFactory(this._appPreferences);
-  Duration timeOut = const Duration(seconds: 10);
+  Duration timeOut = const Duration(seconds: 20);
   Future<Dio> getDio() async {
     Dio dio = Dio();
     String language = await _appPreferences.getAppLanguage();

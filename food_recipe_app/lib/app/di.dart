@@ -281,6 +281,7 @@ initFoodTypeModule() {
   if (!instance.isRegistered<FoodTypeBloc>()) {
     instance.registerLazySingleton(() => FoodTypeBloc(
           networkInfo: instance(),
+          signupWithEmailUseCase: instance(),
           signupWithLoginIdUseCase: instance(),
         ));
   }

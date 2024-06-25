@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/requests/create_recipe_request.dart';
 import 'package:food_recipe_app/data/requests/get_recipes_search_request.dart';
@@ -48,10 +49,16 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
   @override
   Future<BaseResponse<RecipeResponse>> createRecipe(
       CreateRecipeRequest createRecipeRequest) async {
-    FormData formData = FormData.fromMap(createRecipeRequest.toJson());
+    debugPrint("jaskldjfklasjdklfjaklsdjfkllasjkdfkjaodsfoaijdsfijawe");
+    debugPrint(createRecipeRequest.toJson().toString());
+    var jsonContent = createRecipeRequest.toJson();
+    FormData formData = FormData.fromMap(jsonContent);
+    debugPrint('formData: $formData');
+    debugPrint('form data is null? ${formData == null}');
     Response response = await _dio.post('$recipeEndpoint/create',
         data: formData,
         options: Options(contentType: Headers.multipartFormDataContentType));
+    debugPrint('response: $response');
     return BaseResponse.fromJson(response, RecipeResponse.fromJsonMap);
   }
 

@@ -16,12 +16,15 @@ part 'food_type_state.dart';
 
 class FoodTypeBloc extends Bloc<FoodTypeEvent, FoodTypeState> {
   final SignupWithLoginIdUseCase _signupWithLoginIdUseCase;
+  final SignupWithEmailUseCase _signupWithEmailUseCase;
   final NetworkInfo _networkInfo;
 
   FoodTypeBloc({
     required SignupWithLoginIdUseCase signupWithLoginIdUseCase,
+    required SignupWithEmailUseCase signupWithEmailUseCase,
     required NetworkInfo networkInfo,
   })  : _signupWithLoginIdUseCase = signupWithLoginIdUseCase,
+        _signupWithEmailUseCase = signupWithEmailUseCase,
         _networkInfo = networkInfo,
         super(FoodTypeInitial()) {
     on<FoodTypeSubmit>(_onProfileSubmit);
@@ -32,8 +35,27 @@ class FoodTypeBloc extends Bloc<FoodTypeEvent, FoodTypeState> {
     emit(FoodTypeLoading());
     UserRegisterProfileAdvanced userRegisterProfile = event.userRegisterProfile;
     if (userRegisterProfile.loginId == null) {
-      emit(FoodTypeSubmitFailure(
-          failure: Failure(ResponseCode.DEFAULT, AppStrings.invalidInput)));
+      if (userRegisterProfile.email != null &&
+          userRegisterProfile.password != null &&
+          userRegisterProfile.fullName.isNotEmpty) {
+        if (await _networkInfo.isConnected) {
+          await _signupWithEmailUseCase
+              .execute(
+              SignupWithEmailUseCaseInput.fromUserRegisterProfileAdvanced(
+                  userRegisterProfileAdvanced: event.userRegisterProfile))
+              .then((value) {
+            value.fold((left) => emit(FoodTypeSubmitFailure(failure: left)),
+                    (right) => emit(FoodTypeSubmitSuccess()));
+          });
+        } else {
+          emit(FoodTypeSubmitFailure(
+              failure:
+              Failure(ResponseCode.DEFAULT, AppStrings.invalidInput)));
+        }
+      } else {
+        emit(FoodTypeSubmitFailure(
+            failure: Failure(ResponseCode.DEFAULT, AppStrings.invalidInput)));
+      }
     } else // login id not null
     {
       await _signupWithLoginIdUseCase
