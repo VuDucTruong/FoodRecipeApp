@@ -32,8 +32,14 @@ class SavedRecipesErrorState extends UserSavedRecipesState {
 
 class SavedRecipeActionState extends UserSavedRecipesState {}
 
-class SavedRecipesDeteledState extends SavedRecipeActionState {
+class SavedRecipesDeletedState extends SavedRecipeActionState {
   RecipeEntity deletedRecipe;
 
-  SavedRecipesDeteledState(this.deletedRecipe);
+  SavedRecipesDeletedState(this.deletedRecipe);
+}
+
+class SavedRecipesUpdatedState extends SavedRecipeActionState {
+  RecipeEntity updatedRecipe;
+
+  SavedRecipesUpdatedState(this.updatedRecipe);
 }

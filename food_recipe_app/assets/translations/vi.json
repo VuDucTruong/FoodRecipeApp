@@ -199,5 +199,7 @@
   "otpMissing": "OTP bị thiếu",
   "otpWrong": "OTP bị sai",
   "otpSent": "OTP đã được gửi đến email của bạn:",
-  "profileUpdated": "Thông tin cá nhân đã được cập nhật"
+  "profileUpdated": "Thông tin cá nhân đã được cập nhật",
+  "editRecipe": "Chỉnh sửa công thức",
+  "edit": "Sửa"
 }

@@ -10,10 +10,11 @@ import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 
 class SelectionFoodImage extends StatefulWidget {
-  SelectionFoodImage({super.key, required this.isVeg, required this.fileList});
+  SelectionFoodImage(
+      {super.key, required this.isVeg, required this.fileList, this.url});
   MutableVariable<bool> isVeg;
   List<MultipartFile> fileList;
-
+  String? url;
   @override
   _SelectionFoodImageState createState() {
     return _SelectionFoodImageState();
@@ -56,10 +57,19 @@ class _SelectionFoodImageState extends State<SelectionFoodImage> {
                 border: Border.all(
                     color: ColorManager.secondaryColor, width: AppSize.s2)),
             child: selectedImage == null
-                ? const Icon(
-                    Icons.add_a_photo_outlined,
-                    size: 100,
-                  )
+                ? widget.url == null
+                    ? const Icon(
+                        Icons.add_a_photo_outlined,
+                        size: 100,
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Image.network(
+                          widget.url!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(PicturePath.emptyRecipePath),
+                        ))
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(18),
                     child: Image.file(

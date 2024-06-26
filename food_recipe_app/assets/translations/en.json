@@ -199,5 +199,7 @@
   "otpMissing": "OTP is missing",
   "otpWrong": "OTP is  wrong",
   "otpSent": "OTP was sent to your email:",
-  "profileUpdated": "Profile is updated"
+  "profileUpdated": "Profile is updated",
+  "editRecipe": "Edit your recipe",
+  "edit": "Edit"
 }

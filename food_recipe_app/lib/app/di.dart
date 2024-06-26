@@ -6,6 +6,7 @@ import 'package:food_recipe_app/domain/usecase/delete_notification_usecase.dart'
 import 'package:food_recipe_app/domain/usecase/get_chefs_by_ids_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_notification_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_is_read_by_offset_usecase.dart';
+import 'package:food_recipe_app/domain/usecase/update_user_recipe_usecase.dart';
 import 'package:food_recipe_app/presentation/blocs/ai_recipe/ai_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/user_notification/user_notification_bloc.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
@@ -55,7 +56,6 @@ import 'package:food_recipe_app/presentation/blocs/recipes_by_category/recipes_b
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/trending_recipes/trending_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/user_profile/user_profile_bloc.dart';
-import 'package:food_recipe_app/presentation/blocs/user_recipes/user_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/blocs/verified_chefs/verified_chefs_bloc.dart';
 import 'package:food_recipe_app/presentation/change_password/bloc/change_password_bloc.dart';
 import 'package:food_recipe_app/presentation/detail_recipe/bloc/detail_recipe_bloc.dart';
@@ -171,10 +171,6 @@ initHomeModule() {
     instance.registerLazySingleton(
         () => VerifiedChefsBloc(instance(), instance(), instance()));
   }
-  if (!instance.isRegistered<UserRecipesBloc>()) {
-    instance.registerLazySingleton<UserRecipesBloc>(
-        () => UserRecipesBloc(instance()));
-  }
 }
 
 initSavedRecipeModule() {
@@ -197,9 +193,14 @@ initSavedRecipeModule() {
       () => DeleteUserRecipeUseCase(instance()),
     );
   }
+  if (!instance.isRegistered<UpdateUserRecipeUseCase>()) {
+    instance.registerLazySingleton(
+      () => UpdateUserRecipeUseCase(instance()),
+    );
+  }
   if (!instance.isRegistered<SavedRecipesBloc>()) {
-    instance.registerLazySingleton<SavedRecipesBloc>(
-        () => SavedRecipesBloc(instance(), instance(), instance(), instance()));
+    instance.registerLazySingleton<SavedRecipesBloc>(() => SavedRecipesBloc(
+        instance(), instance(), instance(), instance(), instance()));
   }
 }
 

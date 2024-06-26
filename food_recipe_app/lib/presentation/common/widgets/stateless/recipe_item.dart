@@ -62,33 +62,70 @@ class RecipeItem extends StatelessWidget {
                 ? Positioned(
                     top: 5,
                     right: 5,
-                    child: InkWell(
-                      onTap: () {
-                        showAnimatedDialog1(
-                            context,
-                            AppAlertDialog(
-                              content: AppStrings.deleteRecipeWarning.tr(),
-                              onYes: () {
-                                deleteRecipeFunc?.call();
-                              },
-                            ));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(AppPadding.p12),
-                        decoration: BoxDecoration(
-                            color: ColorManager.darkBlueColor.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(AppRadius.r15)),
-                        child: Column(
-                          children: [
-                            SvgPicture.asset(PicturePath.deletePath),
-                            Text(
-                              AppStrings.delete.tr(),
-                              style: getRegularStyle(
-                                  color: Colors.white, fontSize: FontSize.s10),
-                            )
-                          ],
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.editRecipeRoute,
+                                arguments: recipe);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
+                            decoration: BoxDecoration(
+                                color:
+                                    ColorManager.darkBlueColor.withOpacity(0.8),
+                                borderRadius:
+                                    BorderRadius.circular(AppRadius.r15)),
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(PicturePath.editPath),
+                                Text(
+                                  AppStrings.edit.tr(),
+                                  style: getRegularStyle(
+                                      color: Colors.white,
+                                      fontSize: FontSize.s10),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            showAnimatedDialog1(
+                                context,
+                                AppAlertDialog(
+                                  content: AppStrings.deleteRecipeWarning.tr(),
+                                  onYes: () {
+                                    deleteRecipeFunc?.call();
+                                  },
+                                ));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(AppPadding.p12),
+                            decoration: BoxDecoration(
+                                color:
+                                    ColorManager.darkBlueColor.withOpacity(0.8),
+                                borderRadius:
+                                    BorderRadius.circular(AppRadius.r15)),
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(PicturePath.deletePath),
+                                Text(
+                                  AppStrings.delete.tr(),
+                                  style: getRegularStyle(
+                                      color: Colors.white,
+                                      fontSize: FontSize.s10),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ))
                 : Container()
           ],

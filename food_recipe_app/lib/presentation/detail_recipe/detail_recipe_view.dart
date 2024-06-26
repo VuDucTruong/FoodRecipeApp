@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
+import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/background_user.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
@@ -47,6 +48,23 @@ class _DetailRecipeViewState extends State<DetailRecipeView> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          actions: backgroundUser.id == widget.recipeEntity.userId
+              ? [
+                  InkWell(
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(
+                        Icons.edit,
+                        size: 30,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.editRecipeRoute,
+                          arguments: widget.recipeEntity);
+                    },
+                  ),
+                ]
+              : null,
           elevation: 0,
           backgroundColor: Colors.transparent,
           leading: IconButton(

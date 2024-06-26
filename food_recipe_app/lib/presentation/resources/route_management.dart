@@ -15,6 +15,7 @@ import 'package:food_recipe_app/presentation/change_password/change_password_pag
 import 'package:food_recipe_app/presentation/chef_profile/chef_profile_view.dart';
 import 'package:food_recipe_app/presentation/detail_recipe/detail_recipe_view.dart';
 import 'package:food_recipe_app/presentation/edit_profile/edit_profile_view.dart';
+import 'package:food_recipe_app/presentation/edit_recipe/edit_recipe_page.dart';
 import 'package:food_recipe_app/presentation/list_chef_page/list_chef_page.dart';
 import 'package:food_recipe_app/presentation/loadings/loading_page.dart';
 import 'package:food_recipe_app/presentation/loadings/on_boarding_view.dart';
@@ -52,6 +53,7 @@ class Routes {
   static const String aiRecipeResultRoute = '/aiRecipeResult';
   static const String notificationDetailRoute = '/notificationDetail';
   static const String followerListRoute = '/followerList';
+  static const String editRecipeRoute = '/editRecipeRoute';
 }
 
 class InitialRoute {
@@ -161,6 +163,12 @@ class RouteGenerator {
         return MaterialPageRoute(
           builder: (context) => RecipesByCategoryPage(
             search: (routeSettings.arguments ?? '') as String,
+          ),
+        );
+      case Routes.editRecipeRoute:
+        return MaterialPageRoute(
+          builder: (context) => EditRecipePage(
+            recipeEntity: routeSettings.arguments as RecipeEntity,
           ),
         );
       case Routes.listChefPageRoute:

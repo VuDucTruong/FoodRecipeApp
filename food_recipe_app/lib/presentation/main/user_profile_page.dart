@@ -15,8 +15,6 @@ import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc
 
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
-
-import 'package:food_recipe_app/presentation/blocs/user_recipes/user_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_description.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_introduction.dart';

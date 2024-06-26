@@ -170,6 +170,8 @@ class AppStrings {
   static const String otpWrong = "otpWrong";
   static const String otpSent = "otpSent";
   static const String profileUpdated = "profileUpdated";
+  static const String editRecipe = "editRecipe";
+  static const String edit = "edit";
 
 // Validate message
   static const String emailFormatError = 'emailFormatError';

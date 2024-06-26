@@ -209,7 +209,7 @@ class _SavedRecipePageState extends State<SavedRecipePage> {
                         ));
                       });
                 }
-                if (state is SavedRecipesDeteledState) {
+                if (state is SavedRecipesDeletedState) {
                   recipeList.remove(state.deletedRecipe);
                   return ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
