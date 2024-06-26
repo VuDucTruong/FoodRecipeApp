@@ -93,6 +93,7 @@ class _CreateRecipePageState extends State<CreateRecipePage> {
         bloc: createRecipeBloc,
         listener: (context, state) {
           if (state is CreateRecipeSuccessState) {
+            FocusScope.of(context).unfocus();
             Navigator.pop(context);
             showAnimatedDialog2(
                 context,
