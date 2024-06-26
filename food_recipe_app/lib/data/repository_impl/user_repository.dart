@@ -146,7 +146,6 @@ class UserRepositoryImpl implements UserRepository {
             .updateFollow(obj.chefId, obj.option)
             .then((response) async {
           if (response.statusCode == ResponseCode.SUCCESS) {
-            _backgroundDataManager.updateFollow(obj.chefId, obj.option);
             return const Right(null);
           } else {
             return Left(Failure.internalServerError());

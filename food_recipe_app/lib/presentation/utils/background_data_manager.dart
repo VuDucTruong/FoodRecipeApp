@@ -31,6 +31,7 @@ class BackgroundDataManager {
     } else {
       currentUser!.followingIds.remove(chefId);
     }
+    print("In backgournd : ${currentUser!.followingIds.contains(chefId)}");
   }
 
   void updateProfile(ProfileInformation profileInformation) {

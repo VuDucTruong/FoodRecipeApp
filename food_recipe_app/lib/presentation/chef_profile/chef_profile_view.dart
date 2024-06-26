@@ -38,9 +38,7 @@ class ChefProfileView extends StatefulWidget {
 
 class _ChefProfileViewState extends State<ChefProfileView> {
   ChefInfoBloc chefInfoBloc = GetIt.instance<ChefInfoBloc>();
-  BackgroundUser backgroundUser =
-      GetIt.instance<BackgroundDataManager>().getBackgroundUser();
-
+  late BackgroundUser backgroundUser;
   @override
   void initState() {
     super.initState();
@@ -51,6 +49,13 @@ class _ChefProfileViewState extends State<ChefProfileView> {
   void dispose() {
     super.dispose();
   }
+
+  void resetBackgroundUser() {
+    backgroundUser =
+        GetIt.instance<BackgroundDataManager>().getBackgroundUser();
+  }
+
+  int times = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +92,8 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                       showAnimatedDialog1(context,
                           AppErrorDialog(content: state.failure.message));
                     }
-                    if (state is ChefInfoLoadedState) {
+                    if (state is ChefInfoLoadedState && times > 0) {
+                      times--;
                       chefInfoBloc
                           .add(LoadChefRecipes(state.chefEntity!.recipeIds));
                     }
@@ -102,8 +108,10 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                       );
                     }
                     if (state is ChefInfoLoadedState) {
+                      resetBackgroundUser();
                       bool isFollowed = backgroundUser.followingIds
                           .contains(state.chefEntity!.id);
+                      print("in View : $isFollowed");
                       return Column(
                         children: [
                           UserIntroduction(
@@ -135,8 +143,14 @@ class _ChefProfileViewState extends State<ChefProfileView> {
                 ),
                 BlocBuilder<ChefInfoBloc, ChefInfoState>(
                   bloc: chefInfoBloc,
-                  buildWhen: (previous, current) => current is ChefRecipeState,
+                  buildWhen: (previous, current) {
+                    if (current is ChefRecipeState) {
+                      return true;
+                    }
+                    return false;
+                  },
                   builder: (context, state) {
+                    print(state.runtimeType);
                     if (state is ChefRecipeLoadedState) {
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),

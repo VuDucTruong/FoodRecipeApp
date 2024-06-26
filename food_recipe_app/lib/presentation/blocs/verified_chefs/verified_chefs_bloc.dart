@@ -47,9 +47,9 @@ class VerifiedChefsBloc extends Bloc<VerifiedChefsEvent, VerifiedChefsState> {
 
   FutureOr<void> _onUpdateFollow(
       UpdateFollowChef event, Emitter<VerifiedChefsState> emit) {
-    emit(VerifiedChefsFollowSuccessState(event.object));
     GetIt.instance<BackgroundDataManager>()
         .updateFollow(event.object.chefId, event.object.option);
+    emit(VerifiedChefsFollowSuccessState(event.object));
     updateUserFollowUseCase.execute(event.object);
   }
 

@@ -106,7 +106,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                 });
               } else if (state is EditProfileDeleteSuccess) {
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    Routes.mainRoute, ModalRoute.withName(Routes.loginRoute));
+                    Routes.loginRoute, ModalRoute.withName(Routes.loginRoute));
               }
               if (state is EditProfileFailed) {
                 Failure failure = state.failure;
@@ -168,14 +168,14 @@ class _EditProfileViewState extends State<EditProfileView> {
                 showDialog(
                     context: context,
                     builder: (context) => AppAlertDialog(
-                          content: AppStrings.deleteAccount,
+                          content: AppStrings.deleteAccount.tr(),
                           onYes: () {
                             _editProfileBloc.add(EditProfileDeleteEvent());
                           },
                         ));
               },
               child: const Icon(Icons.delete_forever),
-              label: AppStrings.deleteAccount),
+              label: AppStrings.deleteAccount.tr()),
           SpeedDialChild(
               onTap: () {
                 Navigator.pushNamed(context, Routes.otpRoute, arguments: [
@@ -187,9 +187,10 @@ class _EditProfileViewState extends State<EditProfileView> {
                 ]);
               },
               child: const Icon(Icons.password),
-              label: AppStrings.changePass),
+              label: AppStrings.changePass.tr()),
           SpeedDialChild(
-              child: const Icon(Icons.favorite), label: AppStrings.editPrefs),
+              child: const Icon(Icons.favorite),
+              label: AppStrings.editPrefs.tr()),
         ],
       ),
     );

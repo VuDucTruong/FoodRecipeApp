@@ -9,6 +9,8 @@ import 'package:food_recipe_app/domain/usecase/base_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chef_info_by_id_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_ids_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_user_follow_usecase.dart';
+import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
+import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
 
 part 'chef_info_event.dart';
@@ -44,6 +46,8 @@ class ChefInfoBloc extends Bloc<ChefInfoEvent, ChefInfoState> {
 
   FutureOr<void> _onUpdateFollow(
       UpdateFollowChef event, Emitter<ChefInfoState> emit) {
+    GetIt.instance<BackgroundDataManager>()
+        .updateFollow(event.object.chefId, event.object.option);
     emit(ChefInfoLoadedState(event.chefEntity));
     updateUserFollowUseCase.execute(event.object);
   }
