@@ -8,6 +8,7 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/common_hea
 import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
@@ -44,8 +45,8 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
         bloc: aiRecipeBloc,
         listener: (context, state) {
           if (state is AIRecipeErrorState) {
-            showAnimatedDialog2(
-                context, AppErrorDialog(content: state.failure.toString()));
+            showAnimatedDialog2(context,
+                AppErrorDialog(content: AppStrings.somethingWentWrong.tr()));
           }
         },
         builder: (context, state) {
@@ -139,6 +140,9 @@ class _AIRecipeResultPageState extends State<AIRecipeResultPage> {
                 )
               ],
             );
+          }
+          if (state is AIRecipeErrorState) {
+            return ErrorText(failure: state.failure);
           }
           return Center(child: Text(state.runtimeType.toString()));
         },
