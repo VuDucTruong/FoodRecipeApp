@@ -28,7 +28,7 @@ class CongratulationDialog extends StatelessWidget {
             Lottie.asset(LottiePath.completePath,
                 width: 186, height: 186, fit: BoxFit.cover),
             Text(
-              AppStrings.congratulation,
+              AppStrings.congratulation.tr(),
               style: getBoldStyle(
                   color: ColorManager.darkBlueColor, fontSize: FontSize.s25),
             ),

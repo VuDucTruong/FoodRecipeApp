@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,6 +8,7 @@ import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/long_switch.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/on_off_switch.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
@@ -56,6 +58,9 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        title: AppStrings.signUp.tr(),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -92,7 +97,6 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
                   const SizedBox(
                     height: AppSize.s12,
                   ),
-                  _buildNotificationOption(),
                   Padding(
                     padding: const EdgeInsets.only(top: 16.0),
                     child: FilledButton(
@@ -100,7 +104,7 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
                           _handleOnPressed();
                         },
                         child: Text(
-                          AppStrings.continueOnly,
+                          AppStrings.continueOnly.tr(),
                           style: getMediumStyle(
                               color: Colors.white, fontSize: FontSize.s20),
                         )),
@@ -135,7 +139,7 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
     return Padding(
       padding: const EdgeInsets.all(AppPadding.p12),
       child: Text(
-        AppStrings.setUpKitchen,
+        AppStrings.setUpKitchen.tr(),
         style: getBoldStyle(color: Colors.black, fontSize: FontSize.s20),
       ),
     );
@@ -161,7 +165,7 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
         Container(
             margin: const EdgeInsets.symmetric(vertical: AppMargin.m8),
             child: Text(
-              AppStrings.selectPreferences,
+              AppStrings.selectPreferences.tr(),
               style: getSemiBoldStyle(
                   color: ColorManager.secondaryColor, fontSize: FontSize.s20),
             )),
@@ -173,28 +177,13 @@ class _SettingFoodTypeViewState extends State<SettingFoodTypeView> {
     return Row(
       children: [
         Text(
-          AppStrings.hungryHeads,
+          AppStrings.hungryHeads.tr(),
           style: getSemiBoldStyle(color: Colors.black, fontSize: FontSize.s18),
         ),
         const Spacer(),
         DefaultHeads(
           headNumber: headNumber,
         ),
-      ],
-    );
-  }
-
-  Widget _buildNotificationOption() {
-    return Row(
-      children: [
-        Text(
-          AppStrings.newDishNotification,
-          style: getSemiBoldStyle(color: Colors.black, fontSize: FontSize.s18),
-        ),
-        const Spacer(),
-        OnOffSwitch(
-          isOn: isVeg,
-        )
       ],
     );
   }

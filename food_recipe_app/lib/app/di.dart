@@ -341,6 +341,7 @@ initUserProfileModule() {
       () => UserNotificationBloc(instance(), instance(), instance()),
     );
   }
+  initEditProfileModule();
 }
 
 initEditProfileModule() {
@@ -360,7 +361,6 @@ initEditProfileModule() {
       () => DeleteUserProfileUseCase(instance()),
     );
   }
-
   if (!instance.isRegistered<EditProfileBloc>()) {
     instance.registerLazySingleton(
       () => EditProfileBloc(

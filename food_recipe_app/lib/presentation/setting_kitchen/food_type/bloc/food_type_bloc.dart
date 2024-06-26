@@ -41,16 +41,15 @@ class FoodTypeBloc extends Bloc<FoodTypeEvent, FoodTypeState> {
         if (await _networkInfo.isConnected) {
           await _signupWithEmailUseCase
               .execute(
-              SignupWithEmailUseCaseInput.fromUserRegisterProfileAdvanced(
-                  userRegisterProfileAdvanced: event.userRegisterProfile))
+                  SignupWithEmailUseCaseInput.fromUserRegisterProfileAdvanced(
+                      userRegisterProfileAdvanced: event.userRegisterProfile))
               .then((value) {
             value.fold((left) => emit(FoodTypeSubmitFailure(failure: left)),
-                    (right) => emit(FoodTypeSubmitSuccess()));
+                (right) => emit(FoodTypeSubmitSuccess()));
           });
         } else {
           emit(FoodTypeSubmitFailure(
-              failure:
-              Failure(ResponseCode.DEFAULT, AppStrings.invalidInput)));
+              failure: Failure(ResponseCode.DEFAULT, AppStrings.invalidInput)));
         }
       } else {
         emit(FoodTypeSubmitFailure(

@@ -10,6 +10,8 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/notification_item.dart';
+import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
+import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
 
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
@@ -45,10 +47,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
   List<NotificationEntity> notificationList = [];
   ScrollController scrollController = ScrollController();
   int page = 0;
+
   @override
   void initState() {
     super.initState();
-    print("Touch ${page} ${notificationList.length}");
     notificationList = [];
     currentUser = GetIt.instance<BackgroundDataManager>().convertToChefEntity();
     _userNotificationBloc.add(LoadUserNotification(page));
@@ -79,21 +81,39 @@ class _UserProfilePageState extends State<UserProfilePage> {
       child: SingleChildScrollView(
         controller: scrollController,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              AppStrings.yourProfile.tr(),
-              style: getBoldStyle(
-                  color: ColorManager.secondaryColor, fontSize: FontSize.s20),
+            Row(
+              children: [
+                Text(
+                  AppStrings.yourProfile.tr(),
+                  style: getBoldStyle(
+                      color: ColorManager.secondaryColor,
+                      fontSize: FontSize.s20),
+                ),
+              ],
             ),
-            UserIntroduction(
-              entity: currentUser,
-            ),
-            UserDescription(
-              entity: currentUser,
-            ),
-            UserSocialStatus(
-              entity: currentUser,
+            BlocBuilder<EditProfileBloc, EditProfileState>(
+              bloc: GetIt.instance<EditProfileBloc>(),
+              builder: (context, state) {
+                if (state is EditProfileSubmitSuccess) {
+                  currentUser = GetIt.instance<BackgroundDataManager>()
+                      .convertToChefEntity();
+                }
+                return Column(
+                  children: [
+                    UserIntroduction(
+                      entity: currentUser,
+                    ),
+                    UserDescription(
+                      entity: currentUser,
+                    ),
+                    UserSocialStatus(
+                      entity: currentUser,
+                    ),
+                  ],
+                );
+              },
             ),
             Center(
               child: Wrap(
@@ -134,6 +154,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 if (state is UserNotificationErrorState) {
                   showAnimatedDialog1(context,
                       AppErrorDialog(content: state.failure.toString()));
+                }
+                if (state is UserNotificationLoadedState) {
+                  if (state.notificationList.length < 10 && !state.isLastPage) {
+                    _userNotificationBloc.add(LoadUserNotification(++page));
+                  }
                 }
               },
               builder: (context, state) {

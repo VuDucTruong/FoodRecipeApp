@@ -180,7 +180,8 @@ Widget _buildFooterText(
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Text(prefix, style: getSemiBoldStyle(color: ColorManager.greyColor)),
+      Text(prefix,
+          style: getSemiBoldStyle(color: ColorManager.greyColor, fontSize: 13)),
       const SizedBox(
         width: 4,
       ),
@@ -189,7 +190,8 @@ Widget _buildFooterText(
           Navigator.of(context).pushNamed(Routes.createProfileRoute);
         },
         child: Text(suffix,
-            style: getSemiBoldStyle(color: ColorManager.darkBlueColor)),
+            style: getSemiBoldStyle(
+                color: ColorManager.darkBlueColor, fontSize: 13)),
       ),
     ],
   );

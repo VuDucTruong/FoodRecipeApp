@@ -192,5 +192,12 @@
   "additionalContextHint": "Nhập những gì bạn muốn làm cho món ăn của bạn...",
   "submit": "Gửi",
   "reset": "Đặt Lại",
-  "aiResultRecipeTitle": "Công Thức Kết Quả AI"
+  "aiResultRecipeTitle": "Công Thức Kết Quả AI",
+  "resend": "Gửi lại",
+  "askOTP": "Chưa nhận được OTP",
+  "verify": "Xác thực",
+  "otpMissing": "OTP bị thiếu",
+  "otpWrong": "OTP bị sai",
+  "otpSent": "OTP đã được gửi đến email của bạn:",
+  "profileUpdated": "Thông tin cá nhân đã được cập nhật"
 }

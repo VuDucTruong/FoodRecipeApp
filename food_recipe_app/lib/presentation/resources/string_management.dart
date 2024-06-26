@@ -163,6 +163,14 @@ class AppStrings {
   static const String reset = "reset";
   static const String aiResultRecipeTitle = "aiResultRecipeTitle";
 
+  static const String resend = "resend";
+  static const String askOTP = "askOTP";
+  static const String verify = "verify";
+  static const String otpMissing = "otpMissing";
+  static const String otpWrong = "otpWrong";
+  static const String otpSent = "otpSent";
+  static const String profileUpdated = "profileUpdated";
+
 // Validate message
   static const String emailFormatError = 'emailFormatError';
   static const String emailRequiredError = 'emailRequiredError';

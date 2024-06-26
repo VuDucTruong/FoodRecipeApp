@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/edit_profile_input_decoration.dart';
 
@@ -22,7 +23,7 @@ class NameTextField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            AppStrings.fullName,
+            AppStrings.fullName.tr(),
             style:
                 getBoldStyle(color: ColorManager.secondaryColor, fontSize: 16),
           ),

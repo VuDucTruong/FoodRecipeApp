@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/presentation/blocs/language/language_cubit.dart';
+import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/theme_management.dart';
@@ -17,6 +19,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final InitialRoute initialRoute = GetIt.instance<InitialRoute>();
     debugPrint('initialRoute.initialRoute: ${initialRoute.initialRoute}');
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: ColorManager.lightBG,
+    ));
     return BlocProvider(
       create: (context) => LanguageCubit(GetIt.instance<AppPreferences>()),
       child: BlocBuilder<LanguageCubit, Locale>(

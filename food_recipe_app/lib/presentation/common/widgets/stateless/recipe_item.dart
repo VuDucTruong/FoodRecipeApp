@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
@@ -66,7 +67,7 @@ class RecipeItem extends StatelessWidget {
                         showAnimatedDialog1(
                             context,
                             AppAlertDialog(
-                              content: AppStrings.deleteRecipeWarning,
+                              content: AppStrings.deleteRecipeWarning.tr(),
                               onYes: () {
                                 deleteRecipeFunc?.call();
                               },
@@ -81,7 +82,7 @@ class RecipeItem extends StatelessWidget {
                           children: [
                             SvgPicture.asset(PicturePath.deletePath),
                             Text(
-                              AppStrings.delete,
+                              AppStrings.delete.tr(),
                               style: getRegularStyle(
                                   color: Colors.white, fontSize: FontSize.s10),
                             )

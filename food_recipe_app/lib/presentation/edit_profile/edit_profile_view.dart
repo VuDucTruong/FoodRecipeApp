@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,12 +12,15 @@ import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_alert_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/bio_text_field.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/edited_avatar.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/icon_text_field.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/name_text_field.dart';
+import 'package:food_recipe_app/presentation/main/home/home_page.dart';
+import 'package:food_recipe_app/presentation/main/main_view.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
@@ -77,21 +81,29 @@ class _EditProfileViewState extends State<EditProfileView> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: AppStrings.editProfile,
+      appBar: CustomAppBar(
+        title: AppStrings.editProfile.tr(),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: AppMargin.m8),
         child: BlocListener(
             bloc: _editProfileBloc,
             listener: (context, state) {
-              Navigator.popUntil(context, (route) => route is! DialogRoute);
-              if (state is EditProfileSubmitSuccess) {
+              if (state is EditProfileLoading) {
                 showDialog(
-                    context: context,
-                    builder: (context) => CongratulationDialog(
-                          content: "Profile updated",
-                        ));
+                  context: context,
+                  builder: (context) => const LoadingDialog(),
+                );
+              }
+              if (state is EditProfileSubmitSuccess) {
+                Navigator.popUntil(context, (route) => route is! DialogRoute);
+                showAnimatedDialog2(
+                    context,
+                    CongratulationDialog(
+                      content: AppStrings.profileUpdated.tr(),
+                    )).then((value) {
+                  Navigator.pop(context);
+                });
               } else if (state is EditProfileDeleteSuccess) {
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     Routes.mainRoute, ModalRoute.withName(Routes.loginRoute));
@@ -118,11 +130,11 @@ class _EditProfileViewState extends State<EditProfileView> {
                   ),
                   IconTextField(
                       iconPath: PicturePath.facebookPath,
-                      content: AppStrings.facebook,
+                      content: AppStrings.facebook.tr(),
                       controller: facebookController),
                   IconTextField(
                       iconPath: PicturePath.gmailPath,
-                      content: AppStrings.gmail,
+                      content: AppStrings.gmail.tr(),
                       controller: gmailController),
                   const SizedBox(
                     height: AppSize.s16,
@@ -139,7 +151,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                               _gatherProfileInformation(), avatarImage.value));
                         }
                       },
-                      child: const Text(AppStrings.saveProfileInfo))
+                      child: Text(AppStrings.saveProfileInfo.tr()))
                 ],
               ),
             ) // done Builder
@@ -166,10 +178,13 @@ class _EditProfileViewState extends State<EditProfileView> {
               label: AppStrings.deleteAccount),
           SpeedDialChild(
               onTap: () {
-                Navigator.pushNamed(context, Routes.otpRoute , arguments: [currentUser.email , (){
-                  Navigator.pushReplacementNamed(context, Routes.changePassRoute);
-                }]);
-
+                Navigator.pushNamed(context, Routes.otpRoute, arguments: [
+                  currentUser.email,
+                  () {
+                    Navigator.pushReplacementNamed(
+                        context, Routes.changePassRoute);
+                  }
+                ]);
               },
               child: const Icon(Icons.password),
               label: AppStrings.changePass),

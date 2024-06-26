@@ -38,7 +38,10 @@ class EditProfileBloc extends Bloc<EditProfileEvent, EditProfileState> {
       final result = await _updateUserProfileUseCase.execute(
           UpdateProfileUseCaseInput(event.profileInformation, event.avatar));
       result.fold((failure) => emit(EditProfileSubmitFailed(failure)),
-          (success) => emit(EditProfileSubmitSuccess(success)));
+          (success) {
+        _backgroundDataManager.updateProfile(success);
+        emit(EditProfileSubmitSuccess(success));
+      });
     } catch (e) {
       emit(EditProfileSubmitFailed(
           Failure.actionFailed('Update profile failed')));

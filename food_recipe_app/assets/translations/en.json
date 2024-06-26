@@ -192,5 +192,12 @@
   "additionalContextHint": "Type what you want to make your dish...",
   "submit": "Submit",
   "reset": "Reset",
-  "aiResultRecipeTitle": "AI Result Recipe"
+  "aiResultRecipeTitle": "AI Result Recipe",
+  "resend": "Resend",
+  "askOTP": "Do not receive OTP yet ? ",
+  "verify": "Verify",
+  "otpMissing": "OTP is missing",
+  "otpWrong": "OTP is  wrong",
+  "otpSent": "OTP was sent to your email:",
+  "profileUpdated": "Profile is updated"
 }

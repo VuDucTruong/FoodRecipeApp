@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -82,9 +83,10 @@ class _OTPVerifyingPageState extends State<OTPVerifyingPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Text(
-            AppStrings.otpVerifying,
+            AppStrings.otpVerifying.tr(),
             style:
                 getBoldStyle(color: ColorManager.secondaryColor, fontSize: 20),
           ),
@@ -99,117 +101,120 @@ class _OTPVerifyingPageState extends State<OTPVerifyingPage> {
             ),
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Lottie.asset(LottiePath.sendOTPPath,
-                width: width * 0.7, height: width * 0.7),
-            Text(
-              "Your OTP was sent to your email : ${widget.email}",
-              maxLines: 3,
-              textAlign: TextAlign.center,
-              style: getRegularStyle(fontSize: 16),
-            ),
-            SizedBox(
-              height: height * 0.05,
-            ),
-            Form(
-              key: formKey,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ...List.generate(
-                    6,
-                    (index) => OPTItem(
-                      focusNode: focusNodeList[index],
-                      textEditingController: controllerList[index],
-                      onTextChange: (p0) => _handleChange(p0, index),
-                    ),
-                  )
-                ],
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Lottie.asset(LottiePath.sendOTPPath,
+                  width: width * 0.7, height: width * 0.7),
+              Text(
+                "${AppStrings.otpSent.tr()} ${widget.email}",
+                maxLines: 3,
+                textAlign: TextAlign.center,
+                style: getRegularStyle(fontSize: 16),
               ),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Column(
-                children: [
-                  FractionallySizedBox(
-                      widthFactor: 0.7,
-                      child: FilledButton(
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              bool isCorrect = myAuth.verifyOTP(otp: getOTP());
-                              if (isCorrect) {
-                                widget.navigateFunction.call();
+              SizedBox(
+                height: height * 0.05,
+              ),
+              Form(
+                key: formKey,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ...List.generate(
+                      6,
+                      (index) => OPTItem(
+                        focusNode: focusNodeList[index],
+                        textEditingController: controllerList[index],
+                        onTextChange: (p0) => _handleChange(p0, index),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Column(
+                  children: [
+                    FractionallySizedBox(
+                        widthFactor: 0.7,
+                        child: FilledButton(
+                            onPressed: () {
+                              if (formKey.currentState!.validate()) {
+                                bool isCorrect =
+                                    myAuth.verifyOTP(otp: getOTP());
+                                if (isCorrect) {
+                                  widget.navigateFunction.call();
+                                } else {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text(AppStrings.otpWrong.tr()),
+                                    backgroundColor: Colors.red,
+                                  ));
+                                }
                               } else {
                                 ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  content: Text("OTP is wrong !"),
+                                    .showSnackBar(SnackBar(
+                                  content: Text(AppStrings.otpMissing.tr()),
                                   backgroundColor: Colors.red,
                                 ));
                               }
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text("OTP is missing !"),
-                                backgroundColor: Colors.red,
-                              ));
+                            },
+                            child: Text(
+                              AppStrings.verify.tr(),
+                              style: getSemiBoldStyle(fontSize: 16),
+                            ))),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(AppStrings.askOTP.tr(),
+                            style: getRegularStyle(fontSize: 14)),
+                        InkWell(
+                          onTap: () {
+                            if (!isReload) {
+                              setState(() {
+                                sendOTP(myAuth, widget.email);
+                                isReload = true;
+                              });
                             }
                           },
-                          child: Text(
-                            "Verify",
-                            style: getSemiBoldStyle(fontSize: 16),
-                          ))),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Do not see your OTP yet ? ",
-                          style: getRegularStyle(fontSize: 14)),
-                      InkWell(
-                        onTap: () {
-                          if (!isReload) {
-                            setState(() {
-                              sendOTP(myAuth, widget.email);
-                              isReload = true;
-                            });
-                          }
-                        },
-                        child: isReload
-                            ? TweenAnimationBuilder(
-                                tween: StepTween(begin: resetTime, end: 0),
-                                duration: Duration(seconds: resetTime),
-                                onEnd: () => setState(() {
-                                  isReload = false;
-                                }),
-                                builder: (BuildContext context, int value,
-                                    Widget? child) {
-                                  return Text(
-                                    "$value s",
-                                    style: getSemiBoldStyle(
-                                        fontSize: 14, color: Colors.red),
-                                  );
-                                },
-                              )
-                            : Text("Resend",
-                                style: getSemiBoldStyle(
-                                        fontSize: 14,
-                                        color: ColorManager.accentColor)
-                                    .copyWith(
-                                        decoration: TextDecoration.underline,
-                                        decorationThickness: 2,
-                                        decorationColor:
-                                            ColorManager.accentColor)),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
+                          child: isReload
+                              ? TweenAnimationBuilder(
+                                  tween: StepTween(begin: resetTime, end: 0),
+                                  duration: Duration(seconds: resetTime),
+                                  onEnd: () => setState(() {
+                                    isReload = false;
+                                  }),
+                                  builder: (BuildContext context, int value,
+                                      Widget? child) {
+                                    return Text(
+                                      "$value s",
+                                      style: getSemiBoldStyle(
+                                          fontSize: 14, color: Colors.red),
+                                    );
+                                  },
+                                )
+                              : Text(AppStrings.resend.tr(),
+                                  style: getSemiBoldStyle(
+                                          fontSize: 14,
+                                          color: ColorManager.accentColor)
+                                      .copyWith(
+                                          decoration: TextDecoration.underline,
+                                          decorationThickness: 2,
+                                          decorationColor:
+                                              ColorManager.accentColor)),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ));
   }
 }

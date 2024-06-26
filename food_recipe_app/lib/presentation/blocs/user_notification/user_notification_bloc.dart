@@ -30,7 +30,9 @@ class UserNotificationBloc
     if (event.page == 0) emit(UserNotificationLoadingState());
     (await getUserNotificationUseCase.execute(event.page)).fold(
       (l) => emit(UserNotificationErrorState(l)),
-      (r) => emit(UserNotificationLoadedState(r)),
+      (r) {
+        emit(UserNotificationLoadedState(r));
+      },
     );
   }
 

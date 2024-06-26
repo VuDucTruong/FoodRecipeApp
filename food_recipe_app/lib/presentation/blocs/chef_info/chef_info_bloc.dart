@@ -5,6 +5,7 @@ import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/object/update_follow_object.dart';
+import 'package:food_recipe_app/domain/usecase/base_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_chef_info_by_id_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_recipes_from_ids_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_user_follow_usecase.dart';

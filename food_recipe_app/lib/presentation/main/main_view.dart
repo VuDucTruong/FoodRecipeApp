@@ -46,6 +46,7 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+        resizeToAvoidBottomInset: true,
         bottomNavigationBar: Container(
           padding: const EdgeInsets.all(AppPadding.p8),
           decoration: const BoxDecoration(
