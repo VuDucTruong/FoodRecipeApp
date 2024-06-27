@@ -79,5 +79,9 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
   }
 
   FutureOr<void> _onUpdateUserRecipe(
-      UpdateUserRecipe event, Emitter<SavedRecipesState> emit) {}
+      UpdateUserRecipe event, Emitter<SavedRecipesState> emit) async {
+    (await updateUserRecipeUseCase.execute(event.request)).fold(
+        (l)=>emit(SavedRecipesErrorState(l)),
+        (r)=>emit(SavedRecipesUpdatedState(r)));
+  }
 }

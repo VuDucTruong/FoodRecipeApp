@@ -1,6 +1,6 @@
 class Constant {
-  // static const String severUrl = 'http://192.168.1.12:5115';
-  static const String severUrl = 'https://cookingrecipe.azurewebsites.net';
+  static const String severUrl = 'http://192.168.1.20:5115';
+  // static const String severUrl = 'https://cookingrecipe.azurewebsites.net';
   static const String baseUrl = '$severUrl/api';
   static const String notificationUrl = '$severUrl/notificationHub';
   static const String loginEndpoint = '/Login';

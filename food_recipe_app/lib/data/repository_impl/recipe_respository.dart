@@ -195,7 +195,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> updateRecipe(
+  Future<Either<Failure, RecipeEntity>> updateRecipe(
       UpdateRecipeRequestDto request) async {
     if (await _networkInfo.isConnected) {
       try {
@@ -204,7 +204,7 @@ class RecipeRepositoryImpl implements RecipeRepository {
         final response = await _recipeDataSource.updateRecipe(updateRequest);
         if (response.statusCode == ApiInternalStatus.SUCCESS) {
           return response.data != null
-              ? Right(response.data!)
+              ? Right(response.data!.toEntity())
               : Left(Failure.actionFailed("Update Recipe"));
         } else {
           return Left(Failure.internalServerError());

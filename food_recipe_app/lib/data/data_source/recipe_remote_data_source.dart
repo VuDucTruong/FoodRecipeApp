@@ -29,7 +29,7 @@ abstract class RecipeRemoteDataSource {
 
   Future<BaseResponse<void>> updateSaveRecipe(String recipeId, bool option);
   Future<BaseResponse<void>> updateLikeRecipe(String recipeId, bool option);
-  Future<BaseResponse<bool>> updateRecipe(RecipeUpdateRequest request);
+  Future<BaseResponse<RecipeResponse>> updateRecipe(RecipeUpdateRequest request);
   Future<BaseResponse<List<RecipeResponse>>> getMyRecipes(
       GetMyRecipesRequest request);
 }
@@ -125,11 +125,12 @@ class RecipeRemoteDataSourceImpl implements RecipeRemoteDataSource {
   }
 
   @override
-  Future<BaseResponse<bool>> updateRecipe(RecipeUpdateRequest request) async {
+  Future<BaseResponse<RecipeResponse>> updateRecipe(RecipeUpdateRequest request) async {
+    FormData formData = FormData.fromMap(request.toJson());
     Response response = await _dio.put('$recipeEndpoint/update',
-        data: request.toJson(),
-        options: Options(contentType: Headers.jsonContentType));
-    return BaseResponse.fromJson(response, (data) => data as bool);
+        data: formData,
+        options: Options(contentType: Headers.multipartFormDataContentType));
+    return BaseResponse.fromJson(response, (data) => RecipeResponse.fromJson(data));
   }
 
   @override

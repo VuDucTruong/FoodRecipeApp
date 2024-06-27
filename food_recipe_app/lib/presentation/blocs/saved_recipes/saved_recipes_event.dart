@@ -34,7 +34,7 @@ class DeleteUserRecipe extends SavedRecipesEvent {
 }
 
 class UpdateUserRecipe extends SavedRecipesEvent {
-  UserUpdateRequestDto request;
+  UpdateRecipeRequestDto request;
 
   UpdateUserRecipe(this.request);
 }

@@ -21,7 +21,7 @@ abstract class RecipeRepository {
   Future<Either<Failure, bool>> deleteRecipe(String recipeId);
   Future<Either<Failure, void>> updateSaveRecipe(String recipeId, bool option);
   Future<Either<Failure, void>> updateLikeRecipe(String recipeId, bool option);
-  Future<Either<Failure, bool>> updateRecipe(UpdateRecipeRequestDto request);
+  Future<Either<Failure, RecipeEntity>> updateRecipe(UpdateRecipeRequestDto request);
   Future<Either<Failure, List<RecipeEntity>>> getMyRecipes(
       RecipeSearchObject obj);
 }
@@ -36,6 +36,7 @@ class GetRecipesSearchRequestDto {
 }
 
 class UpdateRecipeRequestDto {
+  String id;
   String title;
   String instruction;
   String description;
@@ -43,20 +44,21 @@ class UpdateRecipeRequestDto {
   int serves;
   int representIndex;
   List<String> keepUrls;
-  List<MultipartFile> files;
+  List<MultipartFile>? files;
   int cookTime;
   List<String> ingredients;
   bool isPublished;
   bool isVegan;
   UpdateRecipeRequestDto(
-      {required this.title,
+      {required this.id,
+        required this.title,
       required this.instruction,
       required this.description,
       required this.categories,
       required this.serves,
       required this.representIndex,
       required this.keepUrls,
-      required this.files,
+      this.files,
       required this.cookTime,
       required this.ingredients,
       required this.isPublished,
