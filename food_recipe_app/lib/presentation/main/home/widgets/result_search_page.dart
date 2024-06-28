@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/background_user.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
@@ -9,10 +8,10 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_wi
 import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
 import 'package:food_recipe_app/presentation/list_chef_page/chef_item.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
-import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
+import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:get_it/get_it.dart';
 
 class ResultSearchPage extends StatelessWidget {

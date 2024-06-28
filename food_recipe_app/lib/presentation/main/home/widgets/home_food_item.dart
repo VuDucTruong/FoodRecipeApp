@@ -1,11 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/common_food_title.dart';
-import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
-import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
@@ -41,10 +38,13 @@ class HomeFoodItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                  radius: 60,
-                  backgroundImage:
-                      NetworkImage(item.attachmentUrls[item.representIndex])),
+              Hero(
+                tag: item.id,
+                child: CircleAvatar(
+                    radius: 60,
+                    backgroundImage:
+                        NetworkImage(item.attachmentUrls[item.representIndex])),
+              ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),

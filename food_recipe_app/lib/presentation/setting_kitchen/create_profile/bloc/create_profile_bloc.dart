@@ -2,11 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:food_recipe_app/data/network/error_handler.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
-import 'package:food_recipe_app/data/network/network_info.dart';
 import 'package:food_recipe_app/domain/usecase/login_verify_usecase.dart';
-import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:meta/meta.dart';
 
 part 'create_profile_event.dart';

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class CommentEntity {
   final String offSet;
   final DateTime createdAt;

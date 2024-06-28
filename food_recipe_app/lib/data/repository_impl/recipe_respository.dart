@@ -10,10 +10,9 @@ import 'package:food_recipe_app/data/requests/get_my_recipes_request.dart';
 import 'package:food_recipe_app/data/requests/get_recipes_search_request.dart';
 import 'package:food_recipe_app/data/requests/recipe_update_request.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
-import 'package:food_recipe_app/domain/entity/user_entity.dart';
+import 'package:food_recipe_app/domain/object/create_recipe_object.dart';
 import 'package:food_recipe_app/domain/object/search_object.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
-import 'package:food_recipe_app/domain/object/create_recipe_object.dart';
 
 import '../../presentation/utils/background_data_manager.dart';
 

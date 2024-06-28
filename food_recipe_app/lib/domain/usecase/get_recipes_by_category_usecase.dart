@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
-import 'package:food_recipe_app/domain/object/get_recipes_by_category_object.dart';
 import 'package:food_recipe_app/domain/object/search_object.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 import 'package:food_recipe_app/domain/usecase/base_usecase.dart';

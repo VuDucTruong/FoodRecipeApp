@@ -201,5 +201,6 @@
   "otpSent": "OTP was sent to your email:",
   "profileUpdated": "Profile is updated",
   "editRecipe": "Edit your recipe",
-  "edit": "Edit"
+  "edit": "Edit",
+  "recipeUpdated": "Your recipe is updated"
 }

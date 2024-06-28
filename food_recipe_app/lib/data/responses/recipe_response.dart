@@ -1,6 +1,5 @@
-import 'package:dio/dio.dart';
-import 'package:food_recipe_app/data/responses/base_response.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'recipe_response.g.dart';
 
 @JsonSerializable()
@@ -45,6 +44,7 @@ class RecipeResponse {
   static List<RecipeResponse> fromJsonList(dynamic list) {
     return (list as List).map((e) => RecipeResponse.fromJson(e)).toList();
   }
+
   static RecipeResponse fromJsonMap(dynamic map) {
     return RecipeResponse.fromJson(map as Map<String, dynamic>);
   }

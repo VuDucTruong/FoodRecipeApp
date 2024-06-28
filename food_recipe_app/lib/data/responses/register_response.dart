@@ -1,4 +1,3 @@
-import 'package:food_recipe_app/data/responses/base_response.dart';
 import 'package:food_recipe_app/data/responses/user_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 

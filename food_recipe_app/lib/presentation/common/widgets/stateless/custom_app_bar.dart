@@ -3,11 +3,10 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../resources/assets_management.dart';
 import '../../../resources/color_management.dart';
-import '../../../resources/string_management.dart';
 import '../../../resources/style_management.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key , required this.title});
+  const CustomAppBar({super.key, required this.title});
   final String title;
   @override
   Widget build(BuildContext context) {

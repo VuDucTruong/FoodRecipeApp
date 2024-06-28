@@ -7,7 +7,6 @@ import 'package:food_recipe_app/presentation/blocs/ai_recipe/ai_recipe_bloc.dart
 import 'package:food_recipe_app/presentation/common/widgets/stateless/common_heading.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';

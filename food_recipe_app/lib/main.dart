@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/presentation/resources/language_manager.dart';
@@ -27,5 +26,3 @@ Future<void> main() async {
         child: const MyApp()),
   );
 }
-
-

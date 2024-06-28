@@ -1,6 +1,5 @@
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../domain/entity/background_user.dart';
 

@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
 import 'package:food_recipe_app/app/di.dart';
 import 'package:food_recipe_app/app/functions.dart';
-import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/usecase/get_user_info_usecase.dart';
@@ -166,6 +164,7 @@ class RouteGenerator {
           ),
         );
       case Routes.editRecipeRoute:
+        initSavedRecipeModule();
         return MaterialPageRoute(
           builder: (context) => EditRecipePage(
             recipeEntity: routeSettings.arguments as RecipeEntity,

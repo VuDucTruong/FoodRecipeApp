@@ -4,10 +4,6 @@ import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/data/mapper/mapper.dart';
 import 'package:food_recipe_app/data/responses/notification_response.dart';
 import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:signalr_netcore/http_connection_options.dart';
-import 'package:signalr_netcore/hub_connection.dart';
-import 'package:signalr_netcore/hub_connection_builder.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 
 class NotificationHelper {

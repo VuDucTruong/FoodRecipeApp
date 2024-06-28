@@ -6,7 +6,6 @@ import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/object/update_follow_object.dart';
 import 'package:food_recipe_app/domain/object/user_search_object.dart';
 import 'package:food_recipe_app/domain/usecase/get_chefs_by_ids_usecase.dart';
-import 'package:food_recipe_app/domain/usecase/get_chefs_from_rank_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/get_search_chefs_usecase.dart';
 import 'package:food_recipe_app/domain/usecase/update_user_follow_usecase.dart';
 import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';

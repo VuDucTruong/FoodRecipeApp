@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 class UserEntity {
   String id;
   DateTime createdAt;
@@ -41,21 +39,24 @@ class ProfileInformation {
   List<String> categories;
   int hungryHeads;
 
-  ProfileInformation({
-    required this.fullName,required this.avatarUrl,required this.isVegan,required this.bio,
-    required this.categories,required this.hungryHeads,
-    required this.facebookLink,required this.googleLink
-});
-  ProfileInformation.defaultValues({
-    this.fullName = '',
-    this.avatarUrl = '',
-    this.isVegan = false,
-    this.bio = '',
-    this.categories = const [],
-    this.hungryHeads = 0,
-    this.facebookLink = '',
-    this.googleLink = ''
-  });
+  ProfileInformation(
+      {required this.fullName,
+      required this.avatarUrl,
+      required this.isVegan,
+      required this.bio,
+      required this.categories,
+      required this.hungryHeads,
+      required this.facebookLink,
+      required this.googleLink});
+  ProfileInformation.defaultValues(
+      {this.fullName = '',
+      this.avatarUrl = '',
+      this.isVegan = false,
+      this.bio = '',
+      this.categories = const [],
+      this.hungryHeads = 0,
+      this.facebookLink = '',
+      this.googleLink = ''});
 
   Map<String, dynamic> toJson() {
     return {

@@ -1,16 +1,13 @@
 import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/constant.dart';
-import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/ai_recipe_page/widgets/ai_text_field.dart';
 import 'package:food_recipe_app/presentation/ai_recipe_page/widgets/image_list_widget.dart';
 import 'package:food_recipe_app/presentation/ai_recipe_page/widgets/language_list_view.dart';
 import 'package:food_recipe_app/presentation/blocs/ai_recipe/ai_recipe_bloc.dart';
-
 import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
-import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
@@ -18,9 +15,6 @@ import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/utils/gemini_utils.dart';
 import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
-
-import '../common/widgets/stateless/dialogs/loading_dialog.dart';
 
 class AIRecipePage extends StatefulWidget {
   const AIRecipePage({super.key});

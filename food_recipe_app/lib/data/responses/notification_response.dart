@@ -1,7 +1,5 @@
-import 'dart:ffi';
-
-import 'package:food_recipe_app/data/responses/special_datatypes/uint_json_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'notification_response.g.dart';
 
 @JsonSerializable(explicitToJson: true)

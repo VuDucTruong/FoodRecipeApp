@@ -4,12 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/detail_recipe/bloc/detail_recipe_bloc.dart';
-import 'package:food_recipe_app/presentation/detail_recipe/bloc/detail_recipe_bloc.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
-import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
 import 'chef_background.dart';
@@ -38,7 +36,7 @@ class _RecipeImageState extends State<RecipeImage> {
           });
         }
         if (state is RecipeSaveSuccessState) {
-          if(state.isSave) {
+          if (state.isSave) {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text(AppStrings.saveSucccess)));
           } else {

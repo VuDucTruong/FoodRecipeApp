@@ -1,9 +1,7 @@
-
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
 
-class RecipeUpdateRequest{
+class RecipeUpdateRequest {
   String id;
   String title;
   String instruction;
@@ -17,35 +15,34 @@ class RecipeUpdateRequest{
   List<String> ingredients;
   bool isPublished;
   bool isVegan;
-  RecipeUpdateRequest({
-    required this.id,
-    required this.title,
-    required this.instruction,
-    required this.description,
-    required this.categories,
-    required this.serves,
-    required this.representIndex,
-    required this.keepUrls,
-    required this.files,
-    required this.cookTime,
-    required this.ingredients,
-    required this.isPublished,
-    required this.isVegan
-  });
-  RecipeUpdateRequest.fromRecipeUpdateRequestDto(UpdateRecipeRequestDto request):
-      id = request.id,
-    title = request.title,
-    instruction = request.instruction,
-    description = request.description,
-    categories = request.categories,
-    serves = request.serves,
-    representIndex = request.representIndex,
-    keepUrls = request.keepUrls,
-    files = request.files,
-    cookTime = request.cookTime,
-    ingredients = request.ingredients,
-    isPublished = request.isPublished,
-    isVegan = request.isVegan;
+  RecipeUpdateRequest(
+      {required this.id,
+      required this.title,
+      required this.instruction,
+      required this.description,
+      required this.categories,
+      required this.serves,
+      required this.representIndex,
+      required this.keepUrls,
+      required this.files,
+      required this.cookTime,
+      required this.ingredients,
+      required this.isPublished,
+      required this.isVegan});
+  RecipeUpdateRequest.fromRecipeUpdateRequestDto(UpdateRecipeRequestDto request)
+      : id = request.id,
+        title = request.title,
+        instruction = request.instruction,
+        description = request.description,
+        categories = request.categories,
+        serves = request.serves,
+        representIndex = request.representIndex,
+        keepUrls = request.keepUrls,
+        files = request.files,
+        cookTime = request.cookTime,
+        ingredients = request.ingredients,
+        isPublished = request.isPublished,
+        isVegan = request.isVegan;
 
   Map<String, dynamic> toJson() {
     return {

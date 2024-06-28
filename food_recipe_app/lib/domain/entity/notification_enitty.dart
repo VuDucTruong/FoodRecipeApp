@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class NotificationEntity {
   int offSet;
   DateTime createdAt;

@@ -1,15 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:food_recipe_app/app/constant.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/domain/repository/recipe_respository.dart';
-import 'package:food_recipe_app/presentation/blocs/create_recipe/create_recipe_bloc.dart';
-import 'package:food_recipe_app/domain/object/create_recipe_object.dart';
 import 'package:food_recipe_app/presentation/blocs/saved_recipes/saved_recipes_bloc.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateful/default_heads.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
@@ -17,8 +13,6 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/ap
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/no_connection_dialog.dart';
-import 'package:food_recipe_app/presentation/main/create_recipe/widgets/category_list_view.dart';
 import 'package:food_recipe_app/presentation/main/create_recipe/widgets/ingredient_list_view.dart';
 import 'package:food_recipe_app/presentation/main/create_recipe/widgets/recipe_category_section.dart';
 import 'package:food_recipe_app/presentation/main/create_recipe/widgets/selection_food_image.dart';
@@ -142,69 +136,63 @@ class _EditRecipePageState extends State<EditRecipePage> {
                 height: 8,
               ),
               BlocConsumer(
-                bloc: savedRecipesBloc,
-                listener: (context, state) {
-                  if (state is SavedRecipesUpdatedState) {
-                    setState(() {
-                      recipeEntity = state.updatedRecipe;
-                      initRecipe();
-                    });
-                    showAnimatedDialog2(
-                        context,
-                        CongratulationDialog(
-                            content: AppStrings.success.tr()));
-                  }
-                  if (state is SavedRecipesErrorState) {
-
-                    // showAnimatedDialog2(
-                    //     context,
-                    //     AppErrorDialog(
-                    //         content: state.failure.message.tr()));
-                  }
-                  // if (state is SavedRecipesLoadingState) {
-                  //   showAnimatedDialog2(context, const LoadingDialog());
-                  // }
-
-                },
-                builder: (context, state){
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      FilledButton(
-                          onPressed: () async {
-                            if (multipartFiles.isEmpty && recipeEntity.attachmentUrls.isEmpty) {
-                              showAnimatedDialog2(
+                  bloc: savedRecipesBloc,
+                  listener: (context, state) {
+                    if (state is SavedRecipesUpdatedState) {
+                      showAnimatedDialog2(
+                          context,
+                          CongratulationDialog(
+                              content: AppStrings.recipeUpdated.tr()));
+                    }
+                    if (state is SavedRecipesErrorState) {
+                      showAnimatedDialog2(context,
+                          AppErrorDialog(content: state.failure.message.tr()));
+                    }
+                    if (state is SavedRecipesLoadingState) {
+                      showAnimatedDialog2(context, const LoadingDialog());
+                    }
+                  },
+                  builder: (context, state) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        FilledButton(
+                            onPressed: () async {
+                              if (multipartFiles.isEmpty &&
+                                  recipeEntity.attachmentUrls.isEmpty) {
+                                showAnimatedDialog2(
+                                    context,
+                                    AppErrorDialog(
+                                        content: AppStrings.noImageError.tr()));
+                                return;
+                              }
+                              if (formKey.currentState!.validate()) {
+                                ingredients
+                                    .removeWhere((element) => element.isEmpty);
+                                UpdateRecipeRequestDto request =
+                                    _gatherRecipeUpdateRequestDto();
+                                savedRecipesBloc.add(UpdateUserRecipe(request));
+                                // Excute
+                              }
+                            },
+                            child: Text(AppStrings.save.tr())),
+                        FilledButton(
+                            style: FilledButton.styleFrom(
+                                backgroundColor: ColorManager.darkBlueColor),
+                            onPressed: () async {
+                              bool isAccept = await showAnimatedDialog2(
                                   context,
-                                  AppErrorDialog(
-                                      content: AppStrings.noImageError.tr()));
-                              return;
-                            }
-                            if (formKey.currentState!.validate()) {
-                              ingredients.removeWhere((element) => element.isEmpty);
-                              UpdateRecipeRequestDto request = _gatherRecipeUpdateRequestDto();
-                              savedRecipesBloc.add(UpdateUserRecipe(request));
-                              // Excute
-                            }
-                          },
-                          child: Text(AppStrings.save.tr())),
-                      FilledButton(
-                          style: FilledButton.styleFrom(
-                              backgroundColor: ColorManager.darkBlueColor),
-                          onPressed: () async {
-                            bool isAccept = await showAnimatedDialog2(
-                                context,
-                                AppAlertDialog(
-                                    content: AppStrings.deleteContent.tr()))
-                            as bool;
-                            if (isAccept) {
-                              // execute delete function and navigate
-                            }
-                          },
-                          child: Text(AppStrings.delete.tr())),
-                    ],
-                  );
-                }
-              ),
+                                  AppAlertDialog(
+                                      content: AppStrings.deleteContent
+                                          .tr())) as bool;
+                              if (isAccept) {
+                                // execute delete function and navigate
+                              }
+                            },
+                            child: Text(AppStrings.delete.tr())),
+                      ],
+                    );
+                  }),
               const SizedBox(
                 height: 8,
               )
@@ -342,18 +330,24 @@ class _EditRecipePageState extends State<EditRecipePage> {
     );
   }
 
-  UpdateRecipeRequestDto _gatherRecipeUpdateRequestDto(){
+  UpdateRecipeRequestDto _gatherRecipeUpdateRequestDto() {
     MultipartFile? myFile;
-    if(multipartFiles.length>1){
+    if (multipartFiles.length > 1) {
       myFile = multipartFiles[0];
     }
     return UpdateRecipeRequestDto(
         id: recipeEntity.id,
-        title: dishController.text, instruction: instructionController.text,
-        description: descriptionController.text, categories: selectedCategoryList.join(','),
-        serves: headsValue.value, representIndex: 0,
-        keepUrls: myFile==null ? [recipeEntity.attachmentUrls[0]] : [],
-        files: myFile!=null ?[myFile]:[], cookTime: int.parse(cookTimeController.text),
-        ingredients: ingredients, isPublished: true, isVegan: isVeg.value);
+        title: dishController.text,
+        instruction: instructionController.text,
+        description: descriptionController.text,
+        categories: selectedCategoryList.join(','),
+        serves: headsValue.value,
+        representIndex: 0,
+        keepUrls: myFile == null ? [recipeEntity.attachmentUrls[0]] : [],
+        files: myFile != null ? [myFile] : [],
+        cookTime: int.parse(cookTimeController.text),
+        ingredients: ingredients,
+        isPublished: true,
+        isVegan: isVeg.value);
   }
 }

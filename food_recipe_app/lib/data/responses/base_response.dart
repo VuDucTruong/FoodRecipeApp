@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:food_recipe_app/data/responses/special_datatypes/headers_converter.dart';
 
 class BaseResponse<T> {
   int? statusCode;

@@ -6,8 +6,6 @@ import 'package:food_recipe_app/presentation/resources/font_manager.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
 
-import '../../app/di.dart';
-
 ThemeData getAppTheme() {
   return ThemeData(
       radioTheme: const RadioThemeData(

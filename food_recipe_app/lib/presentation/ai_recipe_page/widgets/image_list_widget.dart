@@ -5,7 +5,6 @@ import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/utils/gemini_utils.dart';
-import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 
 class ImageListWidget extends StatefulWidget {
   const ImageListWidget({super.key, required this.userPrompt});

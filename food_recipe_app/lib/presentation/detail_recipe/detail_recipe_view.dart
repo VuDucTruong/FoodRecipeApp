@@ -1,20 +1,19 @@
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_recipe_app/app/functions.dart';
-import 'package:food_recipe_app/presentation/resources/route_management.dart';
-import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:food_recipe_app/domain/entity/background_user.dart';
 import 'package:food_recipe_app/domain/entity/recipe_entity.dart';
 import 'package:food_recipe_app/presentation/blocs/chef_info/chef_info_bloc.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/detail_recipe/widgets/recipe_image.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
+import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
+import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:get_it/get_it.dart';
 
 import '../resources/assets_management.dart';
@@ -93,11 +92,13 @@ class _DetailRecipeViewState extends State<DetailRecipeView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _getFoodImage(width),
+                    Hero(
+                        tag: widget.recipeEntity.id,
+                        child: _getFoodImage(width)),
                     const SizedBox(
                       height: AppSize.s30,
                     ),
-                    Text(AppStrings.ingredients,
+                    Text(AppStrings.ingredients.tr(),
                         style: getBoldStyle(
                             color: ColorManager.secondaryColor,
                             fontSize: FontSize.s20)),
@@ -127,7 +128,7 @@ class _DetailRecipeViewState extends State<DetailRecipeView> {
                                 ]));
                           },
                         )),
-                    Text(AppStrings.instructions,
+                    Text(AppStrings.instructions.tr(),
                         style: getBoldStyle(
                             color: ColorManager.secondaryColor,
                             fontSize: FontSize.s20)),

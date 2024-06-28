@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/data/responses/special_datatypes/int_json_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
+
 part 'user_response.g.dart';
 
 @JsonSerializable(
@@ -36,7 +36,7 @@ class UserResponse {
     required this.authenticationInfo,
     required this.profileInfo,
     this.recipeIds = const [],
-    this.likedRecipeIds= const[],
+    this.likedRecipeIds = const [],
     this.savedRecipeIds = const [],
     this.followingIds = const [],
     this.followerIds = const [],

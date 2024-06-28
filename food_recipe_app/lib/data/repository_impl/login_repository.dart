@@ -1,11 +1,7 @@
-import 'dart:ffi';
-
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:food_recipe_app/app/app_prefs.dart';
-import 'package:food_recipe_app/presentation/utils/device_info.dart';
 import 'package:food_recipe_app/data/data_source/login_remote_data_source.dart';
 import 'package:food_recipe_app/data/mapper/mapper.dart';
 import 'package:food_recipe_app/data/network/error_handler.dart';
@@ -16,6 +12,7 @@ import 'package:food_recipe_app/data/requests/register_request.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
 import 'package:food_recipe_app/domain/repository/login_repository.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
+import 'package:food_recipe_app/presentation/utils/device_info.dart';
 import 'package:get_it/get_it.dart';
 
 class LoginRepositoryImpl implements LoginRepository {

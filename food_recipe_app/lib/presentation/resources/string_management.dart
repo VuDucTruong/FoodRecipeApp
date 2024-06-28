@@ -172,6 +172,7 @@ class AppStrings {
   static const String profileUpdated = "profileUpdated";
   static const String editRecipe = "editRecipe";
   static const String edit = "edit";
+  static const String recipeUpdated = "recipeUpdated";
 
 // Validate message
   static const String emailFormatError = 'emailFormatError';

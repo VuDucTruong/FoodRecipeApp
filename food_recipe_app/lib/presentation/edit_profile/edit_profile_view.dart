@@ -2,25 +2,20 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/data/network/failure.dart';
 import 'package:food_recipe_app/domain/entity/user_entity.dart';
+import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_alert_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/congratulation_dialog.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/loading_dialog.dart';
 import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/bio_text_field.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
-import 'package:food_recipe_app/presentation/edit_profile/widgets/edited_avatar.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/icon_text_field.dart';
 import 'package:food_recipe_app/presentation/edit_profile/widgets/name_text_field.dart';
-import 'package:food_recipe_app/presentation/main/home/home_page.dart';
-import 'package:food_recipe_app/presentation/main/main_view.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/route_management.dart';
 import 'package:food_recipe_app/presentation/resources/value_manament.dart';
@@ -28,10 +23,10 @@ import 'package:food_recipe_app/presentation/setting_kitchen/create_profile/widg
 import 'package:food_recipe_app/presentation/utils/mutable_variable.dart';
 import 'package:get_it/get_it.dart';
 
-import '../utils/background_data_manager.dart';
 import '../../domain/entity/background_user.dart';
 import '../resources/assets_management.dart';
 import '../resources/string_management.dart';
+import '../utils/background_data_manager.dart';
 
 class EditProfileView extends StatefulWidget {
   const EditProfileView({super.key});

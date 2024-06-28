@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_recipe_app/app/functions.dart';
-import 'package:food_recipe_app/domain/entity/background_user.dart';
+import 'package:food_recipe_app/domain/entity/chef_entity.dart';
 import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
 import 'package:food_recipe_app/presentation/blocs/user_notification/user_notification_bloc.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/dialogs/app_error_dialog.dart';
@@ -10,19 +10,14 @@ import 'package:food_recipe_app/presentation/common/widgets/stateless/error_text
 import 'package:food_recipe_app/presentation/common/widgets/stateless/loading_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/no_item_widget.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/notification_item.dart';
-import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
-import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
-
-import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
-import 'package:food_recipe_app/domain/entity/chef_entity.dart';
-import 'package:food_recipe_app/presentation/common/widgets/stateless/recipe_item.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_description.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_introduction.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/user_social_status.dart';
-
+import 'package:food_recipe_app/presentation/edit_profile/bloc/edit_profile_bloc.dart';
 import 'package:food_recipe_app/presentation/resources/color_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:food_recipe_app/presentation/resources/style_management.dart';
+import 'package:food_recipe_app/presentation/utils/background_data_manager.dart';
 import 'package:get_it/get_it.dart';
 
 import '../resources/font_manager.dart';
