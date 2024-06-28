@@ -49,16 +49,16 @@ class _SelectionFoodImageState extends State<SelectionFoodImage> {
           },
           child: Container(
             width: double.infinity,
-            height: AppSize.s150,
+            height: 200,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.r20),
-                color: Colors.white70,
-                border: Border.all(
-                    color: ColorManager.secondaryColor, width: AppSize.s2)),
+                color: ColorManager.whiteOrangeColor.withOpacity(0.4),
+                border: Border.all(color: ColorManager.secondaryColor)),
             child: selectedImage == null
                 ? widget.url == null
                     ? const Icon(
-                        Icons.add_a_photo_outlined,
+                        Icons.add_a_photo_rounded,
+                        weight: 400,
                         size: 100,
                       )
                     : ClipRRect(
@@ -67,7 +67,7 @@ class _SelectionFoodImageState extends State<SelectionFoodImage> {
                           widget.url!,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
-                              Image.asset(PicturePath.emptyRecipePath),
+                              Image.asset(PicturePath.errorImagePath),
                         ))
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(18),
@@ -81,7 +81,7 @@ class _SelectionFoodImageState extends State<SelectionFoodImage> {
         left: 10,
         child: InkWell(
           child: CircleAvatar(
-            radius: AppRadius.r15,
+            radius: 25,
             backgroundColor: widget.isVeg.value
                 ? ColorManager.vegColor
                 : ColorManager.nonVegColor,

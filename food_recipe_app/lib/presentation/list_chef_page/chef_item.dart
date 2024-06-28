@@ -70,7 +70,8 @@ class _ChefItemState extends State<ChefItem> {
         ],
       ),
       child: Card(
-        color: Theme.of(context).cardColor.withOpacity(0.9),
+        surfaceTintColor: Colors.transparent,
+        color: Colors.lightGreenAccent.withOpacity(0.8),
         child: Row(
           children: [
             Padding(
@@ -83,6 +84,7 @@ class _ChefItemState extends State<ChefItem> {
                     height: 100,
                     errorBuilder: (context, error, stackTrace) => Image.asset(
                       PicturePath.emptyAvatarPngPath,
+                      color: Colors.black,
                       width: 100,
                       height: 100,
                     ),
@@ -108,8 +110,7 @@ class _ChefItemState extends State<ChefItem> {
                       Text("${AppStrings.followers.tr()} : "),
                       Text(
                         widget.chefEntity.followerCount.toString(),
-                        style: getMediumStyle(
-                            color: ColorManager.blueColor, fontSize: 14),
+                        style: getBoldStyle(fontSize: 14),
                       ),
                     ],
                   )
@@ -139,7 +140,10 @@ class SocialMediaItem extends StatelessWidget {
           const SizedBox(
             width: 8,
           ),
-          Text(link)
+          Text(
+            link,
+            style: getMediumStyle(fontSize: 14),
+          )
         ],
       ),
     );

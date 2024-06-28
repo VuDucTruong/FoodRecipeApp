@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-const String fontFamily = 'Inter';
+const String fontFamily = 'Roboto';
 
 class FontWeightManager {
   static const FontWeight light = FontWeight.w300;

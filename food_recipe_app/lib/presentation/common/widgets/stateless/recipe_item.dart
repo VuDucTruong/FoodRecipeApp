@@ -69,6 +69,8 @@ class RecipeItem extends StatelessWidget {
                                 arguments: recipe);
                           },
                           child: Container(
+                            width: 60,
+                            height: 60,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
@@ -78,7 +80,12 @@ class RecipeItem extends StatelessWidget {
                                     BorderRadius.circular(AppRadius.r15)),
                             child: Column(
                               children: [
-                                SvgPicture.asset(PicturePath.editPath),
+                                SvgPicture.asset(
+                                  PicturePath.editPath,
+                                  colorFilter: ColorFilter.mode(
+                                      ColorManager.secondaryColor,
+                                      BlendMode.srcIn),
+                                ),
                                 Text(
                                   AppStrings.edit.tr(),
                                   style: getRegularStyle(
@@ -104,7 +111,10 @@ class RecipeItem extends StatelessWidget {
                                 ));
                           },
                           child: Container(
-                            padding: const EdgeInsets.all(AppPadding.p12),
+                            width: 60,
+                            height: 60,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
                                 color:
                                     ColorManager.darkBlueColor.withOpacity(0.8),
@@ -112,7 +122,10 @@ class RecipeItem extends StatelessWidget {
                                     BorderRadius.circular(AppRadius.r15)),
                             child: Column(
                               children: [
-                                SvgPicture.asset(PicturePath.deletePath),
+                                SvgPicture.asset(
+                                  PicturePath.deletePath,
+                                  height: 30,
+                                ),
                                 Text(
                                   AppStrings.delete.tr(),
                                   style: getRegularStyle(

@@ -11,7 +11,8 @@ import 'package:lottie/lottie.dart';
 class AppAlertDialog extends StatelessWidget {
   final void Function()? onYes;
   final void Function()? onNo;
-  AppAlertDialog({Key? key, required this.content,this.onYes,this.onNo}) : super(key: key);
+  AppAlertDialog({Key? key, required this.content, this.onYes, this.onNo})
+      : super(key: key);
   String content;
   @override
   Widget build(BuildContext context) {
@@ -48,27 +49,25 @@ class AppAlertDialog extends StatelessWidget {
               children: [
                 FilledButton(
                     onPressed: () {
-                      if(onYes!=null)
-                        {
-                          onYes!();
-                        }
+                      if (onYes != null) {
+                        onYes?.call();
+                      }
                       Navigator.pop(context, true);
                     },
                     child: Text(
-                      AppStrings.yes,
+                      AppStrings.yes.tr(),
                       style: getMediumStyle(
                           color: Colors.white, fontSize: FontSize.s20),
                     )),
                 OutlinedButton(
                     onPressed: () {
-                      if(onYes!=null)
-                      {
-                        onNo!();
+                      if (onNo != null) {
+                        onNo?.call();
                       }
                       Navigator.pop(context, false);
                     },
                     child: Text(
-                      AppStrings.no,
+                      AppStrings.no.tr(),
                       style: getMediumStyle(
                           color: Colors.white, fontSize: FontSize.s20),
                     )),
