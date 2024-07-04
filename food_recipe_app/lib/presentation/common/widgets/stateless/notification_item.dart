@@ -26,18 +26,25 @@ class NotificationItem extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              Image.network(
+              Container(
+                margin: const EdgeInsets.only(right: 8),
                 width: 100,
                 height: 100,
-                notification.imageUrl,
-                errorBuilder: (context, error, stackTrace) => Container(),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                      image: NetworkImage(notification.imageUrl),
+                      onError: (exception, stackTrace) => Container(),
+                    )),
               ),
               Expanded(
+                flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       notification.title,
+                      maxLines: 2,
                       style: getSemiBoldStyle(
                           fontSize: 16, color: ColorManager.darkBlueColor),
                     ),
@@ -53,24 +60,33 @@ class NotificationItem extends StatelessWidget {
               const SizedBox(
                 width: 12,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  InkWell(
-                      onTap: () {
-                        GetIt.instance<UserNotificationBloc>()
-                            .add(DeleteNotification(notification));
-                      },
-                      child: const Icon(Icons.delete_forever_outlined)),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      formatDateTime(notification.createdAt),
-                      style: getMediumStyle(fontSize: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          GetIt.instance<UserNotificationBloc>()
+                              .add(DeleteNotification(notification));
+                        },
+                        child: const Icon(Icons.delete_forever_outlined)),
+                    const SizedBox(
+                      height: 24,
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: SizedBox(
+                        width: 100,
+                        child: Text(
+                          maxLines: 2,
+                          textAlign: TextAlign.end,
+                          formatDateTime(notification.createdAt),
+                          style: getMediumStyle(fontSize: 14),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               )
             ],
           ),

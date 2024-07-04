@@ -160,9 +160,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 }
                 if (state is UserNotificationUpdateSuccess) {
                   int index = notificationList.indexOf(state.notification);
-                  if (index != -1) {
+                  if (index != -1 && !notificationList[index].isRead) {
                     notificationList[index] = state.notification..isRead = true;
                   }
+
                   return ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,

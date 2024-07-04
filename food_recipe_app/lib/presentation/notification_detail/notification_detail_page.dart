@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:food_recipe_app/app/functions.dart';
 import 'package:food_recipe_app/domain/entity/notification_enitty.dart';
 import 'package:food_recipe_app/presentation/blocs/user_notification/user_notification_bloc.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/common_heading.dart';
 import 'package:food_recipe_app/presentation/common/widgets/stateless/custom_app_bar.dart';
+import 'package:food_recipe_app/presentation/resources/assets_management.dart';
 import 'package:food_recipe_app/presentation/resources/string_management.dart';
 import 'package:get_it/get_it.dart';
 
@@ -33,8 +35,8 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
     // TODO: implement build
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: const CustomAppBar(
-          title: AppStrings.notification,
+        appBar: CustomAppBar(
+          title: AppStrings.notification.tr(),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -42,20 +44,24 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.network(
-                  notificationEntity.imageUrl,
+                child: Container(
                   width: width * 0.5,
                   height: width * 0.5,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: width * 0.5,
-                    height: width * 0.5,
-                    color: Colors.red,
-                  ),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black, blurRadius: 1)
+                      ],
+                      image: DecorationImage(
+                        image: NetworkImage(notificationEntity.imageUrl),
+                        onError: (exception, stackTrace) =>
+                            const AssetImage(PicturePath.emptyAvatarPngPath),
+                      )),
                 ),
               ),
               Row(
                 children: [
-                  const CommonHeading(content: "${AppStrings.title}: "),
+                  CommonHeading(content: "${AppStrings.title.tr()}: "),
                   Text(
                     notificationEntity.title,
                     maxLines: 20,
@@ -64,7 +70,7 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
               ),
               Row(
                 children: [
-                  const CommonHeading(content: "${AppStrings.createdAt}: "),
+                  CommonHeading(content: "${AppStrings.createdAt.tr()}: "),
                   Text(
                     formatDateTime(notificationEntity.createdAt),
                     maxLines: 2,
@@ -73,7 +79,7 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
               ),
               Row(
                 children: [
-                  const CommonHeading(content: "${AppStrings.content}: "),
+                  CommonHeading(content: "${AppStrings.content.tr()}: "),
                   Text(
                     notificationEntity.content,
                     maxLines: 100,
@@ -89,7 +95,7 @@ class _NotificationDetailPageState extends State<NotificationDetailPage> {
                           .add(DeleteNotification(notificationEntity));
                       Navigator.pop(context);
                     },
-                    child: const Text(AppStrings.delete),
+                    child: Text(AppStrings.delete.tr()),
                   ),
                 ),
               )

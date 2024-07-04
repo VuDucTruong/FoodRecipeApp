@@ -46,8 +46,11 @@ class UserNotificationBloc
   Future<FutureOr<void>> _onUpdateNotificationStatus(
       UpdateNotificationStatus event,
       Emitter<UserNotificationState> emit) async {
-    emit(UserNotificationUpdateSuccess(event.notificationEntity));
-    (await updateIsReadByOffsetUseCase.execute(event.notificationEntity.offSet))
-        .fold((l) => emit(UserNotificationActionFailState(l)), (r) {});
+    if (!event.notificationEntity.isRead) {
+      emit(UserNotificationUpdateSuccess(event.notificationEntity));
+      (await updateIsReadByOffsetUseCase
+              .execute(event.notificationEntity.offSet))
+          .fold((l) => emit(UserNotificationActionFailState(l)), (r) {});
+    }
   }
 }

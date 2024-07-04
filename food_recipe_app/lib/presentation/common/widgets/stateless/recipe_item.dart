@@ -82,7 +82,7 @@ class RecipeItem extends StatelessWidget {
                               children: [
                                 SvgPicture.asset(
                                   PicturePath.editPath,
-                                  colorFilter: ColorFilter.mode(
+                                  colorFilter: const ColorFilter.mode(
                                       ColorManager.secondaryColor,
                                       BlendMode.srcIn),
                                 ),
